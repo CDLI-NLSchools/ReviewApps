@@ -497,6 +497,7 @@ function s8BarSVG(labels, values, yLabel){
 }
 
 /* ----- bank-u1.js ----- */
+// CRMARKS: s8-u1-cr-spheres-interact=2
 // CRMARKS: s8-u1-cr-distribution-shift=3
 // CRMARKS: s8-u1-cr-cycle-role=3
 // CRMARKS: s8-u1-cr-glacier=3
@@ -1911,6 +1912,25 @@ E("s8-u1-cr-range-shift", 1, ["SC8.1.3", "SC8.1.4"], 3, "var", varset([
   }
 ]), ["Name the non-living factor first; every later step follows from it.", "Structure: factor and its limit, why the old home no longer suits, why the new home does, then who else is affected."]);
 
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+/* ---------- SC8.1.1 Interactions among the spheres (test plan build) ---------- */
+
+E("s8-u1-cr-spheres-interact", 1, ["SC8.1.1"], 2, "var", varset([
+  function () {
+    return textq("Along the coast of Newfoundland and Labrador, waves pound the base of a sea cliff through the winter, and blocks of rock regularly fall from the cliff face onto the shore below. Describe this as a chain of interaction among Earth's spheres. Name the spheres involved, and give the steps of the chain in order. (2 marks)",
+      ["the hydrosphere (ocean waves) acts on the lithosphere (the cliff rock)", "wave erosion undercuts the cliff until rock breaks and falls, changing the shape of the land"],
+      "<b>Model answer:</b> The ocean is part of the hydrosphere and the cliff is part of the lithosphere. Wave action from the hydrosphere strikes the base of the cliff again and again, eroding and undercutting the rock of the lithosphere. Unsupported rock above the undercut then cracks and falls to the shore, so the cliff slowly retreats and the coastline changes shape: water has reshaped solid land, step by step.<br><br><b>Marking points:</b> 1 mark for the spheres correctly named and matched to the example (hydrosphere: the ocean water; lithosphere: the cliff rock). 1 mark for the chain described in steps (repeated wave impact erodes and undercuts the cliff, rock falls, and the coastline is reshaped).",
+      {});
+  },
+  function () {
+    return textq("In Newfoundland and Labrador, rain falls on exposed rock through the autumn, then freezes in cracks in the rock during cold nights, and pieces of the rock surface break away by spring. Describe this as a chain of interaction among Earth's spheres. Name the spheres involved, and give the steps of the chain in order. (2 marks)",
+      ["the atmosphere supplies the rain and the freezing temperatures, and water from the hydrosphere fills cracks in the lithosphere", "the water freezes and expands, widening the cracks until the rock breaks apart"],
+      "<b>Model answer:</b> Rain, part of the hydrosphere, delivered under weather conditions from the atmosphere, seeps into cracks in the rock of the lithosphere. On cold nights the trapped water freezes and expands, forcing the cracks wider. After many freeze and thaw cycles the pressure splits pieces off the rock surface, wearing the rock down: water and weather have broken apart solid land, step by step.<br><br><b>Marking points:</b> 1 mark for the spheres correctly named and matched to the example (atmosphere: the rain and freezing weather; hydrosphere: the water in the cracks; lithosphere: the rock; any two correctly named and matched earn the mark if the chain uses them). 1 mark for the chain described in steps (water fills cracks, freezes and expands, cracks widen, and rock breaks away).",
+      {});
+  }
+]), ["Name each sphere where it enters the chain: the water, the rock, the weather.", "Give the steps in order, so one step causes the next."]);
+
 /* ----- bank-u2.js ----- */
 // CRMARKS: s8-u2-cr-viscosity-test=3
 // CRMARKS: s8-u2-cr-molasses=3
@@ -3267,6 +3287,9 @@ E("s8-u2-cr-balloon", 2, ["SC8.4.5"], 2, "var", varset([
 ]), ["Follow the particles: heating spreads them out, cooling brings them closer.", "In each state, compare the density inside the balloon with the density outside it."]);
 
 /* ----- bank-u3.js ----- */
+// CRMARKS: s8-u3-cr-reflection-everyday=2
+// CRMARKS: s8-u3-cr-refraction-straw=3
+// CRMARKS: s8-u3-cr-refraction-ray=2
 // CRMARKS: s8-u3-cr-refraction-explain=3
 // CRMARKS: s8-u3-cr-properties=3
 // CRMARKS: s8-u3-cr-em=3
@@ -4610,6 +4633,497 @@ E("s8-u3-cr-refraction-bowl", 3, ["SC8.7.4"], 2, "var", varset([
   }
 ]), ["Trace one ray from the object to the eye, and mark where it crosses the surface.", "Leaving water, light speeds up and bends away from the normal; your eye then traces it back in a straight line."]);
 
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+/* ---------- SC8.7.3 Laws of reflection and their applications (test plan build) ---------- */
+
+E("s8-u3-reflection-terms", 3, ["SC8.7.3"], 1, "var", varset([
+  function () {
+    return mcq("In a reflection diagram, what is the normal?",
+      "A line at right angles to the mirror surface at the point of contact",
+      ["A line drawn along the mirror surface at the point where a ray strikes",
+       "A ray that travels from a light source toward the surface of a mirror",
+       "A ray that travels away from a mirror surface after a ray strikes it"],
+      "The normal is an imaginary line drawn perpendicular to the surface at the exact point where the ray strikes it. It is the reference line for both reflection angles: the incoming ray is the incident ray and the outgoing ray is the reflected ray, and neither of those rays is the normal.",
+      {});
+  },
+  function () {
+    return mcq("A ray diagram labels the incoming ray and the outgoing ray at a mirror. Which pairing is correct?",
+      "The incoming ray is the incident ray, and the outgoing ray is the reflected ray",
+      ["The incoming ray is the reflected ray, and the outgoing ray is the incident ray",
+       "The incoming ray is the normal ray, and the outgoing ray is the incident ray too",
+       "The incoming ray is the incident ray, and the outgoing ray is the normal ray too"],
+      "The vocabulary follows the ray's direction of travel. The ray arriving at the surface is the incident ray, and the ray leaving the surface after the bounce is the reflected ray. The normal is not a ray at all; it is the reference line the angles are measured from.",
+      {});
+  },
+  function () {
+    return mcq("What does the law of reflection state about the two angles in a reflection diagram?",
+      "The angle of incidence equals the angle of reflection for every reflected ray",
+      ["The angle of incidence is twice the angle of reflection for every reflected ray",
+       "The angle of incidence equals the angle of refraction for every reflected ray",
+       "The angle of reflection equals ninety minus the angle of incidence in each ray"],
+      "The law of reflection is an equality: the angle of incidence equals the angle of reflection. It is not a doubling, and it says nothing about refraction, which is the bending that happens when light enters a new medium instead of bouncing off a surface.",
+      {});
+  },
+  function () {
+    return mcq("From which line are the angles of incidence and reflection both measured?",
+      "From the normal, the line at right angles to the surface where the ray strikes",
+      ["From the surface, the line running along the mirror where the incoming ray lands",
+       "From the incident ray, the line the incoming light follows as it reaches a mirror",
+       "From the reflected ray, the line the outgoing light follows as it leaves a mirror"],
+      "Both angles are measured from the normal, the line at right angles to the surface at the striking point. Measuring from the surface itself is the common error: a ray skimming along the surface would then be scored backwards, and its true angle from the normal is what the law uses.",
+      {});
+  },
+  function () {
+    return mcq("Which statement correctly describes a ray that follows the law of reflection?",
+      "It leaves the surface at the same angle to the normal as the angle it arrived at",
+      ["It leaves the surface at twice the angle to the normal as the angle it arrived at",
+       "It leaves the surface at half the angle to the normal as the angle it arrived at",
+       "It leaves the surface at a right angle to the normal whatever angle it arrived at"],
+      "Following the law means the outgoing angle matches the incoming angle, both measured from the normal. A ray arriving at 30 degrees to the normal leaves at 30 degrees to the normal, on the other side of it; the angle is not doubled, halved, or fixed at a right angle.",
+      {});
+  }
+]), ["Both angles are measured from the same reference line.", "Incident means arriving; reflected means leaving; the normal is the reference line."]);
+
+E("s8-u3-angle-measure", 3, ["SC8.7.3"], 2, "gen", function () {
+  var inc = pick([10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80]);
+  var mode = pick(["reflect", "fromSurface", "between", "refToSurface"]);
+  function opts(key, cand) {
+    var out = [];
+    for (var i = 0; i < cand.length && out.length < 3; i++) {
+      var v = cand[i];
+      if (v !== key && v > 0 && v < 180 && out.indexOf(v) < 0) out.push(v);
+    }
+    return out.map(function (d) { return d + " degrees"; });
+  }
+  var key, dis, prompt, sol;
+  if (mode === "reflect") {
+    key = inc;
+    dis = opts(key, [90 - inc, inc + 10, inc - 10, inc + 5, inc - 5, 2 * inc, 180 - inc]);
+    prompt = "A ray strikes a plane mirror with an angle of incidence of " + inc + " degrees, measured from the normal. What is the angle of reflection?";
+    sol = "By the law of reflection, the angle of reflection equals the angle of incidence, both measured from the normal. The angle of reflection is " + inc + " degrees.";
+  } else if (mode === "fromSurface") {
+    var surf = 90 - inc;
+    key = inc;
+    dis = opts(key, [surf, inc + 10, inc - 10, inc + 15, inc - 5, 180 - inc]);
+    prompt = "A ray strikes a plane mirror so that it makes an angle of " + surf + " degrees with the mirror surface. What is the angle of reflection?";
+    sol = "Angles for the law of reflection are measured from the normal, which is 90 degrees to the surface, so the angle of incidence is 90 - " + surf + " = " + inc + " degrees. The angle of reflection equals the angle of incidence, so it is also " + inc + " degrees.";
+  } else if (mode === "between") {
+    key = 2 * inc;
+    dis = opts(key, [inc, 90 - inc, 180 - inc, 2 * inc - 20, 2 * inc + 10, 2 * inc - 10, 90]);
+    prompt = "A ray reflects off a plane mirror with an angle of incidence of " + inc + " degrees, measured from the normal. What is the angle between the incident ray and the reflected ray?";
+    sol = "The reflected ray sits on the other side of the normal at the same angle, " + inc + " degrees. The angle between the two rays is therefore " + inc + " + " + inc + " = " + (2 * inc) + " degrees.";
+  } else {
+    key = 90 - inc;
+    dis = opts(key, [inc, 90 - inc + 10, 90 - inc - 10, 90 - inc + 15, inc + 10, 180 - inc]);
+    prompt = "A ray reflects off a plane mirror with an angle of incidence of " + inc + " degrees, measured from the normal. What angle does the reflected ray make with the mirror surface?";
+    sol = "The angle of reflection is " + inc + " degrees from the normal. The normal is 90 degrees to the surface, so the reflected ray makes 90 - " + inc + " = " + (90 - inc) + " degrees with the mirror surface.";
+  }
+  return mcq(prompt, key + " degrees", dis, sol, {});
+}, ["Decide first whether the given angle is measured from the normal or from the surface.", "The law makes the two angles from the normal equal; a surface angle needs a 90 degree conversion."]);
+
+E("s8-u3-mirror-uses", 3, ["SC8.7.3"], 2, "var", varset([
+  function () {
+    return mcq("Leo stands 1 m in front of a bathroom mirror, then steps back until he is 2 m in front of it. What happens to his image in the mirror?",
+      "The image stays the same size and moves back, staying as far behind the mirror as Leo is in front",
+      ["The image grows larger as he steps back, and it moves closer to the mirror surface than Leo stands",
+       "The image stays the same size and stays in one place, fixed just behind the mirror surface for good",
+       "The image becomes smaller and moves back, ending twice as far behind the mirror as Leo is in front"],
+      "A plane mirror image has three steady features: it is the same size as the object, it is upright, and it sits as far behind the mirror as the object is in front. When Leo doubles his distance, his image doubles its distance behind the glass too, and its size does not change at all.",
+      {});
+  },
+  function () {
+    return mcq("A student holds a card reading SCIENCE up to a bathroom mirror to check how the word will look. What does she see in the mirror?",
+      "The word appears reversed left to right, with its letters in reverse order in the mirror",
+      ["The word appears reversed top to bottom, with its letters upside down in the mirror now",
+       "The word appears exactly as written, with its letters in the same order in the mirror now",
+       "The word appears reversed left to right, with its letters made larger in the mirror image"],
+      "A plane mirror reverses left and right, not top and bottom, and it does not change the size of what it shows. The word therefore reads backwards in the mirror, last letter first, which is why writing meant to be read in a mirror has to be printed in reverse to begin with.",
+      {});
+  },
+  function () {
+    return mcq("A full-length dressing mirror shows Tariq from head to toe, and his reflection fits his body exactly, neither stretched nor shrunk. Why?",
+      "A plane mirror forms an image the same size as the object, so his image matches his real height",
+      ["A plane mirror forms an image larger than the object, so his image is stretched to fit the glass",
+       "A plane mirror forms an image smaller than the object, so his image is shrunk to fit the glass in",
+       "A plane mirror forms an image the same size only when a person stands very close to the glass now"],
+      "Same size is one of the fixed characteristics of a plane mirror image, at any distance. The image is not magnified or reduced the way curved mirrors can change it; Tariq's image is exactly as tall as Tariq, which is why a dressing mirror can be used to judge how clothes actually fit.",
+      {});
+  },
+  function () {
+    return mcq("A cat sits 2 m in front of a large plane mirror fixed flat on a wall. How far is the cat from its own image in the mirror?",
+      "4 m",
+      ["2 m", "3 m", "6 m"],
+      "The image forms as far behind the mirror as the object is in front of it, so the image is 2 m behind the glass. The distance from the cat to its image is the 2 m in front plus the 2 m behind, a total of 4 m.",
+      {});
+  },
+  function () {
+    return mcq("When Sam raises his right hand in front of a bathroom mirror, what does his image appear to do, and why?",
+      "The image appears to raise its left hand, because a plane mirror reverses left and right",
+      ["The image appears to raise its right hand, because a plane mirror reverses top and bottom",
+       "The image appears to raise both hands at once, because a plane mirror doubles what it shows",
+       "The image appears to raise its right hand, because a plane mirror keeps left and right alike"],
+      "Lateral inversion is the left-right swap in a plane mirror image. Sam's right hand is on the side of the mirror where the image's left hand appears, so the image seems to raise the opposite hand. Top and bottom are not swapped, and nothing is doubled or enlarged.",
+      {});
+  }
+]), ["Plane mirror images: same size, same distance behind, upright, and left-right reversed.", "Apply one characteristic at a time to the scene described."]);
+
+E("s8-u3-reflection-design", 3, ["SC8.7.3"], 3, "var", varset([
+  function () {
+    return mcq("A periscope's two plane mirrors are each tilted at 45 degrees to the tube. Why does that particular angle make the periscope work?",
+      "At 45 degrees, each mirror turns the light by exactly 90 degrees, sending it straight down or along the tube",
+      ["At 45 degrees, each mirror makes the light travel much faster, sending it straight down or along the tube",
+       "At 45 degrees, each mirror magnifies the distant scene it faces, sending a larger image along the tube now",
+       "At 45 degrees, each mirror bends the light by refraction in glass, sending it straight down the tube walls"],
+      "The design rests on the law of reflection. With a mirror at 45 degrees, a horizontal ray meets it at 45 degrees to the normal and leaves at 45 degrees to the normal on the other side, a total turn of exactly 90 degrees. One mirror turns the light down the tube and the second turns it back to horizontal, into the eye.",
+      {});
+  },
+  function () {
+    return mcq("A shopkeeper fixes a plane mirror tilted across the top corner of a doorway, so she can see customers coming around a blind corner. Why does the tilt let her see them?",
+      "The tilted mirror reflects light from the doorway into the shopkeeper's eyes at an equal angle on the other side of the normal",
+      ["The tilted mirror reflects light from the doorway around the corner by bending it gradually as it passes through the glass pane",
+       "The tilted mirror absorbs light from the doorway and then re-emits it toward the shopkeeper's eyes a moment later in the shop",
+       "The tilted mirror reflects light from the doorway in all directions at once, so some of it reaches the shopkeeper purely by chance"],
+      "Seeing around the corner is the law of reflection used as a design tool. Light from the customers strikes the tilted mirror and leaves it at an equal angle on the other side of the normal, which is the direction of the shopkeeper's eyes. The tilt is chosen so that equal-angle path connects the doorway to her position; the light is reflected, not bent, absorbed, or scattered.",
+      {});
+  },
+  function () {
+    return mcq("A dentist holds a small plane mirror behind a patient's back tooth, a surface that faces away from her. How does the mirror let her see that surface?",
+      "Light from the tooth reflects off the mirror into the dentist's eyes, with the angle of reflection equal to the angle of incidence",
+      ["Light from the tooth passes through the mirror and is bent by the glass until it reaches the dentist's eyes from behind the tooth",
+       "Light from the tooth is absorbed by the mirror and a new image of the tooth is projected onto a screen beside the dentist's chair",
+       "Light from the tooth reflects off the mirror in every direction at once, so the dentist can view it from any angle in the room now"],
+      "The little mirror redirects the view. Light from the hidden surface of the tooth strikes the mirror and reflects into the dentist's eyes, following the law of reflection at the mirror's surface. Angling the mirror changes where the equal-angle path leads, so she can inspect a surface her eyes cannot face directly.",
+      {});
+  },
+  function () {
+    return mcq("A car's interior rear-view mirror is flat, and the driver tilts it until the road behind fills the view. Why must the tilt be set at just the right angle?",
+      "Reflection leaves at an angle equal to the incoming angle, so the tilt must line the reflected rays from behind up with the driver's eyes",
+      ["Reflection leaves at an angle double the incoming angle, so the tilt must line the reflected rays from behind up with the driver's eyes",
+       "Reflection scatters at every angle from a flat surface, so the tilt must line the reflected rays from behind up with the driver's eyes",
+       "Reflection bends as it leaves a flat glass surface, so the tilt must line the refracted rays from behind up with the driver's eyes now"],
+      "A flat mirror gives a true, same-size view, but only along the path the law of reflection allows. Rays from behind strike the mirror and leave at an equal angle; the driver tilts the mirror until that outgoing path reaches her eyes. A wrong tilt sends the reflected rays, and the view, to the roof or the back seat instead.",
+      {});
+  },
+  function () {
+    return mcq("A guard watches two hallways from one post, using two plane mirrors set into the corner where the halls meet. What makes the pair of mirrors work?",
+      "Each mirror reflects light from one hall toward the guard, turning the rays by equal angles at each surface in turn",
+      ["Each mirror refracts light from one hall toward the guard, bending the rays by equal angles at each surface in turn",
+       "Each mirror magnifies light from one hall toward the guard, enlarging the rays by equal amounts at each surface now",
+       "Each mirror absorbs light from one hall toward the guard, then releases the rays by equal angles at each surface later"],
+      "Each mirror in the pair is placed so the law of reflection works in the guard's favour: light from down one hall strikes its mirror and reflects, at an equal angle, toward the post. Mirrors redirect light by reflection; they do not refract, magnify, or store the rays, so the arrangement succeeds or fails on its angles.",
+      {});
+  }
+]), ["Justify the arrangement with the law: equal angles at each mirror, and the path that creates.", "Ask where the equal-angle path leads from the object to the eye."]);
+
+E("s8-u3-diffuse-claim", 3, ["SC8.7.3"], 3, "var", varset([
+  function () {
+    return mcq("A driver claims a rough asphalt road cannot reflect a headlight beam at all, because the road is not shiny. Why can the driver still see the road surface ahead at night?",
+      "The rough surface reflects diffusely, scattering some headlight rays in many directions, including back toward the driver's eyes",
+      ["The rough surface reflects specularly, sending all headlight rays in one direction, including straight back toward the driver alone",
+       "The rough surface refracts the headlight beams down through the asphalt, and the bent light returns upward toward the driver's eyes",
+       "The rough surface absorbs the headlight beams completely, and the driver sees the road only by the light of the street lamps nearby"],
+      "The claim confuses reflecting with reflecting specularly. The road does reflect the headlights, but diffusely: its rough surface scatters the rays in many directions, and the share scattered back toward the driver is what lights up the road for her. A shiny surface would send the beam off in one direction, mostly away from the driver.",
+      {});
+  },
+  function () {
+    return mcq("A classroom projector screen is made matte white rather than polished smooth like a mirror. Why does the matte surface give the whole class a better picture?",
+      "The matte surface reflects diffusely, scattering the projected light so viewers in many seats can all see the same picture clearly",
+      ["The matte surface reflects specularly, sending the projected light to one bright spot so viewers in many seats can all see it clearly",
+       "The matte surface absorbs the projected light and re-emits it evenly, so viewers in many seats can all see the same picture clearly now",
+       "The matte surface refracts the projected light through the screen material, so viewers in many seats can all see the picture clearly"],
+      "A screen has to serve every seat, not one. Its matte finish reflects the projector's light diffusely, scattering rays toward viewers all across the room, so the same picture is visible from many angles. A polished, specular screen would throw the light in one direction, giving one bright seat and glare or darkness everywhere else.",
+      {});
+  },
+  function () {
+    return mcq("After rain, drivers are dazzled by glare bouncing off a wet road that caused no glare when it was dry. Which claim correctly explains the change?",
+      "Water smooths the surface, so reflection becomes more specular and beams bounce in one direction toward the drivers' eyes",
+      ["Water roughens the surface, so reflection becomes more diffuse and beams scatter in all directions toward the drivers' eyes",
+       "Water darkens the surface, so reflection stops altogether and beams are absorbed before they can reach the drivers' eyes",
+       "Water bends the beams by refraction at the surface, so the light curves upward from the wet road toward the drivers' eyes"],
+      "A film of water fills the road's rough texture and presents a much smoother surface to oncoming headlights. Reflection shifts from diffuse toward specular: instead of scattering, the beams bounce in one direction, into the eyes of drivers facing them, which is the glare. The dry road scattered the same light harmlessly in many directions.",
+      {});
+  },
+  function () {
+    return mcq("A student claims a dusty bathroom mirror gives a poorer image because the dust blocks all reflection from its surface. Which evaluation of the claim is correct?",
+      "The claim is wrong: dust makes reflection diffuse, scattering the rays, so the image is blurred rather than blocked altogether",
+      ["The claim is right: dust stops reflection entirely, scattering no rays at all, so the image is blocked rather than blurred at all",
+       "The claim is wrong: dust makes reflection specular, focusing the rays together, so the image is sharper rather than blocked at all",
+       "The claim is right: dust bends rays by refraction, scattering the light widely, so the image is blurred rather than blocked at all"],
+      "Dust does not switch reflection off. Each dusty patch reflects the light diffusely, scattering rays that a clean, smooth surface would have sent in one orderly direction. The image is still there but blurred and dimmed by the scattering, so the claim's conclusion is wrong even though the poorer image is real.",
+      {});
+  },
+  function () {
+    return mcq("A matte tent fabric lit by a lantern shows no image of the lantern, yet the whole tent is clearly lit and visible. Which claim about the fabric is correct?",
+      "Both effects fit diffuse reflection: the rough fabric scatters lantern light in many directions, lighting the tent but forming no image",
+      ["Both effects fit specular reflection: the smooth fabric sends lantern light in one direction, lighting the tent but forming no image",
+       "Both effects fit absorption of the light: the rough fabric soaks up lantern light in many directions, lighting the tent by itself alone",
+       "Both effects fit refraction of the light: the rough fabric bends lantern light in many directions, lighting the tent but forming none"],
+      "Diffuse reflection explains both halves of the observation at once. The rough fabric scatters the lantern's light in many directions, so light reaches the eye from every part of the tent and the tent looks lit; because the rays are scattered out of order, none of them preserve the arrangement that would form an image of the lantern.",
+      {});
+  }
+]), ["Test the claim against the two kinds of reflection: one direction, or scattered in many.", "A surface can reflect strongly and still form no image, if the reflection is diffuse."]);
+
+E("s8-u3-cr-reflection-everyday", 3, ["SC8.7.3"], 2, "var", varset([
+  function () {
+    return textq("Explain, using the law of reflection, how a dentist's small mirror lets the dentist see the back of a patient's tooth, a surface that faces away from the dentist. (2 marks)",
+      ["light from the back of the tooth strikes the mirror and reflects into the dentist's eyes", "the angle of reflection equals the angle of incidence at the mirror"],
+      "<b>Model answer:</b> Light from the back surface of the tooth travels to the small mirror held behind the tooth and strikes its surface. By the law of reflection, the light leaves the mirror at an angle of reflection equal to its angle of incidence, measured from the normal. The dentist angles the mirror so that this equal-angle path carries the light into her eyes, so she sees an image of a surface her eyes cannot face directly.<br><br><b>Marking points:</b> 1 mark for the law of reflection stated or applied (angle of reflection equal to angle of incidence at the mirror). 1 mark for the path explained (light from the hidden surface reflects off the mirror into the dentist's eyes, so the mirror's angle redirects the view).",
+      {});
+  },
+  function () {
+    return textq("A driver adjusts a flat rear-view mirror until the road behind the car fills the view. Explain, using the law of reflection, why the exact tilt of the mirror matters. (2 marks)",
+      ["rays from behind the car reflect off the mirror into the driver's eyes", "the angle of reflection equals the angle of incidence, so only one tilt sends the rays to the eyes"],
+      "<b>Model answer:</b> Light from the road and vehicles behind the car strikes the flat mirror and reflects from its surface. By the law of reflection, each ray leaves at an angle of reflection equal to its angle of incidence, so the reflected rays travel in one definite direction set by the mirror's tilt. Only when the mirror is tilted so that direction points at the driver's eyes does she see the road behind; a different tilt sends the reflected rays, and the view, toward the roof or the seats instead.<br><br><b>Marking points:</b> 1 mark for the law of reflection stated or applied (angle of reflection equal to angle of incidence). 1 mark for the consequence explained (the tilt sets the direction of the reflected rays, and only the correct tilt directs them from behind the car to the driver's eyes).",
+      {});
+  }
+]), ["Name the law, then follow one ray from the object to the eye.", "Equal angles at the mirror are what set the direction of the view."]);
+
+/* ---------- SC8.7.4 Refraction, qualitatively (test plan build) ---------- */
+
+E("s8-u3-refraction-examples", 3, ["SC8.7.4"], 1, "var", varset([
+  function () {
+    return mcq("Which of these observations is an example of refraction?",
+      "A pencil in a glass of water appears broken where it enters the water at the surface",
+      ["A face appears in a polished spoon as light bounces off the smooth metal of the spoon",
+       "A shadow appears on the wall behind a book as light is blocked by the book in its path",
+       "An image appears in a hallway mirror as light bounces off the flat glass of the mirror"],
+      "Refraction is light bending as it crosses a boundary between media, and the broken-looking pencil is its classic sign: light from the underwater part bends at the surface, so that part looks shifted. The spoon and the mirror are reflection, and the shadow is light being blocked, travelling straight until it is stopped.",
+      {});
+  },
+  function () {
+    return mcq("Which observation is caused by refraction rather than by reflection?",
+      "A swimming pool looks shallower than it really is when it is viewed from the pool deck",
+      ["A periscope lets a sailor see over a wall as light bounces off two mirrors in its tube",
+       "A car's mirror shows the road behind as light bounces off its smooth surface on the car",
+       "A shiny kettle shows a stretched face as light bounces off its curved metal outer wall"],
+      "The pool's false shallowness comes from light bending as it leaves the water for the air, which is refraction. The periscope, the car mirror and the kettle all work by light bouncing off a surface, which is reflection, whether the surface is flat or curved.",
+      {});
+  },
+  function () {
+    return mcq("Light bends as it passes from the air into the water of a fish tank, and a plant at the back of the tank looks shifted from its true place. This bending is called",
+      "Refraction, the bending of light at a boundary between two media",
+      ["Reflection, the bouncing of light at a boundary between two media",
+       "Dispersion, the splitting of light at a boundary between two media",
+       "Absorption, the stopping of light at a boundary between two media"],
+      "Bending at a boundary between two media is refraction. Reflection is a bounce at a surface, dispersion is white light splitting into its colours, and absorption is light being taken in and stopped by a material. The shifted plant is the bending effect at work.",
+      {});
+  },
+  function () {
+    return mcq("Which of these observations does NOT involve refraction?",
+      "Seeing your face in a flat bathroom mirror in the morning before school",
+      ["Seeing a straw look bent in a glass of lemonade at lunch in the cafeteria",
+       "Seeing a coin look raised in a bowl of water on a table in the science lab",
+       "Seeing the bottom of a lake look closer than it is on a calm summer morning"],
+      "The bathroom mirror works by reflection alone: light bounces off the flat glass and no bending at a boundary is involved. The straw, the coin and the lake bottom all look displaced because light from them refracts as it passes from water into air on its way to the eye.",
+      {});
+  },
+  function () {
+    return mcq("A beam from a ray box enters a glass block and changes direction where it meets the glass. Which process does the demonstration show, and why does it happen?",
+      "Refraction: the beam bends because its speed changes as it enters the glass block",
+      ["Reflection: the beam bends because its speed changes as it enters the glass block",
+       "Refraction: the beam bounces because its colour changes inside the glass block now",
+       "Reflection: the beam bounces because its colour changes inside the glass block now"],
+      "The beam passes into the new medium and bends there, which is refraction, and the cause is the change in the light's speed at the boundary: light travels more slowly in glass than in air. Reflection would bounce the beam back off the surface, and no colour change is involved in the bending.",
+      {});
+  }
+]), ["Refraction bends light between media; reflection bounces it off a surface.", "Look for the boundary crossing in each option."]);
+
+E("s8-u3-bend-predict", 3, ["SC8.7.4"], 2, "gen", function () {
+  var pairs = [
+    { a: "air", b: "water", dir: "toward the normal", keyBend: "Bends toward the normal", speed: "Slows down as it crosses", angle: "Smaller than the angle of incidence", reason: "Water is denser than air, so light slows down as it enters the water, and a ray that slows at a boundary bends toward the normal, making its angle in the water smaller than its angle in the air." },
+    { a: "water", b: "air", dir: "away from the normal", keyBend: "Bends away from the normal", speed: "Speeds up as it crosses", angle: "Larger than the angle of incidence", reason: "Air is less dense than water, so light speeds up as it leaves the water, and a ray that speeds up at a boundary bends away from the normal, making its angle in the air larger than its angle in the water." },
+    { a: "air", b: "glass", dir: "toward the normal", keyBend: "Bends toward the normal", speed: "Slows down as it crosses", angle: "Smaller than the angle of incidence", reason: "Glass is denser than air, so light slows down as it enters the glass, and a ray that slows at a boundary bends toward the normal, making its angle in the glass smaller than its angle in the air." },
+    { a: "glass", b: "air", dir: "away from the normal", keyBend: "Bends away from the normal", speed: "Speeds up as it crosses", angle: "Larger than the angle of incidence", reason: "Air is less dense than glass, so light speeds up as it leaves the glass, and a ray that speeds up at a boundary bends away from the normal, making its angle in the air larger than its angle in the glass." },
+    { a: "water", b: "glass", dir: "toward the normal", keyBend: "Bends toward the normal", speed: "Slows down as it crosses", angle: "Smaller than the angle of incidence", reason: "Glass is denser than water, so light slows down as it passes from water into glass, and a ray that slows at a boundary bends toward the normal, making its angle in the glass smaller than its angle in the water." },
+    { a: "glass", b: "water", dir: "away from the normal", keyBend: "Bends away from the normal", speed: "Speeds up as it crosses", angle: "Larger than the angle of incidence", reason: "Water is less dense than glass, so light speeds up as it passes from glass into water, and a ray that speeds up at a boundary bends away from the normal, making its angle in the water larger than its angle in the glass." },
+    { a: "air", b: "clear ice", dir: "toward the normal", keyBend: "Bends toward the normal", speed: "Slows down as it crosses", angle: "Smaller than the angle of incidence", reason: "Ice is denser than air, so light slows down as it enters the ice, and a ray that slows at a boundary bends toward the normal, making its angle in the ice smaller than its angle in the air." },
+    { a: "clear ice", b: "air", dir: "away from the normal", keyBend: "Bends away from the normal", speed: "Speeds up as it crosses", angle: "Larger than the angle of incidence", reason: "Air is less dense than ice, so light speeds up as it leaves the ice, and a ray that speeds up at a boundary bends away from the normal, making its angle in the air larger than its angle in the ice." }
+  ];
+  var ctx = pick(["A laser ray", "A ray from a flashlight", "A ray from a lamp"]);
+  var p = pick(pairs);
+  var ask = pick(["bend", "speed", "angle"]);
+  var prompt, key, dis;
+  if (ask === "bend") {
+    prompt = ctx + " travelling in " + p.a + " strikes the surface of " + p.b + " at an angle to the normal and crosses into it. Which way does the ray bend at the boundary?";
+    key = p.keyBend;
+    dis = [p.dir === "toward the normal" ? "Bends away from the normal" : "Bends toward the normal", "Continues on without bending", "Bounces back from the surface"];
+  } else if (ask === "speed") {
+    prompt = ctx + " travelling in " + p.a + " crosses the boundary into " + p.b + ". What happens to the speed of the light as it crosses?";
+    key = p.speed;
+    dis = [p.speed === "Slows down as it crosses" ? "Speeds up as it crosses" : "Slows down as it crosses", "Keeps the same speed throughout", "Reflects back as it crosses in"];
+  } else {
+    prompt = ctx + " travelling in " + p.a + " crosses the boundary into " + p.b + " at an angle to the normal. How does its angle of refraction compare with its angle of incidence?";
+    key = p.angle;
+    dis = [p.angle === "Smaller than the angle of incidence" ? "Larger than the angle of incidence" : "Smaller than the angle of incidence", "Equal to the angle of incidence here", "Ninety degrees from the normal line"];
+  }
+  return mcq(prompt, key, dis,
+    p.reason + " The rule is the same at every boundary: entering a denser medium, light slows and bends toward the normal; entering a less dense medium, it speeds up and bends away from the normal.",
+    {});
+}, ["Entering a denser medium: slows down, bends toward the normal. Entering a less dense medium: speeds up, bends away.", "Decide the density change first; the speed and the bending both follow from it."]);
+
+E("s8-u3-apparent-depth", 3, ["SC8.7.4"], 2, "var", varset([
+  function () {
+    return mcq("From the deck of a swimming pool, the floor at the deep end looks closer to the surface than it really is. Why does the floor appear raised?",
+      "Light from the floor bends away from the normal leaving the water, so the eye traces it back to a shallower apparent position",
+      ["Light from the floor bends toward the normal leaving the water, so the eye traces it back to a shallower apparent position",
+       "Light from the floor reflects off the surface back into the water, so the eye traces it back to a shallower apparent position",
+       "Light from the floor speeds up inside the water on its way up, so the eye traces it back to a deeper and truer apparent position"],
+      "Light from the pool floor crosses from water into air on its way to the eye. Leaving the denser medium it speeds up and bends away from the normal. The eye assumes light travelled straight and traces the rays back along straight lines, and those lines meet above the floor's real position, so the floor looks shallower than it is. This is apparent depth.",
+      {});
+  },
+  function () {
+    return mcq("A trout holding still in a clear stream appears to be nearer the surface than it really is. Which statement about the trout is correct?",
+      "The fish is actually deeper than it appears, because light from it bends as it leaves the water for the air",
+      ["The fish is actually shallower than it appears, because light from it bends as it leaves the water for the air",
+       "The fish is exactly where it appears to be, because light from it travels straight from the water to the air",
+       "The fish is actually deeper than it appears, because light from it reflects as it leaves the water for the air"],
+      "The trout is a real object seen through a boundary, so apparent depth applies. Light from the fish refracts as it leaves the water, bending away from the normal, and the eye traces it back to a position nearer the surface than the fish's true position. The fish is deeper than it looks, which is why predators and fishers who aim at the seen fish miss above it.",
+      {});
+  },
+  function () {
+    return mcq("A spear fisher aims carefully at the fish she sees in a pond, and her spear passes above the fish and misses. Where should she have aimed, and why?",
+      "Below the seen fish, because refraction makes the real fish lie deeper than the place where it appears to be",
+      ["Above the seen fish, because refraction makes the real fish lie shallower than the place where it appears to be",
+       "Right at the seen fish, because refraction makes the real fish lie exactly where it appears to be in the pond",
+       "Below the seen fish, because reflection makes the real fish lie deeper than the place where it appears to be"],
+      "Refraction at the surface raises the fish's apparent position: the fish she sees is an image placed shallower than the real fish by the bending of light leaving the water. Aiming below the seen fish compensates for that shift and puts the spear on the real fish's level. Aiming at the image is the natural error, and it misses high.",
+      {});
+  },
+  function () {
+    return mcq("A pebble on the bottom of a clear pond looks about a metre deep, but a measuring pole pushed straight down shows the water there is deeper than that. Why do the eye and the pole disagree?",
+      "Refraction at the surface shifts the pebble's apparent position upward, while the pole measures its real depth directly",
+      ["Reflection at the surface shifts the pebble's apparent position upward, while the pole measures its real depth directly",
+       "Refraction at the surface shifts the pebble's apparent position downward, while the pole measures its real depth directly",
+       "Refraction inside the pebble shifts the pebble's apparent position upward, while the pole measures its real depth directly"],
+      "The pole touches the real bottom, so it reports the true depth. The eye never touches anything: it judges the pebble's place from light that bent at the surface, away from the normal as it left the water, and the straight back-tracing puts the pebble higher than it is. Apparent depth is always less than real depth for an object under water viewed from the air.",
+      {});
+  },
+  function () {
+    return mcq("A wader steps carefully into a clear river and finds the bottom is lower under her foot than it looked from the bank. Which explanation fits what happened?",
+      "The bottom appeared raised because light from it bent away from the normal as it passed from the water into the air",
+      ["The bottom appeared raised because light from it bent toward the normal as it passed from the water into the air",
+       "The bottom appeared lowered because light from it bent away from the normal as it passed from the water into the air",
+       "The bottom appeared raised because light from it reflected off the surface as it passed from the water into the air"],
+      "From the bank, the wader judged the bottom by light that had left the water for the air. Speeding up at that boundary, the light bent away from the normal, and her eye placed the bottom along straight traces, higher than its real level. Her foot finds the real, lower bottom, which is exactly the apparent depth effect.",
+      {});
+  }
+]), ["Objects under water viewed from the air always appear shallower than they are.", "Leaving water, light bends away from the normal; the eye traces it back in straight lines."]);
+
+E("s8-u3-refraction-novel", 3, ["SC8.7.4"], 3, "var", varset([
+  function () {
+    return mcq("A beam of white light enters a glass prism and spreads into a spectrum on a screen, with the violet end bent through the largest angle. Which explanation is correct?",
+      "Each colour refracts by a slightly different amount in the glass, and violet bends the most of all the colours in the beam",
+      ["Each colour reflects by a slightly different amount in the glass, and violet bends the most of all the colours in the beam",
+       "Each colour travels at exactly the same speed in the glass, and violet bends the most of all the colours in the beam still",
+       "The glass adds the colours to plain white light at its surfaces, and violet is added most of all the colours in the beam"],
+      "The prism combines refraction with the fact that white light is a mixture. Each wavelength slows by a slightly different amount in the glass, so each refracts through a slightly different angle at the prism's faces, violet the most and red the least. The colours were in the light all along; the prism separates them by bending, it does not create or reflect them.",
+      {});
+  },
+  function () {
+    return mcq("On a hot day, the pavement far ahead on a straight road looks wet and shiny, as if it were reflecting the sky, though the road is completely dry. What produces this mirage?",
+      "Air just above the hot road is less dense, so light from the sky bends gradually and reaches the eye as if it had reflected",
+      ["Air just above the hot road is more dense, so light from the sky bends gradually and reaches the eye as if it had reflected",
+       "Water vapour over the hot road forms a thin real layer of water, and light from the sky reflects off that shining wet layer",
+       "Heat from the road makes light from the sky travel in curved waves, and the eye reads the waves as a pool of shining water"],
+      "A mirage is refraction through air of changing density. The air touching the hot road is heated and less dense, so skylight passing down through it speeds up layer by layer and bends gradually until it heads upward into the driver's eye. The brain reads that light as a reflection from a surface at road level, so the dry road looks like a pool of water reflecting the sky.",
+      {});
+  },
+  function () {
+    return mcq("A simple magnifier is one convex lens held close to a printed page, and the print looks larger through it. Which explanation is correct at the qualitative level?",
+      "The lens refracts light from the print, bending the rays so the eye traces them back to a larger apparent image of the print",
+      ["The lens reflects light from the print, bending the rays so the eye traces them back to a larger apparent image of the print",
+       "The lens absorbs light from the print, bending the rays so the eye traces them back to a larger apparent image of the print",
+       "The lens stops light from the print for a moment, bending the rays so the eye traces them back to a larger apparent image now"],
+      "A lens works by refraction at its curved surfaces. The convex lens bends rays from the print outward in a controlled way, and the eye, tracing those rays back in straight lines, places them as if they came from a larger image behind the lens. No reflection or absorption is doing the work; it is the bending at the two surfaces of the glass.",
+      {});
+  },
+  function () {
+    return mcq("A drinking glass full of water is set down on a printed page. Viewed from directly above, the letters under the base of the glass look raised and slightly larger. Why?",
+      "Light from the letters bends as it leaves the water and glass, so the eye places the letters higher than they really are",
+      ["Light from the letters reflects as it leaves the water and glass, so the eye places the letters higher than they really are",
+       "Light from the letters bends as it enters the letters themselves, so the eye places the letters higher than they really are",
+       "Light from the letters travels straight through water and glass, so the eye places the letters higher than they really are"],
+      "This is apparent depth in a new container. Light from the print crosses from water and glass into air on its way up to the eye, speeds up and bends away from the normal at the boundary, and the eye traces it back to a raised apparent position. The letters look lifted toward the viewer for the same reason a pool floor looks shallow.",
+      {});
+  },
+  function () {
+    return mcq("Stars very near the horizon are seen slightly higher in the sky than the direction their light was actually travelling when it reached the top of the atmosphere. Which explanation fits?",
+      "Light from a star bends as it enters Earth's atmosphere from space, so the star is seen along a straighter back-traced line",
+      ["Light from a star reflects as it enters Earth's atmosphere from space, so the star is seen along a straighter back-traced line",
+       "Light from a star crosses Earth's atmosphere without any bending at all, so the star is seen along a straighter back-traced line",
+       "Light from a star is given off inside Earth's atmosphere at the horizon, so the star is seen along a straighter back-traced line"],
+      "Starlight crosses from the vacuum of space into air, a denser medium, so it slows and refracts, bending gradually through the atmosphere's layers. The eye traces the arriving light back in a straight line, and that line points higher than the star's true direction, so every star near the horizon appears lifted, an atmospheric version of apparent depth.",
+      {});
+  }
+]), ["Carry the boundary rule into the new setting: which medium change, and which way does the light bend?", "The eye always traces arriving light back in straight lines."]);
+
+E("s8-u3-refraction-claim", 3, ["SC8.7.4"], 3, "var", varset([
+  function () {
+    return mcq("A student claims a straw in a glass of water looks bent because the pressure of the water bends the straw itself while it stands there. Which evaluation of the claim is correct?",
+      "The claim is wrong: the straw stays straight, and light from its underwater part refracts at the surface, shifting its apparent place",
+      ["The claim is right: the straw bends under the water pressure, and light from its underwater part travels straight to the eye as usual",
+       "The claim is wrong: the straw stays straight, and light from its underwater part reflects at the surface, shifting its apparent place",
+       "The claim is wrong: the straw softens and dissolves in water, and light from its underwater part disperses, shifting its apparent place"],
+      "The straw can be lifted out and shown to be straight, so the bending is in the light, not the straw. Light from the underwater part speeds up and refracts, bending away from the normal, as it leaves the water; the eye traces it back straight and misplaces that part of the straw. The claim fails because it explains an optical effect with a physical change that never happens.",
+      {});
+  },
+  function () {
+    return mcq("A swimmer claims the pool looks shallow because the water magnifies everything lying in it, the way a lens magnifies a page. Which evaluation of the claim is best?",
+      "The claim is wrong in its mechanism: rays from the bottom bend away from the normal leaving the water, so the bottom appears raised",
+      ["The claim is right in its mechanism: rays from the bottom are magnified by the water like a lens, so the bottom appears raised there",
+       "The claim is wrong in its mechanism: rays from the bottom bend toward the normal leaving the water, so the bottom appears raised up",
+       "The claim is wrong in its mechanism: rays from the bottom bounce off the surface back down again, so the bottom appears raised up"],
+      "The observation is real but the mechanism is not magnification. Nothing in the flat water surface acts as a lens. Rays from the bottom refract at the surface, bending away from the normal as they speed up into the air, and the eye's straight back-tracing places the bottom higher than it is: apparent depth, not magnification.",
+      {});
+  },
+  function () {
+    return mcq("A student claims we must see a fish at its true depth, because light travels in straight lines from the fish all the way to our eyes. Which evaluation of the claim is correct?",
+      "The claim fails at the surface: light from the fish changes speed and bends there, so the fish appears at a shallower depth than its true one",
+      ["The claim holds at the surface: light from the fish changes speed and bends there, so the fish appears at a shallower depth than its true one",
+       "The claim fails at the surface: light from the fish keeps its speed and bends there, so the fish appears at a deeper position than its true one",
+       "The claim holds all the way: light from the fish travels perfectly straight to the eyes, so the fish appears exactly at its own true depth now"],
+      "Light does travel straight within one medium, and that is the part of the claim that sounds right. But the fish's light crosses a boundary on its way to the eye, and at the water's surface it speeds up and bends away from the normal. Because the path is not straight all the way, the back-traced position is shallower than the true fish, and the claim fails exactly at the surface.",
+      {});
+  },
+  function () {
+    return mcq("A student claims a prism paints colours onto white light as the light passes through the glass, the way a filter adds colour. Which evaluation of the claim is correct?",
+      "The claim is wrong: white light already contains all the colours, and refraction in the prism separates them by bending each one differently",
+      ["The claim is right: white light gains its colours from the glass of the prism, and refraction in the prism spreads the added colours out evenly",
+       "The claim is wrong: white light already contains all the colours, and reflection in the prism separates them by bouncing each one differently",
+       "The claim is wrong: white light contains only one colour at a time, and refraction in the prism creates the rest by bending each one duly"],
+      "Nothing is added in the prism. White light is a combination of all the visible wavelengths before it arrives; in the glass, each wavelength refracts by a slightly different amount, so the mixture fans out into the spectrum. A filter works the opposite way, removing colours from the light, which is one more reason the painting claim has the mechanism backwards.",
+      {});
+  },
+  function () {
+    return mcq("A student claims eyeglasses work because their lenses reflect extra light into the eye, brightening the image until it looks sharp. Which evaluation of the claim is correct?",
+      "The claim is wrong: the lenses refract the light entering the eye, bending it so the eye can focus a sharp image on the retina at the back",
+      ["The claim is right: the lenses reflect the light entering the eye, bending it so the eye can focus a sharp image on the retina at the back",
+       "The claim is wrong: the lenses absorb the light entering the eye, bending it so the eye can focus a sharp image on the retina at the back",
+       "The claim is wrong: the lenses refract the light entering the eye, scattering it so the eye can focus a sharp image on the retina at back"],
+      "Glasses are lenses, and lenses work by refraction. Each lens bends the incoming light by the amount the eye's own lens gets wrong, so the combined bending focuses the image on the retina instead of in front of it or behind it. Brightness is not the problem being fixed, and reflection off the lens surface is a nuisance that coatings are added to reduce.",
+      {});
+  }
+]), ["Separate the observation, which may be real, from the mechanism claimed for it.", "The correct account names refraction and the right bending direction."]);
+
+E("s8-u3-cr-refraction-straw", 3, ["SC8.7.4"], 2, "var", varset([
+  function () {
+    return textq("A straight straw stands in a glass of water. Viewed from the side, the straw looks bent, almost broken, exactly where it crosses the surface of the water. Explain why the straw looks bent at the surface. (3 marks)",
+      ["light from the underwater part of the straw refracts as it passes from the water into the air", "leaving the water the light speeds up and bends away from the normal", "the eye traces the light back in straight lines, so the underwater part appears shifted from its true position"],
+      "<b>Model answer:</b> The straw itself is straight; the bending happens to the light, not to the straw. Light reflected from the part of the straw under the water travels up and crosses the surface into the air. At that boundary the light refracts: water is the denser medium, so as the light leaves it for the air it speeds up and bends away from the normal. The eye receives the bent rays but assumes light has travelled in straight lines, so it traces them straight back and places the underwater part of the straw off to one side of its true position. The part above the surface is seen by light that never crossed the boundary, so the two parts do not line up, and the straw looks bent or broken at the surface.<br><br><b>Marking points:</b> 1 mark for refraction identified (light from the underwater part bends as it crosses from water into air at the surface). 1 mark for the change at the boundary (the light speeds up leaving the denser water and bends away from the normal). 1 mark for the apparent shift explained (the eye traces the rays back in straight lines, so the underwater part appears displaced and the straw looks bent at the surface).",
+      {});
+  }
+]), ["The straw is straight. Follow the light from its underwater part to the eye.", "Away from the normal when leaving water, then straight-line tracing by the eye."]);
+
+E("s8-u3-cr-refraction-ray", 3, ["SC8.7.4"], 2, "var", varset([
+  function () {
+    return textq("A ray of light travelling in air strikes the surface of a pond at an angle and passes into the water. Describe what happens to the ray at the surface, including how its speed changes and how its direction changes relative to the normal. (2 marks)",
+      ["the light slows down as it enters the water, which is denser than air", "the ray refracts and bends toward the normal"],
+      "<b>Model answer:</b> At the surface the ray refracts as it passes from the air into the water. Water is denser than air, so the light slows down as it enters the water. That change of speed at the boundary swings the ray's direction: it bends toward the normal, so its angle in the water is smaller than its angle of incidence in the air.<br><br><b>Marking points:</b> 1 mark for the speed change (light slows down entering the denser water). 1 mark for the direction change (the ray bends toward the normal).",
+      {});
+  }
+]), ["Denser medium first: what does that do to the speed?", "Slowing down at a boundary bends a ray toward the normal."]);
+
 /* ----- bank-u4.js ----- */
 // CRMARKS: s8-u4-cr-needs-investigation=3
 // CRMARKS: s8-u4-cr-living=3
@@ -5641,10 +6155,158 @@ E("s8-u4-cr-systems-response", 4, ["SC8.10.6", "SC8.10.7"], 2, "var", varset([
   }
 ]), ["Give each named system its own sentence and its own job; do not merge them.", "For the failure mark, follow the chain: if that system stops responding, what do the other systems lose?"]);
 
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+/* ---------- SC8.10.5 and SC8.10.6 Cells and body systems (test plan build) ---------- */
+
+E("s8-u4-cell-needs", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return mcq("A baker mixes yeast with warm water and sugar, and the yeast cells multiply quickly in the dough. In plain warm water with no sugar, they barely grow at all. Which basic need does the sugar mainly supply?",
+      "Nutrients and energy: the sugar is food the yeast cells use to live, grow and divide in the dough",
+      ["Water for the cells: the sugar draws extra water into each yeast cell from the warm water around it",
+       "Oxygen for the cells: the sugar releases oxygen gas that the yeast cells take in as they sit in dough",
+       "Waste removal: the sugar carries wastes out of each yeast cell into the warm water around the dough"],
+      "Yeast cells are living cells, so they have the same basic needs as any cell: nutrients, water, gas exchange, waste removal and a source of energy. The warm water already supplies the water in both mixes; what the sugar adds is food, the nutrients and energy the cells use to grow and divide, which is why the sugared mix multiplies and the plain one stalls.",
+      {});
+  },
+  function () {
+    return mcq("After days of heavy rain, garden soil stays waterlogged, with water filling the spaces between the soil grains, and many root cells of a tomato plant die. Which basic need was cut off, and why?",
+      "Gas exchange: water filling the soil's air spaces stops oxygen from reaching the root cells at all",
+      ["Sunlight: water covering the soil stops all of the light from reaching the root cells below ground",
+       "Nutrients: water washing through the soil removes every nutrient before the root cells absorb any",
+       "Space to divide: water pressing on the soil stops the root cells from having room to grow at all"],
+      "Root cells are underground, so sunlight was never part of their supply. What waterlogging removes is the air in the soil: with the spaces between grains full of water instead of air, oxygen cannot reach the root cells, their gas exchange fails, and without oxygen the cells cannot release the energy they need to live.",
+      {});
+  },
+  function () {
+    return mcq("Single-celled paramecia in a jar of pond water thrive for days, then slow down and die even though food is still present in the water. Tests show the cells' own wastes have built up in the jar. Which basic need has failed?",
+      "Waste removal: the wastes the cells produce were not carried away, so they poisoned the cells' water",
+      ["Nutrient supply: the food the cells were given changed into a form the cells could no longer use at all",
+       "Gas exchange: the wastes the cells produced filled the jar and pushed every trace of oxygen out of it",
+       "Water supply: the wastes the cells produced soaked up all of the water in the jar until the cells dried"],
+      "A cell's needs include getting rid of what it produces. In the closed jar there is nowhere for the paramecia's wastes to go, so the wastes accumulate in the water around the cells until the water itself becomes harmful. Food, water and air are still present; it is the failed removal of wastes that ends the culture.",
+      {});
+  },
+  function () {
+    return mcq("Cheek cells scraped onto a microscope slide are alive in the drop of water placed on them, but they die quickly once the slide dries out, even though the slide sits in bright light and open air. Which need ran out first?",
+      "Water: the cells' life processes take place in water, and drying stops them from working properly",
+      ["Nutrients: the cells use up all of their stored food within minutes once they are spread on a slide",
+       "Oxygen: the cells cannot take in any oxygen at all once the thin film of water around them has dried",
+       "Waste removal: the cells' wastes cannot be carried away once they are spread thinly on a dry slide"],
+      "Cells are mostly water, and their life processes happen in that watery interior and depend on water moving substances in and out. On the drying slide the cells lose their water, and their processes stop. Light and air are still available, and the cells carry stored food for far longer than the few minutes the slide takes to dry.",
+      {});
+  },
+  function () {
+    return mcq("Mould spreads quickly across a slice of bread kept in a warm, damp cupboard, its cells digesting the bread as they grow. Which basic need does the bread itself supply to the mould's cells?",
+      "Nutrients and energy, from the food material in the bread that the mould's cells break down to live",
+      ["Water and moisture, from the food material in the bread that the mould's cells break down to live in",
+       "Oxygen and fresh air, from the food material in the bread that the mould's cells break down to live",
+       "Waste removal service, from the food material in the bread that the mould's cells break down to use"],
+      "The cupboard supplies the warmth and the dampness, but the bread is the mould's food source. The mould's cells digest the bread's material and use it as nutrients and as the energy source for growth, which is why the mould spreads across the bread and not across the dry shelf beside it. Every cell needs food taken in, in one form or another.",
+      {});
+  }
+]), ["Test each need against the story: what was added, removed, or left to build up?", "Cells need nutrients, water, gas exchange, waste removal and energy."]);
+
+E("s8-u4-system-factors", 4, ["SC8.10.6"], 2, "var", varset([
+  function () {
+    return mcq("After eight weeks of regular running training, a student's resting heart rate is noticeably lower than it was before the training began. What does this change show about the student's circulatory system?",
+      "It has become more efficient: the stronger heart pumps more blood with each beat, so it beats less often at rest",
+      ["It has become less efficient: the weaker heart pumps less blood with each beat, so it beats less often at rest now",
+       "It has become more efficient: the stronger heart pumps more blood with each beat, so it beats more often at rest",
+       "It is unchanged by the training: the heart pumps the same blood with each beat, so its resting rate cannot change"],
+      "Exercise is the guide's positive factor for the circulatory system. Training strengthens the heart muscle, so each beat moves more blood; at rest the body needs the same amount of blood delivered, so a stronger heart can deliver it with fewer beats. A lower resting heart rate after training is a sign of greater efficiency, not weakness.",
+      {});
+  },
+  function () {
+    return mcq("A student who is usually fit has a bad chest cold, with swollen airways full of mucus, and finds that climbing one flight of stairs leaves her unusually breathless. How has the illness affected her respiratory system?",
+      "The narrowed, mucus-filled airways let less air move, so gas exchange falls and less oxygen reaches her blood",
+      ["The narrowed, mucus-filled airways let more air move, so gas exchange rises and less oxygen reaches her blood",
+       "The cold has strengthened her breathing muscles for a few days, so her lungs move air faster than they should",
+       "The cold has removed her need for gas exchange for a few days, so her blood carries carbon dioxide instead now"],
+      "Illness is one of the factors that can reduce a system's function. Swollen, mucus-filled airways are narrower airways: less air moves with each breath and the exchange of oxygen and carbon dioxide in the lungs falls. Stair climbing raises the body's oxygen demand at exactly the moment the respiratory system can supply less, which is why she is breathless.",
+      {});
+  },
+  function () {
+    return mcq("A gallstone blocks the tube that carries bile from the liver to the small intestine, and the person's digestion of fatty foods becomes poor. Which body system is affected, and how?",
+      "The digestive system: without bile reaching the intestine, fats are broken down less effectively there",
+      ["The respiratory system: without bile reaching the intestine, fats are broken down less effectively there",
+       "The digestive system: without bile reaching the intestine, fats are absorbed whole into the blood there",
+       "The excretory system: without bile reaching the intestine, fats are filtered from the blood less quickly"],
+      "A blockage is a mechanical factor acting on one system. Bile is a digestive fluid, made to help break down fats in the small intestine; if the tube carrying it is blocked, the digestive system cannot do that part of its job and fatty foods are digested poorly. The respiratory and excretory systems are not part of this pathway.",
+      {});
+  },
+  function () {
+    return mcq("On a very hot day, an athlete's heart beats faster than usual even between efforts, and the blood vessels in her skin widen while she sweats. What is her circulatory system doing in response to the temperature?",
+      "It is carrying more blood to the skin so heat can escape, helping to keep her body temperature steady",
+      ["It is carrying less blood to the skin so heat stays trapped, helping to keep her body temperature steady",
+       "It is carrying more blood to the muscles of the gut so food can digest, helping to keep her temperature up",
+       "It is carrying wastes out to the skin so they can be stored there, helping to keep her temperature steady"],
+      "Temperature is a factor the body systems must answer. Widened skin vessels bring more warm blood to the surface, where its heat can escape, and the faster heartbeat keeps that extra circulation moving. The response protects the body's steady internal temperature; carrying less blood to the skin would trap heat and make the problem worse.",
+      {});
+  },
+  function () {
+    return mcq("Before a big race, a student's heart pounds and her breathing quickens while she is still standing at the start line, before any running begins. Which factor is affecting her body systems, and how?",
+      "Stress: signals from the nervous system speed up the heart and the breathing to prepare the body for action",
+      ["Illness: signals from the nervous system speed up the heart and the breathing to prepare the body for action",
+       "Blockage: signals from the nervous system speed up the heart and the breathing to prepare the body for action",
+       "Exercise: signals from the nervous system slow down the heart and the breathing to prepare the body for rest"],
+      "The change happens before any exercise starts, so exercise cannot be its cause, and nothing is ill or blocked. Stress is the factor: the nervous system, anticipating the effort, signals the heart to beat faster and the breathing to quicken, preparing the circulatory and respiratory systems to deliver oxygen the moment the race begins.",
+      {});
+  }
+]), ["Name the factor, name the system, then say whether its function rises or falls.", "Exercise, illness, blockage, temperature and stress are the factor types in these cases."]);
+
+E("s8-u4-system-factors-apply", 4, ["SC8.10.6"], 3, "var", varset([
+  function () {
+    return mcq("After surgery, a person's small intestine is much shorter than normal, so far fewer nutrients are absorbed from the food passing through it. What is the most likely effect on the whole body over the months that follow?",
+      "Cells throughout the body receive fewer nutrients and less energy, so growth, repair and activity all suffer",
+      ["Cells throughout the body receive the same nutrients as before, because the stomach absorbs most nutrients itself",
+       "Only the digestive system is affected, because the nutrients absorbed there are used only by the intestine's cells",
+       "Cells throughout the body receive more nutrients and more energy, because the shorter intestine works much faster"],
+      "Body systems serve the whole body, so a reduced system starves more than itself. The digestive system's absorbed nutrients are loaded into the blood for every cell; absorb far fewer of them and cells everywhere get less material and less energy, so the whole body loses ground on growth, repair and activity, not just the intestine.",
+      {});
+  },
+  function () {
+    return mcq("A weakened heart pumps much less blood with each beat than a healthy heart does. Which whole-body effect is the most likely result for this person?",
+      "Muscles and organs receive oxygen and nutrients more slowly, so the person tires quickly and organs work less well",
+      ["Muscles and organs receive oxygen and nutrients more quickly, so the person tires quickly and organs work less well",
+       "Only the chest itself is affected, because the blood the heart pumps is used only by the heart and the lungs beside it",
+       "Muscles and organs receive oxygen and nutrients more slowly, so the person gains energy and organs work much better"],
+      "The circulatory system is the body's delivery network, so when its pump weakens, every destination is under-supplied. Oxygen and nutrients arrive slowly at muscles and organs throughout the body, energy release there falls behind demand, and the person tires quickly with organs working below their normal level. The effect cannot stay inside the chest.",
+      {});
+  },
+  function () {
+    return mcq("Scar tissue inside a person's lungs reduces the surface area available for gas exchange there. Which chain of effects on the whole body is the most likely?",
+      "Less oxygen enters the blood, so cells release less energy, so muscles fatigue sooner and thinking becomes harder",
+      ["Less oxygen enters the blood, so cells release more energy, so muscles fatigue sooner and thinking becomes harder",
+       "More oxygen enters the blood, so cells release less energy, so muscles fatigue sooner and thinking becomes harder",
+       "Oxygen entry stays unchanged, because the blood makes its own oxygen in the lungs, so no whole-body effect follows"],
+      "Follow the chain out of the lungs. A smaller exchange surface loads less oxygen into the blood; blood delivers that smaller supply to every cell; cells release energy more slowly with less oxygen to work with. Muscles, which spend energy quickly, fatigue sooner, and the brain, a heavy oxygen user, works less clearly. One system's reduced function becomes a whole-body effect.",
+      {});
+  },
+  function () {
+    return mcq("A person's kidneys gradually stop filtering the blood properly, removing far less waste than healthy kidneys do. What is the most likely effect on the rest of the body?",
+      "Wastes build up in the blood and are carried to every tissue, poisoning cells throughout the whole body over time",
+      ["Wastes build up only inside the kidneys themselves, and the blood carried to the other tissues stays clean and safe",
+       "Wastes are removed even faster by the blood itself, and are carried to every tissue, strengthening cells throughout it",
+       "Wastes build up in the blood and are carried to every tissue, feeding cells throughout the whole body over time now"],
+      "The excretory system's failure cannot stay local, because its workplace is the blood, and the blood goes everywhere. Wastes the kidneys leave behind stay in circulation and are delivered to tissues throughout the body, where they interfere with cells' work. This is why kidney failure is a whole-body emergency and why dialysis, which does the filtering, sustains the whole person.",
+      {});
+  },
+  function () {
+    return mcq("A spinal cord injury prevents signals from a person's brain from reaching the muscles of the legs, though the leg muscles and bones are uninjured. Which whole-body effects are the most likely?",
+      "The leg muscles cannot be told to contract, so walking is lost, even though the muscles and bones themselves are unhurt",
+      ["The leg muscles cannot be told to contract, so walking is lost, because the muscles and the bones themselves are destroyed",
+       "The leg muscles contract on their own without any signals, so walking improves, even though the spinal cord is badly hurt",
+       "Only feeling in the skin of the legs is lost, because signals from the brain are used only for sensing, never for movement"],
+      "The nervous system coordinates the others, so its failure disables systems that are themselves healthy. The leg muscles can still contract and the bones can still bear weight, but the signals ordering contraction travel through the injured cord and never arrive. Movement is lost through a communication failure, which shows that a system's function depends on the systems connected to it.",
+      {});
+  }
+]), ["Follow the chain past the named system: what do the other systems and cells then receive, or fail to receive?", "A reduced system under-supplies the whole body, not just itself."]);
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"s8-u1-abiotic":3,"s8-u1-aquaculture":3,"s8-u1-basin-process":4,"s8-u1-cr-abiotic":3,"s8-u1-cr-coastal-climate":3,"s8-u1-cr-cycle-role":3,"s8-u1-cr-decision":4,"s8-u1-cr-design-salinity":4,"s8-u1-cr-distribution-shift":3,"s8-u1-cr-glacier":3,"s8-u1-cr-headland":3,"s8-u1-cr-indirect":3,"s8-u1-cr-pond-data":3,"s8-u1-cr-population":3,"s8-u1-cr-protect":3,"s8-u1-cr-range-shift":4,"s8-u1-cr-results-summary":3,"s8-u1-cr-tech-effects":3,"s8-u1-cr-tides":3,"s8-u1-cr-watershed":4,"s8-u1-currents":2,"s8-u1-cycle-process":2,"s8-u1-cycle-sequence":2,"s8-u1-distribution":2,"s8-u1-distribution-abiotic":3,"s8-u1-erosion-deposition":2,"s8-u1-estuary":2,"s8-u1-fog":3,"s8-u1-fresh-env":2,"s8-u1-fresh-sources":2,"s8-u1-glaciation-role":3,"s8-u1-glacier-formation":2,"s8-u1-glacier-retreat":3,"s8-u1-headland-energy":3,"s8-u1-health-figure":3,"s8-u1-heat-storage":3,"s8-u1-ice-age":2,"s8-u1-iceberg":4,"s8-u1-institutions":2,"s8-u1-invasive":3,"s8-u1-lab-extension":3,"s8-u1-lab-procedure":2,"s8-u1-landform-figure":2,"s8-u1-landform-formation":3,"s8-u1-method-choice":3,"s8-u1-nino-nina":3,"s8-u1-pop-extrapolate":3,"s8-u1-pop-interpolate":3,"s8-u1-productivity":4,"s8-u1-profile-figure":2,"s8-u1-profile-order":2,"s8-u1-protection":2,"s8-u1-protection-choice":4,"s8-u1-rock-resistance":2,"s8-u1-safe-practice":2,"s8-u1-sonar":2,"s8-u1-species-category":2,"s8-u1-sustain-aspects":2,"s8-u1-tech":2,"s8-u1-tech-change":3,"s8-u1-tech-improve":2,"s8-u1-tech-strength":3,"s8-u1-temp-oxygen":4,"s8-u1-tidal-range":3,"s8-u1-tides":2,"s8-u1-tool-choice":2,"s8-u1-upwelling":2,"s8-u1-wave-energy":2,"s8-u1-wave-size":4,"s8-u1-zones":2,"s8-u2-archimedes":3,"s8-u2-average-density":4,"s8-u2-buoyancy-rule":2,"s8-u2-calc-area":4,"s8-u2-calc-density":3,"s8-u2-calc-force":3,"s8-u2-calc-mass":3,"s8-u2-calc-pressure":3,"s8-u2-calc-volume":3,"s8-u2-cleaning":3,"s8-u2-compressible":2,"s8-u2-concentration":4,"s8-u2-cr-balloon":2,"s8-u2-cr-car-lift":3,"s8-u2-cr-cleaning-claim":4,"s8-u2-cr-data-infer":3,"s8-u2-cr-density-block":3,"s8-u2-cr-design-viscosity":4,"s8-u2-cr-displacement-calc":3,"s8-u2-cr-layers":3,"s8-u2-cr-mass-weight":3,"s8-u2-cr-molasses":3,"s8-u2-cr-piggyback":3,"s8-u2-cr-pressure-crate":3,"s8-u2-cr-raise-ship":3,"s8-u2-cr-temp-situations":3,"s8-u2-cr-underlying":3,"s8-u2-cr-viscosity-design":4,"s8-u2-cr-viscosity-test":3,"s8-u2-define-problem":3,"s8-u2-definitions":2,"s8-u2-density-everyday":3,"s8-u2-density-life":2,"s8-u2-depth-pressure":3,"s8-u2-disciplines":2,"s8-u2-discrepancy-density":4,"s8-u2-displacement":2,"s8-u2-displacement-calc":3,"s8-u2-factors":2,"s8-u2-flow-lab":2,"s8-u2-flow-ranking":2,"s8-u2-force-figure":3,"s8-u2-forces":2,"s8-u2-gas-laws":2,"s8-u2-graph-choice":2,"s8-u2-heating-honey":3,"s8-u2-hot-air":2,"s8-u2-hydraulic-pneumatic":3,"s8-u2-identify-substance":4,"s8-u2-instruments":2,"s8-u2-mass-weight":2,"s8-u2-moon-suitcase":4,"s8-u2-pascal":2,"s8-u2-personal":2,"s8-u2-products":2,"s8-u2-question-problem":3,"s8-u2-ratio-constant":3,"s8-u2-rephrase":2,"s8-u2-seasoning":3,"s8-u2-sk-calc-density":3,"s8-u2-sk-calc-mass":3,"s8-u2-sk-calc-volume":3,"s8-u2-snowshoes":2,"s8-u2-submarine":3,"s8-u2-underlying":2,"s8-u2-units":2,"s8-u2-variables":4,"s8-u2-viscosity-compare":3,"s8-u2-viscosity-def":2,"s8-u2-viscosity-factor-judge":3,"s8-u2-viscosity-use":2,"s8-u3-angle-calc":3,"s8-u3-bend-figure":3,"s8-u3-bend-straight":3,"s8-u3-bend-two-boundary":4,"s8-u3-coin-question":2,"s8-u3-colour-seen":3,"s8-u3-concave-rays":3,"s8-u3-concave-spot":3,"s8-u3-conduct":3,"s8-u3-convex-spot":2,"s8-u3-corning-siemens":3,"s8-u3-cr-conclusion":3,"s8-u3-cr-design-refraction":4,"s8-u3-cr-diffuse":3,"s8-u3-cr-em":3,"s8-u3-cr-em-uses":4,"s8-u3-cr-estimate":3,"s8-u3-cr-fibre":4,"s8-u3-cr-identify-medium":3,"s8-u3-cr-mirror-image":4,"s8-u3-cr-mirror-lab":3,"s8-u3-cr-predict":3,"s8-u3-cr-properties":3,"s8-u3-cr-reflection":3,"s8-u3-cr-refraction":3,"s8-u3-cr-refraction-bowl":4,"s8-u3-cr-refraction-explain":3,"s8-u3-cr-research":3,"s8-u3-cr-speed":3,"s8-u3-cr-words":3,"s8-u3-definitions":2,"s8-u3-definitions-figure":4,"s8-u3-delimit":3,"s8-u3-delimit-problem":2,"s8-u3-early-tech":2,"s8-u3-em-compare":4,"s8-u3-em-detection":3,"s8-u3-em-devices":2,"s8-u3-em-energy":2,"s8-u3-em-order":2,"s8-u3-em-uses":2,"s8-u3-estimate-bend":3,"s8-u3-estimate-compare":4,"s8-u3-evidence":3,"s8-u3-fish-question":3,"s8-u3-freq-relation":3,"s8-u3-freq-wave":2,"s8-u3-harm-energy":2,"s8-u3-history":2,"s8-u3-hypothesis":3,"s8-u3-individual-group":2,"s8-u3-lateral":4,"s8-u3-law":2,"s8-u3-method-steps":2,"s8-u3-mirror-types":2,"s8-u3-personal-optics":2,"s8-u3-plane-spot":3,"s8-u3-predict-media":3,"s8-u3-prediction":2,"s8-u3-properties":2,"s8-u3-protractor":2,"s8-u3-real-virtual":2,"s8-u3-refraction-def":2,"s8-u3-safety":2,"s8-u3-spectrum-order":2,"s8-u3-vacuum":2,"s8-u3-variables":4,"s8-u3-vision":3,"s8-u4-analogy":2,"s8-u4-care":2,"s8-u4-care-error":3,"s8-u4-careers":2,"s8-u4-careers-match":2,"s8-u4-cell-figure":2,"s8-u4-community-need":3,"s8-u4-control":3,"s8-u4-control-error":4,"s8-u4-cr-artificial":4,"s8-u4-cr-cell-compare":2,"s8-u4-cr-cell-division":3,"s8-u4-cr-community":3,"s8-u4-cr-decision":3,"s8-u4-cr-decision-personal":3,"s8-u4-cr-design-rates":4,"s8-u4-cr-factors":3,"s8-u4-cr-interdependence":3,"s8-u4-cr-levels":3,"s8-u4-cr-levels-apply":4,"s8-u4-cr-living":3,"s8-u4-cr-microscope":3,"s8-u4-cr-model-eval":3,"s8-u4-cr-needs-investigation":3,"s8-u4-cr-organelles":3,"s8-u4-cr-propose":3,"s8-u4-cr-systems-response":4,"s8-u4-decision-sr":3,"s8-u4-differences":2,"s8-u4-division-count":3,"s8-u4-dynamic":4,"s8-u4-early-modern":3,"s8-u4-estimate-compare":2,"s8-u4-estimate-gen":3,"s8-u4-estimate-scenario":3,"s8-u4-example-level":2,"s8-u4-factor-effect":3,"s8-u4-factor-positive":2,"s8-u4-focus-sequence":2,"s8-u4-graph-choice":3,"s8-u4-growth-example":3,"s8-u4-hypothesis":3,"s8-u4-hypothesis-basis":2,"s8-u4-identical":2,"s8-u4-interdependence-why":4,"s8-u4-levels-identify":2,"s8-u4-living-chars":2,"s8-u4-micro-development":2,"s8-u4-micro-parts":2,"s8-u4-model-accuracy":3,"s8-u4-needs":2,"s8-u4-needs-applied":3,"s8-u4-needs-apply":3,"s8-u4-needs-system":4,"s8-u4-order":2,"s8-u4-organelle-figure":3,"s8-u4-organelle-function":2,"s8-u4-organelle-match":2,"s8-u4-organelle-plant":2,"s8-u4-organelle-term":3,"s8-u4-organize":2,"s8-u4-organize-avg":3,"s8-u4-pair-circ-resp":2,"s8-u4-pair-dig-circ":2,"s8-u4-pair-nerv-musc":3,"s8-u4-parts-action":2,"s8-u4-personal-decision":3,"s8-u4-protocol":2,"s8-u4-rates-figure":2,"s8-u4-recovery-figure":4,"s8-u4-regular-shape":2,"s8-u4-sedentary":4,"s8-u4-tech-examples":2,"s8-u4-tech-match":2,"s8-u4-vacuole-compare":3,"s8-u4-variables":3};
+window.__BANK_CRMARKS={"s8-u1-abiotic":3,"s8-u1-aquaculture":3,"s8-u1-basin-process":4,"s8-u1-cr-abiotic":3,"s8-u1-cr-coastal-climate":3,"s8-u1-cr-cycle-role":3,"s8-u1-cr-decision":4,"s8-u1-cr-design-salinity":4,"s8-u1-cr-distribution-shift":3,"s8-u1-cr-glacier":3,"s8-u1-cr-headland":3,"s8-u1-cr-indirect":3,"s8-u1-cr-pond-data":3,"s8-u1-cr-population":3,"s8-u1-cr-protect":3,"s8-u1-cr-range-shift":4,"s8-u1-cr-results-summary":3,"s8-u1-cr-spheres-interact":2,"s8-u1-cr-tech-effects":3,"s8-u1-cr-tides":3,"s8-u1-cr-watershed":4,"s8-u1-currents":2,"s8-u1-cycle-process":2,"s8-u1-cycle-sequence":2,"s8-u1-distribution":2,"s8-u1-distribution-abiotic":3,"s8-u1-erosion-deposition":2,"s8-u1-estuary":2,"s8-u1-fog":3,"s8-u1-fresh-env":2,"s8-u1-fresh-sources":2,"s8-u1-glaciation-role":3,"s8-u1-glacier-formation":2,"s8-u1-glacier-retreat":3,"s8-u1-headland-energy":3,"s8-u1-health-figure":3,"s8-u1-heat-storage":3,"s8-u1-ice-age":2,"s8-u1-iceberg":4,"s8-u1-institutions":2,"s8-u1-invasive":3,"s8-u1-lab-extension":3,"s8-u1-lab-procedure":2,"s8-u1-landform-figure":2,"s8-u1-landform-formation":3,"s8-u1-method-choice":3,"s8-u1-nino-nina":3,"s8-u1-pop-extrapolate":3,"s8-u1-pop-interpolate":3,"s8-u1-productivity":4,"s8-u1-profile-figure":2,"s8-u1-profile-order":2,"s8-u1-protection":2,"s8-u1-protection-choice":4,"s8-u1-rock-resistance":2,"s8-u1-safe-practice":2,"s8-u1-sonar":2,"s8-u1-species-category":2,"s8-u1-sustain-aspects":2,"s8-u1-tech":2,"s8-u1-tech-change":3,"s8-u1-tech-improve":2,"s8-u1-tech-strength":3,"s8-u1-temp-oxygen":4,"s8-u1-tidal-range":3,"s8-u1-tides":2,"s8-u1-tool-choice":2,"s8-u1-upwelling":2,"s8-u1-wave-energy":2,"s8-u1-wave-size":4,"s8-u1-zones":2,"s8-u2-archimedes":3,"s8-u2-average-density":4,"s8-u2-buoyancy-rule":2,"s8-u2-calc-area":4,"s8-u2-calc-density":3,"s8-u2-calc-force":3,"s8-u2-calc-mass":3,"s8-u2-calc-pressure":3,"s8-u2-calc-volume":3,"s8-u2-cleaning":3,"s8-u2-compressible":2,"s8-u2-concentration":4,"s8-u2-cr-balloon":2,"s8-u2-cr-car-lift":3,"s8-u2-cr-cleaning-claim":4,"s8-u2-cr-data-infer":3,"s8-u2-cr-density-block":3,"s8-u2-cr-design-viscosity":4,"s8-u2-cr-displacement-calc":3,"s8-u2-cr-layers":3,"s8-u2-cr-mass-weight":3,"s8-u2-cr-molasses":3,"s8-u2-cr-piggyback":3,"s8-u2-cr-pressure-crate":3,"s8-u2-cr-raise-ship":3,"s8-u2-cr-temp-situations":3,"s8-u2-cr-underlying":3,"s8-u2-cr-viscosity-design":4,"s8-u2-cr-viscosity-test":3,"s8-u2-define-problem":3,"s8-u2-definitions":2,"s8-u2-density-everyday":3,"s8-u2-density-life":2,"s8-u2-depth-pressure":3,"s8-u2-disciplines":2,"s8-u2-discrepancy-density":4,"s8-u2-displacement":2,"s8-u2-displacement-calc":3,"s8-u2-factors":2,"s8-u2-flow-lab":2,"s8-u2-flow-ranking":2,"s8-u2-force-figure":3,"s8-u2-forces":2,"s8-u2-gas-laws":2,"s8-u2-graph-choice":2,"s8-u2-heating-honey":3,"s8-u2-hot-air":2,"s8-u2-hydraulic-pneumatic":3,"s8-u2-identify-substance":4,"s8-u2-instruments":2,"s8-u2-mass-weight":2,"s8-u2-moon-suitcase":4,"s8-u2-pascal":2,"s8-u2-personal":2,"s8-u2-products":2,"s8-u2-question-problem":3,"s8-u2-ratio-constant":3,"s8-u2-rephrase":2,"s8-u2-seasoning":3,"s8-u2-sk-calc-density":3,"s8-u2-sk-calc-mass":3,"s8-u2-sk-calc-volume":3,"s8-u2-snowshoes":2,"s8-u2-submarine":3,"s8-u2-underlying":2,"s8-u2-units":2,"s8-u2-variables":4,"s8-u2-viscosity-compare":3,"s8-u2-viscosity-def":2,"s8-u2-viscosity-factor-judge":3,"s8-u2-viscosity-use":2,"s8-u3-angle-calc":3,"s8-u3-bend-figure":3,"s8-u3-bend-straight":3,"s8-u3-bend-two-boundary":4,"s8-u3-coin-question":2,"s8-u3-colour-seen":3,"s8-u3-concave-rays":3,"s8-u3-concave-spot":3,"s8-u3-conduct":3,"s8-u3-convex-spot":2,"s8-u3-corning-siemens":3,"s8-u3-cr-conclusion":3,"s8-u3-cr-design-refraction":4,"s8-u3-cr-diffuse":3,"s8-u3-cr-em":3,"s8-u3-cr-em-uses":4,"s8-u3-cr-estimate":3,"s8-u3-cr-fibre":4,"s8-u3-cr-identify-medium":3,"s8-u3-cr-mirror-image":4,"s8-u3-cr-mirror-lab":3,"s8-u3-cr-predict":3,"s8-u3-cr-properties":3,"s8-u3-cr-reflection":3,"s8-u3-cr-reflection-everyday":2,"s8-u3-cr-refraction":3,"s8-u3-cr-refraction-bowl":4,"s8-u3-cr-refraction-explain":3,"s8-u3-cr-refraction-ray":2,"s8-u3-cr-refraction-straw":3,"s8-u3-cr-research":3,"s8-u3-cr-speed":3,"s8-u3-cr-words":3,"s8-u3-definitions":2,"s8-u3-definitions-figure":4,"s8-u3-delimit":3,"s8-u3-delimit-problem":2,"s8-u3-early-tech":2,"s8-u3-em-compare":4,"s8-u3-em-detection":3,"s8-u3-em-devices":2,"s8-u3-em-energy":2,"s8-u3-em-order":2,"s8-u3-em-uses":2,"s8-u3-estimate-bend":3,"s8-u3-estimate-compare":4,"s8-u3-evidence":3,"s8-u3-fish-question":3,"s8-u3-freq-relation":3,"s8-u3-freq-wave":2,"s8-u3-harm-energy":2,"s8-u3-history":2,"s8-u3-hypothesis":3,"s8-u3-individual-group":2,"s8-u3-lateral":4,"s8-u3-law":2,"s8-u3-method-steps":2,"s8-u3-mirror-types":2,"s8-u3-personal-optics":2,"s8-u3-plane-spot":3,"s8-u3-predict-media":3,"s8-u3-prediction":2,"s8-u3-properties":2,"s8-u3-protractor":2,"s8-u3-real-virtual":2,"s8-u3-refraction-def":2,"s8-u3-safety":2,"s8-u3-spectrum-order":2,"s8-u3-vacuum":2,"s8-u3-variables":4,"s8-u3-vision":3,"s8-u4-analogy":2,"s8-u4-care":2,"s8-u4-care-error":3,"s8-u4-careers":2,"s8-u4-careers-match":2,"s8-u4-cell-figure":2,"s8-u4-community-need":3,"s8-u4-control":3,"s8-u4-control-error":4,"s8-u4-cr-artificial":4,"s8-u4-cr-cell-compare":2,"s8-u4-cr-cell-division":3,"s8-u4-cr-community":3,"s8-u4-cr-decision":3,"s8-u4-cr-decision-personal":3,"s8-u4-cr-design-rates":4,"s8-u4-cr-factors":3,"s8-u4-cr-interdependence":3,"s8-u4-cr-levels":3,"s8-u4-cr-levels-apply":4,"s8-u4-cr-living":3,"s8-u4-cr-microscope":3,"s8-u4-cr-model-eval":3,"s8-u4-cr-needs-investigation":3,"s8-u4-cr-organelles":3,"s8-u4-cr-propose":3,"s8-u4-cr-systems-response":4,"s8-u4-decision-sr":3,"s8-u4-differences":2,"s8-u4-division-count":3,"s8-u4-dynamic":4,"s8-u4-early-modern":3,"s8-u4-estimate-compare":2,"s8-u4-estimate-gen":3,"s8-u4-estimate-scenario":3,"s8-u4-example-level":2,"s8-u4-factor-effect":3,"s8-u4-factor-positive":2,"s8-u4-focus-sequence":2,"s8-u4-graph-choice":3,"s8-u4-growth-example":3,"s8-u4-hypothesis":3,"s8-u4-hypothesis-basis":2,"s8-u4-identical":2,"s8-u4-interdependence-why":4,"s8-u4-levels-identify":2,"s8-u4-living-chars":2,"s8-u4-micro-development":2,"s8-u4-micro-parts":2,"s8-u4-model-accuracy":3,"s8-u4-needs":2,"s8-u4-needs-applied":3,"s8-u4-needs-apply":3,"s8-u4-needs-system":4,"s8-u4-order":2,"s8-u4-organelle-figure":3,"s8-u4-organelle-function":2,"s8-u4-organelle-match":2,"s8-u4-organelle-plant":2,"s8-u4-organelle-term":3,"s8-u4-organize":2,"s8-u4-organize-avg":3,"s8-u4-pair-circ-resp":2,"s8-u4-pair-dig-circ":2,"s8-u4-pair-nerv-musc":3,"s8-u4-parts-action":2,"s8-u4-personal-decision":3,"s8-u4-protocol":2,"s8-u4-rates-figure":2,"s8-u4-recovery-figure":4,"s8-u4-regular-shape":2,"s8-u4-sedentary":4,"s8-u4-tech-examples":2,"s8-u4-tech-match":2,"s8-u4-vacuole-compare":3,"s8-u4-variables":3};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose

@@ -3285,6 +3285,9 @@ E("s8f-u2-cr-ballon", 2, ["SC8.4.5"], 2, "var", varset([
 // CRMARKS: s8f-u3-cr-em-usages=4
 // CRMARKS: s8f-u3-cr-image-miroir=4
 // CRMARKS: s8f-u3-cr-refraction-bol=4
+// CRMARKS: s8f-u3-cr-reflexion-quotidien=2
+// CRMARKS: s8f-u3-cr-refraction-paille=3
+// CRMARKS: s8f-u3-cr-refraction-lumiere=3
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
 // CRMARKS: s8f-u3-properties=2
 // CRMARKS: s8f-u3-materials=2
@@ -4607,6 +4610,387 @@ E("s8f-u3-cr-refraction-bol", 3, ["SC8.7.4"], 2, "var", varset([
   }
 ]), ["Suis un seul rayon, du fond jusqu'à l'œil, et marque ce qu'il fait à la surface.", "En sortant de l'eau, la lumière accélère : retiens le sens de la courbure qui va avec."]);
 
+/* ---------- Ajout du 21 novembre 2026 : plan de tests (decisions 9, 10, 11) ---------- */
+
+/* ---------- SC8.7.3 Réflexion : termes, mesures et usages ---------- */
+
+E("s8f-u3-reflexion-termes", 3, ["SC8.7.3"], 1, "var", varset([
+  function () {
+    return mcq("Dans un diagramme de réflexion, qu'est-ce que la normale?",
+      "La ligne perpendiculaire à la surface du miroir, tracée au point précis où le rayon la frappe",
+      ["La ligne parallèle à la surface du miroir, tracée au point précis où le rayon la frappe",
+       "Le rayon de lumière qui repart de la surface du miroir après y avoir rebondi en un point",
+       "Le rayon de lumière qui arrive sur la surface du miroir avant d'y rebondir en un point"],
+      "La normale est une ligne de référence imaginaire : elle se dresse perpendiculairement à la surface, exactement au point où le rayon la frappe. C'est à partir d'elle, et non à partir de la surface, que les angles d'incidence et de réflexion se mesurent.",
+      {});
+  },
+  function () {
+    return mcq("Dans un diagramme de réflexion, qu'est-ce que le rayon incident?",
+      "Le rayon de lumière qui arrive sur une surface, juste avant de rebondir sur cette surface",
+      ["Le rayon de lumière qui repart d'une surface, juste après avoir rebondi sur cette surface",
+       "La ligne droite imaginaire qui se dresse perpendiculairement à une surface, en un point donné",
+       "Le rayon de lumière qui traverse une surface, en changeant de milieu et de direction ensuite"],
+      "Le rayon incident est le rayon qui arrive : il voyage vers la surface et la frappe en un point. Le rayon qui repart après le rebond est le rayon réfléchi, et la ligne perpendiculaire à la surface en ce point est la normale.",
+      {});
+  },
+  function () {
+    return mcq("Dans un diagramme de réflexion, qu'est-ce que le rayon réfléchi?",
+      "Le rayon de lumière qui repart d'une surface, juste après avoir rebondi sur cette surface",
+      ["Le rayon de lumière qui arrive sur une surface, juste avant de rebondir sur cette surface",
+       "La ligne droite imaginaire qui se dresse perpendiculairement à une surface, en un point donné",
+       "Le rayon de lumière qui traverse une surface, en changeant de milieu et de direction ensuite"],
+      "Le rayon réfléchi est le rayon qui repart : il quitte la surface après le rebond, du même côté de la normale que son trajet symétrique. Le rayon qui arrive est le rayon incident, et un rayon qui traverse la surface en changeant de milieu relève de la réfraction, pas de la réflexion.",
+      {});
+  },
+  function () {
+    return mcq("Comment l'angle d'incidence se définit-il dans un diagramme de réflexion?",
+      "L'angle formé par le rayon incident et la normale, au point où le rayon frappe la surface",
+      ["L'angle formé par le rayon réfléchi et la normale, au point où le rayon quitte la surface",
+       "L'angle formé par le rayon incident et la surface, au point où le rayon frappe la surface",
+       "L'angle formé par le rayon réfléchi et la surface, au point où le rayon quitte la surface"],
+      "L'angle d'incidence se mesure entre le rayon incident et la normale, au point de contact. L'angle entre le rayon réfléchi et la normale est l'angle de réflexion. Les angles mesurés à partir de la surface ne sont ni l'un ni l'autre : ils valent 90 degrés moins l'angle cherché.",
+      {});
+  },
+  function () {
+    return mcq("Deux élèves mesurent les angles d'un rayon sur un miroir, chacun par rapport à la normale. Qu'est-ce que la loi de la réflexion prédit pour leurs mesures?",
+      "L'angle de réflexion mesuré sera égal à l'angle d'incidence, pour chaque rayon étudié",
+      ["L'angle de réflexion mesuré sera le double de l'angle d'incidence, pour chaque rayon",
+       "L'angle de réflexion mesuré sera la moitié de l'angle d'incidence, pour chaque rayon",
+       "La somme des deux angles mesurés donnera toujours 90 degrés, pour chaque rayon étudié"],
+      "La loi de la réflexion énonce que l'angle d'incidence est égal à l'angle de réflexion, les deux mesurés par rapport à la normale. Elle vaut pour chaque rayon et pour chaque surface réfléchissante, lisse ou non.",
+      {});
+  }
+]), ["Chaque terme nomme une seule partie du diagramme : le rayon qui arrive, celui qui repart, ou la ligne de référence.", "Tous les angles de ce chapitre se mesurent à partir de la normale."]);
+
+E("s8f-u3-angle-mesure", 3, ["SC8.7.3"], 2, "gen", function () {
+  var base = pick([12, 18, 24, 28, 32, 38, 42, 48, 52, 58, 62, 68, 72, 78]);
+  var mode = pick(["refl", "surf-inc", "surf-refl", "refl-surf"]);
+  var ans, q, sol;
+  if (mode === "refl") {
+    ans = base;
+    q = "Un rayon frappe un miroir plan avec un angle d'incidence de " + base + " degrés, mesuré par rapport à la normale. Quel est l'angle de réflexion?";
+    sol = "Selon la loi de la réflexion, l'angle de réflexion est égal à l'angle d'incidence : " + base + " degrés, les deux mesurés par rapport à la normale.";
+  } else if (mode === "surf-inc") {
+    ans = 90 - base;
+    q = "Un rayon frappe un miroir plan de sorte qu'il fait un angle de " + base + " degrés avec la surface du miroir. Quel est son angle d'incidence, mesuré par rapport à la normale?";
+    sol = "L'angle donné est mesuré à partir de la surface. La normale est à 90 degrés de la surface, donc l'angle d'incidence vaut 90 - " + base + " = " + ans + " degrés.";
+  } else if (mode === "surf-refl") {
+    ans = 90 - base;
+    q = "Un rayon frappe un miroir plan de sorte qu'il fait un angle de " + base + " degrés avec la surface du miroir. Quel est l'angle de réflexion du rayon, mesuré par rapport à la normale?";
+    sol = "L'angle d'incidence se mesure à partir de la normale : il vaut 90 - " + base + " = " + ans + " degrés. Selon la loi de la réflexion, l'angle de réflexion lui est égal : " + ans + " degrés.";
+  } else {
+    ans = 90 - base;
+    q = "Un rayon frappe un miroir plan avec un angle d'incidence de " + base + " degrés, mesuré par rapport à la normale. Quel angle le rayon réfléchi fait-il avec la surface du miroir?";
+    sol = "L'angle de réflexion vaut " + base + " degrés par rapport à la normale, comme l'angle d'incidence. La normale est à 90 degrés de la surface, donc le rayon réfléchi fait 90 - " + base + " = " + ans + " degrés avec la surface.";
+  }
+  var cand = [ans - 12, ans - 10, ans - 5, ans + 5, ans + 10, ans + 12, 90 - ans];
+  var dis = [];
+  for (var i = 0; i < cand.length && dis.length < 3; i++) {
+    if (cand[i] !== ans && cand[i] > 0 && cand[i] < 90 && dis.indexOf(cand[i]) < 0) dis.push(cand[i]);
+  }
+  dis.sort(function (a, b) { return a - b; });
+  return mcq(q, ans + " degrés", dis.map(function (d) { return d + " degrés"; }), sol, {});
+}, ["Repère d'abord à partir de quoi l'angle donné est mesuré : la normale ou la surface.", "Un angle pris à partir de la surface se convertit en soustrayant de 90 degrés."]);
+
+E("s8f-u3-reflexion-conception", 3, ["SC8.7.3"], 3, "var", varset([
+  function () {
+    return mcq("Dans un périscope simple, chaque miroir plan est incliné à 45 degrés par rapport au tube vertical. Quelle justification de ce choix repose correctement sur la loi de la réflexion?",
+      "À 45 degrés, le rayon horizontal arrive à 45 degrés de la normale, donc il se réfléchit à 45 degrés de la normale et tourne exactement à angle droit, vers le bas du tube",
+      ["À 45 degrés, le miroir absorbe la moitié de la lumière horizontale, donc le rayon restant tombe naturellement vers le bas du tube, sans qu'aucun angle précis soit nécessaire",
+       "À 45 degrés, la surface du miroir devient parallèle à la normale, donc le rayon horizontal glisse le long du miroir et descend ensuite tout droit dans le tube du périscope",
+       "À 45 degrés, l'image du premier miroir se renverse de haut en bas, donc elle arrive à l'oeil déjà redressée, quelle que soit la direction du rayon lumineux qui la transporte"],
+      "Le choix de 45 degrés est un calcul d'angles. Le rayon horizontal rencontre la normale du miroir incliné à 45 degrés, donc son angle d'incidence vaut 45 degrés. La loi de la réflexion lui donne un angle de réflexion égal, de l'autre côté de la normale : le rayon repart à 90 degrés de sa direction d'arrivée, exactement le long du tube.",
+      {});
+  },
+  function () {
+    return mcq("Un miroir plan est fixé en angle au-dessus d'un tournant de corridor d'école, pour qu'on voie qui arrive de l'autre côté avant de tourner. Pourquoi ce placement fonctionne-t-il?",
+      "La lumière venant de l'autre côté frappe le miroir et se réfléchit vers l'observateur avec un angle de réflexion égal à son angle d'incidence, ce qui déplace sa ligne de visée autour du tournant",
+      ["La lumière venant de l'autre côté se réfracte en traversant le miroir et se courbe autour du tournant du corridor, ce qui amène l'image des passants jusqu'à l'observateur placé avant le tournant",
+       "La lumière venant de l'autre côté est absorbée par le miroir puis réémise dans toutes les directions du corridor, ce qui rend les passants visibles de partout, même sans ligne de visée directe",
+       "La lumière venant de l'autre côté rebondit sur le mur du fond et le miroir ne sert qu'à grossir cette lumière déjà réfléchie, ce qui agrandit l'image des passants aperçus au tournant du corridor"],
+      "Le miroir ne laisse pas voir à travers le mur : il redirige la lumière. Les rayons des passants frappent le miroir incliné et repartent vers l'observateur selon la loi de la réflexion, angles égaux par rapport à la normale. La ligne de visée de l'observateur est donc rabattue autour du tournant, comme dans un périscope à un seul miroir.",
+      {});
+  },
+  function () {
+    return mcq("Un dentiste tient un petit miroir incliné contre une dent pour examiner la face arrière de cette dent, qu'aucun regard direct ne peut atteindre. Qu'est-ce qui rend cette observation possible?",
+      "La lumière éclaire la face arrière de la dent, frappe le miroir et se réfléchit vers l'oeil du dentiste selon des angles égaux par rapport à la normale, en y formant une image de cette face cachée",
+      ["La lumière traverse la dent de part en part et le petit miroir la recueille de l'autre côté, ce qui montre au dentiste la face arrière de la dent comme si la dent elle-même était devenue transparente",
+       "La lumière contourne la dent par réfraction dans l'air de la bouche et le miroir grossit ensuite cette lumière courbée, ce qui agrandit la face arrière de la dent jusqu'à la rendre facile à examiner",
+       "La lumière rebondit entre la dent et le miroir un grand nombre de fois et finit par peindre sur le miroir une image permanente de la dent, que le dentiste peut ensuite examiner à loisir dans sa main"],
+      "Le miroir de dentiste est un problème de trajet de lumière. La lampe éclaire la face arrière de la dent; les rayons qui en viennent frappent le miroir incliné et se réfléchissent vers l'oeil, avec un angle de réflexion égal à l'angle d'incidence à chaque rayon. Le dentiste voit donc une image virtuelle de la face cachée, formée derrière le miroir.",
+      {});
+  },
+  function () {
+    return mcq("À la sortie d'un garage qui donne directement sur un trottoir, on installe un miroir plan incliné au-dessus de la porte pour que le conducteur voie les piétons avant de sortir. Quelle justification de ce montage est correcte?",
+      "Les rayons venant des piétons frappent le miroir incliné et se réfléchissent vers le conducteur selon la loi de la réflexion, donc sa ligne de visée se rabat vers le trottoir qu'il ne voit pas directement",
+      ["Les rayons venant des piétons traversent le mur du garage puis le miroir les rassemble en une image, donc le conducteur voit le trottoir à travers le mur comme il verrait à travers une fenêtre bien placée",
+       "Les rayons venant des piétons sont absorbés par le miroir incliné, qui les renvoie ensuite également dans toutes les directions, donc chaque piéton du trottoir devient visible de n'importe quel siège",
+       "Les rayons venant des piétons se courbent en passant près du bord du miroir incliné et contournent la porte du garage, donc le conducteur reçoit une image du trottoir sans qu'aucun rebond soit nécessaire"],
+      "C'est le même montage que le miroir de corridor : un seul rebond bien placé. L'inclinaison du miroir est choisie pour que les rayons des piétons, réfléchis avec un angle de réflexion égal à leur angle d'incidence, atteignent l'oeil du conducteur. Sans le miroir, ces rayons continueraient tout droit et le trottoir resterait hors de sa vue.",
+      {});
+  }
+]), ["Pour chaque montage, suis un rayon : d'où il vient, où il rebondit, où il doit arriver.", "Un miroir ne crée pas de lumière et ne voit pas à travers les murs : il redirige des rayons selon des angles égaux."]);
+
+E("s8f-u3-reflexion-usage", 3, ["SC8.7.3"], 3, "var", varset([
+  function () {
+    return mcq("Pour une salle de classe, on choisit un écran de projection mat plutôt qu'une surface brillante comme un miroir. Quelle justification de ce choix est correcte?",
+      "La surface mate réfléchit la lumière du projecteur de façon diffuse, dans plusieurs directions, donc chaque élève reçoit une partie de l'image et la voit à peu près également bien de sa place",
+      ["La surface mate réfléchit la lumière du projecteur de façon spéculaire, dans une seule direction, donc chaque élève reçoit toute l'image à la fois et la voit aussi nettement que dans un miroir poli",
+       "La surface mate absorbe la lumière du projecteur presque entièrement, donc l'image se forme dans l'épaisseur même de l'écran et reste visible également bien de toutes les places de la classe entière",
+       "La surface mate réfracte la lumière du projecteur en la traversant de part en part, donc l'image ressort de l'autre côté de l'écran et chaque élève la reçoit directement, sans aucun rebond nécessaire"],
+      "Un écran doit servir toute la salle, pas une seule place. Sa surface mate, rugueuse à petite échelle, produit une réflexion diffuse : les rayons de chaque point de l'image se dispersent dans plusieurs directions, donc des yeux placés partout dans la salle en reçoivent. Une surface spéculaire enverrait l'image dans une seule direction, avec un éblouissement pour quelques-uns et rien pour les autres.",
+      {});
+  },
+  function () {
+    return mcq("La nuit, une route mouillée paraît presque noire sous les phares d'une voiture, sauf une bande brillante qui s'étend devant le véhicule. Quelle explication de ce contraste est correcte?",
+      "L'eau rend la route lisse, donc elle réfléchit les phares de façon spéculaire, surtout vers l'avant, loin des yeux du conducteur; il ne revient presque rien vers lui, sauf dans la bande alignée avec les phares",
+      ["L'eau rend la route rugueuse, donc elle réfléchit les phares de façon diffuse, également dans toutes les directions; il revient alors autant de lumière au conducteur que sur une route sèche bien éclairée",
+       "L'eau absorbe les phares complètement dès qu'elle recouvre la route, donc aucune lumière ne peut plus se réfléchir du tout sur une route mouillée, et la bande brillante vient des lampadaires du quartier",
+       "L'eau réfracte les phares à travers la route jusqu'au sol en dessous, donc la route elle-même reste noire et la bande brillante est la lumière qui ressort du sol de l'autre côté de la chaussée mouillée"],
+      "La route sèche est rugueuse : elle réfléchit les phares de façon diffuse, et une partie revient toujours vers le conducteur, ce qui rend la chaussée visible. Mouillée, l'eau la recouvre d'une surface lisse : la réflexion devient spéculaire, les rayons repartent surtout vers l'avant, loin des yeux, et la route semble noire. La bande brillante est la zone où la géométrie spéculaire renvoie justement la lumière vers le conducteur, le même effet qui éblouit face aux phares des voitures venant en sens inverse.",
+      {});
+  },
+  function () {
+    return mcq("Un tableau blanc très lustré rend le texte illisible depuis les places situées sur les côtés de la classe, alors qu'il se lit bien de face. Quelle explication est correcte?",
+      "La surface lustrée réfléchit de façon spéculaire : la lumière des fenêtres et des lampes repart dans une direction précise, qui éblouit les places de côté, tandis que le texte ne se diffuse presque pas vers elles",
+      ["La surface lustrée réfléchit de façon diffuse : la lumière des fenêtres et des lampes se disperse également partout dans la classe, donc les places de côté reçoivent trop de lumière mélangée pour distinguer le texte",
+       "La surface lustrée absorbe la lumière des fenêtres et des lampes presque entièrement, donc le tableau devient trop sombre pour les places de côté, qui ne reçoivent plus assez de lumière pour lire le texte écrit",
+       "La surface lustrée réfracte la lumière des fenêtres et des lampes à travers le tableau, donc le texte semble se déplacer pour les places de côté, qui le voient alors décalé et impossible à suivre correctement"],
+      "Le lustre est une surface lisse : sa réflexion est spéculaire. Depuis les côtés, l'oeil se place justement dans la direction où la lumière des lampes se réfléchit, d'où l'éblouissement qui noie le texte. De face, cette direction est évitée et le texte se lit. Un tableau mat, à réflexion diffuse, éviterait le problème en dispersant la lumière des lampes au lieu de la concentrer dans une direction.",
+      {});
+  },
+  function () {
+    return mcq("Après une douche chaude, le miroir de la salle de bain ne montre plus qu'une image floue et laiteuse, alors qu'il était net quelques minutes plus tôt. Quelle explication relie correctement ce changement à la réflexion?",
+      "Les gouttelettes d'eau condensées rendent la surface irrégulière : la réflexion y devient diffuse, les rayons repartent dans plusieurs directions et l'ordre qui formait l'image nette est perdu",
+      ["Les gouttelettes d'eau condensées rendent la surface plus lisse : la réflexion y devient spéculaire, les rayons repartent dans une seule direction et l'image devient alors trop concentrée pour être nette",
+       "Les gouttelettes d'eau condensées absorbent toute la lumière qui frappe le miroir : aucune réflexion ne s'y produit plus du tout, et l'image floue aperçue vient en réalité de la vitre de la fenêtre voisine",
+       "Les gouttelettes d'eau condensées réfractent la lumière à travers le miroir jusqu'au mur derrière lui : l'image se forme alors dans le mur, et le flou aperçu n'est que l'ombre de cette image déplacée"],
+      "Le miroir lui-même n'a pas changé; sa surface, si. Le film de gouttelettes la rend irrégulière à petite échelle, donc chaque rayon se réfléchit toujours selon la loi, mais par rapport à des normales qui pointent dans plusieurs directions : c'est la réflexion diffuse. Les rayons dispersés ne conservent plus l'ordre d'une image, d'où le flou laiteux, jusqu'à ce que la surface redevienne lisse et spéculaire.",
+      {});
+  }
+]), ["Demande-toi d'abord si la surface envoie la lumière dans une direction ou dans plusieurs.", "Spéculaire : une direction, image ou éblouissement. Diffuse : plusieurs directions, visibilité partagée mais pas d'image."]);
+
+E("s8f-u3-cr-reflexion-quotidien", 3, ["SC8.7.3"], 2, "var", varset([
+  function () {
+    return textq("Un miroir plan est installé en angle au-dessus du tournant d'un corridor d'école, là où des élèves se sont déjà heurtés en tournant sans voir qui arrivait. Explique, à l'aide de la loi de la réflexion, comment ce miroir permet à un élève de voir un élève qui arrive de l'autre côté du tournant avant de s'y engager. (2 points)",
+      ["la lumière de l'élève qui arrive frappe le miroir et se réfléchit vers l'oeil de l'autre élève", "l'angle de réflexion est égal à l'angle d'incidence par rapport à la normale du miroir incliné", "la ligne de visée est ainsi rabattue autour du tournant, sans voir à travers le mur"],
+      "<b>Réponse modèle:</b> La lumière qui vient de l'élève arrivant de l'autre côté du tournant voyage en ligne droite jusqu'au miroir incliné. Là, elle se réfléchit selon la loi de la réflexion : son angle de réflexion, mesuré par rapport à la normale au miroir, est égal à son angle d'incidence. Avec l'inclinaison choisie, ces rayons réfléchis atteignent l'oeil de l'élève placé avant le tournant. Sa ligne de visée est donc rabattue autour du coin par le miroir : il voit l'autre élève dans le miroir, sans que ni l'un ni l'autre ait à franchir le tournant.<br><br><b>Points d'attribution:</b> 1 point pour la loi de la réflexion appliquée au miroir (angle de réflexion égal à l'angle d'incidence, mesurés par rapport à la normale). 1 point pour le résultat expliqué (les rayons réfléchis atteignent l'oeil avant le tournant, donc la zone cachée devient visible dans le miroir).",
+      {});
+  },
+  function () {
+    return textq("Un dentiste examine la face arrière d'une dent à l'aide d'un petit miroir incliné tenu juste derrière la dent. Explique, à l'aide de la loi de la réflexion, comment ce miroir permet au dentiste de voir une face de la dent qu'aucun regard direct ne peut atteindre. (2 points)",
+      ["la lumière éclaire la face arrière de la dent et ses rayons frappent le miroir incliné", "chaque rayon se réfléchit avec un angle de réflexion égal à son angle d'incidence par rapport à la normale", "les rayons réfléchis atteignent l'oeil du dentiste, qui y voit une image de la face cachée"],
+      "<b>Réponse modèle:</b> La lampe du dentiste éclaire la face arrière de la dent. Les rayons qui partent de cette face frappent le petit miroir incliné placé derrière la dent et s'y réfléchissent selon la loi de la réflexion : pour chaque rayon, l'angle de réflexion, mesuré par rapport à la normale au miroir, est égal à l'angle d'incidence. L'inclinaison du miroir envoie ces rayons réfléchis vers l'oeil du dentiste, qui voit donc, dans le miroir, une image de la face arrière de la dent, bien qu'elle soit tournée à l'opposé de lui.<br><br><b>Points d'attribution:</b> 1 point pour la loi de la réflexion appliquée au miroir (angle de réflexion égal à l'angle d'incidence, mesurés par rapport à la normale). 1 point pour le résultat expliqué (les rayons réfléchis atteignent l'oeil du dentiste, qui voit une image de la face cachée).",
+      {});
+  },
+  function () {
+    return textq("Un miroir plan incliné est fixé au-dessus de la porte d'un garage qui s'ouvre directement sur un trottoir, pour que le conducteur voie les piétons avant de sortir. Explique, à l'aide de la loi de la réflexion, comment ce miroir permet au conducteur de voir un piéton qui se trouve encore hors de sa vue directe. (2 points)",
+      ["les rayons venant du piéton frappent le miroir incliné au-dessus de la porte", "chaque rayon se réfléchit avec un angle de réflexion égal à son angle d'incidence par rapport à la normale", "les rayons réfléchis atteignent l'oeil du conducteur, dont la ligne de visée se rabat vers le trottoir"],
+      "<b>Réponse modèle:</b> Les rayons de lumière qui viennent du piéton sur le trottoir voyagent en ligne droite jusqu'au miroir incliné au-dessus de la porte. Ils s'y réfléchissent selon la loi de la réflexion : pour chaque rayon, l'angle de réflexion, mesuré par rapport à la normale au miroir, est égal à l'angle d'incidence. L'inclinaison du miroir est choisie pour que ces rayons réfléchis descendent jusqu'à l'oeil du conducteur assis dans la voiture. Sa ligne de visée est ainsi rabattue par le miroir vers le trottoir, et il aperçoit le piéton avant d'engager la voiture.<br><br><b>Points d'attribution:</b> 1 point pour la loi de la réflexion appliquée au miroir (angle de réflexion égal à l'angle d'incidence, mesurés par rapport à la normale). 1 point pour le résultat expliqué (les rayons réfléchis atteignent l'oeil du conducteur, qui voit le piéton hors de sa vue directe).",
+      {});
+  }
+]), ["Suis un rayon précis : du sujet caché, au miroir, puis à l'oeil.", "La loi doit être énoncée avec ses angles par rapport à la normale, pas seulement nommée."]);
+
+/* ---------- SC8.7.4 Réfraction : exemples, déviation et explications ---------- */
+
+E("s8f-u3-refraction-exemples", 3, ["SC8.7.4"], 1, "var", varset([
+  function () {
+    return mcq("Lequel de ces phénomènes est un effet de la réfraction de la lumière?",
+      "Le fond d'une piscine qui semble moins profond qu'il ne l'est vraiment",
+      ["L'image d'un visage qui apparaît dans un miroir bien poli de salle de bain",
+       "L'ombre nette d'un poteau qui s'étend sur le sol par un jour ensoleillé",
+       "Le reflet du Soleil qui éblouit à la surface calme d'un lac le matin"],
+      "Le fond de la piscine semble relevé parce que la lumière qui en vient se réfracte en passant de l'eau à l'air, et l'oeil la prolonge en ligne droite. Le miroir et le reflet sur le lac sont des réflexions, et l'ombre nette vient du voyage en ligne droite de la lumière.",
+      {});
+  },
+  function () {
+    return mcq("Lequel de ces phénomènes est un effet de la réfraction de la lumière?",
+      "Une loupe qui fait paraître les lettres d'une page plus grandes qu'elles sont",
+      ["Un rétroviseur qui montre les voitures qui suivent derrière le conducteur",
+       "Une ombre qui grandit quand une main s'approche d'une lampe dans une pièce",
+       "Un éblouissement qui apparaît sur une photographie prise face à une fenêtre"],
+      "La loupe est une lentille : elle réfracte la lumière qui la traverse et fait paraître les lettres plus grandes. Le rétroviseur et l'éblouissement sont des réflexions, et l'ombre qui grandit vient des trajets droits de la lumière bloqués par la main.",
+      {});
+  },
+  function () {
+    return mcq("Lequel de ces phénomènes est un effet de la réfraction de la lumière?",
+      "Un poisson qui semble plus près de la surface qu'il ne l'est en réalité",
+      ["Un drapeau qui se reflète à la surface d'une flaque d'eau après la pluie",
+       "Une silhouette qui se découpe en ombre chinoise derrière un écran éclairé",
+       "Une enseigne qui se répète dans la vitrine d'un magasin pendant la soirée"],
+      "Le poisson semble relevé parce que la lumière qui en vient change de direction en sortant de l'eau vers l'air : c'est la réfraction, et l'oeil reconstruit le poisson trop haut. Le drapeau et l'enseigne sont des réflexions sur des surfaces, et l'ombre chinoise vient de la lumière bloquée.",
+      {});
+  },
+  function () {
+    return mcq("Lequel de ces phénomènes est un effet de la réfraction de la lumière?",
+      "Les étoiles qui semblent scintiller et trembler dans le ciel de la nuit",
+      ["La Lune qui se reflète en une traînée brillante sur un lac par temps calme",
+       "Un faisceau de projecteur qui dessine un cône bien droit dans une salle sombre",
+       "Un visage qui apparaît à l'envers dans le dos poli d'une cuillère en métal"],
+      "L'air au-dessus du sol n'a pas partout la même densité : la lumière des étoiles se réfracte un peu différemment d'un instant à l'autre en le traversant, ce qui fait trembler leur position apparente. La traînée sur le lac et le visage dans la cuillère sont des réflexions; le cône droit montre la propagation rectiligne.",
+      {});
+  },
+  function () {
+    return mcq("Un élève observe deux effets dans un aquarium : le reflet de la lampe à la surface de l'eau, et une plante dont la tige semble décalée là où elle entre dans l'eau. Lequel de ces effets est la réfraction?",
+      "La tige qui semble décalée là où elle entre dans l'eau de l'aquarium",
+      ["Le reflet de la lampe qui brille à la surface de l'eau de l'aquarium",
+       "La bulle d'air qui monte en ligne droite dans l'eau de l'aquarium",
+       "L'ombre de la plante qui se dessine au fond sablonneux de l'aquarium"],
+      "La tige semble décalée parce que la lumière de sa partie immergée se réfracte à la surface avant d'atteindre l'oeil : réfraction. Le reflet de la lampe est une réflexion à la surface, la bulle montre un trajet droit, et l'ombre vient de la lumière bloquée par la plante.",
+      {});
+  }
+]), ["La réfraction exige un changement de milieu : la lumière traverse une frontière et change de direction.", "Miroirs, reflets et éblouissements sont des réflexions; les ombres viennent des trajets droits."]);
+
+E("s8f-u3-deviation-prevoir", 3, ["SC8.7.4"], 2, "gen", function () {
+  var paires = [
+    { de: "l'air", vers: "l'eau", vitesse: "plus lentement", sens: "vers" },
+    { de: "l'eau", vers: "l'air", vitesse: "plus vite", sens: "loin" },
+    { de: "l'air", vers: "le verre", vitesse: "plus lentement", sens: "vers" },
+    { de: "le verre", vers: "l'air", vitesse: "plus vite", sens: "loin" },
+    { de: "l'air", vers: "l'huile végétale", vitesse: "plus lentement", sens: "vers" },
+    { de: "l'huile végétale", vers: "l'air", vitesse: "plus vite", sens: "loin" },
+    { de: "l'eau", vers: "le verre", vitesse: "plus lentement", sens: "vers" },
+    { de: "le verre", vers: "l'eau", vitesse: "plus vite", sens: "loin" },
+    { de: "l'air", vers: "le plexiglas", vitesse: "plus lentement", sens: "vers" },
+    { de: "le plexiglas", vers: "l'air", vitesse: "plus vite", sens: "loin" }
+  ];
+  var contextes = [
+    "lors d'une activité de laboratoire",
+    "dans un montage avec une boîte à rayons",
+    "pendant une démonstration en classe",
+    "dans un bac transparent rempli à moitié",
+    "sur la paillasse, devant un écran blanc",
+    "au cours d'une mesure d'angles soignée"
+  ];
+  var p = pick(paires);
+  var ctx = pick(contextes);
+  var key, autres;
+  if (p.sens === "vers") {
+    key = "Il se dévie vers la normale à la frontière";
+    autres = ["Il se dévie en s'éloignant de la normale", "Il traverse la frontière sans se dévier du tout", "Il se réfléchit entièrement à la frontière"];
+  } else {
+    key = "Il se dévie en s'éloignant de la normale";
+    autres = ["Il se dévie vers la normale à la frontière", "Il traverse la frontière sans se dévier du tout", "Il se réfléchit entièrement à la frontière"];
+  }
+  var sol = "La règle de la réfraction relie le changement de vitesse au sens de la déviation. Ici, la lumière passe de " + p.de + " à " + p.vers + " et y voyage " + p.vitesse + " : " + (p.sens === "vers" ? "un rayon qui ralentit se dévie vers la normale." : "un rayon qui accélère se dévie en s'éloignant de la normale.");
+  return mcq("Un rayon de lumière arrive en oblique à une frontière, " + ctx + " : il passe de " + p.de + " à " + p.vers + ", où la lumière voyage " + p.vitesse + " que dans le premier milieu. Comment le rayon se dévie-t-il à la frontière?",
+    key, autres, sol, {});
+}, ["Le changement de vitesse décide du sens : ralentir rapproche de la normale, accélérer en éloigne.", "Lis le trajet dans l'ordre : le premier milieu, le second milieu, puis la vitesse dans le second."]);
+
+E("s8f-u3-refraction-nouveau", 3, ["SC8.7.4"], 3, "var", varset([
+  function () {
+    return mcq("Un faisceau de lumière blanche traverse un prisme de verre dans une pièce sombre et frappe un écran. Quelle prédiction décrit correctement ce qu'on observera sur l'écran, et pourquoi?",
+      "Le faisceau s'étale en une bande de couleurs, parce que le verre réfracte chaque couleur d'une quantité légèrement différente : la réfraction sépare les couleurs déjà présentes dans la lumière blanche",
+      ["Le faisceau reste un seul point blanc, parce que le verre réfracte toutes les couleurs exactement de la même quantité : la réfraction courbe le faisceau entier sans jamais séparer ce qui le compose",
+       "Le faisceau devient une seule couleur pure, parce que le verre absorbe toutes les couleurs sauf une en le traversant : la réfraction choisit la couleur la plus forte et élimine toutes les autres couleurs",
+       "Le faisceau s'étale en une bande de couleurs, parce que le verre ajoute ses propres pigments à la lumière en la traversant : la réfraction colore le faisceau au passage et fabrique les couleurs observées"],
+      "Le prisme ne fabrique rien : la lumière blanche contient déjà toutes les couleurs. À chaque surface du prisme, la réfraction dévie le faisceau, et la déviation n'est pas tout à fait la même pour chaque couleur. Le violet se dévie le plus et le rouge le moins, donc les couleurs s'étalent en spectre sur l'écran.",
+      {});
+  },
+  function () {
+    return mcq("Par un après-midi très chaud, une route d'asphalte semble couverte de flaques brillantes au loin, qui disparaissent quand on s'en approche. Quelle explication de ce mirage est correcte?",
+      "L'air juste au-dessus de l'asphalte chaud est moins dense : la lumière du ciel s'y réfracte peu à peu en s'en approchant et finit par remonter vers l'oeil, qui la lit comme le reflet du ciel sur de l'eau",
+      ["Une mince couche d'eau réelle recouvre toujours l'asphalte les jours de chaleur : elle s'évapore dès qu'on s'en approche et se reforme plus loin, ce qui fait reculer les flaques brillantes devant le marcheur",
+       "La chaleur fait fondre une fine couche de l'asphalte lui-même, qui devient lisse et réfléchit le ciel comme un miroir : les flaques brillantes sont la réflexion du ciel sur cette couche fondue de la route",
+       "La lumière du ciel rebondit sur les grains de sable de l'accotement et se disperse au-dessus de la route : les flaques brillantes sont cette lumière dispersée, que l'oeil rassemble en une image de surface liquide"],
+      "Le mirage est une réfraction, pas une réflexion sur de l'eau. Près de l'asphalte surchauffé, l'air est moins dense; la lumière du ciel qui descend vers la route change peu à peu de vitesse et se courbe dans cet air inégal, jusqu'à remonter vers l'oeil. L'oeil la prolonge en ligne droite et la place au niveau du sol : le cerveau y reconnaît le reflet du ciel sur une surface d'eau, alors qu'il n'y a que de l'air et de la réfraction.",
+      {});
+  },
+  function () {
+    return mcq("Une piscine a une partie profonde de 2 mètres, mais un nouvel élève sauveteur, la regardant du bord, jurerait qu'elle est beaucoup moins profonde. Quelle prédiction et quelle précaution sont correctes?",
+      "Le fond semble relevé : la lumière du fond se réfracte en sortant de l'eau et l'oeil le reconstruit trop près de la surface, donc il ne faut jamais juger la profondeur d'une piscine à l'oeil avant d'y plonger",
+      ["Le fond semble abaissé : la lumière du fond se réfracte en sortant de l'eau et l'oeil le reconstruit plus loin de la surface, donc la piscine est toujours moins profonde en réalité que ce qu'elle paraît du bord",
+       "Le fond semble à sa vraie place : la lumière du fond voyage en ligne droite de l'eau jusqu'à l'oeil sans changer de direction, donc un regard exercé peut mesurer la profondeur exacte d'une piscine depuis son bord",
+       "Le fond semble relevé : l'eau soulève réellement le fond de la piscine pendant le jour sous l'effet de la chaleur du Soleil, donc il faut attendre la soirée pour que le fond reprenne sa profondeur véritable"],
+      "C'est la profondeur apparente. La lumière du fond se réfracte en passant de l'eau à l'air, en s'éloignant de la normale, et l'oeil, qui prolonge les rayons en ligne droite, reconstruit le fond plus près de la surface qu'il ne l'est. Le fond d'une piscine paraît donc toujours moins profond que sa profondeur réelle : juger à l'oeil avant de plonger est dangereux.",
+      {});
+  },
+  function () {
+    return mcq("Une goutte d'eau presque sphérique repose sur une page imprimée, et les lettres sous la goutte paraissent nettement plus grandes que les autres. Quelle explication est correcte?",
+      "La goutte bombée réfracte la lumière comme une petite lentille convergente : ses surfaces courbes dévient les rayons des lettres de façon à les faire paraître agrandies quand on les regarde à travers elle",
+      ["La goutte bombée réfléchit la lumière comme un petit miroir convergent : ses surfaces courbes renvoient les rayons des lettres vers l'oeil en une image agrandie, sans que la lumière traverse jamais la goutte",
+       "La goutte bombée étire physiquement l'encre des lettres en gonflant le papier sous elle : les lettres paraissent plus grandes parce qu'elles le sont devenues pendant que la goutte repose sur la page imprimée",
+       "La goutte bombée absorbe la lumière autour des lettres et ne laisse passer que celle des lettres elles-mêmes : le contraste ainsi augmenté donne seulement l'impression que les lettres sont devenues plus grandes"],
+      "Une goutte bombée est une lentille en miniature. La lumière des lettres se réfracte en entrant dans l'eau de la goutte et encore en en sortant; la forme bombée dévie les rayons comme une lentille convergente, et l'oeil reçoit une image agrandie des lettres. Retire la goutte et l'effet disparaît avec la lentille : ni l'encre ni le papier n'ont changé.",
+      {});
+  }
+]), ["Ces montages sont nouveaux, mais la règle ne change pas : vitesse, déviation par rapport à la normale, oeil qui prolonge tout droit.", "Cherche ce qui est traversé, et dans quel sens la lumière peut y changer de vitesse."]);
+
+E("s8f-u3-refraction-affirmation", 3, ["SC8.7.4"], 3, "var", varset([
+  function () {
+    return mcq("Un élève affirme : « Le prisme fabrique les couleurs, parce qu'il ajoute ses propres pigments à la lumière blanche qui le traverse. » Quelle évaluation de cette affirmation est correcte?",
+      "Elle est fausse : les couleurs sont déjà présentes dans la lumière blanche, et le prisme les sépare seulement, parce que sa réfraction dévie chaque couleur d'une quantité légèrement différente des autres",
+      ["Elle est juste : les couleurs apparaissent seulement à l'intérieur du verre du prisme, dont les pigments se mélangent à la lumière blanche pendant la traversée et peignent le faisceau de toutes ces couleurs",
+       "Elle est fausse : les couleurs viennent de l'écran sur lequel le faisceau tombe, dont la peinture réagit à la lumière blanche et se sépare en bandes colorées quand le faisceau du prisme la frappe assez fort",
+       "Elle est juste en partie : le prisme fabrique les couleurs chaudes, comme le rouge et l'orange, mais les couleurs froides, comme le bleu et le violet, étaient déjà présentes dans la lumière blanche au départ"],
+      "L'affirmation donne au prisme un travail qu'il ne fait pas. La lumière blanche est un mélange de couleurs; le prisme ne fait que réfracter, et sa réfraction varie légèrement selon la couleur, le violet étant le plus dévié et le rouge le moins. Les couleurs sortent séparées parce qu'elles y étaient déjà, chacune prenant un trajet un peu différent.",
+      {});
+  },
+  function () {
+    return mcq("Un élève affirme : « Le fond de la piscine remonte vraiment pendant le jour, soulevé par l'eau chaude, et il redescend le soir. » Quelle évaluation de cette affirmation est correcte?",
+      "Elle est fausse : le fond ne bouge pas; la lumière qui en vient se réfracte en sortant de l'eau, et l'oeil, qui prolonge les rayons en ligne droite, reconstruit le fond plus près de la surface qu'il ne l'est",
+      ["Elle est juste : la chaleur du jour dilate l'eau de la piscine, qui pousse le fond vers le haut de quelques centimètres, et le refroidissement du soir laisse le fond redescendre exactement à sa place habituelle",
+       "Elle est fausse : le fond ne bouge pas; c'est la surface de l'eau qui descend pendant le jour à cause de l'évaporation, ce qui rapproche vraiment le fond de l'oeil et le fait paraître plus haut qu'il ne l'est",
+       "Elle est juste en partie : le fond remonte seulement dans la partie peu profonde de la piscine, où l'eau chaude peut le soulever, tandis que le fond de la partie profonde reste toujours exactement à sa place"],
+      "Le fond est en béton : il ne remonte ni ne redescend. L'effet est entièrement dans le trajet de la lumière. Les rayons du fond se réfractent en quittant l'eau pour l'air, et l'oeil les prolonge en ligne droite, ce qui place le fond apparent plus haut que le fond réel, à toute heure du jour, dès qu'on le regarde à travers la surface.",
+      {});
+  },
+  function () {
+    return mcq("Un élève affirme : « La loupe étire les lettres elles-mêmes : son verre tire sur l'encre et agrandit l'impression pendant qu'on la regarde. » Quelle évaluation de cette affirmation est correcte?",
+      "Elle est fausse : les lettres ne changent pas; la loupe réfracte la lumière qui vient d'elles, et l'oeil reçoit des rayons déviés qui lui font reconstruire une image des lettres plus grande que les lettres réelles",
+      ["Elle est juste : le verre d'une loupe est légèrement élastique et il étire, en se bombant, l'image imprimée sur la page, de sorte que les lettres grandissent réellement pendant tout le temps qu'on les regarde",
+       "Elle est fausse : les lettres ne changent pas; la loupe réfléchit la lumière qui vient d'elles sur ses deux surfaces polies, et l'oeil rassemble ces réflexions en une image des lettres plus grande que les lettres",
+       "Elle est juste en partie : la loupe étire les lettres qui se trouvent exactement sous son centre, mais les lettres près de ses bords gardent leur vraie taille, parce que le verre n'y est pas assez bombé pour tirer"],
+      "Rien n'arrive à l'encre : éloigne la loupe et les lettres reprennent leur taille, intactes. La loupe est une lentille convergente; elle réfracte les rayons venant des lettres à ses deux surfaces, et l'oeil, prolongeant ces rayons déviés en ligne droite, reconstruit une image agrandie. L'agrandissement est dans le trajet de la lumière, pas dans la page.",
+      {});
+  },
+  function () {
+    return mcq("Un élève affirme : « Dans l'aquarium, le faisceau de la lampe se plie parce que l'eau le pousse de côté, comme un courant pousse un bâton flottant. » Quelle évaluation de cette affirmation est correcte?",
+      "Elle est fausse : rien ne pousse le faisceau; il se dévie à la surface parce que la lumière change de vitesse en passant de l'air à l'eau, et ce changement de vitesse à la frontière est la réfraction elle-même",
+      ["Elle est juste : l'eau de l'aquarium exerce une pression latérale sur tout ce qui la traverse, y compris la lumière, et cette poussée explique pourquoi le faisceau se plie davantage quand l'eau est plus profonde",
+       "Elle est fausse : rien ne pousse le faisceau; il se dévie à la surface parce que l'eau absorbe sa partie centrale et ne laisse passer que ses bords, ce qui donne seulement l'impression d'un faisceau plié en deux",
+       "Elle est juste en partie : un courant réel dans l'aquarium peut pousser légèrement le faisceau, mais un faisceau dans une eau parfaitement immobile resterait toujours parfaitement droit de la surface au fond"],
+      "La comparaison avec le bâton est séduisante mais fausse : la lumière n'est pas un objet flottant et l'eau immobile dévie le faisceau tout autant. La déviation se produit à la frontière, au moment où la lumière change de milieu et donc de vitesse : entrant dans l'eau, plus dense, elle ralentit et se dévie vers la normale. C'est ce changement de vitesse, et non une poussée, qui plie le faisceau.",
+      {});
+  }
+]), ["Juge l'affirmation, pas seulement le phénomène : le mécanisme proposé est-il le bon?", "Les bonnes évaluations gardent le phénomène et remplacent la cause par la réfraction."]);
+
+E("s8f-u3-cr-refraction-paille", 3, ["SC8.7.4"], 2, "var", varset([
+  function () {
+    return textq("Une paille droite est plongée dans un grand verre d'eau claire. Vue de côté, elle semble pliée exactement à la surface de l'eau : la partie immergée ne semble pas alignée avec la partie hors de l'eau. Explique cette apparence en détail : ce qui arrive à la lumière de la partie immergée à la surface, pourquoi l'oeil est trompé, et pourquoi l'effet se produit précisément à la surface. (3 points)",
+      ["la lumière de la partie immergée se réfracte à la surface en passant de l'eau à l'air", "elle accélère en entrant dans l'air et se dévie en s'éloignant de la normale", "l'oeil prolonge les rayons en ligne droite et reconstruit la partie immergée déplacée", "seule la partie immergée envoie sa lumière à travers la surface, donc seule elle est déplacée"],
+      "<b>Réponse modèle:</b> La lumière qui vient de la partie immergée de la paille doit traverser la surface pour atteindre l'oeil. À cette frontière, elle passe de l'eau, plus dense, à l'air, moins dense : elle accélère et se réfracte, en se déviant en s'éloignant de la normale. L'oeil et le cerveau supposent que la lumière a voyagé en ligne droite : ils prolongent les rayons déviés tout droit vers l'arrière et reconstruisent la partie immergée à une position déplacée, plus relevée que sa position réelle. La partie hors de l'eau envoie sa lumière directement à l'oeil, sans traverser de surface, donc elle paraît à sa vraie place. Les deux parties semblent donc désalignées exactement à la surface, là où la réfraction se produit, et la paille paraît pliée.<br><br><b>Points d'attribution:</b> 1 point pour la réfraction à la surface (la lumière de la partie immergée change de direction en passant de l'eau à l'air, en s'éloignant de la normale à mesure qu'elle accélère). 1 point pour l'oeil trompé (il prolonge les rayons en ligne droite et reconstruit la partie immergée à une position déplacée et relevée). 1 point pour le pli situé à la surface (seule la lumière de la partie immergée traverse la frontière, donc seule cette partie paraît déplacée).",
+      {});
+  },
+  function () {
+    return textq("Une paille semble pliée dans un verre d'eau, mais dès qu'on la retire du verre, elle est parfaitement droite, et elle le redevient chaque fois. Un élève conclut que l'eau plie la paille seulement pendant qu'elle est immergée. Réfute sa conclusion et explique la vraie cause de l'apparence, en précisant ce qui arrive à la lumière à la surface et pourquoi l'oeil place mal la partie immergée. (3 points)",
+      ["la paille ne change jamais; seule la lumière qui en vient change de direction", "à la surface, la lumière sortant de l'eau accélère et se dévie en s'éloignant de la normale", "l'oeil prolonge les rayons en ligne droite et voit la partie immergée relevée et décalée", "retirée de l'eau, la paille n'envoie plus de lumière à travers une surface, donc l'effet disparaît"],
+      "<b>Réponse modèle:</b> La conclusion de l'élève est fausse : la paille ne se plie à aucun moment, ce que prouve son état intact dès qu'on la retire, et une pression d'eau ordinaire ne plierait pas une paille rigide pour la redresser ensuite sans trace. La vraie cause est dans le trajet de la lumière. Les rayons de la partie immergée traversent la surface de l'eau pour atteindre l'oeil; en passant de l'eau à l'air, ils accélèrent et se réfractent en s'éloignant de la normale. L'oeil prolonge ces rayons déviés en ligne droite et reconstruit donc la partie immergée plus relevée et décalée qu'elle ne l'est, d'où le pli apparent à la surface. Une fois la paille retirée, aucun rayon ne traverse plus de frontière avant l'oeil, et la paille paraît simplement droite, comme elle l'a toujours été.<br><br><b>Points d'attribution:</b> 1 point pour la réfutation (la paille ne change jamais; l'effet disparaît dès le retrait, donc il est dans la lumière, pas dans la paille). 1 point pour la réfraction à la surface (la lumière sortant de l'eau accélère et se dévie en s'éloignant de la normale). 1 point pour l'oeil trompé (il prolonge les rayons en ligne droite et reconstruit la partie immergée relevée et décalée, d'où le pli à la surface).",
+      {});
+  }
+]), ["La paille est droite; tout se joue dans le trajet de sa lumière.", "Trois maillons : la surface, le changement de vitesse et de direction, puis l'oeil qui prolonge tout droit."]);
+
+E("s8f-u3-cr-refraction-lumiere", 3, ["SC8.7.4"], 3, "var", varset([
+  function () {
+    return textq("Un faisceau étroit d'une boîte à rayons entre en oblique dans un bac d'eau claire, de l'air vers l'eau. Décris le trajet complet du faisceau : ce qui arrive à sa vitesse à la surface, dans quel sens il se dévie par rapport à la normale, et une conséquence que les élèves peuvent observer dans le bac. (3 points)",
+      ["la lumière ralentit en passant de l'air à l'eau, un milieu plus dense", "elle se dévie vers la normale à la surface", "le faisceau change visiblement de direction à la surface et frappe le fond décalé par rapport à son prolongement droit"],
+      "<b>Réponse modèle:</b> Le faisceau voyage d'abord en ligne droite dans l'air. À la surface de l'eau, il entre dans un milieu plus dense : sa vitesse diminue, et ce ralentissement le dévie vers la normale, donc il poursuit dans l'eau selon un angle plus petit par rapport à la normale que son angle d'arrivée. Conséquence observable : le faisceau présente un coude net à la surface, et il frappe le fond du bac plus près de la verticale, décalé par rapport à l'endroit où son prolongement en ligne droite l'aurait envoyé; un objet placé au fond semble, vu de l'air, relevé par le même effet.<br><br><b>Points d'attribution:</b> 1 point pour le changement de vitesse correct (la lumière ralentit en passant de l'air à l'eau). 1 point pour le sens de la déviation correct (vers la normale). 1 point pour une conséquence observable valide (le coude du faisceau à la surface, le point d'impact décalé au fond, ou un objet du fond qui semble relevé).",
+      {});
+  },
+  function () {
+    return textq("Un faisceau étroit voyage à l'intérieur d'un bloc de verre semi-circulaire et en sort en oblique, du verre vers l'air. Décris le trajet complet du faisceau : ce qui arrive à sa vitesse à la surface de sortie, dans quel sens il se dévie par rapport à la normale, et une conséquence que les élèves peuvent observer sur l'écran placé derrière le bloc. (3 points)",
+      ["la lumière accélère en passant du verre à l'air, un milieu moins dense", "elle se dévie en s'éloignant de la normale à la surface de sortie", "le point lumineux sur l'écran est décalé par rapport à la position qu'un trajet tout droit aurait donnée"],
+      "<b>Réponse modèle:</b> À l'intérieur du verre, le faisceau voyage en ligne droite, plus lentement que dans l'air. À la surface de sortie, il entre dans un milieu moins dense : sa vitesse augmente, et cette accélération le dévie en s'éloignant de la normale, donc il repart dans l'air selon un angle plus grand par rapport à la normale que son angle d'arrivée à la surface. Conséquence observable : le point lumineux sur l'écran derrière le bloc est décalé par rapport à l'endroit où il tomberait si le faisceau avait continué tout droit à travers le bloc; en traçant les deux trajets, les élèves voient le coude du faisceau à la surface de sortie.<br><br><b>Points d'attribution:</b> 1 point pour le changement de vitesse correct (la lumière accélère en passant du verre à l'air). 1 point pour le sens de la déviation correct (en s'éloignant de la normale). 1 point pour une conséquence observable valide (le point lumineux décalé sur l'écran, ou le coude visible du faisceau à la surface de sortie).",
+      {});
+  },
+  function () {
+    return textq("La lumière d'une petite lampe placée sous l'eau d'un aquarium remonte en oblique et sort dans l'air avant d'atteindre l'oeil d'un observateur. Décris le trajet complet de cette lumière : ce qui arrive à sa vitesse à la surface, dans quel sens elle se dévie par rapport à la normale, et une conséquence que l'observateur peut constater en regardant la lampe. (3 points)",
+      ["la lumière accélère en passant de l'eau à l'air, un milieu moins dense", "elle se dévie en s'éloignant de la normale à la surface", "la lampe semble plus près de la surface qu'elle ne l'est réellement, car l'oeil prolonge les rayons en ligne droite"],
+      "<b>Réponse modèle:</b> La lumière de la lampe voyage en ligne droite dans l'eau, plus lentement que dans l'air. À la surface, elle entre dans un milieu moins dense : sa vitesse augmente, et cette accélération la dévie en s'éloignant de la normale, donc elle atteint l'oeil selon un angle plus ouvert que son trajet dans l'eau. Conséquence observable : l'oeil prolonge les rayons reçus en ligne droite et reconstruit la lampe plus près de la surface qu'elle ne l'est réellement; la lampe paraît relevée dans l'aquarium, et viser sa position apparente avec une pince la manquerait par en dessous.<br><br><b>Points d'attribution:</b> 1 point pour le changement de vitesse correct (la lumière accélère en passant de l'eau à l'air). 1 point pour le sens de la déviation correct (en s'éloignant de la normale). 1 point pour une conséquence observable valide (la lampe semble relevée, plus près de la surface, ou toute visée sur sa position apparente la manque).",
+      {});
+  }
+]), ["Décris le trajet en trois temps : avant la frontière, à la frontière, après la frontière.", "Le sens de la déviation suit le changement de vitesse : ralentir rapproche de la normale, accélérer en éloigne."]);
+
 /* ----- bank-u4.js ----- */
 // CRMARKS: s8f-u4-cr-besoins-experience=3
 // CRMARKS: s8f-u4-cr-living=3
@@ -4626,6 +5010,7 @@ E("s8f-u3-cr-refraction-bol", 3, ["SC8.7.4"], 2, "var", varset([
 // CRMARKS: s8f-u4-cr-cellule-comparer=2
 // CRMARKS: s8f-u4-cr-niveaux-appliquer=4
 // CRMARKS: s8f-u4-cr-systemes-reponse=4
+// CRMARKS: s8f-u4-cr-cellule-vivante=2
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
 // CRMARKS: s8f-u4-living-chars=2
 // CRMARKS: s8f-u4-nonliving=2
@@ -5655,10 +6040,161 @@ E("s8f-u4-cr-systemes-reponse", 4, ["SC8.10.6", "SC8.10.7"], 2, "var", varset([
   }
 ]), ["Traite les trois systèmes un par un, avec le travail précis de chacun dans cet épisode.", "Pour le dernier point, choisis un système et suis la conséquence de son silence jusqu'au bout."]);
 
+/* ---------- Ajout du 21 novembre 2026 : plan de tests (decisions 9, 10, 11) ---------- */
+
+/* ---------- SC8.10.1, SC8.10.5 et SC8.10.6 : cellule vivante, besoins et facteurs ---------- */
+
+E("s8f-u4-cr-cellule-vivante", 4, ["SC8.10.1"], 2, "var", varset([
+  function () {
+    return textq("Une amibe est un organisme formé d'une seule cellule, qui vit librement dans l'eau d'un étang : elle se déplace vers sa nourriture, la capture, grandit, puis se divise en deux amibes. Explique comment cette unique cellule montre qu'elle est un système vivant complet, qui affiche les caractéristiques de la vie. (2 points)",
+      ["l'amibe se déplace et répond à la présence de nourriture dans son milieu", "elle prend des nutriments et élimine ses déchets par sa membrane", "elle croît et se reproduit en se divisant en deux cellules", "elle accomplit seule toutes ces activités, sans faire partie d'un plus grand organisme"],
+      "<b>Réponse modèle:</b> L'amibe n'est pas un fragment d'être vivant : sa seule cellule accomplit tout ce qui définit la vie. Elle se déplace vers sa nourriture et y répond, ce qui montre le mouvement et la réponse aux stimuli. Elle prend des nutriments et de l'oxygène et élimine ses déchets à travers sa membrane, donc elle satisfait seule les besoins de base d'une cellule. Elle grandit, puis se divise en deux amibes, ce qui est la reproduction. Comme elle affiche les caractéristiques de la vie par elle-même, cette cellule unique est un organisme vivant complet.<br><br><b>Points d'attribution:</b> 1 point pour au moins trois caractéristiques de la vie correctement appliquées à l'amibe (par exemple le mouvement et la réponse vers la nourriture, la croissance, et la reproduction par division). 1 point pour la conclusion complète (la cellule satisfait seule ses besoins de base, nutriments et élimination des déchets, et forme à elle seule un système vivant, pas seulement une partie d'un organisme).",
+      {});
+  },
+  function () {
+    return textq("Une cellule de levure placée dans une pâte sucrée se nourrit du sucre, dégage des bulles de gaz, grandit et produit de nouvelles cellules par bourgeonnement, jusqu'à faire lever toute la pâte. Explique comment cette unique cellule montre qu'elle est un système vivant complet, qui affiche les caractéristiques de la vie. (2 points)",
+      ["la levure prend le sucre comme nutriment et dégage des déchets gazeux", "elle croît dans la pâte tiède et humide", "elle se reproduit en produisant de nouvelles cellules par bourgeonnement", "elle accomplit seule toutes ces activités, sans faire partie d'un plus grand organisme"],
+      "<b>Réponse modèle:</b> La cellule de levure accomplit à elle seule les activités d'un être vivant. Elle prend des nutriments, le sucre de la pâte, et élimine des déchets, le gaz qui forme les bulles : elle satisfait donc seule les besoins de base d'une cellule. Elle grandit dans la pâte, ce qui est la croissance, et elle produit de nouvelles cellules par bourgeonnement, ce qui est la reproduction; elle répond aussi à son milieu, car elle cesse ces activités dans une pâte froide ou sans sucre. Cette cellule unique est donc un système vivant complet, un organisme à part entière, et non la simple partie d'un organisme plus grand.<br><br><b>Points d'attribution:</b> 1 point pour au moins trois caractéristiques ou activités de la vie correctement appliquées à la levure (par exemple se nourrir du sucre et dégager des déchets, croître, et se reproduire par bourgeonnement). 1 point pour la conclusion complète (la cellule satisfait seule ses besoins de base et forme à elle seule un système vivant, pas seulement une partie d'un organisme).",
+      {});
+  },
+  function () {
+    return textq("Dans une goutte d'eau de mare, une algue microscopique formée d'une seule cellule capte la lumière, fabrique sa nourriture, se déplace vers la lumière et, après avoir grandi, se divise en deux algues. Explique comment cette unique cellule montre qu'elle est un système vivant complet, qui affiche les caractéristiques de la vie. (2 points)",
+      ["l'algue se déplace vers la lumière et y répond", "elle fabrique sa nourriture et satisfait seule ses besoins de base", "elle croît puis se divise en deux cellules, ce qui est la reproduction", "elle accomplit seule toutes ces activités, sans faire partie d'un plus grand organisme"],
+      "<b>Réponse modèle:</b> Cette algue d'une seule cellule affiche les caractéristiques de la vie sans l'aide d'aucune autre cellule. Elle se déplace vers la lumière et y répond, ce qui montre le mouvement et la réponse aux stimuli. Elle fabrique sa nourriture à la lumière et échange ce dont elle a besoin avec l'eau de la goutte, nutriments contre déchets, donc elle satisfait seule les besoins de base d'une cellule. Elle grandit, puis se divise en deux algues, ce qui est la reproduction. Sa seule cellule est donc un système vivant complet : un organisme entier tient dans cette unique cellule.<br><br><b>Points d'attribution:</b> 1 point pour au moins trois caractéristiques de la vie correctement appliquées à l'algue (par exemple le mouvement et la réponse vers la lumière, la croissance, et la reproduction par division). 1 point pour la conclusion complète (la cellule satisfait seule ses besoins de base, nourriture, échanges et élimination des déchets, et forme à elle seule un système vivant, pas seulement une partie d'un organisme).",
+      {});
+  }
+]), ["Une seule cellule suffit-elle à la vie? Cherche les caractéristiques une à une.", "Nomme les caractéristiques, puis montre que la cellule satisfait seule ses besoins de base."]);
+
+E("s8f-u4-besoins-cellules", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return mcq("Après un repas, une cellule du cerveau reçoit du glucose qui ne se trouvait pas dans le cerveau une heure plus tôt. Quel énoncé explique le mieux le lien entre le besoin de cette cellule et le fonctionnement de l'organisme entier?",
+      "La cellule partage les besoins de l'organisme entier : le système digestif a décomposé les aliments du repas, et le système circulatoire a transporté le glucose absorbé jusqu'à cette cellule du cerveau",
+      ["La cellule produit ses besoins elle-même, indépendamment de l'organisme : elle a fabriqué son glucose sur place à partir de l'air respiré, et le repas mangé une heure plus tôt n'a joué aucun rôle pour elle",
+       "La cellule reçoit ses besoins directement du milieu extérieur : le glucose du repas est passé de la bouche au cerveau par les nerfs, sans que le sang ni la digestion aient eu à intervenir dans ce trajet",
+       "La cellule attend que l'organisme entier ait fini de digérer : le glucose reste emmagasiné dans l'estomac pendant des heures, puis il est libéré d'un seul coup vers toutes les cellules en même temps le soir"],
+      "Les besoins d'une cellule et ceux de l'organisme sont les mêmes, à deux échelles. La cellule du cerveau a besoin de nutriments comme tout l'organisme; elle ne peut pas les obtenir seule, donc les systèmes de l'organisme travaillent pour elle : le digestif décompose et absorbe, le circulatoire transporte et livre jusqu'à la cellule.",
+      {});
+  },
+  function () {
+    return mcq("Par une journée chaude, un coureur qui n'a presque rien bu sent la soif, sa bouche devient sèche et tout son corps se fatigue. Quel énoncé explique le mieux le lien entre cette sensation et les besoins de ses cellules?",
+      "Chaque cellule du coureur a besoin d'eau comme l'organisme entier : quand l'eau manque, les cellules fonctionnent moins bien partout, et la soif est le signal de l'organisme qui pousse à rétablir l'apport d'eau",
+      ["Seules les cellules de la bouche ont besoin d'eau dans le corps : quand elles s'assèchent, elles envoient la sensation de soif, tandis que les autres cellules du coureur continuent sans eau indéfiniment",
+       "La soif vient uniquement de la chaleur sur la peau du coureur : ses cellules contiennent encore toute leur eau, mais la peau chaude trompe le cerveau, qui produit une sensation de soif sans aucun manque réel",
+       "Les cellules du coureur fabriquent leur propre eau quand il court : la fatigue vient seulement de la chaleur accumulée, et boire ne sert qu'à rafraîchir la bouche sans rien changer au travail des cellules"],
+      "L'eau est un besoin de base de chaque cellule, pas seulement de l'organisme vu de l'extérieur. Quand l'apport d'eau baisse, c'est le fonctionnement des cellules partout dans le corps qui ralentit, d'où la fatigue générale. La soif est la réponse de l'organisme entier au manque ressenti à l'échelle de ses cellules.",
+      {});
+  },
+  function () {
+    return mcq("Les cellules des reins filtrent le sang jour et nuit et en retirent les déchets, que l'organisme élimine ensuite dans l'urine. Quel énoncé décrit le mieux le lien entre le travail de ces cellules et l'organisme entier?",
+      "Le besoin d'élimination des déchets appartient à chaque cellule : les cellules des reins accomplissent ce travail pour toutes les autres cellules, dont les déchets, transportés par le sang, seraient sinon restés dans tout le corps",
+      ["Le besoin d'élimination des déchets appartient seulement aux reins : les autres cellules du corps ne produisent aucun déchet, donc le travail des cellules des reins ne concerne que les reins eux-mêmes et leur propre survie",
+       "Chaque cellule élimine ses déchets directement vers l'extérieur du corps : les cellules des reins ne font que surveiller ce travail, et le sang ne transporte jamais de déchets d'une partie du corps vers une autre partie",
+       "Les déchets des cellules sont emmagasinés pour toujours dans le sang : les cellules des reins se contentent de les compter, et l'urine produite par l'organisme ne contient que l'eau bue en trop pendant la journée entière"],
+      "L'élimination des déchets est un des besoins de base partagés par les cellules et l'organisme. Chaque cellule produit des déchets, le sang les transporte, et les cellules spécialisées des reins font pour l'organisme entier le travail d'élimination : si elles s'arrêtaient, les déchets de toutes les cellules s'accumuleraient partout.",
+      {});
+  },
+  function () {
+    return mcq("Pendant un entraînement intense, les cellules musculaires d'une joueuse consomment beaucoup plus d'oxygène et de nutriments qu'au repos, et produisent beaucoup plus de déchets. Quel énoncé explique le mieux la réponse de son organisme entier?",
+      "L'organisme entier répond aux besoins accrus de ces cellules : la respiration et le battement du coeur accélèrent pour livrer davantage d'oxygène et de nutriments aux muscles et en emporter les déchets plus vite qu'au repos",
+      ["L'organisme entier ignore les besoins changeants de ses cellules : la respiration et le battement du coeur restent exactement au rythme du repos, et les cellules musculaires se débrouillent seules avec leurs réserves locales",
+       "Les cellules musculaires répondent seules à leurs besoins accrus : elles ouvrent des passages directs vers l'air extérieur à travers la peau, ce qui leur apporte l'oxygène sans que les poumons ni le coeur participent davantage",
+       "L'organisme entier répond en arrêtant les autres cellules du corps : le cerveau, les reins et l'intestin cessent tout travail pendant l'entraînement, afin que toute l'énergie économisée passe aux seuls muscles des jambes"],
+      "Les besoins des cellules commandent le fonctionnement de l'organisme. Quand les cellules musculaires demandent plus, les systèmes respiratoire et circulatoire de l'organisme entier augmentent leur travail pour livrer l'oxygène et les nutriments et emporter les déchets : le lien entre l'échelle de la cellule et celle de l'organisme est direct.",
+      {});
+  }
+]), ["Les besoins sont les mêmes aux deux échelles : oxygène, nutriments, eau, élimination des déchets.", "Cherche quel système de l'organisme fait, pour la cellule, ce qu'elle ne peut pas faire seule."]);
+
+E("s8f-u4-systemes-facteurs", 4, ["SC8.10.6"], 2, "var", varset([
+  function () {
+    return mcq("Un élève dort à peine cinq heures par nuit pendant une semaine. En classe, sa concentration baisse et ses temps de réaction aux consignes ralentissent nettement. Quel système est le plus directement touché par ce facteur, et comment?",
+      "Le système nerveux : le manque de sommeil réduit l'efficacité du cerveau, qui traite l'information et coordonne les réponses plus lentement et avec plus d'erreurs qu'après un sommeil suffisant",
+      ["Le système digestif : le manque de sommeil empêche l'estomac de décomposer les aliments du déjeuner, donc aucun nutriment n'atteint le cerveau de l'élève pendant toute la semaine de classe observée",
+       "Le système circulatoire : le manque de sommeil arrête presque la circulation du sang vers le cerveau, donc les cellules du cerveau cessent complètement de recevoir de l'oxygène pendant la journée",
+       "Le système musculaire : le manque de sommeil dissout peu à peu les muscles des yeux de l'élève, donc ses yeux ne peuvent plus suivre les consignes écrites au tableau pendant les cours de la semaine"],
+      "Le sommeil est un facteur fondamental pour le système nerveux. Sans sommeil suffisant, le cerveau, qui coordonne la concentration, la mémoire et les réactions, fonctionne moins efficacement : l'information est traitée plus lentement et les erreurs augmentent, sans que les autres systèmes soient la cause première.",
+      {});
+  },
+  function () {
+    return mcq("Un randonneur boit très peu pendant une longue marche au soleil. Son sang devient plus épais, son coeur bat plus vite au moindre effort et il se sent étourdi. Quel système est le plus directement touché par ce facteur, et comment?",
+      "Le système circulatoire : avec moins d'eau dans le sang, le volume à transporter diminue et le sang s'épaissit, donc le coeur doit travailler plus fort pour livrer l'oxygène aux cellules au même rythme",
+      ["Le système respiratoire : avec moins d'eau bue pendant la marche, les poumons du randonneur cessent d'échanger l'oxygène et le dioxyde de carbone, donc l'air inspiré ressort sans aucun échange gazeux",
+       "Le système nerveux : avec moins d'eau dans le corps du randonneur, les nerfs cessent de transmettre tout signal entre le cerveau et les muscles, donc ses jambes ne reçoivent plus aucun ordre de marche",
+       "Le système digestif : avec moins d'eau bue pendant la marche, l'estomac du randonneur transforme les aliments en pierres, donc aucun nutriment ne peut plus être absorbé par son intestin pendant des jours"],
+      "L'eau fait partie du sang : la déshydratation réduit le volume sanguin et épaissit le sang. Le système circulatoire devient moins efficace, le coeur compense en battant plus vite, et la livraison d'oxygène aux cellules souffre, d'où les étourdissements à l'effort.",
+      {});
+  },
+  function () {
+    return mcq("Une personne mange rarement des légumes, des fruits ou des grains entiers, donc très peu de fibres. Avec le temps, son transit intestinal ralentit et elle souffre souvent de constipation. Quel système est le plus directement touché par ce facteur, et comment?",
+      "Le système digestif : les fibres aident les aliments à progresser dans l'intestin; sans elles, le travail de l'intestin ralentit et l'élimination des résidus devient difficile et moins régulière qu'avant",
+      ["Le système excréteur : les fibres sont le seul carburant des reins, donc sans elles les reins cessent de filtrer le sang et les déchets s'accumulent dans tout le corps de la personne en quelques jours seulement",
+       "Le système circulatoire : les fibres servent à construire les globules rouges du sang, donc sans elles le sang ne transporte plus d'oxygène du tout et la personne s'évanouit chaque fois qu'elle se lève le matin",
+       "Le système respiratoire : les fibres absorbent l'air dans les poumons pendant la digestion, donc sans elles les poumons reçoivent moins d'air et la personne respire de plus en plus difficilement avec le temps"],
+      "L'alimentation est un facteur fondamental du système digestif. Les fibres donnent du volume au contenu de l'intestin et favorisent sa progression; une alimentation pauvre en fibres rend le système digestif moins efficace, avec un transit ralenti et une élimination irrégulière.",
+      {});
+  },
+  function () {
+    return mcq("Chez une personne asthmatique, la poussière et le pollen peuvent faire se resserrer les petites voies respiratoires des poumons pendant quelques heures. Comment ce facteur touche-t-il son système respiratoire?",
+      "Les voies resserrées laissent passer moins d'air à chaque respiration, donc les échanges d'oxygène et de dioxyde de carbone deviennent moins efficaces et l'effort physique devient vite essoufflant",
+      ["Les voies resserrées laissent passer plus d'air à chaque respiration, donc les échanges gazeux deviennent plus efficaces qu'à l'habitude et la personne peut courir plus longtemps sans aucun essoufflement",
+       "Les voies resserrées transforment les poumons en organes de filtration du sang, donc le système respiratoire remplace les reins pendant quelques heures et élimine les déchets par l'air expiré à chaque souffle",
+       "Les voies resserrées n'ont aucun effet sur les échanges gazeux des poumons, donc la personne asthmatique respire exactement comme d'habitude et seul son sens de l'odorat est touché pendant ces quelques heures"],
+      "L'efficacité du système respiratoire dépend du passage de l'air jusqu'aux surfaces d'échange. Des voies respiratoires resserrées par un facteur comme la poussière ou le pollen réduisent le débit d'air : moins d'oxygène entre et moins de dioxyde de carbone sort par unité de temps, d'où l'essoufflement à l'effort.",
+      {});
+  },
+  function () {
+    return mcq("Une nageuse s'entraîne régulièrement plusieurs fois par semaine pendant une saison entière. À la fin de la saison, elle récupère beaucoup plus vite après un effort intense. Quel système a gagné en efficacité, et comment?",
+      "Le système respiratoire : l'entraînement régulier renforce les muscles de la respiration et améliore les échanges gazeux, donc l'oxygène entre et le dioxyde de carbone sort plus efficacement pendant et après l'effort",
+      ["Le système respiratoire : l'entraînement régulier remplace peu à peu les poumons par des muscles plus forts, donc la nageuse respire directement avec sa cage thoracique sans que ses poumons participent aux échanges",
+       "Le système digestif : l'entraînement régulier de la natation accélère la digestion des repas, donc la nageuse récupère plus vite parce que ses aliments se transforment instantanément en énergie dès qu'elle les avale",
+       "Le système excréteur : l'entraînement régulier rend la peau capable d'éliminer tout le dioxyde de carbone du corps, donc les poumons de la nageuse n'ont presque plus aucun échange gazeux à faire après la saison"],
+      "Les facteurs peuvent aussi améliorer un système. L'exercice régulier renforce les muscles respiratoires et rend les échanges gazeux plus efficaces : le système respiratoire répond plus vite à la demande d'oxygène de l'effort et rétablit plus vite l'équilibre après l'effort, d'où la récupération raccourcie.",
+      {});
+  }
+]), ["Nomme le système sur lequel le facteur agit d'abord, avant de juger les autres.", "Efficacité veut dire : le système accomplit son travail mieux, moins bien, ou au prix d'un effort accru."]);
+
+E("s8f-u4-systemes-efficacite", 4, ["SC8.10.6"], 3, "var", varset([
+  function () {
+    return mcq("Après une maladie, le coeur d'une personne pompe le sang moins efficacement qu'avant : à chaque battement, il en envoie moins dans le corps. Quelle évaluation de l'effet sur l'ensemble du corps est la plus juste?",
+      "Tout le corps en souffre : les muscles et le cerveau reçoivent moins d'oxygène et de nutriments par minute, donc la fatigue et l'essoufflement arrivent vite à l'effort, même si les poumons et les muscles eux-mêmes sont sains",
+      ["Seul le coeur en souffre : les muscles et le cerveau reçoivent exactement autant d'oxygène et de nutriments qu'avant, parce que le sang restant dans les vaisseaux se déplace tout seul sans avoir besoin d'être pompé",
+       "Tout le corps en profite : les muscles et le cerveau reçoivent le sang plus lentement, ce qui leur laisse plus de temps pour en extraire l'oxygène, donc l'endurance de la personne augmente nettement après sa maladie",
+       "Rien ne change pour le corps : les poumons ajoutent tellement d'oxygène supplémentaire au sang que la quantité livrée aux cellules reste identique, quelle que soit la force avec laquelle le coeur pompe le sang"],
+      "Le système circulatoire est le transporteur de tous les autres systèmes. S'il perd en efficacité, chaque cellule reçoit moins d'oxygène et de nutriments et se débarrasse plus lentement de ses déchets : l'effet est donc pour le corps entier, fatigue et essoufflement à l'effort, même avec des poumons et des muscles en bon état.",
+      {});
+  },
+  function () {
+    return mcq("Une infection laisse les voies respiratoires d'un élève enflées pendant des semaines, et ses échanges gazeux sont nettement moins efficaces qu'avant. Quelle évaluation de l'effet sur l'ensemble du corps est la plus juste?",
+      "Le sang transporte moins d'oxygène vers toutes les cellules, donc l'élève se fatigue vite en éducation physique et peut même peiner à se concentrer en classe, bien que son coeur et ses muscles soient en bon état",
+      ["Seuls les poumons en souffrent : le sang transporte exactement autant d'oxygène qu'avant vers les cellules, parce que le coeur pompe plus fort et fabrique lui-même l'oxygène qui manque aux échanges gazeux affaiblis",
+       "Le corps entier en profite : avec moins d'oxygène chargé dans les poumons, les cellules ralentissent leur travail et économisent leur énergie, donc l'élève devient plus endurant qu'avant son infection des voies respiratoires",
+       "Rien ne change pour le corps : le système digestif absorbe l'oxygène des aliments à la place des poumons pendant ces semaines, donc les cellules reçoivent leur oxygène habituel par la nourriture comme toujours"],
+      "Les systèmes sont interdépendants : le circulatoire ne peut livrer que l'oxygène que le respiratoire a chargé. Des échanges gazeux moins efficaces signifient un sang moins oxygéné pour toutes les cellules, d'où une fatigue rapide à l'effort et une concentration réduite, malgré un coeur et des muscles sains.",
+      {});
+  },
+  function () {
+    return mcq("Un trouble intestinal réduit fortement la capacité d'une personne à absorber les nutriments de ses aliments, même si elle mange des repas complets et équilibrés. Quelle évaluation de l'effet sur l'ensemble du corps est la plus juste?",
+      "Toutes les cellules reçoivent moins de nutriments que les repas devraient fournir, donc l'énergie baisse, la croissance et la réparation des tissus ralentissent, et la personne perd du poids malgré une alimentation suffisante",
+      ["Seul l'intestin en souffre : les cellules du reste du corps reçoivent exactement les nutriments des repas, parce que les aliments traversent la paroi intestinale d'eux-mêmes sans qu'aucune absorption organisée soit nécessaire",
+       "Le corps entier en profite : les nutriments non absorbés restent plus longtemps dans l'intestin, qui les distribue ensuite lentement aux cellules pendant des semaines, ce qui rend la personne plus énergique qu'avant son trouble",
+       "Rien ne change pour le corps : les poumons absorbent les nutriments manquants à partir de l'air respiré, donc les cellules reçoivent par la respiration tout ce que l'intestin affaibli ne réussit plus à absorber des aliments"],
+      "Manger ne suffit pas : encore faut-il absorber. Si le système digestif perd en efficacité, le sang a moins de nutriments à livrer, et chaque cellule du corps en reçoit moins. L'effet dépasse donc largement l'intestin : énergie, croissance, réparation et poids en témoignent, malgré des repas complets.",
+      {});
+  },
+  function () {
+    return mcq("Les reins d'une personne âgée filtrent le sang de moins en moins efficacement, et les déchets que ses cellules produisent s'éliminent de plus en plus lentement. Quelle évaluation de l'effet sur l'ensemble du corps est la plus juste?",
+      "Les déchets s'accumulent peu à peu dans le sang et atteignent toutes les cellules, donc la personne se sent fatiguée et malade dans tout son corps, bien que le problème de départ se limite à un seul système d'élimination",
+      ["Seuls les reins en souffrent : les déchets produits par les autres cellules restent enfermés dans les reins eux-mêmes, donc le reste du corps continue de fonctionner exactement comme avant, sans fatigue ni malaise général",
+       "Le corps entier en profite : les déchets accumulés dans le sang servent de réserve de matériaux pour les cellules, qui les réutilisent pour construire de nouvelles structures, ce qui rend la personne plus forte avec le temps",
+       "Rien ne change pour le corps : la peau et les poumons éliminent instantanément tous les déchets que les reins affaiblis laissent passer, donc le sang reste toujours aussi propre qu'avec des reins en parfait état de marche"],
+      "Le système excréteur sert toutes les cellules : leurs déchets voyagent par le sang jusqu'aux reins. Si la filtration perd en efficacité, ces déchets restent dans le sang et rejoignent chaque cellule du corps. Un seul système affaibli produit donc un malaise général, preuve que l'efficacité d'un système soutient celle de l'organisme entier.",
+      {});
+  }
+]), ["Suis ce que le système affaibli livre ou retire : qui d'autre en dépend?", "Un système moins efficace ne reste presque jamais un problème local : le sang relie toutes les cellules."]);
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"s8f-u1-abiotic":2,"s8f-u1-abiotic-identify":2,"s8f-u1-abiotic-measure-choice":3,"s8f-u1-aquaculture":3,"s8f-u1-basin-process":3,"s8f-u1-climat-effets-glaciers":3,"s8f-u1-climate-claim-judge":4,"s8f-u1-climate-current-effect":3,"s8f-u1-cr-abiotic":3,"s8f-u1-cr-bassin-versant":4,"s8f-u1-cr-coastal-climate":3,"s8f-u1-cr-cycle-role":3,"s8f-u1-cr-decision":4,"s8f-u1-cr-deplacement-aire":4,"s8f-u1-cr-design-salinity":4,"s8f-u1-cr-distribution-deplacement":3,"s8f-u1-cr-glacier":3,"s8f-u1-cr-headland":3,"s8f-u1-cr-indirect":3,"s8f-u1-cr-pond-data":3,"s8f-u1-cr-population":3,"s8f-u1-cr-protect":3,"s8f-u1-cr-results-summary":3,"s8f-u1-cr-tech-effects":3,"s8f-u1-cr-tides":3,"s8f-u1-cycle-process":2,"s8f-u1-distribution":2,"s8f-u1-distribution-abiotique":2,"s8f-u1-erosion-deposition":2,"s8f-u1-fog":3,"s8f-u1-formation-glaciers":2,"s8f-u1-fresh-env":2,"s8f-u1-fresh-sources":2,"s8f-u1-glaciation-role":3,"s8f-u1-glacier-retreat":3,"s8f-u1-headland-energy":3,"s8f-u1-health-figure":2,"s8f-u1-ice-age":2,"s8f-u1-iceberg":4,"s8f-u1-institutions":2,"s8f-u1-invasive":3,"s8f-u1-lab-extension":3,"s8f-u1-lab-procedure":2,"s8f-u1-landform-figure":2,"s8f-u1-landform-formation":3,"s8f-u1-method-choice":3,"s8f-u1-nino-nina":2,"s8f-u1-pop-extrapolate":2,"s8f-u1-pop-interpolate":2,"s8f-u1-process-evaluate":4,"s8f-u1-productivity":3,"s8f-u1-profile-figure":2,"s8f-u1-profile-order":2,"s8f-u1-protection":2,"s8f-u1-protection-choice":3,"s8f-u1-research-judge":4,"s8f-u1-research-landform":2,"s8f-u1-rock-resistance":2,"s8f-u1-sonar":2,"s8f-u1-species-category":2,"s8f-u1-sustain-aspects":2,"s8f-u1-tech":2,"s8f-u1-tech-change":3,"s8f-u1-tech-improve":2,"s8f-u1-tech-strength":3,"s8f-u1-temp-oxygen":3,"s8f-u1-temp-population":4,"s8f-u1-threshold-judge":3,"s8f-u1-tidal-range":2,"s8f-u1-tides":2,"s8f-u1-upwelling":2,"s8f-u1-wave-energy":2,"s8f-u1-wave-size":4,"s8f-u1-zones":2,"s8f-u2-archimedes":3,"s8f-u2-average-density":4,"s8f-u2-bargraph":4,"s8f-u2-buoyancy-rule":2,"s8f-u2-calc-area":3,"s8f-u2-calc-density":2,"s8f-u2-calc-force":2,"s8f-u2-calc-mass":2,"s8f-u2-calc-pressure":2,"s8f-u2-calc-volume":2,"s8f-u2-cleaning":3,"s8f-u2-compressible":2,"s8f-u2-concentration":3,"s8f-u2-cr-ballon":2,"s8f-u2-cr-car-lift":3,"s8f-u2-cr-cleaning-claim":4,"s8f-u2-cr-data-infer":3,"s8f-u2-cr-density-block":3,"s8f-u2-cr-design-viscosity":4,"s8f-u2-cr-displacement-calc":3,"s8f-u2-cr-layers":3,"s8f-u2-cr-mass-weight":3,"s8f-u2-cr-molasses":3,"s8f-u2-cr-piggyback":3,"s8f-u2-cr-pressure-crate":3,"s8f-u2-cr-raise-ship":3,"s8f-u2-cr-temp-situations":3,"s8f-u2-cr-underlying":3,"s8f-u2-cr-viscosite-experience":4,"s8f-u2-cr-viscosite-test":3,"s8f-u2-densite-quotidien":3,"s8f-u2-density-life":2,"s8f-u2-depth-pressure":3,"s8f-u2-disciplines":2,"s8f-u2-discrepancy-density":4,"s8f-u2-discrepancy-flow":3,"s8f-u2-displacement":2,"s8f-u2-displacement-calc":2,"s8f-u2-displacement-error":4,"s8f-u2-factors":2,"s8f-u2-flow-lab":2,"s8f-u2-flow-ranking":2,"s8f-u2-force-figure":3,"s8f-u2-forces":2,"s8f-u2-gas-laws":2,"s8f-u2-graph-choice":2,"s8f-u2-heating-honey":3,"s8f-u2-hot-air":2,"s8f-u2-identify-substance":3,"s8f-u2-instruments":2,"s8f-u2-lives":2,"s8f-u2-mass-weight":2,"s8f-u2-masse-poids-lieux":2,"s8f-u2-moon-suitcase":4,"s8f-u2-pascal":2,"s8f-u2-personal":2,"s8f-u2-products":2,"s8f-u2-question-problem":3,"s8f-u2-questions":2,"s8f-u2-ratio-constant":2,"s8f-u2-rephrase":2,"s8f-u2-seasoning":3,"s8f-u2-sk-calc-density":2,"s8f-u2-sk-calc-mass":2,"s8f-u2-sk-calc-volume":2,"s8f-u2-snowshoes":2,"s8f-u2-submarine":3,"s8f-u2-underlying":2,"s8f-u2-variables":3,"s8f-u2-viscosite-facteur":3,"s8f-u2-viscosity-compare":3,"s8f-u2-viscosity-def":2,"s8f-u2-viscosity-use":2,"s8f-u2-winter-oil":4,"s8f-u3-angle-calc":2,"s8f-u3-applications-question":3,"s8f-u3-coin-question":2,"s8f-u3-colour-seen":3,"s8f-u3-concave-spot":2,"s8f-u3-convex-spot":2,"s8f-u3-corning-siemens":3,"s8f-u3-cr-conclusion":3,"s8f-u3-cr-design-refraction":4,"s8f-u3-cr-diffuse":3,"s8f-u3-cr-em":3,"s8f-u3-cr-em-usages":4,"s8f-u3-cr-estimate":3,"s8f-u3-cr-fibre":4,"s8f-u3-cr-identify-medium":3,"s8f-u3-cr-image-miroir":4,"s8f-u3-cr-mirror-lab":3,"s8f-u3-cr-predict":3,"s8f-u3-cr-properties":3,"s8f-u3-cr-reflection":3,"s8f-u3-cr-refraction":3,"s8f-u3-cr-refraction-bol":4,"s8f-u3-cr-refraction-expliquer":3,"s8f-u3-cr-research":3,"s8f-u3-cr-speed":3,"s8f-u3-cr-words":3,"s8f-u3-definitions":2,"s8f-u3-definitions-figure":3,"s8f-u3-delimit":3,"s8f-u3-early-tech":2,"s8f-u3-em-compare":3,"s8f-u3-em-detection":3,"s8f-u3-em-energy":2,"s8f-u3-em-order":2,"s8f-u3-estimate-bend":2,"s8f-u3-estimate-compare":3,"s8f-u3-estimate-incidence":2,"s8f-u3-estimate-reflect":2,"s8f-u3-fish-question":3,"s8f-u3-focal-judge":3,"s8f-u3-focal-procedure":3,"s8f-u3-freq-relation":3,"s8f-u3-harm-energy":2,"s8f-u3-history":2,"s8f-u3-individual-group":2,"s8f-u3-lateral":3,"s8f-u3-law":2,"s8f-u3-lens-key":2,"s8f-u3-lens-key-apply":3,"s8f-u3-lens-key-evidence":4,"s8f-u3-materials":2,"s8f-u3-mirror-key":2,"s8f-u3-mirror-key-apply":3,"s8f-u3-mirror-types":2,"s8f-u3-personal-optics":2,"s8f-u3-plane-spot":2,"s8f-u3-predict-media":3,"s8f-u3-properties":2,"s8f-u3-protractor":2,"s8f-u3-real-virtual":2,"s8f-u3-safety":2,"s8f-u3-spectrum-order":2,"s8f-u3-vacuum":2,"s8f-u3-vision":2,"s8f-u4-analogy":2,"s8f-u4-besoins-appliques":2,"s8f-u4-care":2,"s8f-u4-care-error":3,"s8f-u4-careers":2,"s8f-u4-careers-match":2,"s8f-u4-cell-figure":2,"s8f-u4-community-need":3,"s8f-u4-control":3,"s8f-u4-control-error":3,"s8f-u4-cr-artificial":4,"s8f-u4-cr-besoins-experience":3,"s8f-u4-cr-cell-division":3,"s8f-u4-cr-cellule-comparer":2,"s8f-u4-cr-community":3,"s8f-u4-cr-decision":3,"s8f-u4-cr-decision-personal":3,"s8f-u4-cr-design-rates":4,"s8f-u4-cr-factors":3,"s8f-u4-cr-interdependence":3,"s8f-u4-cr-levels":3,"s8f-u4-cr-living":3,"s8f-u4-cr-microscope":3,"s8f-u4-cr-model-eval":3,"s8f-u4-cr-niveaux-appliquer":4,"s8f-u4-cr-organelles":3,"s8f-u4-cr-propose":3,"s8f-u4-cr-systemes-reponse":4,"s8f-u4-decision-sr":3,"s8f-u4-differences":2,"s8f-u4-division-count":2,"s8f-u4-dynamic":3,"s8f-u4-early-modern":3,"s8f-u4-estimate-compare":2,"s8f-u4-estimate-gen":2,"s8f-u4-estimate-scenario":2,"s8f-u4-example-level":2,"s8f-u4-factor-effect":3,"s8f-u4-factor-positive":2,"s8f-u4-focus-sequence":2,"s8f-u4-graph-choice":3,"s8f-u4-hypothesis":3,"s8f-u4-hypothesis-basis":2,"s8f-u4-identical":2,"s8f-u4-interdependence-why":4,"s8f-u4-knowledge-tech2":3,"s8f-u4-living-chars":2,"s8f-u4-micro-development":2,"s8f-u4-micro-parts":2,"s8f-u4-model-accuracy":3,"s8f-u4-needs":2,"s8f-u4-needs-apply":3,"s8f-u4-needs-system":3,"s8f-u4-niveaux-identifier":2,"s8f-u4-nonliving":2,"s8f-u4-order":2,"s8f-u4-organelle-figure":2,"s8f-u4-organelle-function":2,"s8f-u4-organelle-match":2,"s8f-u4-organelle-plant":2,"s8f-u4-organize":2,"s8f-u4-organize-avg":3,"s8f-u4-pair-circ-resp":2,"s8f-u4-pair-dig-circ":2,"s8f-u4-pair-nerv-musc":3,"s8f-u4-parts-action":2,"s8f-u4-personal-decision":3,"s8f-u4-propose-sr":3,"s8f-u4-protocol":2,"s8f-u4-rates-figure":2,"s8f-u4-recovery-figure":3,"s8f-u4-regular-shape":2,"s8f-u4-sedentary":3,"s8f-u4-tech-examples":2,"s8f-u4-tech-match":2,"s8f-u4-testable":3,"s8f-u4-testable2":2,"s8f-u4-vacuole-compare":3,"s8f-u4-variables":3};
+window.__BANK_CRMARKS={"s8f-u1-abiotic":2,"s8f-u1-abiotic-identify":2,"s8f-u1-abiotic-measure-choice":3,"s8f-u1-aquaculture":3,"s8f-u1-basin-process":3,"s8f-u1-climat-effets-glaciers":3,"s8f-u1-climate-claim-judge":4,"s8f-u1-climate-current-effect":3,"s8f-u1-cr-abiotic":3,"s8f-u1-cr-bassin-versant":4,"s8f-u1-cr-coastal-climate":3,"s8f-u1-cr-cycle-role":3,"s8f-u1-cr-decision":4,"s8f-u1-cr-deplacement-aire":4,"s8f-u1-cr-design-salinity":4,"s8f-u1-cr-distribution-deplacement":3,"s8f-u1-cr-glacier":3,"s8f-u1-cr-headland":3,"s8f-u1-cr-indirect":3,"s8f-u1-cr-pond-data":3,"s8f-u1-cr-population":3,"s8f-u1-cr-protect":3,"s8f-u1-cr-results-summary":3,"s8f-u1-cr-tech-effects":3,"s8f-u1-cr-tides":3,"s8f-u1-cycle-process":2,"s8f-u1-distribution":2,"s8f-u1-distribution-abiotique":2,"s8f-u1-erosion-deposition":2,"s8f-u1-fog":3,"s8f-u1-formation-glaciers":2,"s8f-u1-fresh-env":2,"s8f-u1-fresh-sources":2,"s8f-u1-glaciation-role":3,"s8f-u1-glacier-retreat":3,"s8f-u1-headland-energy":3,"s8f-u1-health-figure":2,"s8f-u1-ice-age":2,"s8f-u1-iceberg":4,"s8f-u1-institutions":2,"s8f-u1-invasive":3,"s8f-u1-lab-extension":3,"s8f-u1-lab-procedure":2,"s8f-u1-landform-figure":2,"s8f-u1-landform-formation":3,"s8f-u1-method-choice":3,"s8f-u1-nino-nina":2,"s8f-u1-pop-extrapolate":2,"s8f-u1-pop-interpolate":2,"s8f-u1-process-evaluate":4,"s8f-u1-productivity":3,"s8f-u1-profile-figure":2,"s8f-u1-profile-order":2,"s8f-u1-protection":2,"s8f-u1-protection-choice":3,"s8f-u1-research-judge":4,"s8f-u1-research-landform":2,"s8f-u1-rock-resistance":2,"s8f-u1-sonar":2,"s8f-u1-species-category":2,"s8f-u1-sustain-aspects":2,"s8f-u1-tech":2,"s8f-u1-tech-change":3,"s8f-u1-tech-improve":2,"s8f-u1-tech-strength":3,"s8f-u1-temp-oxygen":3,"s8f-u1-temp-population":4,"s8f-u1-threshold-judge":3,"s8f-u1-tidal-range":2,"s8f-u1-tides":2,"s8f-u1-upwelling":2,"s8f-u1-wave-energy":2,"s8f-u1-wave-size":4,"s8f-u1-zones":2,"s8f-u2-archimedes":3,"s8f-u2-average-density":4,"s8f-u2-bargraph":4,"s8f-u2-buoyancy-rule":2,"s8f-u2-calc-area":3,"s8f-u2-calc-density":2,"s8f-u2-calc-force":2,"s8f-u2-calc-mass":2,"s8f-u2-calc-pressure":2,"s8f-u2-calc-volume":2,"s8f-u2-cleaning":3,"s8f-u2-compressible":2,"s8f-u2-concentration":3,"s8f-u2-cr-ballon":2,"s8f-u2-cr-car-lift":3,"s8f-u2-cr-cleaning-claim":4,"s8f-u2-cr-data-infer":3,"s8f-u2-cr-density-block":3,"s8f-u2-cr-design-viscosity":4,"s8f-u2-cr-displacement-calc":3,"s8f-u2-cr-layers":3,"s8f-u2-cr-mass-weight":3,"s8f-u2-cr-molasses":3,"s8f-u2-cr-piggyback":3,"s8f-u2-cr-pressure-crate":3,"s8f-u2-cr-raise-ship":3,"s8f-u2-cr-temp-situations":3,"s8f-u2-cr-underlying":3,"s8f-u2-cr-viscosite-experience":4,"s8f-u2-cr-viscosite-test":3,"s8f-u2-densite-quotidien":3,"s8f-u2-density-life":2,"s8f-u2-depth-pressure":3,"s8f-u2-disciplines":2,"s8f-u2-discrepancy-density":4,"s8f-u2-discrepancy-flow":3,"s8f-u2-displacement":2,"s8f-u2-displacement-calc":2,"s8f-u2-displacement-error":4,"s8f-u2-factors":2,"s8f-u2-flow-lab":2,"s8f-u2-flow-ranking":2,"s8f-u2-force-figure":3,"s8f-u2-forces":2,"s8f-u2-gas-laws":2,"s8f-u2-graph-choice":2,"s8f-u2-heating-honey":3,"s8f-u2-hot-air":2,"s8f-u2-identify-substance":3,"s8f-u2-instruments":2,"s8f-u2-lives":2,"s8f-u2-mass-weight":2,"s8f-u2-masse-poids-lieux":2,"s8f-u2-moon-suitcase":4,"s8f-u2-pascal":2,"s8f-u2-personal":2,"s8f-u2-products":2,"s8f-u2-question-problem":3,"s8f-u2-questions":2,"s8f-u2-ratio-constant":2,"s8f-u2-rephrase":2,"s8f-u2-seasoning":3,"s8f-u2-sk-calc-density":2,"s8f-u2-sk-calc-mass":2,"s8f-u2-sk-calc-volume":2,"s8f-u2-snowshoes":2,"s8f-u2-submarine":3,"s8f-u2-underlying":2,"s8f-u2-variables":3,"s8f-u2-viscosite-facteur":3,"s8f-u2-viscosity-compare":3,"s8f-u2-viscosity-def":2,"s8f-u2-viscosity-use":2,"s8f-u2-winter-oil":4,"s8f-u3-angle-calc":2,"s8f-u3-applications-question":3,"s8f-u3-coin-question":2,"s8f-u3-colour-seen":3,"s8f-u3-concave-spot":2,"s8f-u3-convex-spot":2,"s8f-u3-corning-siemens":3,"s8f-u3-cr-conclusion":3,"s8f-u3-cr-design-refraction":4,"s8f-u3-cr-diffuse":3,"s8f-u3-cr-em":3,"s8f-u3-cr-em-usages":4,"s8f-u3-cr-estimate":3,"s8f-u3-cr-fibre":4,"s8f-u3-cr-identify-medium":3,"s8f-u3-cr-image-miroir":4,"s8f-u3-cr-mirror-lab":3,"s8f-u3-cr-predict":3,"s8f-u3-cr-properties":3,"s8f-u3-cr-reflection":3,"s8f-u3-cr-reflexion-quotidien":2,"s8f-u3-cr-refraction":3,"s8f-u3-cr-refraction-bol":4,"s8f-u3-cr-refraction-expliquer":3,"s8f-u3-cr-refraction-lumiere":3,"s8f-u3-cr-refraction-paille":3,"s8f-u3-cr-research":3,"s8f-u3-cr-speed":3,"s8f-u3-cr-words":3,"s8f-u3-definitions":2,"s8f-u3-definitions-figure":3,"s8f-u3-delimit":3,"s8f-u3-early-tech":2,"s8f-u3-em-compare":3,"s8f-u3-em-detection":3,"s8f-u3-em-energy":2,"s8f-u3-em-order":2,"s8f-u3-estimate-bend":2,"s8f-u3-estimate-compare":3,"s8f-u3-estimate-incidence":2,"s8f-u3-estimate-reflect":2,"s8f-u3-fish-question":3,"s8f-u3-focal-judge":3,"s8f-u3-focal-procedure":3,"s8f-u3-freq-relation":3,"s8f-u3-harm-energy":2,"s8f-u3-history":2,"s8f-u3-individual-group":2,"s8f-u3-lateral":3,"s8f-u3-law":2,"s8f-u3-lens-key":2,"s8f-u3-lens-key-apply":3,"s8f-u3-lens-key-evidence":4,"s8f-u3-materials":2,"s8f-u3-mirror-key":2,"s8f-u3-mirror-key-apply":3,"s8f-u3-mirror-types":2,"s8f-u3-personal-optics":2,"s8f-u3-plane-spot":2,"s8f-u3-predict-media":3,"s8f-u3-properties":2,"s8f-u3-protractor":2,"s8f-u3-real-virtual":2,"s8f-u3-safety":2,"s8f-u3-spectrum-order":2,"s8f-u3-vacuum":2,"s8f-u3-vision":2,"s8f-u4-analogy":2,"s8f-u4-besoins-appliques":2,"s8f-u4-care":2,"s8f-u4-care-error":3,"s8f-u4-careers":2,"s8f-u4-careers-match":2,"s8f-u4-cell-figure":2,"s8f-u4-community-need":3,"s8f-u4-control":3,"s8f-u4-control-error":3,"s8f-u4-cr-artificial":4,"s8f-u4-cr-besoins-experience":3,"s8f-u4-cr-cell-division":3,"s8f-u4-cr-cellule-comparer":2,"s8f-u4-cr-cellule-vivante":2,"s8f-u4-cr-community":3,"s8f-u4-cr-decision":3,"s8f-u4-cr-decision-personal":3,"s8f-u4-cr-design-rates":4,"s8f-u4-cr-factors":3,"s8f-u4-cr-interdependence":3,"s8f-u4-cr-levels":3,"s8f-u4-cr-living":3,"s8f-u4-cr-microscope":3,"s8f-u4-cr-model-eval":3,"s8f-u4-cr-niveaux-appliquer":4,"s8f-u4-cr-organelles":3,"s8f-u4-cr-propose":3,"s8f-u4-cr-systemes-reponse":4,"s8f-u4-decision-sr":3,"s8f-u4-differences":2,"s8f-u4-division-count":2,"s8f-u4-dynamic":3,"s8f-u4-early-modern":3,"s8f-u4-estimate-compare":2,"s8f-u4-estimate-gen":2,"s8f-u4-estimate-scenario":2,"s8f-u4-example-level":2,"s8f-u4-factor-effect":3,"s8f-u4-factor-positive":2,"s8f-u4-focus-sequence":2,"s8f-u4-graph-choice":3,"s8f-u4-hypothesis":3,"s8f-u4-hypothesis-basis":2,"s8f-u4-identical":2,"s8f-u4-interdependence-why":4,"s8f-u4-knowledge-tech2":3,"s8f-u4-living-chars":2,"s8f-u4-micro-development":2,"s8f-u4-micro-parts":2,"s8f-u4-model-accuracy":3,"s8f-u4-needs":2,"s8f-u4-needs-apply":3,"s8f-u4-needs-system":3,"s8f-u4-niveaux-identifier":2,"s8f-u4-nonliving":2,"s8f-u4-order":2,"s8f-u4-organelle-figure":2,"s8f-u4-organelle-function":2,"s8f-u4-organelle-match":2,"s8f-u4-organelle-plant":2,"s8f-u4-organize":2,"s8f-u4-organize-avg":3,"s8f-u4-pair-circ-resp":2,"s8f-u4-pair-dig-circ":2,"s8f-u4-pair-nerv-musc":3,"s8f-u4-parts-action":2,"s8f-u4-personal-decision":3,"s8f-u4-propose-sr":3,"s8f-u4-protocol":2,"s8f-u4-rates-figure":2,"s8f-u4-recovery-figure":3,"s8f-u4-regular-shape":2,"s8f-u4-sedentary":3,"s8f-u4-tech-examples":2,"s8f-u4-tech-match":2,"s8f-u4-testable":3,"s8f-u4-testable2":2,"s8f-u4-vacuole-compare":3,"s8f-u4-variables":3};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose

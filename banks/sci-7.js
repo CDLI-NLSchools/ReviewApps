@@ -684,6 +684,7 @@ function s7ConcentrationSVG(vessels) {
 // CRMARKS: s7-u1-cr-niche-roles=2
 // CRMARKS: s7-u1-cr-effect-chain=3
 // CRMARKS: s7-u1-cr-succession-evidence=3
+// CRMARKS: s7-u1-cr-succession-change=3
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
 // CRMARKS: s7-u1-factor-classify=2
 // CRMARKS: s7-u1-tolerance-curve=3
@@ -2387,6 +2388,205 @@ E("s7-u1-cr-succession-evidence", 1, ["SC7.1.8"], 2, "var", varset([
       "<b>Model answer:</b> (a) The site is in a later stage of succession: it is passing from the shrub stage into the young forest stage. (b) Evidence: young spruce trees rise above the shrubs across the whole site, which shows trees are taking over from shrubs; and older shrubs are dying back in the spruce shade, which shows the change of community is actively happening, supported by the deep soil and litter layer that has built up over forty years. (c) Next the spruce will keep growing into a mature spruce forest and the shrubs will thin out further, because the taller trees capture the light the shrubs need, and the forest community will become stable if the site is left undisturbed.<br><br><b>Marking points:</b> 1 mark for the stage correctly stated (a later stage, shrubs giving way to young forest). 1 mark for two observations from the notes cited as evidence. 1 mark for a sensible next change (a mature spruce forest forming, shrubs thinning) with a reason tied to shading and competition for light.", {});
   }
 ]), ["Place the site on the sequence first: pioneers, grasses, shrubs, young trees, mature forest.", "Your evidence must come from the notes, and your prediction must be the stage that follows the evidence, not the final forest unless the notes support it."]);
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+E("s7-u1-succession-sites", 1, ["SC7.1.8"], 1, "var", varset([
+  function () {
+    return mcq("Near Lumsden, grasses have taken root on a bare sand dune and trapped more sand around them. Low shrubs are now growing where only grasses grew a few years ago, and the plant cover keeps changing from year to year. The process described is",
+      "ecological succession",
+      ["ecological competition", "nutrient recycling", "ecological tolerance"],
+      "One community is gradually being replaced by another over time: the grasses changed the dune by holding the sand, and shrubs that could not survive on loose sand followed. That ordered replacement of communities is ecological succession. Competition and recycling happen within a community, and tolerance describes the range of conditions a species can survive.", {});
+  },
+  function () {
+    return mcq("A roadside ditch near Gander was dug through bare gravel twelve years ago. Mosses and grasses colonized it first, then shrubs moved in, and young alders now grow along its banks where no plants grew at first. This gradual change is an example of",
+      "ecological succession",
+      ["ecological competition", "nutrient recycling", "ecological tolerance"],
+      "The ditch's community has changed in an ordered sequence over twelve years, from mosses and grasses to shrubs and young trees. A community gradually replacing another community over time is ecological succession.", {});
+  },
+  function () {
+    return mcq("On a rocky outcrop above a harbour, lichens were the only living things on the bare rock twenty years ago. Mosses followed, then grasses rooted in the cracks, and now low shrubs grow in soil that has built up on the rock. The change over time is",
+      "ecological succession",
+      ["ecological competition", "nutrient recycling", "ecological tolerance"],
+      "Each group of organisms changed the site and made it possible for the next group to live there, so one community has replaced another in sequence over twenty years. That gradual, ordered change of communities is ecological succession.", {});
+  },
+  function () {
+    return mcq("An old quarry near Corner Brook was abandoned with bare rock faces and piles of gravel. Lichens and mosses appeared first, grasses and shrubs followed, and young birch trees now grow across the quarry floor. This ordered change is",
+      "ecological succession",
+      ["ecological competition", "nutrient recycling", "ecological tolerance"],
+      "The quarry shows the classic succession pattern: simple pioneer organisms first, then grasses, shrubs and trees in turn, each stage preparing the site for the next. The gradual replacement of one community by another over time is ecological succession.", {});
+  }
+]), ["Watch the time pattern: one community is replaced by another, stage by stage.", "Competition and recycling take place inside a community; this item describes the community itself changing."]);
+
+E("s7-u1-succession-forecast", 1, ["SC7.1.8"], 2, "var", varset([
+  function () {
+    return mcq("Lichens and mosses have covered a bare rock surface for many years, and a thin layer of soil now fills the cracks. If the site is left undisturbed, what is most likely to happen next, and why?",
+      "Grasses will root in the thin soil, because the pioneers have built the soil grasses need to grow",
+      ["Trees will grow straight from the rock, because tree roots alone can split rock and make soil",
+       "A forest will form within one year, because the pioneer stage is always the last stage to change",
+       "The site will return to bare rock, because each stage of succession removes the soil before it"],
+      "Succession moves one stage at a time. Lichens and mosses break down the rock surface and start soil formation, and grasses are the next plants able to use that thin soil. Trees need deeper soil than the site has yet, and succession does not run backwards to bare rock on its own.", {});
+  },
+  function () {
+    return mcq("Grasses and wildflowers have covered an abandoned field near Clarenville for several years, and their roots and litter have deepened the soil. If the field is left alone, what is most likely to happen next, and why?",
+      "Shrubs will spread across the field, because the grasses have steadied and enriched the soil",
+      ["Mature trees will shade the field, because tree seedlings grow to full height in one season",
+       "Lichens will cover the field again, because succession restarts from bare rock at each stage",
+       "The field will stay grassy forever, because the grass stage is the final stage of succession"],
+      "In an old field the soil is already present, so grasses come first and shrubs follow once the grasses have stabilized and enriched the soil. Trees come later still, growing up through the shrubs. Succession does not restart from lichens where soil exists, and the grass stage is not the end point.", {});
+  },
+  function () {
+    return mcq("Shrubs cover an old pasture, and young spruce seedlings are growing up through the shrubs, sheltered from the wind. If the pasture is left alone, what is most likely to happen next, and why?",
+      "The spruce will overtop the shrubs, because the growing trees will shade out many of the shrubs",
+      ["The shrubs will overtop the spruce, because shrubs always grow taller than the trees among them",
+       "The pasture will return to grasses, because the shrub stage always gives way to the grass stage",
+       "Succession will stop at this stage, because a mixed stand of shrubs and trees cannot change again"],
+      "The seedlings are already established, and spruce grow taller than shrubs. As the trees rise above the shrubs they take the light, many shrubs die back, and a young forest forms. Succession continues forward while conditions keep changing; it does not return to grass or stop at a mixed stage.", {});
+  },
+  function () {
+    return mcq("Reeds and cattails grow around the edges of a shallow pond, and sediment and dead plant material build up beneath them year after year. If the pond is left alone, what is most likely to happen next, and why?",
+      "The edges will turn into wet meadow, because the building sediment keeps making the water shallower",
+      ["Open water will spread over the reeds, because the sediment pushes the shoreline outward each year",
+       "Trees will grow in the open water, because tree seedlings can root in deep water at the pond centre",
+       "The reeds will disappear in a year, because marsh plants are always the last stage around a pond"],
+      "Sediment and dead material fill the pond from the edges inward, so the shallow edges where the reeds grow become marsh and then wet meadow over time. Trees cannot root in open water, and the change runs from water toward land, not the reverse.", {});
+  }
+]), ["Name the stage the site is at now; the answer is the stage that follows it, with its reason.", "Each stage makes the next one possible: soil, shelter and shade are the usual reasons."]);
+
+E("s7-u1-succession-kind", 1, ["SC7.1.8"], 2, "var", varset([
+  function () {
+    return mcq("Heavy rain triggers a landslide on a forested slope near Bonne Bay. The sliding material strips away the trees and all of the soil, leaving a scar of bare rock and gravel. Lichens are the first organisms seen on the scar. Which kind of succession follows, and why?",
+      "Primary succession, because no soil was present on the surface when the change began",
+      ["Secondary succession, because no soil was present on the surface when the change began",
+       "Primary succession, because soil and seed sources from the old community remained",
+       "Secondary succession, because soil and seed sources from the old community remained"],
+      "The slide removed the soil along with the community, so the scar is a bare surface with no soil, and colonization starts again from pioneers such as lichens. Starting where no soil is present is primary succession; secondary succession is regrowth where soil remains after a disturbance.", {});
+  },
+  function () {
+    return mcq("A spruce stand is clear-cut for lumber. The soil, the roots and stumps, and seeds in the soil all remain on the site, and grasses and young trees begin growing the next summer. Which kind of succession follows, and why?",
+      "Secondary succession, because soil and seed sources from the old community remained",
+      ["Primary succession, because no soil was present on the surface when the change began",
+       "Secondary succession, because no soil was present on the surface when the change began",
+       "Primary succession, because soil and seed sources from the old community remained"],
+      "Cutting removed the trees but left the soil and its seed sources in place, so the community regrows from an existing base. Regrowth after a disturbance where soil remains is secondary succession, not a start from a bare surface.", {});
+  },
+  function () {
+    return mcq("A beaver dam breaks and a pond drains away, leaving its bed of deep sediment exposed. The sediment holds seeds of marsh plants, and grasses sprout across the bed within one season. Which kind of succession follows, and why?",
+      "Secondary succession, because soil and seed sources from the old community remained",
+      ["Primary succession, because no soil was present on the surface when the change began",
+       "Secondary succession, because no soil was present on the surface when the change began",
+       "Primary succession, because soil and seed sources from the old community remained"],
+      "The pond bed is not bare rock: it is deep sediment full of seeds, a soil-like base left behind by the old community. Plants sprout quickly from that base, which is secondary succession. Primary succession begins only where no soil is present at the start.", {});
+  },
+  function () {
+    return mcq("Spring floods build a new sandbar in the middle of a river where open water flowed before. The bar is clean sand with no soil and no plants. By the next summer, the first grasses are rooting in the sand. Which kind of succession follows, and why?",
+      "Primary succession, because no soil was present on the surface when the change began",
+      ["Secondary succession, because no soil was present on the surface when the change began",
+       "Primary succession, because soil and seed sources from the old community remained",
+       "Secondary succession, because soil and seed sources from the old community remained"],
+      "The sandbar is a brand-new surface: no soil and no previous community existed there. The grasses are pioneers on a surface with no soil, so this is primary succession, even though it starts with grasses rather than lichens.", {});
+  },
+  function () {
+    return mcq("Workers blast a road cut through solid rock for a new highway. The cut face is bare rock with no soil in its cracks. After several years, lichens and then mosses appear on the rock face. Which kind of succession follows, and why?",
+      "Primary succession, because no soil was present on the surface when the change began",
+      ["Secondary succession, because no soil was present on the surface when the change began",
+       "Primary succession, because soil and seed sources from the old community remained",
+       "Secondary succession, because soil and seed sources from the old community remained"],
+      "Blasting exposed fresh rock that had never supported a community, and no soil is present in its cracks. Lichens colonizing a bare, soilless surface are the first stage of primary succession.", {});
+  }
+]), ["Ask one question first: was soil present on the site when the change began?", "No soil at the start means primary; soil remaining after a disturbance means secondary."]);
+
+E("s7-u1-succession-claim", 1, ["SC7.1.8"], 3, "var", varset([
+  function () {
+    return mcq("A student claims: succession always ends with the same mature forest, wherever it happens. A class compares two undisturbed sites after many decades. On a sheltered inland site a spruce forest stands. On a windy coastal headland nearby, only low shrubs and grasses grow, though the headland has been undisturbed just as long. Which conclusion is best supported?",
+      "The claim is not supported, because the end community depends on local conditions such as wind exposure",
+      ["The claim is supported, because both sites have been undisturbed for exactly the same length of time",
+       "The claim is not supported, because succession never changes a community once shrubs have appeared",
+       "The claim is supported, because the headland shrubs will become a spruce forest within a few seasons"],
+      "Both sites had the same time undisturbed, yet they hold different communities, so time alone does not force one ending. The headland's wind exposure limits what can grow there. The evidence contradicts the claim: the stable community a site reaches depends on its local conditions.", {});
+  },
+  function () {
+    return mcq("A student claims: once shrubs are established on a site, succession stops and the community stays the same. Photographs of an abandoned pasture taken every five years for thirty years show grasses first, then shrubs spreading, and in the last photographs young spruce trees rising above the shrubs and shading many of them out. Which conclusion is best supported?",
+      "The claim is contradicted, because the photographs show shrubs later replaced by growing trees",
+      ["The claim is supported, because the photographs show shrubs spreading across the pasture early on",
+       "The claim is contradicted, because the photographs show the pasture returning to bare soil again",
+       "The claim is supported, because thirty years is long enough for succession to finish everywhere"],
+      "The photo record shows change continuing after the shrub stage: trees grew up through the shrubs and began shading them out. That directly contradicts the claim that succession stops once shrubs are established. The early spread of shrubs is real, but it was a stage, not the end.", {});
+  },
+  function () {
+    return mcq("A student claims: succession is a quick process that finishes within a single growing season. A research team photographs the same quarry floor every year for forty years. The photographs show lichens in the early years, grasses spreading slowly over two decades, the first shrubs at year thirty, and no trees yet at year forty. Which conclusion is best supported?",
+      "The claim is contradicted, because the record shows change still under way after forty years",
+      ["The claim is supported, because the photographs show lichens appearing within the first few years",
+       "The claim is contradicted, because the record shows the quarry floor returning to bare rock again",
+       "The claim is supported, because shrubs appeared on the site, which means succession has now finished"],
+      "After forty years the site has only reached the shrub stage and is still changing, so succession there is measured in decades, not in a single season. The appearance of lichens early on does not make the whole process quick, and nothing in the record shows a return to bare rock.", {});
+  },
+  function () {
+    return mcq("A student claims: a forest destroyed by fire can only come back if people replant it. After a wildfire in a spruce forest, no planting is done. Within three years grasses and fireweed cover the site, shrubs follow, and by year twenty young spruce trees are growing across the burn. Which conclusion is best supported?",
+      "The claim is contradicted, because the forest regrew on its own from the soil that survived the fire",
+      ["The claim is supported, because grasses and fireweed, not trees, were the first plants to return",
+       "The claim is contradicted, because the fire created a bare rock surface with no soil left at all",
+       "The claim is supported, because twenty years of regrowth means the site was replanted at some point"],
+      "No planting was done, yet the community returned in the usual order and young spruce are growing by year twenty. The regrowth was possible because the fire left the soil in place. The evidence contradicts the claim that replanting is the only way a burned forest can come back.", {});
+  }
+]), ["Compare the claim word by word with what the evidence actually shows.", "A conclusion can carry the right verdict but the wrong reason; check both parts."]);
+
+E("s7-u1-succession-data", 1, ["SC7.1.8"], 3, "var", varset([
+  function () {
+    return mcq("Students survey the same rocky site in three different years. Ground cover: in 2005, lichens and mosses 60 percent, grasses 30 percent, shrubs 10 percent, trees 0 percent. In 2015, lichens and mosses 20 percent, grasses 45 percent, shrubs 30 percent, trees 5 percent. In 2025, lichens and mosses 5 percent, grasses 25 percent, shrubs 40 percent, trees 30 percent. Which conclusion do the data support?",
+      "Succession is advancing: later stages are growing while the pioneer cover shrinks over time",
+      ["Succession is reversing: the site is returning step by step toward its bare rock starting point",
+       "The community is unchanged: each group covers the same share of the site in every survey year",
+       "Trees were the first colonists: the tree cover was highest before the shrubs and grasses spread"],
+      "Read the trend, not a single year. Pioneer cover (lichens and mosses) falls from 60 to 5 percent while shrubs rise from 10 to 40 percent and trees from 0 to 30 percent. Later stages are replacing earlier ones as conditions change, which is succession advancing, not reversing or standing still.", {});
+  },
+  function () {
+    return mcq("After a wildfire, a class counts plants in the same plots. One year after the fire: fireweed 240 plants, shrubs 0, spruce seedlings 0. Six years after: fireweed 90, shrubs 45, spruce seedlings 30. Sixteen years after: fireweed 15, shrubs 60, spruce seedlings 140. Which conclusion do the data support?",
+      "Regrowth follows the usual order: fast first plants fade as shrubs and then trees take over",
+      ["Regrowth has not started: the counts show no new plants growing on the site after the fire",
+       "Fireweed is the final stage: its count stays highest at every visit the class makes to the site",
+       "Trees returned before shrubs: spruce seedlings outnumbered shrubs at the first count after the fire"],
+      "Fireweed dominates the first count and then falls steadily, shrubs rise next, and spruce seedlings climb from none to the highest count. That is the expected order of regrowth after fire: fast colonizers first, then shrubs, then trees.", {});
+  },
+  function () {
+    return mcq("A pond is measured from aerial photographs. Open water area: 900 square metres in 2000, 700 square metres in 2010, and 450 square metres in 2020. Over the same years, the band of marsh plants around the pond's edge widened every time it was measured. Which conclusion do the data support?",
+      "The pond is filling in: marsh is replacing open water as sediment builds up around the edges",
+      ["The pond is deepening: open water is spreading outward over the marsh around the pond edges",
+       "The pond is unchanged: its open water area stayed the same size across all three measurements",
+       "The marsh is the first stage: marsh plants covered the whole pond before any open water formed"],
+      "Open water shrank by half over twenty years while the marsh band widened. Sediment and plant material are filling the pond from the edges, so marsh is replacing open water: succession is carrying the site from pond toward wet meadow.", {});
+  },
+  function () {
+    return mcq("On a coastal dune, students record soil depth and the number of plant species. In 2008: soil depth 1 centimetre, 6 plant species. In 2018: soil depth 4 centimetres, 14 plant species. In 2028: soil depth 9 centimetres, 23 plant species. Which conclusion do the data support?",
+      "As soil deepens, more species can grow: the dune community is developing as succession proceeds",
+      ["As soil deepens, fewer species can grow: the dune community is breaking down as the years pass",
+       "Soil depth makes no difference: the species count stayed the same at every visit to the dune",
+       "The deepest soil came first: the dune began with deep soil and many species and then lost both"],
+      "Both measures rise together across twenty years: deeper soil and more species at each visit. As the early plants build soil, conditions come to suit more kinds of plants, so the community develops. Nothing in the data shows a decline or a reversal.", {});
+  }
+]), ["Compare the first and last measurements first; the trend is the evidence.", "Check the direction of change for every group before choosing a conclusion."]);
+
+E("s7-u1-cr-succession-change", 1, ["SC7.1.8"], 2, "var", varset([
+  function () {
+    return textq("A wildfire burns a spruce forest near Terra Nova, killing the trees but leaving the soil in place. Explain how this disturbance changes the local ecosystem over time. Describe the immediate change, the first living changes that follow, and the later community that develops if the site is left alone. (3 marks)",
+      ["fire kills the trees and opens the site, soil survives", "grasses and fireweed colonize first", "shrubs then young spruce forest develop"],
+      "<b>Model answer:</b> Immediately, the fire kills the spruce trees and the plants under them, leaving ash-covered ground open to light and rain, but the soil itself survives. The first living changes come from fast-growing plants: grasses and fireweed sprout from seeds and roots in the surviving soil and cover the site within a few seasons. Later, shrubs spread through the grasses, spruce seedlings grow up among the shrubs, and over decades a young spruce forest replaces the shrub community if the site is left alone.<br><br><b>Marking points:</b> 1 mark for the immediate change (trees killed, site opened, soil left in place). 1 mark for the first living changes (fast colonizers such as grasses and fireweed returning first). 1 mark for the later community (shrubs, then young spruce trees developing toward a forest).", {});
+  },
+  function () {
+    return textq("Beavers build a dam across a stream running through a meadow, and the rising water floods the meadow behind the dam. Explain how this disturbance changes the local ecosystem over time. Describe the immediate change, the first living changes that follow, and the later community that develops if the site is left alone. (3 marks)",
+      ["dam floods the meadow, standing water covers the land", "meadow plants die, pond plants and animals colonize", "pond fills with sediment toward marsh and wet meadow"],
+      "<b>Model answer:</b> Immediately, the dam raises the water level and standing water covers the meadow, so the meadow grasses and other land plants, whose roots are drowned, die back. The first living changes follow from the new pond: pondweed and algae grow in the water, and water insects, frogs and fish move in, replacing the meadow community with a pond community. Later, sediment and dead plant material build up in the pond year after year, the water shallows, marsh plants spread from the edges, and the site moves toward marsh and wet meadow if it is left alone.<br><br><b>Marking points:</b> 1 mark for the immediate change (the meadow flooded, land plants drowned or dying back). 1 mark for the first living changes (a pond community of water plants and animals replacing the meadow community). 1 mark for the later community (the pond filling with sediment and moving toward marsh or wet meadow).", {});
+  },
+  function () {
+    return textq("A severe windstorm blows down a stand of mature spruce trees, leaving fallen trunks across the forest floor. Explain how this disturbance changes the local ecosystem over time. Describe the immediate change, the first living changes that follow, and the later community that develops if the site is left alone. (3 marks)",
+      ["canopy removed, light reaches the forest floor", "shrubs, grasses and seedlings grow in the light", "young trees form a new forest stand"],
+      "<b>Model answer:</b> Immediately, the storm removes the canopy: mature trees lie on the ground, and sunlight that never reached the forest floor now floods in, while the fallen trunks begin to decay. The first living changes come from plants that use the new light: shrubs and grasses spread across the clearing and spruce seedlings, held back for years by shade, begin to grow quickly. Later, the fastest young trees close together into a young stand, shade returns to the forest floor, and the community develops back toward a spruce forest if the site is left alone.<br><br><b>Marking points:</b> 1 mark for the immediate change (canopy gone, light reaching the floor, trunks fallen). 1 mark for the first living changes (light-loving shrubs and grasses spreading, seedlings released from shade). 1 mark for the later community (young trees closing into a new forest stand).", {});
+  },
+  function () {
+    return textq("A stand of spruce forest is clear-cut, and the site is then left to regrow on its own. Explain how this disturbance changes the local ecosystem over time. Describe the immediate change, the first living changes that follow, and the later community that develops if the site is left alone. (3 marks)",
+      ["trees removed, soil and roots remain on the site", "grasses and shrubs colonize the open site first", "young trees develop into a new forest over decades"],
+      "<b>Model answer:</b> Immediately, cutting removes the whole tree community at once, leaving the site open to sun and wind, but the soil, roots and seeds in the soil remain in place. The first living changes are fast growth on the open ground: grasses, fireweed and shrubs sprout from the surviving soil and spread across the site within a few years. Later, young spruce and birch trees grow up through the shrubs, shade many of them out, and over decades a young forest community replaces the shrub community if the site is left alone.<br><br><b>Marking points:</b> 1 mark for the immediate change (trees removed, site opened, soil and seed sources remaining). 1 mark for the first living changes (grasses, fireweed and shrubs colonizing the open site). 1 mark for the later community (young trees overtopping the shrubs and developing toward a forest).", {});
+  }
+]), ["Work in time order: the disturbance itself, the first living changes, then the later community.", "Name real organisms for the place at each stage; general words earn fewer marks."]);
 
 /* ----- bank-u2.js ----- */
 // CRMARKS: s7-u2-cr-thermometer-choice=3
@@ -2394,6 +2594,8 @@ E("s7-u1-cr-succession-evidence", 1, ["SC7.1.8"], 2, "var", varset([
 // CRMARKS: s7-u2-cr-instrument-design=4
 // CRMARKS: s7-u2-cr-expansion-use=2
 // CRMARKS: s7-u2-cr-specific-heat=3
+// CRMARKS: s7-u2-cr-instrument-pair=3
+// CRMARKS: s7-u2-cr-instrument-record=2
 /* Science 7, Unit 2: Heat (SC7.4.1 to SC7.6.9, 26 indicators, 75 entries).
    Sources: the current English guide (Focus for Learning for all 26
    indicators; terminology governs), the outcome spreadsheet (tag set
@@ -3921,6 +4123,241 @@ E("s7-u2-cr-specific-heat", 2, ["SC7.4.7"], 2, "var", varset([
       "<b>Model answer:</b> (a) Water has a high specific heat capacity, so the coolant can absorb a large amount of heat energy from the engine block while its own temperature rises by only a small amount. That is what makes it a good coolant: it carries a great deal of heat away without quickly reaching its boiling point. (b) Cooling works the same way in reverse: for the coolant temperature to fall by each degree it must give out a large amount of energy, so it loses its stored heat slowly and is still warm long after the engine is switched off. (c) General principle: the higher a substance's specific heat capacity, the more energy it gains or loses for each degree of temperature change, so it warms slowly and cools slowly; substances with low specific heat capacities warm and cool quickly.<br><br><b>Marking points:</b> 1 mark for the slow rise explained by water absorbing much energy per degree. 1 mark for the slow cooling explained by water having to release much energy per degree. 1 mark for the general principle stated correctly.", {});
   }
 ]), ["Both observations in each variant run on the same comparison: water against a low specific heat capacity material.", "Finish with the principle in general words: energy per degree decides how fast temperature changes."]);
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+E("s7-u2-instrument-workings", 2, ["SC7.4.1"], 1, "var", varset([
+  function () {
+    return mcq("A temperature probe is made of two different metal wires joined at the tip. When the tip heats up, the join produces a small voltage that changes with temperature, and a meter turns it into a reading. Which instrument is this?",
+      "A thermocouple thermometer",
+      ["An infrared thermometer", "A resistance thermometer", "A liquid-in-glass thermometer"],
+      "Two joined wires of different metals producing a temperature-dependent voltage is a thermocouple. It is the instrument built for very high temperatures, such as the inside of furnaces and kilns.", {});
+  },
+  function () {
+    return mcq("A probe contains a coil of metal wire. As the probe warms, the wire's electrical resistance rises in a steady, predictable way, and the instrument displays the temperature that matches the resistance. Which instrument is this?",
+      "A resistance thermometer",
+      ["A thermocouple thermometer", "An infrared thermometer", "A bimetallic strip thermometer"],
+      "A temperature reading taken from the changing resistance of a metal probe is a resistance thermometer. Its signal travels along wires, which is why weather stations pair it with a display indoors.", {});
+  },
+  function () {
+    return mcq("A handheld device is pointed at a hot pipe from a metre away. It measures the invisible radiation the pipe's surface gives off and shows a temperature without ever touching the pipe. Which instrument is this?",
+      "An infrared thermometer",
+      ["A resistance thermometer", "A thermocouple thermometer", "A liquid-in-glass thermometer"],
+      "Measuring a surface's radiation from a distance, with no contact at all, is the infrared thermometer's method. Every warm surface gives off this radiation, and hotter surfaces give off more of it.", {});
+  },
+  function () {
+    return mcq("Inside a round dial on a kitchen wall, two strips of different metals are joined together. As the room warms the joined strip bends, and the bending moves the dial's needle. Which instrument is this?",
+      "A bimetallic strip thermometer",
+      ["A liquid-in-glass thermometer", "A resistance thermometer", "An infrared thermometer"],
+      "Two joined metals expanding by different amounts so the strip bends is the bimetallic strip. The same bending, used to open and close a switch, is what works a thermostat.", {});
+  },
+  function () {
+    return mcq("A glass tube with a bulb at one end holds coloured alcohol. When the bulb is placed in warm water, the alcohol expands and its column climbs the narrow tube past the scale marks. Which instrument is this?",
+      "A liquid-in-glass thermometer",
+      ["A bimetallic strip thermometer", "A thermocouple thermometer", "A resistance thermometer"],
+      "A liquid expanding up a narrow graduated tube as it warms is the liquid-in-glass thermometer, the standard instrument for measuring the temperature of liquids in the laboratory.", {});
+  }
+]), ["Each instrument is named by its working part: joined wires, resistance, radiation, two metals, or liquid.", "Match the effect in the description to the instrument built on that effect."]);
+
+E("s7-u2-scale-reading", 2, ["SC7.4.1"], 2, "gen", function () {
+  var combos = [];
+  var bases = [10, 20, 30, 40, 50, 60];
+  var intervals = [1, 2, 5];
+  for (var bi = 0; bi < bases.length; bi++) {
+    for (var ii = 0; ii < intervals.length; ii++) {
+      for (var n = 1; n <= 8; n++) {
+        var r = bases[bi] + n * intervals[ii];
+        if (r - intervals[ii] >= 10 && r + 2 * intervals[ii] <= 98) {
+          combos.push({ b: bases[bi], i: intervals[ii], n: n, r: r });
+        }
+      }
+    }
+  }
+  var c = pick(combos);
+  var mw = c.n === 1 ? "mark" : "marks";
+  var place = pick(["St. John's", "Gander", "Corner Brook", "Happy Valley-Goose Bay"]);
+  var frames = [
+    "A thermometer scale is marked every " + c.i + " °C. The top of the alcohol column stops " + c.n + " " + mw + " above the " + c.b + " °C mark. What temperature does the thermometer show?",
+    "At a weather station near " + place + ", a thermometer is marked every " + c.i + " °C. The column stops " + c.n + " " + mw + " above the " + c.b + " °C mark. What is the reading?",
+    "In a science class, a thermometer marked every " + c.i + " °C stands in a beaker of water. The liquid stops " + c.n + " " + mw + " above the " + c.b + " °C mark. What temperature should be recorded?",
+    "A greenhouse thermometer is marked every " + c.i + " °C. Its column stops " + c.n + " " + mw + " above the " + c.b + " °C mark. What temperature does it show?"
+  ];
+  var fmt = function (v) { return v + " °C"; };
+  return mcq(pick(frames),
+    fmt(c.r),
+    [fmt(c.r - c.i), fmt(c.r + c.i), fmt(c.r + 2 * c.i)],
+    "Start at the " + c.b + " °C mark. Each small mark is worth " + c.i + " °C, so " + c.n + " " + mw + " add " + c.n + " × " + c.i + " = " + (c.n * c.i) + " °C. The reading is " + c.b + " + " + (c.n * c.i) + " = " + c.r + " °C. The other options come from counting one mark too few, one mark too many, or two marks too many.", {});
+}, ["Start at the labelled mark, then add the value of the small marks one at a time.", "Multiply: the number of marks times the value of each mark, then add that to the labelled mark."]);
+
+E("s7-u2-instrument-task", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return mcq("A technician must measure the temperature of the air inside a running pottery furnace, far hotter than boiling water, while the furnace stays closed and firing. Which instrument and reason fit the job?",
+      "A thermocouple, because its probe withstands heat far beyond a glass thermometer's range",
+      ["An infrared thermometer, because it reads a surface from outside without opening the door",
+       "A bimetallic strip thermostat, because it switches the furnace off when the set point is hit",
+       "A resistance thermometer, because its probe is read on a display placed beside the furnace"],
+      "The measurement has to be taken inside, at a temperature no glass instrument survives. A thermocouple probe is built for exactly that heat and reads from where its tip is placed. An infrared thermometer aimed at the closed furnace reads only its outside surface, a thermostat switches rather than measures for a technician, and a resistance probe is not the instrument built for furnace heat.", {});
+  },
+  function () {
+    return mcq("A nurse must check the skin temperature of a patient with severe burns, and the skin must not be touched at all. Which instrument and reason fit the job?",
+      "An infrared thermometer, because it reads the surface's radiation without touching the skin",
+      ["A liquid-in-glass thermometer, because it reads the surface's radiation without any contact",
+       "A thermocouple, because its fine probe can rest lightly on the skin without causing any pain",
+       "A resistance thermometer, because its wired probe can be taped gently onto the patient's skin"],
+      "Only the infrared thermometer takes a reading with no contact: it measures the radiation the skin gives off. A liquid-in-glass thermometer has to touch and stay in place, and both probe instruments must rest on the skin, which the job forbids. The right instrument with the wrong working method named is still a wrong answer.", {});
+  },
+  function () {
+    return mcq("A baker wants a thermometer that lives inside a hot oven permanently, has no cables or batteries, and can be read at a glance through the oven door window. Which instrument and reason fit the job?",
+      "A bimetallic strip dial thermometer, because it survives oven heat and needs no wires or power",
+      ["A liquid-in-glass thermometer, because it lives in the oven and is read directly off its scale",
+       "An infrared thermometer, because it lives in the oven and is read directly off its display",
+       "A thermocouple, because it has no cables and is read directly from a dial inside the oven"],
+      "An oven thermometer is a bimetallic dial: the strip bends with temperature, moves a needle, survives living in oven heat, and needs no cable or battery. A glass alcohol thermometer is not built to live at oven temperatures, an infrared thermometer is a handheld device used from outside, and a thermocouple needs its cable and meter.", {});
+  },
+  function () {
+    return mcq("A weather station on a headland must record air temperature through the night and send each reading along wires to a display in a building 50 metres away. Which instrument and reason fit the job?",
+      "A resistance thermometer, because its probe's signal travels along wires to the indoor display",
+      ["A liquid-in-glass thermometer, because its probe's signal travels along wires to the display",
+       "An infrared thermometer, because it can be aimed at the air from the building's window all night",
+       "A bimetallic strip thermostat, because it records each night reading on the building's display"],
+      "The job needs an electrical signal that can travel 50 metres of wire and be recorded all night: that is the resistance thermometer, whose probe changes resistance with temperature. A liquid column cannot send anything along a wire, an infrared thermometer measures surfaces rather than air, and a thermostat switches heating rather than recording readings.", {});
+  }
+]), ["Underline the job's special condition first: extreme heat, no contact, no cables, or a wired signal.", "Both halves of the answer must fit: the right instrument with the wrong reason is a wrong answer."]);
+
+E("s7-u2-instrument-extremes", 2, ["SC7.4.1"], 3, "var", varset([
+  function () {
+    return mcq("Workers must measure the temperature of molten steel in a ladle, at about 1500 °C, many times a day. A glass thermometer would be destroyed instantly, and the surface of the melt is covered with slag. Which choice is best justified?",
+      "A thermocouple in a protective sheath, dipped briefly into the melt, because it is built for extreme heat",
+      ["An infrared thermometer aimed at the ladle, because it reads the steel itself through the layer of slag",
+       "A resistance thermometer lowered into the melt, because its fine wires give the most precise reading",
+       "A bimetallic strip on a long handle, held in the melt, because the bending strip survives any heat"],
+      "At 1500 °C only the thermocouple, the extreme-heat instrument, survives the job, protected by its sheath for a brief dip. An infrared thermometer would read the slag covering the surface, not the steel beneath it, and the fine wires of a resistance probe and the joined metals of a bimetallic strip are not built for anything near this temperature.", {});
+  },
+  function () {
+    return mcq("A paper mill needs the temperature of a large steel drying drum while it rotates at full speed. Stopping the drum costs hours of production, and nothing may touch it while it turns. Which choice is best justified?",
+      "An infrared thermometer aimed at the drum, because it reads the moving surface without any contact",
+      ["A thermocouple taped to the drum surface, because it reads the moving surface without any contact",
+       "A resistance probe pressed against the drum, because it sends readings along wires to a display",
+       "A liquid-in-glass thermometer held on the drum, because its column can be read while the drum turns"],
+      "The drum cannot be touched and cannot be stopped, so the reading must be taken from a distance: the infrared thermometer measures the radiation from the moving surface. Anything taped, pressed or held against the drum would be torn away or destroyed, and its wires or column could not be read on a spinning drum in any case.", {});
+  },
+  function () {
+    return mcq("A potter fires a kiln to 1200 °C and must know the temperature deep inside the kiln, not at its cooler door, while the kiln stays sealed. Which choice is best justified?",
+      "A thermocouple probe reaching into the kiln's centre, because it measures where it is placed at kiln heat",
+      ["An infrared thermometer at the door peephole, because it measures the kiln's centre through the opening",
+       "A resistance thermometer mounted at the door, because it measures the hottest point from the coolest one",
+       "A bimetallic strip fixed inside the door, because its bending tracks the temperature deep in the kiln"],
+      "A thermocouple reads at its tip, so a probe reaching the centre measures the centre, and it withstands kiln heat. An infrared thermometer at the peephole sees only the surfaces in its line of sight near the opening, and instruments mounted at the door report the door's cooler conditions, not the centre's.", {});
+  },
+  function () {
+    return mcq("An ocean buoy far offshore must measure water temperature every hour for a year and radio the readings to shore. No one can visit the buoy to read a scale. Which choice is best justified?",
+      "A resistance thermometer in a sealed probe, because its electrical signal can be recorded and sent",
+      ["A liquid-in-glass thermometer in a sealed housing, because its electrical signal can be recorded",
+       "An infrared thermometer mounted above the water, because it measures the water below the surface",
+       "A bimetallic strip linked to a clockwork dial, because its readings can be radioed to shore daily"],
+      "Recording and radioing readings requires an electrical signal, which the resistance thermometer produces as its probe's resistance changes with temperature. A liquid column produces no signal and needs a human reader, an infrared thermometer reads only the surface it is aimed at, and a bending strip moves a dial but sends nothing.", {});
+  }
+]), ["Name the extreme condition first: the heat, the movement, the sealed space, or the distance.", "Test each instrument against that one condition; three of them fail it."]);
+
+E("s7-u2-instrument-error", 2, ["SC7.4.1"], 3, "var", varset([
+  function () {
+    return mcq("A student heats water in a beaker over a burner and rests the thermometer's bulb on the bottom of the beaker while taking readings. The recorded temperature climbs well above the temperature of the water itself. What is the flaw and its effect?",
+      "The bulb touches the heated glass, so the thermometer reads the beaker's bottom, hotter than the water",
+      ["The bulb touches the heated glass, so the thermometer reads the room air, cooler than all of the water",
+       "The thermometer is too close to the flame, so the alcohol boils and the reading drops below the water",
+       "The bulb is held too high in the beaker, so it reads the steam above the water instead of the water"],
+      "A thermometer measures whatever its bulb is in contact with. The beaker's bottom is heated directly by the burner and is hotter than the water above it, so a bulb resting on the bottom reports the glass, and the reading is too high. The bulb should hang in the water, touching neither the bottom nor the sides.", {});
+  },
+  function () {
+    return mcq("A student lifts a thermometer out of warm water and walks it across the room to show the teacher before reading it. By the time it is read, the column has fallen several degrees. What is the flaw and its effect?",
+      "The thermometer left the water, so it began measuring the cooler room air and the reading fell",
+      ["The thermometer left the water, so it kept measuring the warm water and the reading stayed exact",
+       "The student walked too quickly, so the motion of walking shook the column down several degrees",
+       "The reading was taken at eye level, so the column fell because the scale was read from the wrong side"],
+      "The moment the bulb leaves the water, the thermometer starts adjusting to the room air, which is cooler, so the column falls. A reading must be taken while the bulb is still in the water, after waiting for the column to stop moving, and walking or shaking does not drive the column down.", {});
+  },
+  function () {
+    return mcq("To find the temperature of water inside a sealed glass jar, a student points an infrared thermometer at the jar and records the number shown. What is the flaw and its effect?",
+      "The instrument reads the jar's outer surface, so the number gives the glass temperature, not the water's",
+      ["The instrument reads through the glass fully, so the number gives the water temperature exactly as hoped",
+       "The instrument heats the water as it measures, so the number shown is higher than the water really was",
+       "The jar's glass blocks the reading completely, so the number shown is the temperature of the student's hand"],
+      "An infrared thermometer measures the radiation from the surface it is pointed at. Pointed at a jar, it reads the jar's outer glass surface, which need not match the water sealed inside. It cannot see through the glass to the water, and it does not heat what it measures.", {});
+  },
+  function () {
+    return mcq("A bimetallic strip thermostat for a greenhouse is mounted on a wall in direct sunlight, well away from the plants. On sunny days the heater switches off while the plant benches are still cold. What is the flaw and its effect?",
+      "Sunlight warms the thermostat itself, so it switches off before the air around the plants is warm",
+      ["Sunlight warms the thermostat itself, so it switches on and keeps the heater running all day long",
+       "The strip bends the wrong way in sunlight, so the heater runs whenever the sun shines on the wall",
+       "The plants shade the thermostat at noon, so it reads the temperature of the leaves on the benches"],
+      "The thermostat responds to its own temperature. Sunlight striking the wall warms the strip directly, so it bends and switches the heater off as if the greenhouse were warm, while the air at the benches is still cold. A thermostat must be mounted where it samples the air it controls, out of direct sun.", {});
+  },
+  function () {
+    return mcq("A thermocouple is pushed only a short way into a furnace, so its tip sits just inside the door while the meter is read as the furnace temperature. The recorded values are always lower than the temperature at the furnace's centre. What is the flaw and its effect?",
+      "The probe measures where its tip sits, near the cooler door, so it understates the centre temperature",
+      ["The probe measures where its tip sits, near the cooler door, so it overstates the centre temperature",
+       "The meter averages the whole furnace, so a short probe gives exactly the same reading as a long one",
+       "The door cools the whole furnace evenly, so the reading at the door equals the temperature everywhere"],
+      "A thermocouple measures at its tip and nowhere else. With the tip just inside the door, where heat escapes and the temperature is lower, the meter faithfully reports the door region and understates the centre. The probe must reach the place whose temperature is wanted.", {});
+  }
+]), ["Ask two questions: what is the instrument actually touching or seeing, and is that the thing you wanted to measure?", "The effect follows from the flaw: measuring a hotter thing reads high; measuring a cooler thing reads low."]);
+
+E("s7-u2-cr-instrument-pair", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return textq("Two temperature jobs. (a) A potter must know the temperature deep inside a kiln firing at 1200 °C. Name the instrument that fits and explain why it fits. (b) A nurse must measure a burn patient's skin temperature without touching the skin. Name the instrument that fits and explain why it fits. (c) For ONE of the two jobs, name an instrument that would NOT work and explain why. (3 marks)",
+      ["(a) A thermocouple: it withstands kiln heat and its probe reads where its tip is placed, deep inside.",
+       "(b) An infrared thermometer: it measures the radiation from the skin, so no contact is needed.",
+       "(c) For example, a liquid-in-glass thermometer fails (a) because it would be destroyed by the heat, or fails (b) because it must touch the skin."],
+      "<b>Model answer:</b> (a) A thermocouple thermometer. Its joined wires of two different metals survive temperatures far beyond a glass thermometer's range, and its probe can be pushed deep into the kiln so the reading is taken where the pots are firing. (b) An infrared thermometer. It measures the invisible radiation the skin gives off and converts it to a temperature, so the nurse gets the reading from a distance and the burned skin is never touched. (c) Example: a liquid-in-glass thermometer would fail job (a), because the glass and its liquid cannot survive 1200 °C and would be destroyed; it would also fail job (b), because it must rest against the skin to take a reading.<br><br><b>Marking points:</b> 1 mark for job (a): the thermocouple named, with its heat tolerance or probe placement as the reason. 1 mark for job (b): the infrared thermometer named, with no-contact radiation measurement as the reason. 1 mark for one instrument correctly ruled out for one job, with the reason it fails that job's conditions.", {});
+  },
+  function () {
+    return textq("Two temperature jobs. (a) A weather station must send air temperature readings along wires to a display inside a building, day and night. Name the instrument that fits and explain why it fits. (b) A greenhouse heater must switch itself on when the air cools and off when it warms, with nobody present. Name the instrument that fits and explain why it fits. (c) For ONE of the two jobs, name an instrument that would NOT work and explain why. (3 marks)",
+      ["(a) A resistance thermometer: its probe's resistance changes with temperature and the signal travels along wires to the display.",
+       "(b) A bimetallic strip thermostat: the strip bends as temperature changes and works the heater switch by itself.",
+       "(c) For example, a liquid-in-glass thermometer fails (a) because its column sends no signal along wires, or fails (b) because it can only display a temperature and cannot switch anything."],
+      "<b>Model answer:</b> (a) A resistance thermometer. The electrical resistance of its probe changes in a steady way with temperature, and that signal can travel along wires to the indoor display and be recorded around the clock. (b) A bimetallic strip thermostat. Its two joined metals expand by different amounts as the temperature changes, so the strip bends, and the bending opens and closes the heater's switch by itself at the set temperatures. (c) Example: a liquid-in-glass thermometer would fail job (b), because it only shows a temperature on a scale; it produces no movement or signal that could switch a heater on or off.<br><br><b>Marking points:</b> 1 mark for job (a): the resistance thermometer named, with the wired electrical signal as the reason. 1 mark for job (b): the bimetallic strip thermostat named, with its bending working the switch as the reason. 1 mark for one instrument correctly ruled out for one job, with the reason it fails that job's conditions.", {});
+  },
+  function () {
+    return textq("Two temperature jobs. (a) A baker needs a thermometer that stays inside a hot oven all day, with no cables, and is read at a glance. Name the instrument that fits and explain why it fits. (b) A mechanic must find the temperature of a hot engine part without touching it. Name the instrument that fits and explain why it fits. (c) For ONE of the two jobs, name an instrument that would NOT work and explain why. (3 marks)",
+      ["(a) A bimetallic strip dial thermometer (oven thermometer): it survives oven heat, needs no wires or power, and its dial is read at a glance.",
+       "(b) An infrared thermometer: it reads the radiation from the part's surface from a distance, with no contact.",
+       "(c) For example, a thermocouple fails (a) because it needs a cable and a meter, or a liquid-in-glass thermometer fails (b) because it must touch the part."],
+      "<b>Model answer:</b> (a) A bimetallic strip dial thermometer, the standard oven thermometer. Its joined metals bend as the oven heats and move the dial needle; it is built to live in oven heat and needs no cable or battery, so it is read at a glance through the door. (b) An infrared thermometer. It measures the invisible radiation the hot part gives off and turns it into a temperature reading, so the mechanic never touches the part. (c) Example: a liquid-in-glass thermometer would fail job (b), because it only reads a temperature when its bulb is in contact with the thing being measured, and the job forbids contact.<br><br><b>Marking points:</b> 1 mark for job (a): the bimetallic dial thermometer named, with surviving oven heat and needing no wires as the reason. 1 mark for job (b): the infrared thermometer named, with no-contact radiation measurement as the reason. 1 mark for one instrument correctly ruled out for one job, with the reason it fails that job's conditions.", {});
+  },
+  function () {
+    return textq("Two temperature jobs. (a) A student must measure the temperature of warm water in a beaker during a class investigation. Name the instrument that fits and explain why it fits. (b) A technician must measure the temperature inside a running furnace. Name the instrument that fits and explain why it fits. (c) For ONE of the two jobs, name an instrument that would NOT work and explain why. (3 marks)",
+      ["(a) A liquid-in-glass thermometer: the everyday laboratory instrument for a liquid, read directly from the height of its column.",
+       "(b) A thermocouple thermometer: its probe withstands furnace heat far beyond the range of a glass thermometer.",
+       "(c) For example, the liquid-in-glass thermometer of job (a) fails job (b) because furnace heat would destroy it, or an infrared thermometer fails job (a) as a first choice because it reads the water's surface, not the water in the beaker."],
+      "<b>Model answer:</b> (a) A liquid-in-glass thermometer. It is the standard tool for a liquid in the laboratory: the liquid in its bulb expands as it warms, and the height of the column on the scale gives the water's temperature directly. (b) A thermocouple thermometer. Its probe of joined wires is built to withstand the extreme heat inside a running furnace, where it turns the temperature into an electrical signal for the meter. (c) Example: the liquid-in-glass thermometer would fail job (b), because the furnace is far beyond its range and the glass would crack and the liquid boil long before a reading could be taken.<br><br><b>Marking points:</b> 1 mark for job (a): the liquid-in-glass thermometer named, with direct reading of a liquid as the reason. 1 mark for job (b): the thermocouple named, with surviving furnace heat as the reason. 1 mark for one instrument correctly ruled out for one job, with the reason it fails that job's conditions.", {});
+  }
+]), ["Take the jobs one at a time and name the condition that rules most instruments out.", "For part (c), pick the job where the failure is easiest to explain in one sentence."]);
+
+E("s7-u2-cr-instrument-record", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return textq("A student uses an alcohol-in-glass thermometer to measure the temperature of water in a beaker. (a) Describe how this instrument measures temperature. (b) Describe how the reading should be taken so that it is trustworthy. (2 marks)",
+      ["(a) The alcohol expands as it warms and rises up the narrow tube; the height of the column on the scale is the temperature.",
+       "(b) Wait until the column stops moving, keep the bulb in the water while reading, and read the scale at eye level."],
+      "<b>Model answer:</b> (a) The alcohol in the bulb expands as it warms. With nowhere else to go, it rises up the narrow tube, and the height of the column against the marked scale shows the temperature: the warmer the water, the higher the column. (b) The bulb is left in the water until the column stops moving, so the thermometer has reached the water's temperature. The reading is then taken with the bulb still in the water, at eye level with the top of the column, so the value is not distorted by lifting the thermometer out or by reading the scale at an angle.<br><br><b>Marking points:</b> 1 mark for the measuring method (the liquid expands on warming and the column height gives the temperature). 1 mark for the reading procedure (wait for the column to settle, bulb kept in the water, read at eye level).", {});
+  },
+  function () {
+    return textq("A factory worker uses an infrared thermometer to check the temperature of a hot motor casing. (a) Describe how this instrument measures temperature. (b) Describe how the reading is taken, and state what the reading actually describes. (2 marks)",
+      ["(a) The instrument measures the invisible infrared radiation the surface gives off; hotter surfaces give off more, and the instrument converts the amount to a temperature.",
+       "(b) It is pointed at the surface from a distance and the reading appears on its display; the reading describes the surface only, not the inside of the motor."],
+      "<b>Model answer:</b> (a) Every warm surface gives off invisible infrared radiation, and the hotter the surface, the more it gives off. The thermometer detects that radiation and converts the amount it receives into a temperature. (b) The worker points the instrument at the casing from a distance and reads the value on its digital display, without touching the motor. The reading describes the temperature of the casing's surface only; it says nothing directly about the temperature inside the motor.<br><br><b>Marking points:</b> 1 mark for the measuring method (detecting the infrared radiation a surface gives off, increasing with temperature). 1 mark for the reading procedure (pointed from a distance, read from the display) with the reading identified as a surface temperature.", {});
+  },
+  function () {
+    return textq("A weather station uses a resistance thermometer to record air temperature. (a) Describe how this instrument measures temperature. (b) Describe how its readings are obtained by the people running the station. (2 marks)",
+      ["(a) The electrical resistance of the probe's metal changes in a steady, predictable way as its temperature changes.",
+       "(b) The resistance is measured as an electrical signal sent along wires to a display or recorder, so readings are obtained indoors and can be recorded continuously."],
+      "<b>Model answer:</b> (a) The probe contains metal whose electrical resistance changes in a steady, predictable way as its temperature changes: the warmer the probe, the higher its resistance. The instrument measures the resistance and converts it into the matching temperature. (b) Nobody reads a scale at the probe. The resistance is sent as an electrical signal along wires to a display or recorder inside the station building, so the staff read the temperature indoors and the station can record it continuously, day and night.<br><br><b>Marking points:</b> 1 mark for the measuring method (the probe's electrical resistance changing predictably with temperature). 1 mark for how readings are obtained (an electrical signal along wires to an indoor display or recorder, allowing continuous recording).", {});
+  },
+  function () {
+    return textq("A greenhouse heater is controlled by a bimetallic strip thermostat. (a) Describe how this instrument responds to temperature. (b) Describe how the greenhouse owner sets and checks the temperature it will hold. (2 marks)",
+      ["(a) The strip's two joined metals expand by different amounts as temperature changes, so the strip bends; the bending opens and closes the heater's switch.",
+       "(b) The owner sets the wanted temperature on the thermostat's dial; the strip then switches the heater on below that temperature and off above it, holding the greenhouse near the set point."],
+      "<b>Model answer:</b> (a) The strip joins two different metals. As the temperature changes the metals expand or contract by different amounts, so the strip bends one way as it warms and the other way as it cools. At the set temperature the bending opens or closes an electrical switch. (b) The owner turns the thermostat's dial to the temperature wanted, which sets how far the strip must bend before it works the switch. From then on the strip switches the heater on whenever the air cools below the setting and off when it warms above it, so the greenhouse is held near the dial temperature without anyone watching it.<br><br><b>Marking points:</b> 1 mark for the instrument's response (two joined metals expanding by different amounts, bending the strip to work a switch). 1 mark for the setting and checking (the dial sets the temperature, and the strip then holds the greenhouse near it by switching the heater).", {});
+  }
+]), ["Separate the two parts: what changes inside the instrument, then what the user does to read or set it.", "Name the moving or changing part first; the reading method follows from it."]);
 
 /* ----- bank-u3.js ----- */
 // CRMARKS: s7-u3-cr-classify-explain=2
@@ -5132,6 +5569,50 @@ E("s7-u3-cr-separation-plan", 3, ["SC7.7.6", "SC7.7.7"], 2, "var", varset([
       "<b>Model answer:</b> (a) Step 1, screening: pour the mixture through a coarse sieve; the large gravel pieces are caught and the sand and salt water pass through. Step 2, filtration: pour what passed through into filter paper; the sand is caught and the salt water runs through as the filtrate. Step 3, evaporation: heat the filtrate or leave it warm so the water evaporates and the salt remains as crystals. (b) Screening exploits particle size between two solids: gravel pieces are too large for the sieve openings and sand grains are not. Filtration exploits particle size between a solid and a liquid: undissolved sand cannot pass the filter pores, while the dissolved salt passes with the water. Evaporation exploits the boiling point difference: water evaporates and the salt does not. (c) The sand should be rinsed on the filter paper with a little clean water and then dried, because salt water clinging to the sand would otherwise leave salt crystals mixed through the recovered sand as it dried.<br><br><b>Marking points:</b> 1 mark for the techniques correctly matched to the components (screening for the gravel, filtration for the sand, evaporation for the salt). 1 mark for a workable order, largest solid out first and the dissolved salt recovered last. 1 mark for the property correctly stated for each technique. 1 mark for a drying or purity step for one component, with its reason.", {});
   }
 ]), ["Work through the mixture one component at a time, and keep the dissolved component for last.", "Every technique must be defended by a property: magnetism, particle size, density, or boiling point."]);
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+E("s7-u3-solubility-gas-claim", 3, ["SC7.7.5"], 3, "var", varset([
+  function () {
+    return mcq("Two identical bottles of pop are opened at the same time. One is left in a warm kitchen and the other in a cold refrigerator. An hour later the warm pop has lost far more of its fizz. A student claims this shows that temperature does not affect how much gas water can hold. Which conclusion do the observations support?",
+      "The claim is wrong: warm water holds less dissolved gas, so more carbon dioxide escaped from it",
+      ["The claim is right: warm water holds less dissolved gas, so more carbon dioxide escaped from it",
+       "The claim is wrong: warm water holds more dissolved gas, so more carbon dioxide escaped from it",
+       "The claim is right: both bottles lost fizz at the same rate, so temperature changed nothing here"],
+      "The fizz is carbon dioxide dissolved in the pop. The warm bottle lost more of it in the same time, so warm water holds less dissolved gas than cold water: temperature does affect the solubility of a gas, in the direction opposite to the claim. Gases dissolve less as temperature rises.", {});
+  },
+  function () {
+    return mcq("During a heat wave, the water in a shallow pond warms up. Fish crowd into the small area where a cold spring flows in, and some fish elsewhere are seen gulping at the surface. A student claims the fish are crowding together to look for food near the spring. Which conclusion do the observations support?",
+      "The fish seek the cold inflow because warm water holds less dissolved oxygen than cold water does",
+      ["The fish seek the cold inflow because warm water holds more dissolved oxygen than cold water does",
+       "The fish crowd together because warming the water raises the amount of gas the water can dissolve",
+       "The fish are gulping at the surface because warm pond water holds all of its oxygen near the bottom"],
+      "Fish take in dissolved oxygen from the water. As the pond warms, the water holds less dissolved gas, so the oxygen level falls and the fish struggle. The cold spring inflow holds more dissolved oxygen than the warmed pond water, which is why the fish crowd into it. The observations are about oxygen, a gas solute, not about food.", {});
+  },
+  function () {
+    return mcq("A student stirs sugar into two cups of tea. In the cold cup, some sugar stays undissolved at the bottom no matter how long she stirs. In the hot cup, all of that sugar and more dissolves completely. A student then claims that heating water lowers the solubility of every solute. Which conclusion do the observations support?",
+      "The claim is wrong for solids: sugar's solubility in water rises as the temperature of the water rises",
+      ["The claim is right for solids: sugar's solubility in water falls as the temperature of the water rises",
+       "The claim is wrong for gases: sugar is a gas in the tea, and gases dissolve less in hotter water instead",
+       "The claim is right for solids: the extra sugar dissolved because stirring matters more than temperature"],
+      "Sugar is a solid solute, and more of it dissolved in the hot tea than in the cold tea, with stirring held the same in both cups. So for a solid, solubility generally rises as temperature rises, and the claim fails. The claim's direction is the one that holds for gases, not for solids like sugar.", {});
+  },
+  function () {
+    return mcq("Pop is bottled under high pressure. A sealed bottle stays fizzy for months. The same pop, once opened and poured into a glass, loses its fizz within hours even though it stays cold. A student claims pressure has no effect on how much gas a liquid can hold. Which conclusion do the observations support?",
+      "The claim is wrong: higher pressure holds more gas in solution, and opening the bottle drops it",
+      ["The claim is right: higher pressure holds more gas in solution, and opening the bottle drops it",
+       "The claim is wrong: lower pressure holds more gas in solution, and opening the bottle raises it",
+       "The claim is right: the sealed bottle stayed fizzy because cold liquids never release any gas"],
+      "The poured pop stayed cold, yet it still went flat, so temperature is not the difference here. Inside the sealed bottle, high pressure keeps extra carbon dioxide dissolved. Opening the bottle drops the pressure, the gas's solubility falls, and the gas escapes. Pressure does affect the solubility of a gas.", {});
+  },
+  function () {
+    return mcq("A glass of cold tap water is left on a counter. As the water slowly warms to room temperature, tiny bubbles form on the inside of the glass and rise. A student claims the bubbles show the water is beginning to boil. Which conclusion do the observations support?",
+      "The bubbles are dissolved gases escaping, because water holds less dissolved gas as it warms up",
+      ["The bubbles are steam forming early, because water begins to boil well below its boiling point",
+       "The bubbles are dissolved gases escaping, because water holds more dissolved gas as it warms up",
+       "The bubbles show gases dissolving faster, because warming water pulls extra air in from the room"],
+      "Cold tap water holds air dissolved in it. As the water warms toward room temperature, it can hold less dissolved gas, so some of the air comes out of solution as bubbles on the glass. The water is nowhere near its boiling point of 100 °C, so the bubbles cannot be steam.", {});
+  }
+]), ["Separate the two solute kinds: gases and solids answer temperature in opposite directions.", "For a gas, ask what pressure and temperature each do to how much can stay dissolved."]);
 
 /* ----- bank-u4.js ----- */
 // CRMARKS: s7-u4-cr-soil-choice=2
@@ -6923,7 +7404,7 @@ E("s7-u4-cr-soil-formation", 4, ["SC7.10.8", "SC7.10.9"], 2, "var", varset([
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"s7-u1-boreal-effects":3,"s7-u1-boreal-practice":2,"s7-u1-career-match":2,"s7-u1-career-scenario":3,"s7-u1-chain-order":2,"s7-u1-classify-set":2,"s7-u1-communicate-format":2,"s7-u1-communicate-judge":3,"s7-u1-consumer-types":2,"s7-u1-cr-boreal-example":3,"s7-u1-cr-data-display":3,"s7-u1-cr-defend-position":3,"s7-u1-cr-design-experiment":4,"s7-u1-cr-effect-chain":3,"s7-u1-cr-energy-flow":3,"s7-u1-cr-factor-effect":2,"s7-u1-cr-habitat-defence":3,"s7-u1-cr-harvest-decision":3,"s7-u1-cr-marsh-change":2,"s7-u1-cr-niche-roles":2,"s7-u1-cr-recycling":2,"s7-u1-cr-silviculture":2,"s7-u1-cr-succession-compare":2,"s7-u1-cr-succession-evidence":3,"s7-u1-cr-succession-stages":2,"s7-u1-cr-three-interactions":3,"s7-u1-cr-web-change":3,"s7-u1-cr-web-interpret":3,"s7-u1-decomposer-role":2,"s7-u1-delimit-choose":2,"s7-u1-delimit-rewrite":3,"s7-u1-design-controls":3,"s7-u1-design-flaw":4,"s7-u1-ecosystem-infer":3,"s7-u1-energy-loss":2,"s7-u1-energy-transfer":3,"s7-u1-evaluate-next-step":4,"s7-u1-factor-classify":2,"s7-u1-flowchart-complete":3,"s7-u1-groups-interest":3,"s7-u1-harvest-effects":2,"s7-u1-instrument-choose":2,"s7-u1-interaction-classify":2,"s7-u1-interaction-examples":2,"s7-u1-key-choose":3,"s7-u1-key-work":2,"s7-u1-key-work-2":3,"s7-u1-niche-reason":3,"s7-u1-nutrient-cycle":2,"s7-u1-organization-set":3,"s7-u1-pond-interactions":3,"s7-u1-record-format":3,"s7-u1-record-plan":4,"s7-u1-recycling-scenario":3,"s7-u1-role-identify":2,"s7-u1-succession-identify":2,"s7-u1-succession-next-stage":3,"s7-u1-succession-order":2,"s7-u1-succession-sequence":3,"s7-u1-succession-types":2,"s7-u1-table-choose":2,"s7-u1-tolerance-curve":3,"s7-u1-variables-identify":2,"s7-u1-web-chains":3,"s7-u1-web-predict":4,"s7-u1-web-readoff":3,"s7-u1-web-removal":4,"s7-u1-web-roles":3,"s7-u2-absorb-classify":2,"s7-u2-absorb-predict":3,"s7-u2-activity-temp":2,"s7-u2-apparatus-choice":3,"s7-u2-apparatus-safety":2,"s7-u2-approaches":2,"s7-u2-calibrate":3,"s7-u2-career-match":2,"s7-u2-career-scenario":2,"s7-u2-change-name":2,"s7-u2-change-particles":3,"s7-u2-conclusion-refute":3,"s7-u2-cr-absorb":2,"s7-u2-cr-conclusion":3,"s7-u2-cr-design-test":4,"s7-u2-cr-display":3,"s7-u2-cr-expansion":3,"s7-u2-cr-expansion-use":2,"s7-u2-cr-heating-decision":3,"s7-u2-cr-heating-example":2,"s7-u2-cr-improvement":2,"s7-u2-cr-inquiry":3,"s7-u2-cr-instrument-design":4,"s7-u2-cr-instrument-jobs":3,"s7-u2-cr-plateau":3,"s7-u2-cr-pump-chain":3,"s7-u2-cr-radiant-explain":2,"s7-u2-cr-specific-heat":3,"s7-u2-cr-temp-explain":3,"s7-u2-cr-thermometer-choice":3,"s7-u2-cr-thermometer-display":2,"s7-u2-cr-transfer-explain":3,"s7-u2-design-absorb":3,"s7-u2-design-challenge":3,"s7-u2-expansion-scenario":3,"s7-u2-experiment-chain":4,"s7-u2-familiar-temp":2,"s7-u2-graph-choice":4,"s7-u2-graph-key":2,"s7-u2-heating-adv":3,"s7-u2-heating-disadv":3,"s7-u2-heating-tech":2,"s7-u2-hypothesis-form":2,"s7-u2-instrument-choose":4,"s7-u2-instrument-how":2,"s7-u2-instrument-match":2,"s7-u2-insulation-past":2,"s7-u2-needs-tech":2,"s7-u2-past-tech":3,"s7-u2-plateau-read":3,"s7-u2-pump-cycle":3,"s7-u2-safety-scenario":2,"s7-u2-shc-compare":3,"s7-u2-stove-three":3,"s7-u2-table-build":2,"s7-u2-temp-compare-samples":3,"s7-u2-temp-define":2,"s7-u2-thermometer-build":2,"s7-u2-thermometer-data":2,"s7-u2-thermometer-read":3,"s7-u2-thermometer-test":4,"s7-u2-thermos":3,"s7-u2-thermoscope":2,"s7-u2-tools-accurate":3,"s7-u2-tools-safety":2,"s7-u2-transfer-classify":2,"s7-u2-transfer-compare":3,"s7-u2-variables-plateau":2,"s7-u2-winter-clothing":3,"s7-u3-best-fit":2,"s7-u3-choose-technique":3,"s7-u3-classify-mixtures":2,"s7-u3-classify-pure":2,"s7-u3-combination":3,"s7-u3-conc-change":3,"s7-u3-conc-compare":3,"s7-u3-controls":2,"s7-u3-controls-judge":4,"s7-u3-cr-best-fit":3,"s7-u3-cr-classify":3,"s7-u3-cr-classify-explain":2,"s7-u3-cr-concentration":3,"s7-u3-cr-design-solubility":4,"s7-u3-cr-dissolving":3,"s7-u3-cr-distill":2,"s7-u3-cr-new-question":2,"s7-u3-cr-particle-classify":3,"s7-u3-cr-pure":2,"s7-u3-cr-salt-decision":3,"s7-u3-cr-separate":3,"s7-u3-cr-separation-plan":4,"s7-u3-cr-solubility":2,"s7-u3-cr-three-part":3,"s7-u3-daily-technique-choose":3,"s7-u3-daily-technique-id":2,"s7-u3-deicer-compare":3,"s7-u3-deicing-improve":2,"s7-u3-delimit":2,"s7-u3-delimit-plan":4,"s7-u3-dissolving-identify":3,"s7-u3-dissolving-particles":2,"s7-u3-distill-parts":2,"s7-u3-distill-vs-evap":3,"s7-u3-extrapolate":4,"s7-u3-fractional":2,"s7-u3-home-techniques":2,"s7-u3-hypothesis-background":3,"s7-u3-hypothesis-pattern":2,"s7-u3-hypothesis-temp":2,"s7-u3-interpolate":3,"s7-u3-light-test":3,"s7-u3-lives-effects":2,"s7-u3-method-match":2,"s7-u3-method-property":3,"s7-u3-mixture-classify-more":3,"s7-u3-particle-diagram-judge":3,"s7-u3-particle-pure":2,"s7-u3-procedure-order":3,"s7-u3-procedure-problem":2,"s7-u3-salt-classify-effects":3,"s7-u3-salt-negative":3,"s7-u3-salt-positive":2,"s7-u3-salt-science":4,"s7-u3-separation-plan":3,"s7-u3-separation-property":4,"s7-u3-solubility-temp":2,"s7-u3-solute-solvent":2,"s7-u3-solution-states":3,"s7-u3-tools-accurate":3,"s7-u3-tools-safety":2,"s7-u3-variables-solubility":3,"s7-u4-boundaries":2,"s7-u4-canadian-match":2,"s7-u4-canadian-scenario":2,"s7-u4-change-timeline":2,"s7-u4-change-why":3,"s7-u4-conclusion-refute":3,"s7-u4-convection":3,"s7-u4-cr-big-picture":3,"s7-u4-cr-change-explain":3,"s7-u4-cr-conclusion":3,"s7-u4-cr-design-investigation":4,"s7-u4-cr-distribution":3,"s7-u4-cr-event-compare":3,"s7-u4-cr-mineral-id":2,"s7-u4-cr-mineral-identify":4,"s7-u4-cr-mineral-tests":3,"s7-u4-cr-mountain-explain":2,"s7-u4-cr-past-theory":2,"s7-u4-cr-pattern":3,"s7-u4-cr-rock-journey":3,"s7-u4-cr-soil-case":2,"s7-u4-cr-soil-choice":2,"s7-u4-cr-soil-formation":3,"s7-u4-cr-table-display":2,"s7-u4-cr-theory-evolved":3,"s7-u4-cr-timeline":2,"s7-u4-cr-weathering":3,"s7-u4-cycle-diagram":2,"s7-u4-cycle-path":3,"s7-u4-distribution-data":2,"s7-u4-drift-evidence":3,"s7-u4-drift-flaw":3,"s7-u4-drift-identify":2,"s7-u4-earth-layers":2,"s7-u4-earthquake-why":2,"s7-u4-era-order":2,"s7-u4-event-effects":3,"s7-u4-event-order":3,"s7-u4-evidence-link":3,"s7-u4-fair-test-design":3,"s7-u4-fizz-variables":2,"s7-u4-fold-fault":2,"s7-u4-frost-wedging":2,"s7-u4-igneous-cooling":2,"s7-u4-instrument-choose":2,"s7-u4-instrument-read":2,"s7-u4-key-choose":3,"s7-u4-key-mineral":2,"s7-u4-key-mineral-2":3,"s7-u4-metamorphic-parent":3,"s7-u4-method-match":2,"s7-u4-method-plan":3,"s7-u4-mineral-id":2,"s7-u4-mineral-id-2":3,"s7-u4-mineral-pair":3,"s7-u4-mineral-properties":2,"s7-u4-mohs-order":2,"s7-u4-mountain-process":3,"s7-u4-mountain-scenario":3,"s7-u4-new-evidence":4,"s7-u4-past-explanations":2,"s7-u4-past-purpose":3,"s7-u4-ring-of-fire":4,"s7-u4-rock-families":2,"s7-u4-sedimentary-form":3,"s7-u4-shift-contrast":3,"s7-u4-soil-drainage":3,"s7-u4-soil-feel-test":3,"s7-u4-soil-form":2,"s7-u4-soil-texture":2,"s7-u4-streak-reliable":3,"s7-u4-study-tech":3,"s7-u4-table-build":2,"s7-u4-volcano-where":3,"s7-u4-weathering-types":2,"s7-u4-winter-chime":3};
+window.__BANK_CRMARKS={"s7-u1-boreal-effects":3,"s7-u1-boreal-practice":2,"s7-u1-career-match":2,"s7-u1-career-scenario":3,"s7-u1-chain-order":2,"s7-u1-classify-set":2,"s7-u1-communicate-format":2,"s7-u1-communicate-judge":3,"s7-u1-consumer-types":2,"s7-u1-cr-boreal-example":3,"s7-u1-cr-data-display":3,"s7-u1-cr-defend-position":3,"s7-u1-cr-design-experiment":4,"s7-u1-cr-effect-chain":3,"s7-u1-cr-energy-flow":3,"s7-u1-cr-factor-effect":2,"s7-u1-cr-habitat-defence":3,"s7-u1-cr-harvest-decision":3,"s7-u1-cr-marsh-change":2,"s7-u1-cr-niche-roles":2,"s7-u1-cr-recycling":2,"s7-u1-cr-silviculture":2,"s7-u1-cr-succession-change":3,"s7-u1-cr-succession-compare":2,"s7-u1-cr-succession-evidence":3,"s7-u1-cr-succession-stages":2,"s7-u1-cr-three-interactions":3,"s7-u1-cr-web-change":3,"s7-u1-cr-web-interpret":3,"s7-u1-decomposer-role":2,"s7-u1-delimit-choose":2,"s7-u1-delimit-rewrite":3,"s7-u1-design-controls":3,"s7-u1-design-flaw":4,"s7-u1-ecosystem-infer":3,"s7-u1-energy-loss":2,"s7-u1-energy-transfer":3,"s7-u1-evaluate-next-step":4,"s7-u1-factor-classify":2,"s7-u1-flowchart-complete":3,"s7-u1-groups-interest":3,"s7-u1-harvest-effects":2,"s7-u1-instrument-choose":2,"s7-u1-interaction-classify":2,"s7-u1-interaction-examples":2,"s7-u1-key-choose":3,"s7-u1-key-work":2,"s7-u1-key-work-2":3,"s7-u1-niche-reason":3,"s7-u1-nutrient-cycle":2,"s7-u1-organization-set":3,"s7-u1-pond-interactions":3,"s7-u1-record-format":3,"s7-u1-record-plan":4,"s7-u1-recycling-scenario":3,"s7-u1-role-identify":2,"s7-u1-succession-identify":2,"s7-u1-succession-next-stage":3,"s7-u1-succession-order":2,"s7-u1-succession-sequence":3,"s7-u1-succession-types":2,"s7-u1-table-choose":2,"s7-u1-tolerance-curve":3,"s7-u1-variables-identify":2,"s7-u1-web-chains":3,"s7-u1-web-predict":4,"s7-u1-web-readoff":3,"s7-u1-web-removal":4,"s7-u1-web-roles":3,"s7-u2-absorb-classify":2,"s7-u2-absorb-predict":3,"s7-u2-activity-temp":2,"s7-u2-apparatus-choice":3,"s7-u2-apparatus-safety":2,"s7-u2-approaches":2,"s7-u2-calibrate":3,"s7-u2-career-match":2,"s7-u2-career-scenario":2,"s7-u2-change-name":2,"s7-u2-change-particles":3,"s7-u2-conclusion-refute":3,"s7-u2-cr-absorb":2,"s7-u2-cr-conclusion":3,"s7-u2-cr-design-test":4,"s7-u2-cr-display":3,"s7-u2-cr-expansion":3,"s7-u2-cr-expansion-use":2,"s7-u2-cr-heating-decision":3,"s7-u2-cr-heating-example":2,"s7-u2-cr-improvement":2,"s7-u2-cr-inquiry":3,"s7-u2-cr-instrument-design":4,"s7-u2-cr-instrument-jobs":3,"s7-u2-cr-instrument-pair":3,"s7-u2-cr-instrument-record":2,"s7-u2-cr-plateau":3,"s7-u2-cr-pump-chain":3,"s7-u2-cr-radiant-explain":2,"s7-u2-cr-specific-heat":3,"s7-u2-cr-temp-explain":3,"s7-u2-cr-thermometer-choice":3,"s7-u2-cr-thermometer-display":2,"s7-u2-cr-transfer-explain":3,"s7-u2-design-absorb":3,"s7-u2-design-challenge":3,"s7-u2-expansion-scenario":3,"s7-u2-experiment-chain":4,"s7-u2-familiar-temp":2,"s7-u2-graph-choice":4,"s7-u2-graph-key":2,"s7-u2-heating-adv":3,"s7-u2-heating-disadv":3,"s7-u2-heating-tech":2,"s7-u2-hypothesis-form":2,"s7-u2-instrument-choose":4,"s7-u2-instrument-how":2,"s7-u2-instrument-match":2,"s7-u2-insulation-past":2,"s7-u2-needs-tech":2,"s7-u2-past-tech":3,"s7-u2-plateau-read":3,"s7-u2-pump-cycle":3,"s7-u2-safety-scenario":2,"s7-u2-shc-compare":3,"s7-u2-stove-three":3,"s7-u2-table-build":2,"s7-u2-temp-compare-samples":3,"s7-u2-temp-define":2,"s7-u2-thermometer-build":2,"s7-u2-thermometer-data":2,"s7-u2-thermometer-read":3,"s7-u2-thermometer-test":4,"s7-u2-thermos":3,"s7-u2-thermoscope":2,"s7-u2-tools-accurate":3,"s7-u2-tools-safety":2,"s7-u2-transfer-classify":2,"s7-u2-transfer-compare":3,"s7-u2-variables-plateau":2,"s7-u2-winter-clothing":3,"s7-u3-best-fit":2,"s7-u3-choose-technique":3,"s7-u3-classify-mixtures":2,"s7-u3-classify-pure":2,"s7-u3-combination":3,"s7-u3-conc-change":3,"s7-u3-conc-compare":3,"s7-u3-controls":2,"s7-u3-controls-judge":4,"s7-u3-cr-best-fit":3,"s7-u3-cr-classify":3,"s7-u3-cr-classify-explain":2,"s7-u3-cr-concentration":3,"s7-u3-cr-design-solubility":4,"s7-u3-cr-dissolving":3,"s7-u3-cr-distill":2,"s7-u3-cr-new-question":2,"s7-u3-cr-particle-classify":3,"s7-u3-cr-pure":2,"s7-u3-cr-salt-decision":3,"s7-u3-cr-separate":3,"s7-u3-cr-separation-plan":4,"s7-u3-cr-solubility":2,"s7-u3-cr-three-part":3,"s7-u3-daily-technique-choose":3,"s7-u3-daily-technique-id":2,"s7-u3-deicer-compare":3,"s7-u3-deicing-improve":2,"s7-u3-delimit":2,"s7-u3-delimit-plan":4,"s7-u3-dissolving-identify":3,"s7-u3-dissolving-particles":2,"s7-u3-distill-parts":2,"s7-u3-distill-vs-evap":3,"s7-u3-extrapolate":4,"s7-u3-fractional":2,"s7-u3-home-techniques":2,"s7-u3-hypothesis-background":3,"s7-u3-hypothesis-pattern":2,"s7-u3-hypothesis-temp":2,"s7-u3-interpolate":3,"s7-u3-light-test":3,"s7-u3-lives-effects":2,"s7-u3-method-match":2,"s7-u3-method-property":3,"s7-u3-mixture-classify-more":3,"s7-u3-particle-diagram-judge":3,"s7-u3-particle-pure":2,"s7-u3-procedure-order":3,"s7-u3-procedure-problem":2,"s7-u3-salt-classify-effects":3,"s7-u3-salt-negative":3,"s7-u3-salt-positive":2,"s7-u3-salt-science":4,"s7-u3-separation-plan":3,"s7-u3-separation-property":4,"s7-u3-solubility-temp":2,"s7-u3-solute-solvent":2,"s7-u3-solution-states":3,"s7-u3-tools-accurate":3,"s7-u3-tools-safety":2,"s7-u3-variables-solubility":3,"s7-u4-boundaries":2,"s7-u4-canadian-match":2,"s7-u4-canadian-scenario":2,"s7-u4-change-timeline":2,"s7-u4-change-why":3,"s7-u4-conclusion-refute":3,"s7-u4-convection":3,"s7-u4-cr-big-picture":3,"s7-u4-cr-change-explain":3,"s7-u4-cr-conclusion":3,"s7-u4-cr-design-investigation":4,"s7-u4-cr-distribution":3,"s7-u4-cr-event-compare":3,"s7-u4-cr-mineral-id":2,"s7-u4-cr-mineral-identify":4,"s7-u4-cr-mineral-tests":3,"s7-u4-cr-mountain-explain":2,"s7-u4-cr-past-theory":2,"s7-u4-cr-pattern":3,"s7-u4-cr-rock-journey":3,"s7-u4-cr-soil-case":2,"s7-u4-cr-soil-choice":2,"s7-u4-cr-soil-formation":3,"s7-u4-cr-table-display":2,"s7-u4-cr-theory-evolved":3,"s7-u4-cr-timeline":2,"s7-u4-cr-weathering":3,"s7-u4-cycle-diagram":2,"s7-u4-cycle-path":3,"s7-u4-distribution-data":2,"s7-u4-drift-evidence":3,"s7-u4-drift-flaw":3,"s7-u4-drift-identify":2,"s7-u4-earth-layers":2,"s7-u4-earthquake-why":2,"s7-u4-era-order":2,"s7-u4-event-effects":3,"s7-u4-event-order":3,"s7-u4-evidence-link":3,"s7-u4-fair-test-design":3,"s7-u4-fizz-variables":2,"s7-u4-fold-fault":2,"s7-u4-frost-wedging":2,"s7-u4-igneous-cooling":2,"s7-u4-instrument-choose":2,"s7-u4-instrument-read":2,"s7-u4-key-choose":3,"s7-u4-key-mineral":2,"s7-u4-key-mineral-2":3,"s7-u4-metamorphic-parent":3,"s7-u4-method-match":2,"s7-u4-method-plan":3,"s7-u4-mineral-id":2,"s7-u4-mineral-id-2":3,"s7-u4-mineral-pair":3,"s7-u4-mineral-properties":2,"s7-u4-mohs-order":2,"s7-u4-mountain-process":3,"s7-u4-mountain-scenario":3,"s7-u4-new-evidence":4,"s7-u4-past-explanations":2,"s7-u4-past-purpose":3,"s7-u4-ring-of-fire":4,"s7-u4-rock-families":2,"s7-u4-sedimentary-form":3,"s7-u4-shift-contrast":3,"s7-u4-soil-drainage":3,"s7-u4-soil-feel-test":3,"s7-u4-soil-form":2,"s7-u4-soil-texture":2,"s7-u4-streak-reliable":3,"s7-u4-study-tech":3,"s7-u4-table-build":2,"s7-u4-volcano-where":3,"s7-u4-weathering-types":2,"s7-u4-winter-chime":3};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
