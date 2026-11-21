@@ -1,3 +1,4 @@
+// CRMARKS: s7f-u3-cr-classer-expliquer=2
 // CRMARKS: s7f-u3-cr-pure=2
 // CRMARKS: s7f-u3-cr-classify=3
 // CRMARKS: s7f-u3-cr-dissolving=3
@@ -10,6 +11,106 @@
 // CRMARKS: s7f-u3-cr-best-fit=3
 // CRMARKS: s7f-u3-cr-design-solubility=4
 // CRMARKS: s7f-u3-cr-new-question=2
+// CRMARKS: s7f-u3-cr-particule-classer=3
+// CRMARKS: s7f-u3-cr-plan-separation=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s7f-u3-particle-pure=2
+// CRMARKS: s7f-u3-pure-misconception=3
+// CRMARKS: s7f-u3-light-test=3
+// CRMARKS: s7f-u3-combination=3
+// CRMARKS: s7f-u3-solute-solvent=2
+// CRMARKS: s7f-u3-dissolving-particles=2
+// CRMARKS: s7f-u3-conc-compare=3
+// CRMARKS: s7f-u3-saturated=2
+// CRMARKS: s7f-u3-conc-change=3
+// CRMARKS: s7f-u3-solubility-temp=2
+// CRMARKS: s7f-u3-solubility-pressure=3
+// CRMARKS: s7f-u3-method-match=2
+// CRMARKS: s7f-u3-method-property=3
+// CRMARKS: s7f-u3-home-techniques=2
+// CRMARKS: s7f-u3-choose-technique=3
+// CRMARKS: s7f-u3-distill-parts=2
+// CRMARKS: s7f-u3-distill-vs-evap=3
+// CRMARKS: s7f-u3-fractional=2
+// CRMARKS: s7f-u3-lives-effects=2
+// CRMARKS: s7f-u3-salt-positive=2
+// CRMARKS: s7f-u3-salt-negative=3
+// CRMARKS: s7f-u3-salt-classify-effects=3
+// CRMARKS: s7f-u3-deicer-compare=3
+// CRMARKS: s7f-u3-salt-science=4
+// CRMARKS: s7f-u3-salt-adv=3
+// CRMARKS: s7f-u3-hypothesis-pattern=2
+// CRMARKS: s7f-u3-hypothesis-background=3
+// CRMARKS: s7f-u3-delimit=2
+// CRMARKS: s7f-u3-delimit-plan=4
+// CRMARKS: s7f-u3-best-fit=2
+// CRMARKS: s7f-u3-interpolate=3
+// CRMARKS: s7f-u3-extrapolate=4
+// CRMARKS: s7f-u3-variables-solubility=3
+// CRMARKS: s7f-u3-controls=2
+// CRMARKS: s7f-u3-controls-judge=4
+// CRMARKS: s7f-u3-procedure-order=3
+// CRMARKS: s7f-u3-procedure-problem=2
+// CRMARKS: s7f-u3-tools-safety=2
+// CRMARKS: s7f-u3-tools-accurate=3
+// CRMARKS: s7f-u3-new-questions=2
+// CRMARKS: s7f-u3-modele-particulaire=3
+// CRMARKS: s7f-u3-melange-classer-plus=3
+// CRMARKS: s7f-u3-dissolution-identifier=3
+// CRMARKS: s7f-u3-solubilite-changement=3
+// CRMARKS: s7f-u3-separation-plan=3
+// CRMARKS: s7f-u3-separation-propriete=4
+// CRMARKS: s7f-u3-technique-quotidienne-id=2
+// CRMARKS: s7f-u3-technique-quotidienne-choix=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s7f-u3-particle-pure=b
+// BIMODAL: s7f-u3-pure-misconception=b
+// BIMODAL: s7f-u3-light-test=b
+// BIMODAL: s7f-u3-combination=b
+// BIMODAL: s7f-u3-solute-solvent=b
+// BIMODAL: s7f-u3-dissolving-particles=b
+// BIMODAL: s7f-u3-conc-compare=b
+// BIMODAL: s7f-u3-saturated=b
+// BIMODAL: s7f-u3-conc-change=b
+// BIMODAL: s7f-u3-solubility-temp=b
+// BIMODAL: s7f-u3-solubility-pressure=b
+// BIMODAL: s7f-u3-method-match=b
+// BIMODAL: s7f-u3-method-property=b
+// BIMODAL: s7f-u3-home-techniques=b
+// BIMODAL: s7f-u3-choose-technique=b
+// BIMODAL: s7f-u3-distill-parts=b
+// BIMODAL: s7f-u3-distill-vs-evap=b
+// BIMODAL: s7f-u3-fractional=b
+// BIMODAL: s7f-u3-lives-effects=b
+// BIMODAL: s7f-u3-salt-positive=b
+// BIMODAL: s7f-u3-salt-negative=b
+// BIMODAL: s7f-u3-salt-classify-effects=b
+// BIMODAL: s7f-u3-deicer-compare=b
+// BIMODAL: s7f-u3-salt-science=b
+// BIMODAL: s7f-u3-salt-adv=b
+// BIMODAL: s7f-u3-hypothesis-pattern=b
+// BIMODAL: s7f-u3-hypothesis-background=b
+// BIMODAL: s7f-u3-delimit=b
+// BIMODAL: s7f-u3-delimit-plan=b
+// BIMODAL: s7f-u3-best-fit=b
+// BIMODAL: s7f-u3-interpolate=a
+// BIMODAL: s7f-u3-extrapolate=b
+// BIMODAL: s7f-u3-variables-solubility=b
+// BIMODAL: s7f-u3-controls=b
+// BIMODAL: s7f-u3-controls-judge=b
+// BIMODAL: s7f-u3-procedure-order=b
+// BIMODAL: s7f-u3-procedure-problem=b
+// BIMODAL: s7f-u3-tools-safety=b
+// BIMODAL: s7f-u3-tools-accurate=b
+// BIMODAL: s7f-u3-new-questions=b
+// BIMODAL: s7f-u3-modele-particulaire=b
+// BIMODAL: s7f-u3-melange-classer-plus=b
+// BIMODAL: s7f-u3-dissolution-identifier=b
+// BIMODAL: s7f-u3-solubilite-changement=b
+// BIMODAL: s7f-u3-separation-plan=b
+// BIMODAL: s7f-u3-separation-propriete=b
+// BIMODAL: s7f-u3-technique-quotidienne-id=b
+// BIMODAL: s7f-u3-technique-quotidienne-choix=b
 // Sciences 7, Unite 3 : Les melanges et les solutions (SC7.7.1 a
 // SC7.9.8), banque construite le Nov 16, 2026.
 // Existing tests and question banks were reviewed only to gauge the expected depth and range of treatment. All items in this bank were written new for this app.
@@ -403,3 +504,356 @@ E("s7f-u3-cr-new-question", 3, ["SC7.9.8"], 2, "var", varset([
    des examens composes. */
 var NO_COMPOSE_U3 = { "s7f-u3-cr-design-solubility": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U3[e.id]) { e.noCompose = true; } });
+
+
+
+/* Ajouts de l'allongement (20 nov. 2026) : SR sur SC7.7.1, SC7.7.2,
+   SC7.7.3, SC7.7.5, SC7.7.6 x2, SC7.7.7 x2, et une entrée CR de
+   2 points sur SC7.7.2. Marqué pour la révision SME. */
+
+E("s7f-u3-modele-particulaire", 3, ["SC7.7.1"], 2, "var", varset([
+  function () {
+    return mcq("Un schéma montre des particules très espacées qui remplissent tout le contenant et se déplacent rapidement dans toutes les directions. Quelle substance le schéma modélise-t-il le mieux?",
+      "Un gaz, dont les particules sont très espacées et se déplacent librement dans tout l'espace disponible",
+      ["Un liquide, dont les particules restent serrées les unes contre les autres au fond du contenant", "Un solide, dont les particules occupent des positions fixes et ne font que vibrer sur place", "Un mélange de solides, dont les particules gardent chacune leur forme propre dans le contenant"],
+      "Selon la théorie particulaire, les particules d'un gaz sont très espacées et libres de remplir le contenant. <b>Un gaz, dont les particules sont très espacées et se déplacent librement</b>.", {});
+  },
+  function () {
+    return mcq("Un schéma montre des particules serrées qui glissent les unes sur les autres et prennent la forme du fond d'un bécher. Quelle substance le schéma modélise-t-il le mieux?",
+      "Un liquide, dont les particules restent proches mais peuvent glisser et s'écouler",
+      ["Un gaz, dont les particules sont très espacées et remplissent tout le contenant offert", "Un solide, dont les particules sont verrouillées en positions fixes dans un motif régulier", "Un solide cristallin, dont les particules forment des rangées parfaitement ordonnées"],
+      "Particules proches mais capables de glisser : c'est le modèle particulaire d'un liquide. <b>Un liquide, dont les particules restent proches mais peuvent glisser et s'écouler</b>.", {});
+  },
+  function () {
+    return mcq("Un schéma montre des particules en rangées ordonnées, chacune vibrant légèrement sans quitter sa place. Quelle substance le schéma modélise-t-il le mieux?",
+      "Un solide, dont les particules occupent des positions fixes et ne font que vibrer",
+      ["Un liquide, dont les particules glissent librement les unes sur les autres en s'écoulant", "Un gaz, dont les particules sont très espacées et se déplacent rapidement partout", "Une solution, dont les particules de deux substances sont réparties également partout"],
+      "Des positions fixes et un motif régulier, avec vibration sur place : c'est le modèle d'un solide. <b>Un solide, dont les particules occupent des positions fixes et ne font que vibrer</b>.", {});
+  },
+  function () {
+    return mcq("On chauffe un solide et il fond. Selon la théorie particulaire, qu'est-il arrivé à ses particules?",
+      "Elles ont gagné de l'énergie et leurs mouvements finissent par vaincre les attractions qui les retenaient en positions fixes",
+      ["Elles se sont transformées en un nouveau genre de particules, plus grosses et plus lourdes qu'avant", "Elles ont cessé d'être attirées les unes par les autres, et cette attraction ne reviendra jamais", "Elles ont rapetissé jusqu'à devenir assez petites pour s'écouler entre les autres particules"],
+      "Le chauffage donne de l'énergie aux particules; à la fusion, leurs mouvements vainquent les attractions qui les fixaient. <b>Elles ont gagné de l'énergie et leurs mouvements finissent par vaincre les attractions</b>.", {});
+  }
+]), ["L'espacement et le mouvement révèlent l'état : espacées et libres, c'est un gaz.", "Serrées mais glissantes : liquide; en rangées fixes : solide."]);
+
+E("s7f-u3-melange-classer-plus", 3, ["SC7.7.2"], 2, "var", varset([
+  function () {
+    return mcq("Une poignée de sable de plage contient des grains noirs, blancs et roses qu'on peut distinguer à la loupe. Comment classer ce sable?",
+      "Un mélange mécanique : ses parties sont visibles et ne sont pas réparties uniformément",
+      ["Une solution : ses parties sont réparties uniformément et impossibles à distinguer", "Une substance pure : elle ne contient qu'un seul genre de particules dans tout l'échantillon", "Un élément : elle ne contient qu'un seul genre d'atomes dans chacun de ses grains"],
+      "Des parties visibles et inégalement réparties définissent un mélange mécanique. <b>Un mélange mécanique</b>.", {});
+  },
+  function () {
+    return mcq("Un verre de jus de pomme clair est doré de la même façon du haut au bas, sans aucun dépôt au fond. Comment classer ce jus?",
+      "Une solution : ses parties sont réparties uniformément et on ne peut pas les distinguer",
+      ["Un mélange mécanique : ses parties sont visibles et inégalement réparties dans le verre", "Une substance pure : elle ne contient qu'un seul genre de particules dans tout le verre", "Un élément : il ne contient qu'un seul genre d'atomes dans chaque goutte du jus"],
+      "Uniforme partout, sans parties distinguables : c'est une solution. <b>Une solution</b>.", {});
+  },
+  function () {
+    return mcq("Une vinaigrette se sépare en couches après quelques minutes au repos : l'huile flotte sur le vinaigre. Comment la classer au repos?",
+      "Un mélange mécanique : ses parties se séparent en couches visibles et inégales",
+      ["Une solution : ses parties restent réparties uniformément même après un long repos", "Une substance pure : elle ne contient qu'un seul genre de particules dans chaque couche", "Un composé : ses parties sont liées chimiquement et ne peuvent jamais se séparer"],
+      "Des couches visibles qui se séparent au repos : c'est un mélange mécanique, pas une solution. <b>Un mélange mécanique</b>.", {});
+  },
+  function () {
+    return mcq("Un échantillon d'eau distillée ne contient que des particules d'eau, toutes identiques. Comment classer cette eau?",
+      "Une substance pure : elle ne contient qu'un seul genre de particules",
+      ["Une solution : deux substances y sont réparties uniformément l'une dans l'autre", "Un mélange mécanique : ses parties sont visibles et inégalement réparties partout", "Un élément métallique : elle ne contient qu'un seul genre d'atomes de métal"],
+      "Un seul genre de particules, identiques : c'est une substance pure. <b>Une substance pure</b>.", {});
+  },
+  function () {
+    return mcq("Le lait au chocolat en poudre, une fois bien brassé, a la même couleur et le même goût dans chaque gorgée. Comment le classer?",
+      "Une solution : la poudre est dissoute et répartie uniformément dans le lait",
+      ["Un mélange mécanique : ses parties sont visibles et inégalement réparties dans le verre", "Une substance pure : il ne contient qu'un seul genre de particules dans tout le verre", "Un élément : il ne contient qu'un seul genre d'atomes dans chaque gorgée bue"],
+      "Une poudre dissoute uniformément dans le lait forme une solution. <b>Une solution</b>.", {});
+  },
+  function () {
+    return mcq("Un bocal de marinades montre des tranches de concombre, des grains d'épices et un liquide, chacun reconnaissable. Comment classer le contenu du bocal?",
+      "Un mélange mécanique : ses parties sont visibles et gardent leur identité propre",
+      ["Une solution : ses parties sont réparties uniformément et impossibles à distinguer", "Une substance pure : elle ne contient qu'un seul genre de particules dans tout le bocal", "Un élément : il ne contient qu'un seul genre d'atomes dans chacune de ses parties"],
+      "Des parties visibles qui gardent leur identité : c'est un mélange mécanique. <b>Un mélange mécanique</b>.", {});
+  }
+]), ["Des parties visibles et inégales indiquent un mélange mécanique.", "Uniforme partout, sans parties distinguables : c'est une solution."]);
+
+function s7fCap(x) { return x.charAt(0).toUpperCase() + x.slice(1); }
+
+E("s7f-u3-dissolution-identifier", 3, ["SC7.7.3"], 2, "var", varset([
+  ["de la limonade", "du sucre", "de l'eau sucrée à saveur de citron"],
+  ["de l'eau salée pour les pâtes", "du sel de table", "de l'eau"],
+  ["un thé glacé sucré", "du sucre", "du thé infusé"],
+  ["une boisson gazeuse", "du dioxyde de carbone", "de l'eau aromatisée"],
+  ["de l'eau vinaigrée pour marinades", "de l'acide acétique", "de l'eau"],
+  ["un sirop contre la toux", "le médicament dissous", "le sirop liquide"]
+].reduce(function (acc, row) {
+  acc.push(function () {
+    return mcq("Pour préparer " + row[0] + ", on dissout " + row[1] + " dans " + row[2] + ". Dans cette solution, qu'est-ce que le soluté?",
+      s7fCap(row[1]) + " : c'est la substance qui est dissoute",
+      [s7fCap(row[2]) + " : c'est la substance qui est dissoute dans l'autre",
+       "La solution entière : soluté et solvant sont deux noms de la même chose",
+       "Le contenant : c'est lui qui reçoit le mélange pendant la préparation"],
+      "Le soluté est la substance dissoute; le solvant est celle qui dissout. Ici, <b>" + row[1] + "</b> est le soluté et <b>" + row[2] + "</b> est le solvant.", {});
+  });
+  acc.push(function () {
+    return mcq("Pour préparer " + row[0] + ", on dissout " + row[1] + " dans " + row[2] + ". Dans cette solution, qu'est-ce que le solvant?",
+      s7fCap(row[2]) + " : c'est la substance qui dissout l'autre",
+      [s7fCap(row[1]) + " : c'est la substance qui dissout l'autre dans le mélange",
+       "La solution entière : solvant et soluté sont deux noms de la même chose",
+       "Le contenant : c'est lui qui dissout pendant toute la préparation"],
+      "Le solvant est la substance qui dissout le soluté. Ici, <b>" + row[2] + "</b> est le solvant et <b>" + row[1] + "</b> est le soluté.", {});
+  });
+  return acc;
+}, [])), ["Le soluté est la substance dissoute; le solvant est celle qui dissout.", "Dans les boissons, l'ingrédient en plus petite quantité est souvent le soluté."]);
+
+E("s7f-u3-solubilite-changement", 3, ["SC7.7.5"], 2, "var", varset([
+  function () {
+    return mcq("Une boisson gazeuse froide, une fois réchauffée sur le comptoir, perd ses bulles beaucoup plus vite. Qu'est-ce qui explique ce changement?",
+      "La solubilité des gaz diminue quand la température monte : le gaz dissous s'échappe de la boisson tiède",
+      ["La solubilité des gaz dissous augmente quand la température du liquide monte : du gaz supplémentaire entre alors dans la boisson et forme toutes les bulles qu'on voit s'échapper", "Le réchauffement de la boisson crée un tout nouveau gaz à l'intérieur de la bouteille scellée dès le moment précis où on l'ouvre sur le comptoir de la cuisine", "Les bulles n'ont aucun lien avec la solubilité : elles viennent uniquement de l'agitation du liquide"],
+      "Pour les gaz, réchauffer le liquide diminue la solubilité : le gaz dissous sort de la solution. <b>La solubilité des gaz diminue quand la température monte</b>.", {});
+  },
+  function () {
+    return mcq("Du sucre en poudre se dissout en quelques secondes dans un thé chaud, tandis qu'un morceau de sucre compact met beaucoup plus longtemps dans le même thé. Qu'est-ce qui explique l'écart?",
+      "La poudre offre une plus grande surface de contact : ses petites particules rencontrent le solvant partout à la fois",
+      ["La poudre de sucre est un tout autre genre de sucre, chimiquement très différent et beaucoup plus soluble par nature que le sucre compact en morceaux dans le même thé chaud", "Le morceau de sucre doit d'abord fondre complètement avant que la dissolution puisse commencer", "La dissolution dépend uniquement de la température, donc les deux formes devraient prendre le même temps"],
+      "À substance égale, la forme en poudre expose plus de surface au solvant et se dissout plus vite. <b>La poudre offre une plus grande surface de contact</b>.", {});
+  },
+  function () {
+    return mcq("Un plongeur qui remonte trop vite d'une plongée profonde peut souffrir parce que l'azote dissous dans son sang forme des bulles. Quel facteur de solubilité est en cause?",
+      "La pression : quand elle diminue pendant la remontée, l'azote dissous devient moins soluble et forme des bulles",
+      ["La température du sang : le sang du plongeur se réchauffe très brusquement pendant sa remontée rapide vers la surface, et c'est cette chaleur qui chasse l'azote dissous", "L'agitation du liquide : les mouvements du plongeur pendant la remontée transforment son sang en une solution fortement brassée, ce qui fait sortir l'azote en bulles", "La grosseur des particules : les particules d'azote grossissent sous la pression profonde"],
+      "Sous la pression profonde, plus d'azote se dissout; à la remontée, la pression chute et le gaz sort de solution en bulles. <b>La pression : quand elle diminue, l'azote dissous devient moins soluble</b>.", {});
+  },
+  function () {
+    return mcq("Pour dissoudre plus de poudre de cacao dans un lait déjà saturé, sans ajouter de lait, que peut-on faire?",
+      "Chauffer le lait : la plupart des solutés solides deviennent plus solubles dans un liquide chaud",
+      ["Refroidir le lait saturé au réfrigérateur pendant une heure : les solutés solides comme le cacao deviennent toujours beaucoup plus solubles dans un liquide bien froid", "Laisser le lait saturé reposer sur le comptoir sans jamais le toucher ni le brasser : le repos prolongé augmente toujours, à lui seul, la solubilité des solutés solides", "Verser le lait dans un verre plus large : la largeur du contenant augmente la solubilité"],
+      "Pour la plupart des solutés solides, chauffer le solvant augmente la quantité qui peut se dissoudre. <b>Chauffer le lait</b>.", {});
+  }
+]), ["Repère le facteur modifié : température, pression, agitation ou grosseur des particules.", "Les gaz se comportent à l'inverse des solides quand la température monte."]);
+
+E("s7f-u3-separation-plan", 3, ["SC7.7.6"], 2, "var", varset([
+  function () {
+    return mcq("Un technicien doit récupérer des copeaux de fer mélangés à du sable sec. Quel plan de séparation convient?",
+      "Passer un aimant au-dessus du mélange à plusieurs reprises : l'aimant attire les copeaux de fer et laisse le sable",
+      ["Verser de l'eau froide dans le mélange sec et filtrer le tout : le fer des copeaux se dissout complètement dans l'eau et traverse le papier filtre avec elle", "Chauffer très fort le mélange sec dans un creuset jusqu'à ce que tout le sable se soit évaporé dans l'air et laisse les copeaux de fer seuls derrière lui", "Laisser reposer le mélange une semaine : le fer finit toujours par flotter au-dessus du sable"],
+      "Le fer est magnétique et le sable ne l'est pas : l'aimant sépare les deux proprement. <b>Passer un aimant au-dessus du mélange</b>.", {});
+  },
+  function () {
+    return mcq("Une classe doit séparer de l'eau boueuse en eau claire et en boue. Quel plan de séparation convient?",
+      "Verser le mélange dans un filtre : l'eau traverse le papier filtre et la boue y reste",
+      ["Ajouter une bonne quantité de savon liquide au mélange et brasser vigoureusement : le savon dissout complètement la boue dans l'eau, qui devient claire d'un coup", "Faire bouillir le mélange entier dans une casserole ouverte : la boue solide disparaît toujours la première, entièrement emportée dans la vapeur qui s'élève", "Attendre que l'eau devienne claire toute seule, sans jamais toucher au mélange"],
+      "La filtration retient les particules solides de la boue et laisse passer l'eau. <b>Verser le mélange dans un filtre</b>.", {});
+  },
+  function () {
+    return mcq("On veut récupérer le sel dissous dans un bassin d'eau de mer peu profond. Quel plan de séparation convient?",
+      "Laisser l'eau s'évaporer au soleil : l'eau part en vapeur et les cristaux de sel restent dans le bassin",
+      ["Filtrer toute l'eau de mer du bassin à travers un papier filtre fin : le papier retiendra soigneusement tout le sel dissous dans l'eau qui le traverse", "Passer un aimant très puissant dans l'eau du bassin à plusieurs reprises : le sel dissous dans l'eau de mer est attiré par les aimants puissants et s'y colle", "Congeler l'eau de mer : le sel sort toujours de la glace en cristaux purs et secs"],
+      "Le sel dissous ne se filtre pas; l'évaporation enlève l'eau et laisse le sel. <b>Laisser l'eau s'évaporer au soleil</b>.", {});
+  },
+  function () {
+    return mcq("Un mélange contient des billes de verre et des billes de liège de la même grosseur. Quel plan de séparation convient?",
+      "Verser le mélange dans l'eau : les billes de liège flottent et les billes de verre coulent, puis on écume le liège",
+      ["Utiliser un aimant puissant passé au-dessus du mélange sec : les billes de verre sont toujours attirées par les aimants forts et se séparent ainsi des billes de liège", "Filtrer le mélange sec à travers un papier filtre ordinaire : les billes de liège, plus légères, traversent le papier filtre en premier et les billes de verre restent", "Chauffer le mélange : le liège s'évapore toujours avant que le verre ne ramollisse"],
+      "Flottation : le liège, moins dense, flotte sur l'eau pendant que le verre coule. <b>Verser le mélange dans l'eau et écumer le liège</b>.", {});
+  },
+  function () {
+    return mcq("Une recette demande de séparer des graines de pavot (très petites) de grains de riz (plus gros). Quel plan de séparation convient?",
+      "Verser le mélange sur un tamis aux mailles intermédiaires : les graines de pavot traversent et le riz reste sur le tamis",
+      ["Verser tout le mélange dans un bol d'eau froide : les petites graines de pavot coulent toujours au fond et les grains de riz flottent toujours à la surface de l'eau", "Passer un aimant de cuisine au-dessus du mélange sec à plusieurs reprises : les grains de riz sont attirés par les aimants et se séparent ainsi des graines de pavot", "Chauffer doucement le mélange : les graines de pavot s'évaporent avant les grains de riz"],
+      "Le tamisage sépare selon la grosseur des particules. <b>Verser le mélange sur un tamis aux mailles intermédiaires</b>.", {});
+  }
+]), ["Associe la technique à la propriété qui diffère : magnétisme, grosseur, solubilité, densité.", "Un solide dissous ne se filtre pas : il faut l'évaporation."]);
+
+E("s7f-u3-separation-propriete", 3, ["SC7.7.6"], 3, "var", varset([
+  function () {
+    return mcq("Un élève sépare de la limaille de fer d'un mélange de sable et de sel en commençant par un aimant. Quelle propriété rend cette première étape possible?",
+      "Le magnétisme : la limaille de fer est attirée par l'aimant, tandis que le sable et le sel ne le sont pas",
+      ["La solubilité dans le métal : la limaille de fer se dissout lentement dans l'aimant pendant que le sable et le sel du mélange restent secs et intacts à côté", "La densité relative : la limaille de fer est de loin la substance la moins dense de tout le mélange, ce qui la fait monter à la surface près de l'aimant", "Le point d'ébullition : la limaille de fer bout à une température plus basse que le sable"],
+      "L'aimant ne fonctionne que parce que le fer est magnétique et que les autres substances ne le sont pas. La propriété est <b>le magnétisme</b>.", {});
+  },
+  function () {
+    return mcq("Pour séparer ensuite le sable du sel dans le même mélange, l'élève ajoute de l'eau, filtre, puis fait évaporer l'eau du filtrat. Quelles propriétés utilise-t-elle?",
+      "La solubilité (le sel se dissout, pas le sable) puis l'évaporation (l'eau part, le sel reste)",
+      ["Le magnétisme utilisé deux fois de suite dans le plan : une première fois pour retirer le sable du mélange, puis une deuxième fois pour retirer le sel dissous de l'eau", "La densité à elle seule : le sable et le sel finissent par se séparer proprement parce que leurs particules flottent à des niveaux différents dans l'eau du bécher", "Le point de fusion : le sel fond dans l'eau chaude pendant que le sable reste solide"],
+      "Le sel se dissout dans l'eau et le sable non : la filtration retient le sable, et l'évaporation récupère le sel du filtrat. Les propriétés sont <b>la solubilité, puis l'évaporation</b>.", {});
+  },
+  function () {
+    return mcq("Un mélange d'eau et d'huile se sépare dans un entonnoir à décantation. Quelle propriété rend cette séparation possible?",
+      "La non-miscibilité et la densité : les deux liquides ne se mélangent pas et l'huile, moins dense, forme la couche du dessus",
+      ["Le magnétisme faible du métal : l'huile de surface est légèrement attirée vers le haut de l'entonnoir à décantation par les parties métalliques de l'appareil", "La solubilité dans l'eau chaude : l'huile versée se dissout d'abord complètement dans l'eau chaude du mélange, puis remonte ensuite lentement à la surface en refroidissant", "Le point d'ébullition : l'huile bout dès qu'elle touche l'eau à température ambiante"],
+      "L'huile et l'eau ne se mélangent pas, et la moins dense flotte : on peut donc laisser couler la couche d'eau. La propriété est <b>la non-miscibilité combinée à la densité</b>.", {});
+  },
+  function () {
+    return mcq("Un fermier sépare les grains de blé de leurs enveloppes légères (la balle) en lançant le mélange au vent. Quelle propriété rend cette séparation possible?",
+      "La masse et la prise au vent : le vent emporte les enveloppes légères pendant que les grains lourds tombent près du fermier",
+      ["Le magnétisme terrestre : les grains de blé lourds sont attirés vers le sol beaucoup plus fort que les enveloppes légères de la balle pendant le vannage au vent", "La solubilité dans l'air : les enveloppes légères de la balle se dissolvent complètement dans l'air humide des journées de récolte pendant qu'elles volent au vent", "La couleur : le vent trie les particules selon leur teinte, les pâles au loin"],
+      "Le vannage repose sur la différence de masse et de prise au vent entre grains lourds et enveloppes légères. La propriété est <b>la masse relative (la densité des particules)</b>.", {});
+  }
+]), ["Nomme la propriété qui rend la technique possible pour ces substances.", "Aimant = magnétisme; ajout d'eau = solubilité; couches = densité."]);
+
+E("s7f-u3-technique-quotidienne-id", 3, ["SC7.7.7"], 1, "var", varset([
+  function () {
+    return mcq("Une cafetière à piston : on pousse un piston muni d'un grillage fin qui retient le marc au fond. Quelle technique de séparation est-ce?",
+      "La filtration : le grillage retient le solide et laisse passer le liquide",
+      ["L'évaporation complète : toute l'eau du café s'en va en vapeur et le café reste concentré au fond de la cafetière à piston après quelques minutes", "La décantation soigneuse : on verse doucement le café liquide dans les tasses en laissant le marc de café déposé derrière, au fond de la cafetière", "La distillation : la vapeur de café est recueillie et condensée"],
+      "Un grillage qui retient le solide pendant que le liquide passe : c'est la filtration. <b>La filtration</b>.", {});
+  },
+  function () {
+    return mcq("On verse les pâtes et leur eau de cuisson dans une passoire : l'eau s'en va et les pâtes restent. Quelle technique de séparation est-ce?",
+      "La filtration (le tamisage) : la passoire retient le solide et laisse passer le liquide",
+      ["L'évaporation rapide : toute l'eau de cuisson des pâtes disparaît en vapeur d'eau au-dessus de la passoire pendant qu'on égoutte les pâtes chaudes", "La distillation complète : l'eau de cuisson est recueillie à l'état pur dans un deuxième contenant placé sous la passoire pendant l'égouttage des pâtes", "La dissolution : les pâtes se dissolvent pendant qu'on les égoutte"],
+      "Une passoire est un filtre grossier : elle retient les pâtes et laisse passer l'eau. <b>La filtration (le tamisage)</b>.", {});
+  },
+  function () {
+    return mcq("Une étendue de linge sèche au soleil : l'eau des vêtements disparaît dans l'air. Quelle technique de séparation est-ce?",
+      "L'évaporation : l'eau liquide devient vapeur et quitte le linge",
+      ["La filtration : l'air filtre l'eau hors des vêtements mouillés", "La décantation : l'eau coule lentement hors des vêtements par gravité", "La distillation : la vapeur d'eau est recueillie et condensée ailleurs"],
+      "Un liquide qui devient vapeur et s'en va : c'est l'évaporation. <b>L'évaporation</b>.", {});
+  },
+  function () {
+    return mcq("Un cuisinier laisse reposer une sauce, puis verse doucement la partie claire en laissant le dépôt au fond du pot. Quelle technique de séparation est-ce?",
+      "La décantation : on verse le liquide en laissant le dépôt solide derrière",
+      ["La filtration fine : le dépôt solide traverse lentement un filtre de papier pendant qu'on verse doucement la partie claire de la sauce dans le plat", "L'évaporation complète : la partie claire de la sauce s'évapore entièrement dans l'air et le dépôt solide reste complètement seul au fond du pot", "Le tamisage : un tamis retient la partie claire de la sauce au passage"],
+      "Verser doucement en laissant le dépôt derrière : c'est la décantation. <b>La décantation</b>.", {});
+  },
+  function () {
+    return mcq("Un four à micro-ondes muni d'un plateau tournant ne sépare rien; mais une essoreuse à salade fait sortir l'eau des feuilles par ses trous. Quelle technique l'essoreuse utilise-t-elle?",
+      "La filtration par force centrifuge : l'eau est projetée à travers les trous et les feuilles restent",
+      ["L'évaporation rapide : l'eau des feuilles devient vapeur pendant la rotation", "La distillation : la vapeur d'eau est condensée sur le couvercle de l'essoreuse", "La dissolution : l'eau dissout les feuilles pendant qu'elle sort par les trous"],
+      "L'essoreuse projette l'eau à travers ses ouvertures et retient les feuilles : filtration (par force centrifuge). <b>La filtration par force centrifuge</b>.", {});
+  },
+  function () {
+    return mcq("Un masque antipoussière porté pendant du sablage empêche la poussière d'entrer dans les poumons du bricoleur. Quelle technique de séparation le masque utilise-t-il?",
+      "La filtration : le matériau du masque retient les particules et laisse passer l'air",
+      ["L'évaporation instantanée : la fine poussière de sablage s'évapore entièrement dans l'air avant même d'atteindre le visage et le masque du bricoleur", "La décantation lente : la poussière de sablage se dépose tranquillement au fond du masque du bricoleur avant de pouvoir être respirée par son nez", "La distillation : l'air est condensé puis revaporisé à travers le masque"],
+      "Retenir les particules et laisser passer le fluide (l'air) : c'est la filtration. <b>La filtration</b>.", {});
+  }
+]), ["Que fait l'appareil : retenir un solide, évaporer un liquide ou verser un liquide?", "Retenir le solide pendant que le liquide passe, c'est la filtration."]);
+
+E("s7f-u3-technique-quotidienne-choix", 3, ["SC7.7.7"], 2, "var", varset([
+  function () {
+    return mcq("Une famille campe près d'un ruisseau et doit rendre l'eau boueuse potable pour la soirée : ils ont un linge propre, une casserole et un feu. Quel plan utilise correctement une technique de séparation?",
+      "Filtrer l'eau à travers le linge pour enlever la boue, puis la faire bouillir dans la casserole pour la rendre potable",
+      ["Faire bouillir l'eau boueuse telle quelle d'abord dans la casserole, puis la verser directement dans les verres une fois qu'elle a refroidi un peu", "Laisser l'eau boueuse reposer une petite minute seulement dans un contenant, puis boire directement la partie du dessus sans aucun autre traitement préalable", "Brasser l'eau avec une branche propre pour que la boue se répartisse également partout"],
+      "La filtration au linge enlève les particules, et l'ébullition rend ensuite l'eau potable : les deux étapes dans le bon ordre. <b>Filtrer l'eau à travers le linge, puis la faire bouillir</b>.", {});
+  },
+  function () {
+    return mcq("Un jus de fruits frais contient de la pulpe que des enfants n'aiment pas. Quelle technique donne un jus clair sans en changer le goût dissous?",
+      "La filtration : verser le jus dans un tamis fin ou un linge qui retient la pulpe",
+      ["L'évaporation au soleil : laisser le jus de fruits frais exposé au soleil pendant des heures jusqu'à ce que toute la pulpe ait complètement disparu du liquide", "La distillation complète du jus : chauffer tout le jus et recueillir uniquement la vapeur condensée qui s'en dégage, goutte à goutte, dans un autre contenant", "La décantation prolongée : attendre que la pulpe se dissolve d'elle-même dans le jus"],
+      "La pulpe est un solide en suspension : la filtration la retient et laisse passer le jus. <b>La filtration</b>.", {});
+  },
+  function () {
+    return mcq("Après avoir lavé du riz, une cuisinière veut jeter l'eau de rinçage trouble sans perdre les grains. Quelle technique utilise-t-elle en inclinant doucement le bol?",
+      "La décantation : elle verse l'eau en retenant les grains déposés au fond du bol",
+      ["La filtration à travers le riz : l'eau de rinçage trouble traverse lentement les grains de riz entassés au fond du bol comme à travers un filtre fin de cuisine", "L'évaporation rapide : toute l'eau de rinçage trouble s'évapore complètement dans l'air pendant les quelques secondes où elle incline doucement le bol", "La distillation : la vapeur de l'eau est recueillie sur le couvercle du bol"],
+      "Verser le liquide en gardant le solide déposé au fond : c'est la décantation. <b>La décantation</b>.", {});
+  },
+  function () {
+    return mcq("Un aquarium a besoin d'un nettoyage : l'eau contient des déchets solides en suspension. Quelle technique l'entretien hebdomadaire utilise-t-il dans le filtre de l'aquarium?",
+      "La filtration : l'eau traverse un matériau qui retient les déchets solides en suspension",
+      ["L'évaporation hebdomadaire : le filtre de l'aquarium fait évaporer une bonne partie de l'eau de l'aquarium chaque semaine pendant son fonctionnement continu", "La décantation mécanique : le filtre de l'aquarium verse doucement l'eau propre d'un côté en laissant les poissons et les déchets derrière lui de l'autre côté", "La dissolution : le filtre dissout les déchets jusqu'à ce qu'ils disparaissent"],
+      "Le filtre d'aquarium retient les particules solides et laisse passer l'eau : filtration. <b>La filtration</b>.", {});
+  }
+]), ["Choisis la technique qui enlève la partie indésirable et garde l'autre.", "Solides en suspension : filtration; dépôt au fond : décantation."]);
+
+E("s7f-u3-cr-classer-expliquer", 3, ["SC7.7.2"], 2, "var", varset([
+  function () {
+    return textq("Un élève examine un verre d'eau pétillante fraîchement versée : des bulles montent partout dans le liquide, qui est clair et de couleur uniforme. Classe ce contenu (solution, mélange mécanique ou substance pure) et justifie ton classement par DEUX observations tirées de la description. (2 points)",
+      ["L'eau pétillante est un mélange mécanique pendant que les bulles sont visibles."],
+      "Points de notation (2) : 1 point pour le bon classement (mélange mécanique tant que les bulles de gaz sont visibles et montent; on accepte aussi « solution » si l'élève parle du gaz dissous avant son dégagement, avec justification cohérente). 1 point pour deux observations à l'appui tirées de la description (bulles visibles qui montent = une partie distincte non uniformément répartie; le liquide clair et uniforme en apparence). Réponse modèle : Les bulles visibles qui montent forment une partie distincte dans le liquide : <b>c'est un mélange mécanique, car ses parties ne sont pas réparties uniformément</b>.", {});
+  },
+  function () {
+    return textq("Un élève examine un échantillon d'air contenu dans une seringue scellée : on ne voit rien, et l'air semble parfaitement uniforme. Classe ce contenu (solution, mélange mécanique ou substance pure) et justifie ton classement par DEUX faits sur la composition de l'air. (2 points)",
+      ["L'air est une solution de gaz : l'azote, l'oxygène et d'autres gaz y sont répartis uniformément."],
+      "Points de notation (2) : 1 point pour le bon classement (solution). 1 point pour deux faits à l'appui (l'air contient plusieurs gaz différents; ils sont mélangés uniformément, sans parties visibles ni couches). Réponse modèle : L'air contient de l'azote, de l'oxygène et d'autres gaz mélangés de façon parfaitement uniforme, sans aucune partie visible : <b>c'est une solution, même si elle est invisible</b>.", {});
+  },
+  function () {
+    return textq("Un élève examine une barre d'or pur fondue puis solidifiée : elle est jaune partout, sans taches ni couches, et ne contient rien d'autre que de l'or. Classe ce contenu (solution, mélange mécanique ou substance pure) et justifie ton classement par DEUX observations tirées de la description. (2 points)",
+      ["La barre d'or pur est une substance pure : elle ne contient qu'un seul genre de particules."],
+      "Points de notation (2) : 1 point pour le bon classement (substance pure). 1 point pour deux observations à l'appui (uniforme partout, sans taches ni couches; ne contient qu'une seule substance, l'or). Réponse modèle : La barre est uniforme partout et ne contient rien d'autre que de l'or : <b>c'est une substance pure, formée d'un seul genre de particules</b>.", {});
+  }
+]), ["Décide d'abord la classe, puis trouve deux observations qui la prouvent.", "Parties visibles d'un côté; uniformité parfaite de l'autre."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s7f-u3-cr-particule-classer closes Unit 3 Test
+   1 (3 marks, Level 2); s7f-u3-cr-plan-separation closes Unit 3 Test
+   3 (4 marks, Level 2). SME-flagged for the
+   specialist pass. */
+E("s7f-u3-cr-particule-classer", 3, ["SC7.7.1", "SC7.7.2"], 2, "var", varset([
+  function () {
+    return textq("Deux échantillons sont décrits au niveau des particules. Échantillon A, de l’eau distillée : toutes ses particules sont d’une seule sorte, identiques entre elles, dans tout l’échantillon. Échantillon B, de l’eau de mer : il contient deux sortes de particules, celles de l’eau et celles des sels, réparties également dans tout l’échantillon, sans amas nulle part. (a) Classe l’échantillon A : substance pure, mélange homogène ou mélange hétérogène. (1 point) (b) Classe l’échantillon B : substance pure, mélange homogène ou mélange hétérogène. (1 point) (c) Justifie le classement de l’un des deux échantillons en te servant de sa description particulaire. (1 point) (3 points)",
+      ["l’échantillon A est une substance pure : un seul type de particules dans tout l’échantillon", "l’échantillon B est un mélange homogène : deux types de particules répartis également partout", "justification : un seul type de particules donne une substance pure, ou deux types répartis également donnent un mélange homogène"],
+      "<b>Réponse modèle :</b> (a) L’eau distillée est une substance pure. (b) L’eau de mer est un mélange homogène (une solution). (c) Justification pour l’échantillon A : sa description ne compte qu’une seule sorte de particules, identiques partout; or une substance pure est formée d’un seul type de particules, donc l’échantillon A est une substance pure. (On accepte aussi la justification de l’échantillon B : deux sortes de particules réparties également partout forment un mélange homogène.)<br><br><b>Points d’attribution :</b> 1 point pour l’échantillon A classé comme substance pure. 1 point pour l’échantillon B classé comme mélange homogène. 1 point pour la justification d’un des deux classements, fondée sur le nombre de types de particules et sur leur répartition.", {});
+  },
+  function () {
+    return textq("Deux échantillons sont décrits au niveau des particules. Échantillon A, de l’oxygène en bouteille : toutes ses particules sont d’une seule sorte, identiques entre elles, dans tout l’échantillon. Échantillon B, de l’air : il contient plusieurs sortes de particules, surtout de l’azote et de l’oxygène, réparties également dans tout l’échantillon, sans amas nulle part. (a) Classe l’échantillon A : substance pure, mélange homogène ou mélange hétérogène. (1 point) (b) Classe l’échantillon B : substance pure, mélange homogène ou mélange hétérogène. (1 point) (c) Justifie le classement de l’un des deux échantillons en te servant de sa description particulaire. (1 point) (3 points)",
+      ["l’échantillon A est une substance pure : un seul type de particules dans tout l’échantillon", "l’échantillon B est un mélange homogène : plusieurs types de particules de gaz répartis également partout", "justification : un seul type de particules donne une substance pure, ou plusieurs types répartis également donnent un mélange homogène"],
+      "<b>Réponse modèle :</b> (a) L’oxygène en bouteille est une substance pure. (b) L’air est un mélange homogène (une solution de gaz). (c) Justification pour l’échantillon B : sa description compte plusieurs sortes de particules, donc c’est un mélange, et ces particules sont réparties également dans tout l’échantillon, sans amas ni parties distinctes, donc le mélange est homogène. (On accepte aussi la justification de l’échantillon A : une seule sorte de particules donne une substance pure.)<br><br><b>Points d’attribution :</b> 1 point pour l’échantillon A classé comme substance pure. 1 point pour l’échantillon B classé comme mélange homogène. 1 point pour la justification d’un des deux classements, fondée sur le nombre de types de particules et sur leur répartition.", {});
+  },
+  function () {
+    return textq("Deux échantillons sont décrits au niveau des particules. Échantillon A, du granit : il contient plusieurs sortes de particules réunies en amas visibles et distincts, réparties inégalement, chaque amas gardant sa propre apparence. Échantillon B, du laiton : il contient deux sortes de particules, celles du cuivre et celles du zinc, réparties également dans tout l’échantillon, jusqu’à l’échelle des particules, sans aucune partie distincte. (a) Classe l’échantillon A : substance pure, mélange homogène ou mélange hétérogène. (1 point) (b) Classe l’échantillon B : substance pure, mélange homogène ou mélange hétérogène. (1 point) (c) Justifie le classement de l’un des deux échantillons en te servant de sa description particulaire. (1 point) (3 points)",
+      ["l’échantillon A est un mélange hétérogène : plusieurs types de particules en amas distincts et inégalement répartis", "l’échantillon B est un mélange homogène : deux types de particules répartis également, sans parties distinctes", "justification : des amas distincts et inégaux donnent un mélange hétérogène, ou une répartition égale de deux types donne un mélange homogène"],
+      "<b>Réponse modèle :</b> (a) Le granit est un mélange hétérogène. (b) Le laiton est un mélange homogène (une solution solide). (c) Justification pour l’échantillon A : sa description montre plusieurs sortes de particules réunies en amas visibles et distincts, répartis inégalement; un mélange dont les parties restent distinctes et inégalement réparties est un mélange hétérogène. (On accepte aussi la justification de l’échantillon B : deux sortes de particules réparties également partout forment un mélange homogène, même dans un solide.)<br><br><b>Points d’attribution :</b> 1 point pour l’échantillon A classé comme mélange hétérogène. 1 point pour l’échantillon B classé comme mélange homogène. 1 point pour la justification d’un des deux classements, fondée sur le nombre de types de particules et sur leur répartition.", {});
+  },
+  function () {
+    return textq("Deux échantillons sont décrits au niveau des particules. Échantillon A, du sucre : toutes ses particules sont d’une seule sorte, identiques entre elles, dans tout l’échantillon. Échantillon B, un mélange de sucre et de sable secoué dans un pot : il contient deux sortes de particules en grains distincts et visibles, réparties inégalement, avec des endroits presque entièrement de sable et d’autres presque entièrement de sucre. (a) Classe l’échantillon A : substance pure, mélange homogène ou mélange hétérogène. (1 point) (b) Classe l’échantillon B : substance pure, mélange homogène ou mélange hétérogène. (1 point) (c) Justifie le classement de l’un des deux échantillons en te servant de sa description particulaire. (1 point) (3 points)",
+      ["l’échantillon A est une substance pure : un seul type de particules dans tout l’échantillon", "l’échantillon B est un mélange hétérogène : deux types de particules en grains distincts et inégalement répartis", "justification : un seul type de particules donne une substance pure, ou des grains distincts et inégaux donnent un mélange hétérogène"],
+      "<b>Réponse modèle :</b> (a) Le sucre est une substance pure. (b) Le mélange de sucre et de sable est un mélange hétérogène. (c) Justification pour l’échantillon B : sa description compte deux sortes de particules, donc c’est un mélange, et elles forment des grains distincts et visibles, répartis inégalement d’un endroit à l’autre du pot; un tel mélange, aux parties distinctes, est hétérogène. (On accepte aussi la justification de l’échantillon A : une seule sorte de particules donne une substance pure.)<br><br><b>Points d’attribution :</b> 1 point pour l’échantillon A classé comme substance pure. 1 point pour l’échantillon B classé comme mélange hétérogène. 1 point pour la justification d’un des deux classements, fondée sur le nombre de types de particules et sur leur répartition.", {});
+  }
+]), ["Deux questions décident de chaque classement : combien de types de particules, et comment sont-ils répartis?", "Un seul type : substance pure. Plusieurs types répartis également : homogène. Plusieurs types en parties distinctes : hétérogène."]);
+E("s7f-u3-cr-plan-separation", 3, ["SC7.7.6", "SC7.7.7"], 2, "var", varset([
+  function () {
+    return textq("Un bécher contient un mélange de limaille de fer, de sable, de sel dissous et d’eau. (a) Décris un plan complet, dans l’ordre, pour récupérer la limaille de fer, le sable sec et le sel séparément; nomme la technique de chaque étape. (2 points) (b) Pour chaque technique, nomme la propriété des composantes qu’elle exploite. (1 point) (c) Explique pourquoi l’ordre de tes étapes compte, ou comment tu sèches ou vérifies l’une des composantes récupérées. (1 point) (4 points)",
+      ["étape 1 : un aimant retire la limaille de fer; étape 2 : la filtration retient le sable et laisse passer l’eau salée; étape 3 : l’évaporation de l’eau salée récupère le sel", "les propriétés : le magnétisme du fer; la grosseur des grains de sable contre les pores du filtre; l’eau qui s’évapore pendant que le sel reste solide", "l’ordre compte : retirer le fer d’abord, tant qu’il est libre dans le mélange, et évaporer en dernier, car le sel dissous traverse tout filtre; le sable filtré est ensuite laissé à sécher"],
+      "<b>Réponse modèle :</b> (a) Étape 1 : passer un aimant protégé d’un plastique dans le mélange pour retirer toute la limaille de fer. Étape 2 : filtrer le reste; le sable est retenu par le filtre et l’eau salée traverse, puis laisser sécher le sable. Étape 3 : faire évaporer l’eau du filtrat, par un chauffage doux; le sel reste au fond du récipient. (b) Propriétés exploitées : le magnétisme, car seul le fer est attiré par l’aimant; la grosseur des particules, car les grains de sable sont trop gros pour les pores du filtre; la différence de comportement au chauffage, car l’eau s’évapore à une température où le sel reste solide. (c) L’ordre compte : le fer doit sortir en premier, tant qu’il est libre dans le mélange, car une fois mêlé au sable sec dans le filtre, il serait beaucoup plus difficile à en séparer; et l’évaporation doit venir en dernier, car le sel dissous traverse n’importe quel filtre et ne peut être récupéré qu’en enlevant l’eau.<br><br><b>Points d’attribution :</b> 2 points pour un plan complet et dans un ordre réalisable, qui nomme la technique de chaque étape (aimant, filtration, évaporation). 1 point pour la propriété exploitée par chaque technique (magnétisme, grosseur des particules, évaporation de l’eau). 1 point pour la justification de l’ordre des étapes, ou pour le séchage ou la vérification d’une composante récupérée.", {});
+  },
+  function () {
+    return textq("Un bécher contient un mélange de poudre de craie en suspension, de sable déposé au fond, de sel dissous et d’eau. (a) Décris un plan complet, dans l’ordre, pour récupérer le sable sec, la craie sèche et le sel séparément; nomme la technique de chaque étape. (2 points) (b) Pour chaque technique, nomme la propriété des composantes qu’elle exploite. (1 point) (c) Explique pourquoi l’ordre de tes étapes compte, ou comment tu sèches ou vérifies l’une des composantes récupérées. (1 point) (4 points)",
+      ["étape 1 : laisser reposer, puis décanter : le sable, déjà au fond, reste dans le bécher pendant qu’on verse l’eau trouble contenant la craie; étape 2 : filtrer l’eau trouble pour retenir la craie; étape 3 : évaporer le filtrat pour récupérer le sel", "les propriétés : la vitesse de dépôt, liée à la grosseur et à la masse des grains de sable; la grosseur des particules de craie contre les pores du filtre; l’eau qui s’évapore pendant que le sel reste solide", "l’ordre compte : décanter avant de filtrer, sinon le sable et la craie se mélangent dans le filtre et restent inséparables; la craie et le sable sont ensuite laissés à sécher"],
+      "<b>Réponse modèle :</b> (a) Étape 1 : laisser le mélange reposer, puis décanter avec soin : le sable reste au fond du bécher pendant qu’on verse l’eau trouble, qui emporte la craie en suspension, dans un autre récipient. Étape 2 : filtrer cette eau trouble; la craie est retenue par le filtre et le liquide clair traverse. Étape 3 : faire évaporer l’eau du filtrat; le sel reste au fond du récipient. On laisse ensuite sécher le sable et la craie. (b) Propriétés exploitées : la vitesse de dépôt, car les gros grains lourds de sable tombent vite au fond pendant que la fine poudre de craie reste en suspension; la grosseur des particules, car la craie est trop grosse pour les pores du filtre une fois recueillie; la différence de comportement au chauffage, car l’eau s’évapore pendant que le sel reste solide. (c) L’ordre compte : il faut séparer le sable par décantation avant la filtration, car si le sable et la craie aboutissent ensemble dans le même filtre, aucun outil simple de la classe ne peut plus les séparer l’un de l’autre.<br><br><b>Points d’attribution :</b> 2 points pour un plan complet et dans un ordre réalisable, qui nomme la technique de chaque étape (décantation, filtration, évaporation). 1 point pour la propriété exploitée par chaque technique (vitesse de dépôt, grosseur des particules, évaporation de l’eau). 1 point pour la justification de l’ordre des étapes, ou pour le séchage ou la vérification d’une composante récupérée.", {});
+  },
+  function () {
+    return textq("Un bécher contient un mélange de sciure de bois qui flotte, de gravier déposé au fond, de sel dissous et d’eau. (a) Décris un plan complet, dans l’ordre, pour récupérer la sciure sèche, le gravier sec et le sel séparément; nomme la technique de chaque étape. (2 points) (b) Pour chaque technique, nomme la propriété des composantes qu’elle exploite. (1 point) (c) Explique pourquoi l’ordre de tes étapes compte, ou comment tu sèches ou vérifies l’une des composantes récupérées. (1 point) (4 points)",
+      ["étape 1 : écumer la sciure qui flotte à la surface; étape 2 : tamiser ou filtrer pour retenir le gravier et laisser passer l’eau salée; étape 3 : évaporer l’eau salée pour récupérer le sel", "les propriétés : la densité de la sciure, plus faible que celle de l’eau, qui la fait flotter; la grosseur des morceaux de gravier contre les ouvertures du tamis; l’eau qui s’évapore pendant que le sel reste solide", "l’ordre compte : retirer la sciure en premier, car elle boucherait le tamis ou le filtre; la sciure et le gravier sont ensuite étalés pour sécher"],
+      "<b>Réponse modèle :</b> (a) Étape 1 : écumer la sciure qui flotte à la surface avec une cuillère ou une petite passoire. Étape 2 : verser le reste dans un tamis ou un filtre; le gravier est retenu et l’eau salée traverse. Étape 3 : faire évaporer l’eau recueillie; le sel reste au fond du récipient. On étale ensuite la sciure et le gravier sur du papier pour les laisser sécher complètement. (b) Propriétés exploitées : la densité, car la sciure, moins dense que l’eau, flotte et se retire en surface; la grosseur des particules, car les morceaux de gravier sont trop gros pour les ouvertures du tamis; la différence de comportement au chauffage, car l’eau s’évapore pendant que le sel reste solide. (c) L’ordre compte : la sciure doit sortir en premier, car si on tamise d’abord, ses fibres bouchent les ouvertures du tamis et se mêlent au gravier mouillé, ce qui rend les deux composantes difficiles à séparer et à sécher.<br><br><b>Points d’attribution :</b> 2 points pour un plan complet et dans un ordre réalisable, qui nomme la technique de chaque étape (écumage par flottation, tamisage ou filtration, évaporation). 1 point pour la propriété exploitée par chaque technique (densité, grosseur des particules, évaporation de l’eau). 1 point pour la justification de l’ordre des étapes, ou pour le séchage ou la vérification d’une composante récupérée.", {});
+  }
+]), ["Travaille du plus facile à retirer vers le dissous, qui se récupère toujours en dernier.", "Chaque étape tient en trois morceaux : technique, composante retirée, propriété exploitée."]);
+
+/* ---------- Ajout du 21 novembre 2026 : plan de tests (decisions 9, 10, 11) ---------- */
+E("s7f-u3-concentration-calcul", 3, ["SC7.7.4"], 2, "gen", function () {
+  var volumes = [100, 200, 250, 500, 1000];
+  var pasParVol = { 100: 10, 200: 5, 250: 4, 500: 2, 1000: 1 };
+  var vol = pick(volumes);
+  var pas = pasParVol[vol];
+  var candidats = [];
+  for (var c = 20; c <= 80; c += pas) candidats.push(c);
+  var conc = pick(candidats);
+  var masse = conc * vol / 1000;
+  var solutes = ["de sel", "de sucre", "de jus en poudre", "de poudre de limonade"];
+  var sol = pick(solutes);
+  var ecart = pick([5, 10]);
+  if (conc + 2 * ecart > 99) ecart = 5;
+  var distract = [conc - ecart, conc + ecart, conc + 2 * ecart].sort(function (x, y) { return x - y; });
+  return mcq("On dissout " + masse + " g " + sol + " dans de l’eau pour obtenir " + vol + " mL de solution. Quelle est la concentration de cette solution, en grammes par litre (g/L)?",
+    conc + " g/L",
+    [distract[0] + " g/L", distract[1] + " g/L", distract[2] + " g/L"],
+    "La concentration égale la masse de soluté divisée par le volume en litres : " + vol + " mL valent " + (vol / 1000) + " L, et " + masse + " g divisés par " + (vol / 1000) + " L donnent <b>" + conc + " g/L</b>.", { masse: masse, vol: vol, conc: conc });
+}, ["Convertis d’abord le volume en litres : 1 000 mL valent 1 L.", "Concentration égale masse de soluté divisée par volume de solution."]);
+E("s7f-u3-concentration-compare", 3, ["SC7.7.4"], 3, "var", varset([
+  function () {
+    return mcq("La solution A contient 12 g de sucre dissous dans 300 mL d’eau. La solution B contient 12 g de sucre dissous dans 200 mL d’eau. Laquelle est la plus concentrée, et pourquoi?", "La solution B, car la même masse de sucre est dissoute dans un plus petit volume d’eau de la solution", ["La solution A, car la même masse de sucre est dissoute dans un plus grand volume d’eau de la solution", "Les deux solutions sont égales, car la même masse de sucre est dissoute dans les deux solutions comparées", "La solution A, car un plus grand volume de solution contient toujours plus de sucre par gorgée prise"], "À masse de soluté égale, le plus petit volume donne la plus grande concentration : B contient 12 g par 200 mL, contre 12 g par 300 mL pour A. La concentration compare le soluté au volume, pas la masse seule.", {});
+  },
+  function () {
+    return mcq("La solution C contient 20 g de sel dissous dans 500 mL d’eau, soit 40 g/L. La solution D contient 15 g de sel dissous dans 250 mL d’eau, soit 60 g/L. Laquelle est la plus concentrée, et pourquoi?", "La solution D, car ses 60 g par litre dépassent les 40 g par litre de la solution C comparée ici", ["La solution C, car ses 20 g de sel au total dépassent les 15 g de sel de la solution D comparée", "Les deux solutions sont égales, car chacune contient du sel dissous dans de l’eau comme solvant", "La solution C, car son volume de 500 mL dépasse le volume de 250 mL de la solution D comparée"], "La concentration se lit par unité de volume : 60 g/L contre 40 g/L. La solution C contient plus de sel au total, mais réparti dans deux fois plus d’eau : elle est moins concentrée.", {});
+  },
+  function () {
+    return mcq("Deux verres de limonade sont préparés sans mesures : le premier a un goût nettement plus sucré et une couleur plus foncée que le second, à volume égal. Quelle conclusion qualitative est correcte?", "Le premier verre est plus concentré : à volume égal, un goût plus sucré signale plus de soluté dissous", ["Le premier verre est moins concentré : à volume égal, un goût plus sucré signale moins de soluté dissous", "Les deux verres sont également concentrés : le goût et la couleur ne renseignent jamais sur la concentration", "Le second verre est plus concentré : à volume égal, une couleur plus pâle signale toujours plus de soluté"], "Qualitativement, l’intensité du goût et de la couleur compare les concentrations à volume égal : plus l’intensité est forte, plus il y a de soluté par volume. C’est une comparaison, pas une mesure exacte.", {});
+  },
+  function () {
+    return mcq("Une élève affirme : « Ma solution est plus concentrée, car j’ai mis 30 g de poudre, contre 20 g pour la tienne. » Sa solution fait 1 000 mL; celle de son camarade fait 400 mL. Quelle évaluation de son affirmation est correcte?", "Elle est fausse : ses 30 g par litre donnent 30 g/L, contre 50 g/L pour les 20 g dans 400 mL du camarade", ["Elle est juste : ses 30 g au total dépassent les 20 g du camarade, donc sa solution est plus concentrée", "Elle est juste : un volume de 1 000 mL contient toujours plus de soluté par litre qu’un volume de 400 mL", "Elle est fausse : ses 30 g par litre donnent 30 g/L, contre 20 g/L pour les 20 g dans 400 mL du camarade"], "La concentration divise la masse par le volume : 30 g dans 1 L donnent 30 g/L, tandis que 20 g dans 0,4 L donnent 50 g/L. La masse totale seule ne décide pas de la concentration.", {});
+  }
+]), ["Ramène chaque solution à la même base : grammes par litre.", "Un goût ou une couleur plus intenses, à volume égal, signalent une concentration plus élevée."]);

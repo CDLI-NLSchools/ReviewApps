@@ -1,3 +1,4 @@
+// CRMARKS: s7f-u4-cr-sol-choix=2
 // CRMARKS: s7f-u4-cr-mineral-tests=3
 // CRMARKS: s7f-u4-cr-rock-journey=3
 // CRMARKS: s7f-u4-cr-event-compare=3
@@ -15,6 +16,136 @@
 // CRMARKS: s7f-u4-cr-table-display=2
 // CRMARKS: s7f-u4-cr-pattern=3
 // CRMARKS: s7f-u4-cr-conclusion=3
+// CRMARKS: s7f-u4-cr-mineral-identifier=4
+// CRMARKS: s7f-u4-cr-sol-formation=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s7f-u4-mohs-order=2
+// CRMARKS: s7f-u4-streak-reliable=3
+// CRMARKS: s7f-u4-rock-families=2
+// CRMARKS: s7f-u4-igneous-cooling=2
+// CRMARKS: s7f-u4-cycle-diagram=2
+// CRMARKS: s7f-u4-sedimentary-form=3
+// CRMARKS: s7f-u4-metamorphic-parent=3
+// CRMARKS: s7f-u4-earth-layers=2
+// CRMARKS: s7f-u4-crust-plates=2
+// CRMARKS: s7f-u4-study-tech=3
+// CRMARKS: s7f-u4-earthquake-why=2
+// CRMARKS: s7f-u4-volcano-where=3
+// CRMARKS: s7f-u4-event-effects=3
+// CRMARKS: s7f-u4-distribution-data=2
+// CRMARKS: s7f-u4-distribution-map=3
+// CRMARKS: s7f-u4-ring-of-fire=4
+// CRMARKS: s7f-u4-fold-fault=2
+// CRMARKS: s7f-u4-mountain-process=3
+// CRMARKS: s7f-u4-era-order=2
+// CRMARKS: s7f-u4-era-scale=3
+// CRMARKS: s7f-u4-frost-wedging=2
+// CRMARKS: s7f-u4-weathering-erosion=3
+// CRMARKS: s7f-u4-winter-chime=3
+// CRMARKS: s7f-u4-soil-form=2
+// CRMARKS: s7f-u4-soil-drainage=3
+// CRMARKS: s7f-u4-boundaries=2
+// CRMARKS: s7f-u4-convection=3
+// CRMARKS: s7f-u4-new-evidence=4
+// CRMARKS: s7f-u4-canadian-match=2
+// CRMARKS: s7f-u4-canadian-scenario=2
+// CRMARKS: s7f-u4-imagination-role=2
+// CRMARKS: s7f-u4-evidence-link=3
+// CRMARKS: s7f-u4-change-why=3
+// CRMARKS: s7f-u4-drift-identify=2
+// CRMARKS: s7f-u4-drift-flaw=3
+// CRMARKS: s7f-u4-shift-identify=2
+// CRMARKS: s7f-u4-shift-contrast=3
+// CRMARKS: s7f-u4-past-explanations=2
+// CRMARKS: s7f-u4-past-purpose=3
+// CRMARKS: s7f-u4-key-mineral=2
+// CRMARKS: s7f-u4-key-mineral-2=3
+// CRMARKS: s7f-u4-key-choose=3
+// CRMARKS: s7f-u4-tool-ladder=2
+// CRMARKS: s7f-u4-method-match=2
+// CRMARKS: s7f-u4-method-plan=3
+// CRMARKS: s7f-u4-mineral-id=2
+// CRMARKS: s7f-u4-mineral-id-2=3
+// CRMARKS: s7f-u4-mineral-pair=3
+// CRMARKS: s7f-u4-question-best=4
+// CRMARKS: s7f-u4-cycle-path=3
+// CRMARKS: s7f-u4-fizz-variables=2
+// CRMARKS: s7f-u4-fair-test-design=3
+// CRMARKS: s7f-u4-instrument-read=2
+// CRMARKS: s7f-u4-instrument-choose=2
+// CRMARKS: s7f-u4-table-build=2
+// CRMARKS: s7f-u4-table-read=3
+// CRMARKS: s7f-u4-pattern-drainage=3
+// CRMARKS: s7f-u4-pattern-infer=4
+// CRMARKS: s7f-u4-conclusion-state=3
+// CRMARKS: s7f-u4-conclusion-refute=3
+// CRMARKS: s7f-u4-montagne-scenario=3
+// CRMARKS: s7f-u4-ordre-evenements=3
+// CRMARKS: s7f-u4-sol-texture-test=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s7f-u4-mohs-order=b
+// BIMODAL: s7f-u4-streak-reliable=b
+// BIMODAL: s7f-u4-rock-families=b
+// BIMODAL: s7f-u4-igneous-cooling=b
+// BIMODAL: s7f-u4-cycle-diagram=b
+// BIMODAL: s7f-u4-sedimentary-form=b
+// BIMODAL: s7f-u4-metamorphic-parent=b
+// BIMODAL: s7f-u4-earth-layers=a
+// BIMODAL: s7f-u4-crust-plates=b
+// BIMODAL: s7f-u4-study-tech=b
+// BIMODAL: s7f-u4-earthquake-why=b
+// BIMODAL: s7f-u4-volcano-where=b
+// BIMODAL: s7f-u4-event-effects=b
+// BIMODAL: s7f-u4-distribution-data=b
+// BIMODAL: s7f-u4-distribution-map=b
+// BIMODAL: s7f-u4-ring-of-fire=b
+// BIMODAL: s7f-u4-fold-fault=b
+// BIMODAL: s7f-u4-mountain-process=b
+// BIMODAL: s7f-u4-era-order=b
+// BIMODAL: s7f-u4-era-scale=b
+// BIMODAL: s7f-u4-frost-wedging=b
+// BIMODAL: s7f-u4-weathering-erosion=b
+// BIMODAL: s7f-u4-winter-chime=b
+// BIMODAL: s7f-u4-soil-form=b
+// BIMODAL: s7f-u4-soil-drainage=b
+// BIMODAL: s7f-u4-boundaries=b
+// BIMODAL: s7f-u4-convection=b
+// BIMODAL: s7f-u4-new-evidence=b
+// BIMODAL: s7f-u4-canadian-match=b
+// BIMODAL: s7f-u4-canadian-scenario=b
+// BIMODAL: s7f-u4-imagination-role=b
+// BIMODAL: s7f-u4-evidence-link=b
+// BIMODAL: s7f-u4-change-why=b
+// BIMODAL: s7f-u4-drift-identify=b
+// BIMODAL: s7f-u4-drift-flaw=b
+// BIMODAL: s7f-u4-shift-identify=b
+// BIMODAL: s7f-u4-shift-contrast=b
+// BIMODAL: s7f-u4-past-explanations=b
+// BIMODAL: s7f-u4-past-purpose=b
+// BIMODAL: s7f-u4-key-mineral=a
+// BIMODAL: s7f-u4-key-mineral-2=a
+// BIMODAL: s7f-u4-key-choose=b
+// BIMODAL: s7f-u4-tool-ladder=b
+// BIMODAL: s7f-u4-method-match=b
+// BIMODAL: s7f-u4-method-plan=b
+// BIMODAL: s7f-u4-mineral-id=a
+// BIMODAL: s7f-u4-mineral-id-2=a
+// BIMODAL: s7f-u4-mineral-pair=b
+// BIMODAL: s7f-u4-question-best=b
+// BIMODAL: s7f-u4-cycle-path=b
+// BIMODAL: s7f-u4-fizz-variables=b
+// BIMODAL: s7f-u4-fair-test-design=b
+// BIMODAL: s7f-u4-instrument-read=b
+// BIMODAL: s7f-u4-instrument-choose=b
+// BIMODAL: s7f-u4-table-build=b
+// BIMODAL: s7f-u4-table-read=a
+// BIMODAL: s7f-u4-pattern-drainage=b
+// BIMODAL: s7f-u4-pattern-infer=b
+// BIMODAL: s7f-u4-conclusion-state=b
+// BIMODAL: s7f-u4-conclusion-refute=b
+// BIMODAL: s7f-u4-montagne-scenario=b
+// BIMODAL: s7f-u4-ordre-evenements=a
+// BIMODAL: s7f-u4-sol-texture-test=b
 // Sciences 7, Unite 4 : La croute terrestre (SC7.10.1 a SC7.12.9),
 // banque construite le Nov 16, 2026.
 // Existing tests and question banks were reviewed only to gauge the expected depth and range of treatment. All items in this bank were written new for this app.
@@ -539,3 +670,161 @@ E("s7f-u4-cr-conclusion", 4, ["SC7.12.9"], 3, "var", varset([
    des examens composes. */
 var NO_COMPOSE_U4 = { "s7f-u4-cr-design-investigation": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
+
+
+
+/* Ajouts de l'allongement (20 nov. 2026) : SR sur SC7.10.6, SC7.10.7,
+   SC7.10.9, et une entrée CR de 2 points sur SC7.10.9. Marqué pour
+   la révision SME. */
+
+E("s7f-u4-montagne-scenario", 4, ["SC7.10.6"], 2, "var", varset([
+  function () {
+    return mcq("Les rochers d'une falaise le long de la côte se fendent un peu plus chaque hiver : l'eau entre dans les fissures, gèle la nuit et dégèle le jour. Quel processus est à l'œuvre?",
+      "La météorisation physique par le gel et le dégel : l'eau gelée prend de l'expansion et élargit les fissures",
+      ["La météorisation chimique par l'eau : l'eau de mer dissout complètement tous les minéraux de la falaise chaque nuit pendant la marée haute", "L'érosion par le vent marin : le vent des tempêtes arrache directement les gros rochers de la falaise et les emporte au loin pendant tout l'hiver", "Le dépôt : les sédiments s'accumulent dans les fissures et poussent les rochers vers la mer"],
+      "L'eau qui gèle prend de l'expansion et force les fissures : météorisation physique (gel-dégel). <b>La météorisation physique par le gel et le dégel</b>.", {});
+  },
+  function () {
+    return mcq("Les racines d'un arbre qui pousse sur un affleurement rocheux écartent lentement les plaques de roche les unes des autres. Quel processus est à l'œuvre?",
+      "La météorisation physique (biologique) : la croissance des racines exerce une force qui fend la roche",
+      ["La météorisation chimique par les racines : les racines de l'arbre dissolvent complètement la roche dure avec leurs acides puissants en une seule année de croissance", "L'érosion par les racines : les racines de l'arbre transportent lentement les morceaux de roche loin de l'affleurement rocheux, jusqu'à la vallée située en contrebas", "Le dépôt : les racines déposent de nouvelles couches de roche autour de l'affleurement"],
+      "Une force vivante qui fend la roche sans la dissoudre : météorisation physique par les racines. <b>La météorisation physique (biologique)</b>.", {});
+  },
+  function () {
+    return mcq("Sur un vieux bâtiment, la pierre calcaire près des gouttières est devenue molle et poudreuse après des décennies de pluies acides. Quel processus est à l'œuvre?",
+      "La météorisation chimique : l'acide des pluies réagit avec le calcaire et le désagrège",
+      ["La météorisation physique par le gel et le dégel : l'eau entrée dans la pierre du bâtiment a gelé pendant les nuits froides et l'a fait éclater en morceaux avec le temps", "L'érosion éolienne prolongée : le vent chargé de sable a poli la surface de la pierre calcaire pendant des décennies jusqu'à la rendre molle et poudreuse au toucher", "Le dépôt chimique : les pluies ont déposé une couche de poudre sur la pierre dure"],
+      "Une réaction acide qui désagrège le minéral : météorisation chimique. <b>La météorisation chimique</b>.", {});
+  },
+  function () {
+    return mcq("Un ruisseau de montagne transporte des cailloux qui deviennent de plus en plus ronds et lisses d'année en année. Quel processus arrondit ces cailloux?",
+      "La météorisation physique par abrasion : les cailloux se frottent et s'usent pendant leur transport",
+      ["La météorisation chimique par l'eau : l'eau froide du ruisseau de montagne dissout chimiquement les coins pointus des cailloux, un peu plus chaque année de transport", "Le dépôt de sédiments : le ruisseau en mouvement dépose lentement une couche lisse et polie sur la surface de chaque caillou qu'il transporte dans son lit", "L'érosion glaciaire : les glaciers ont arrondi les cailloux avant de les laisser dans le ruisseau"],
+      "Le frottement répété pendant le transport use et arrondit les cailloux : abrasion, une météorisation physique. <b>La météorisation physique par abrasion</b>.", {});
+  }
+]), ["La roche est-elle brisée par une force ou dissoute par une réaction?", "Gel, racines et frottement sont physiques; les acides sont chimiques."]);
+
+E("s7f-u4-ordre-evenements", 4, ["SC7.10.7"], 2, "var", varset([
+  function () { return s7fOrderQ("la formation d'une chaîne de montagnes sédimentaires plissées", ["une épaisse couche de sédiments se dépose au fond d'une mer ancienne", "les couches sont enfouies et durcissent en roche sédimentaire", "des forces internes plissent et soulèvent les couches", "l'érosion découpe des vallées dans les couches soulevées"]); },
+  function () { return s7fOrderQ("l'effondrement d'un bloc de falaise par le gel", ["une fissure s'ouvre dans une pente rocheuse", "l'eau s'infiltre dans la fissure et gèle pendant la nuit", "la glace force la fissure à s'élargir un peu plus", "un bloc de roche finit par se détacher et tombe au pied de la pente"]); },
+  function () { return s7fOrderQ("l'histoire d'une vallée glaciaire après le retrait des glaces", ["un glacier avance en raclant le fond d'une vallée", "le glacier dépose ses débris en une longue crête de moraine", "le glacier se retire et un lac se forme derrière la moraine", "des sédiments comblent lentement le lac au fil des siècles"]); }
+]), ["Trouve l'événement qui doit arriver en premier : rien d'autre n'est possible avant.", "Enchaîne ensuite : chaque étape rend la suivante possible."]);
+
+function s7fOrderQ(ctx, steps) {
+  var rot = ri(0, 3);
+  var listed = steps.slice(rot).concat(steps.slice(0, rot));
+  var correctStr = "C'est « " + steps[1] + " » qui arrive en deuxième dans l'histoire complète";
+  var wrongs = [steps[0], steps[2], steps[3]].map(function (x) {
+    return "C'est « " + x + " » qui arrive en deuxième dans l'histoire complète";
+  });
+  return mcq("Voici quatre événements de " + ctx + ", présentés dans le désordre : (1) " + listed[0] + " ; (2) " + listed[1] + " ; (3) " + listed[2] + " ; (4) " + listed[3] + ". Lequel arrive EN DEUXIÈME dans l'ordre réel?",
+    correctStr, wrongs,
+    "Ordre correct : (1) " + steps[0] + " ; (2) " + steps[1] + " ; (3) " + steps[2] + " ; (4) " + steps[3] + ". Le deuxième événement est donc <b>« " + steps[1] + " »</b>.", { rot: rot });
+}
+
+E("s7f-u4-sol-texture-test", 4, ["SC7.10.9"], 2, "var", varset([
+  function () {
+    return mcq("Une élève frotte un échantillon de sol humide entre ses doigts : il est granuleux et ne colle pas du tout. Que peut-elle conclure sur sa texture?",
+      "Le sol est riche en sable : les particules grossières donnent cette sensation granuleuse et non collante",
+      ["Le sol est très riche en argile fine : les sols argileux humides sont toujours granuleux, rugueux et complètement secs au toucher entre les doigts d'un élève", "Le sol est très riche en limon fin : les sols limoneux humides se reconnaissent facilement à leurs gros grains rugueux et durs qu'on sent entre les doigts", "Le sol est de l'humus pur : l'humus se reconnaît à ses grains de sable bien visibles"],
+      "Granuleux et non collant au test des doigts = particules grossières, donc sol sableux. <b>Le sol est riche en sable</b>.", {});
+  },
+  function () {
+    return mcq("Un élève roule un échantillon de sol humide entre ses paumes : il forme facilement un long « serpent » flexible qui ne casse pas. Que peut-il conclure sur sa texture?",
+      "Le sol est riche en argile : les particules très fines et collantes permettent de former un serpent flexible",
+      ["Le sol est très riche en sable grossier : les sols sableux humides forment toujours les serpents de sol les plus longs, les plus flexibles et les plus résistants", "Le sol est très riche en gravier grossier : les gros fragments de roche contenus dans le sol roulent facilement entre les paumes humides de l'élève pendant le test", "Le sol est sec et poudreux : seuls les sols secs peuvent être roulés de cette façon"],
+      "Un serpent flexible qui tient = particules fines et plastiques, donc sol argileux. <b>Le sol est riche en argile</b>.", {});
+  },
+  function () {
+    return mcq("Une élève frotte un échantillon de sol humide : il est doux et soyeux comme de la farine, légèrement collant, et il tache les doigts. Que peut-elle conclure sur sa texture?",
+      "Le sol est riche en limon : les particules de taille moyenne donnent cette sensation douce et soyeuse",
+      ["Le sol est très riche en sable fin : les sols sableux humides sont toujours parfaitement doux et soyeux au toucher, exactement comme de la farine tamisée", "Le sol est formé d'argile complètement pure : l'argile pure et sèche a exactement la texture douce et soyeuse de la farine tamisée quand on la frotte", "Le sol est du gravier fin : le gravier tache les doigts d'une poudre soyeuse au frottement"],
+      "Doux, soyeux, légèrement collant : ce sont les particules moyennes du limon. <b>Le sol est riche en limon</b>.", {});
+  },
+  function () {
+    return mcq("Dans un bocal d'eau secoué puis laissé au repos, un sol forme trois couches : une couche grossière au fond en quelques secondes, une couche moyenne en quelques minutes, et l'eau reste trouble pendant des heures. Que montre la couche qui trouble l'eau si longtemps?",
+      "L'argile : ses particules extrêmement fines restent en suspension très longtemps avant de se déposer",
+      ["Le sable grossier du fond : ses grosses et lourdes particules restent en suspension dans l'eau du bocal plus longtemps que toutes les autres particules du sol", "Le gravier grossier de l'échantillon : ses gros fragments de roche restent suspendus dans l'eau trouble du bocal pendant des heures entières avant de se déposer", "Le limon : ses particules moyennes sont les dernières à se déposer dans le bocal"],
+      "Plus les particules sont fines, plus elles mettent de temps à se déposer : la trouble persistant vient de l'argile. <b>L'argile : ses particules extrêmement fines restent en suspension très longtemps</b>.", {});
+  }
+]), ["Granuleux = sable; soyeux = limon; collant et modelable = argile.", "Dans le bocal, les particules les plus fines se déposent en dernier."]);
+
+E("s7f-u4-cr-sol-choix", 4, ["SC7.10.9"], 2, "var", varset([
+  function () {
+    return textq("Un jardinier compare deux sols pour un potager de légumes racines (carottes) : le sol A est sableux et se draine en quelques minutes après la pluie; le sol B est un loam équilibré qui reste humide une journée sans être détrempé. Choisis le meilleur sol pour les carottes et justifie ton choix par DEUX propriétés liées à sa texture. (2 points)",
+      ["Le loam équilibré est le meilleur choix pour les carottes."],
+      "Points de notation (2) : 1 point pour le bon choix (le loam B). 1 point pour deux propriétés à l'appui liées à la texture (le loam garde l'eau assez longtemps pour les racines sans rester détrempé; sa texture meuble laisse les racines droites s'allonger, contrairement au sable qui se draine trop vite et appauvrit les plantes). Réponse modèle : Le loam garde l'humidité une journée entière et reste assez meuble pour que les carottes poussent droites. <b>Le sol sableux se draine en quelques minutes et laisserait les racines au sec</b>.", {});
+  },
+  function () {
+    return textq("Une pépinière compare deux sols pour des semis en pots qui doivent rester uniformément humides : le sol A est très argileux et devient dur et craquelé en séchant; le sol B est un loam riche en matière organique. Choisis le meilleur sol pour les semis et justifie ton choix par DEUX propriétés liées à sa texture. (2 points)",
+      ["Le loam riche en matière organique est le meilleur choix pour les semis."],
+      "Points de notation (2) : 1 point pour le bon choix (le loam B). 1 point pour deux propriétés à l'appui liées à la texture (le loam reste humide de façon uniforme sans se compacter; sa texture fine mais meuble laisse passer les jeunes racines et l'air, contrairement à l'argile qui durcit et craquelle en séchant). Réponse modèle : Le loam garde une humidité uniforme et ne se compacte pas, donc les racines délicates des semis peuvent s'y développer. <b>L'argile pure devient dure et craquelée en séchant, ce qui étouffe les semis</b>.", {});
+  },
+  function () {
+    return textq("Un paysagiste compare deux sols pour un terrain de jeux qui doit rester ferme et sec après la pluie : le sol A est argileux et reste boueux pendant des jours; le sol B est sableux et se draine en moins d'une heure. Choisis le meilleur sol pour le terrain de jeux et justifie ton choix par DEUX propriétés liées à sa texture. (2 points)",
+      ["Le sol sableux est le meilleur choix pour le terrain de jeux."],
+      "Points de notation (2) : 1 point pour le bon choix (le sable B). 1 point pour deux propriétés à l'appui liées à la texture (les grosses particules du sable laissent l'eau s'écouler vite, donc la surface redevient ferme et sèche rapidement; le sable ne devient pas collant ni boueux comme l'argile). Réponse modèle : Le sable se draine en moins d'une heure et sa surface redevient ferme après la pluie. <b>L'argile resterait boueuse et collante pendant des jours, impropre au jeu</b>.", {});
+  }
+]), ["Associe le sol à l'usage : drainage, rétention d'eau et fermeté suivent la texture.", "Donne deux raisons liées à la texture, pas une simple préférence."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s7f-u4-cr-mineral-identifier closes Unit 4 Test
+   1 (4 marks, Level 2); s7f-u4-cr-sol-formation closes Unit 4 Test
+   3 (3 marks, Level 2). SME-flagged for the
+   specialist pass. */
+E("s7f-u4-cr-mineral-identifier", 4, ["SC7.10.1"], 2, "var", varset([
+  function () {
+    return textq("Deux échantillons inconnus doivent être départagés entre la calcite et le quartz. Voici leurs résultats. Échantillon A : dureté 3, car une pièce de cuivre le raye; trace blanche; éclat vitreux; une goutte d’acide dilué produit des bulles à sa surface (effervescence). Échantillon B : dureté 7, car il raye le verre et l’acier ne le raye pas; trace blanche; éclat vitreux; l’acide dilué ne produit aucun effet. (a) Identifie l’échantillon A. (1 point) (b) Identifie l’échantillon B. (1 point) (c) Justifie chaque identification par deux résultats de tests. (2 points) (4 points)",
+      ["l’échantillon A est la calcite : dureté 3 et effervescence avec l’acide dilué", "l’échantillon B est le quartz : dureté 7 et aucun effet de l’acide dilué"],
+      "<b>Réponse modèle :</b> (a) L’échantillon A est la calcite. (b) L’échantillon B est le quartz. (c) Justification de A : sa dureté de 3 correspond à la calcite, et surtout, l’acide dilué produit une effervescence à sa surface, réaction caractéristique de la calcite; le quartz ne réagit pas ainsi. Justification de B : sa dureté de 7, qui lui permet de rayer le verre, correspond au quartz, beaucoup plus dur que la calcite; et l’absence totale d’effet de l’acide confirme qu’il ne s’agit pas de la calcite.<br><br><b>Points d’attribution :</b> 1 point pour l’échantillon A identifié comme la calcite. 1 point pour l’échantillon B identifié comme le quartz. 1 point pour la justification de A par deux résultats (dureté 3 et effervescence à l’acide). 1 point pour la justification de B par deux résultats (dureté 7 et absence d’effet de l’acide).", {});
+  },
+  function () {
+    return textq("Deux échantillons inconnus doivent être départagés entre l’hématite et la magnétite. Voici leurs résultats. Échantillon A : trace rouge-brun sur la porcelaine; éclat métallique terne; dureté environ 6; un aimant ne l’attire pas. Échantillon B : trace noire sur la porcelaine; éclat métallique; dureté environ 6; un aimant l’attire fortement. (a) Identifie l’échantillon A. (1 point) (b) Identifie l’échantillon B. (1 point) (c) Justifie chaque identification par deux résultats de tests. (2 points) (4 points)",
+      ["l’échantillon A est l’hématite : trace rouge-brun et aucun magnétisme", "l’échantillon B est la magnétite : fortement attiré par l’aimant et trace noire"],
+      "<b>Réponse modèle :</b> (a) L’échantillon A est l’hématite. (b) L’échantillon B est la magnétite. (c) Justification de A : sa trace rouge-brun est la signature de l’hématite, dont la poudre est toujours de cette couleur, et l’aimant ne l’attire pas, ce qui écarte la magnétite. Justification de B : un aimant l’attire fortement, propriété caractéristique de la magnétite, et sa trace est noire, et non rouge-brun comme celle de l’hématite. La dureté, environ 6 pour les deux, ne permet pas de les départager : ce sont la trace et le magnétisme qui décident.<br><br><b>Points d’attribution :</b> 1 point pour l’échantillon A identifié comme l’hématite. 1 point pour l’échantillon B identifié comme la magnétite. 1 point pour la justification de A par deux résultats (trace rouge-brun et absence d’attraction par l’aimant). 1 point pour la justification de B par deux résultats (forte attraction par l’aimant et trace noire).", {});
+  },
+  function () {
+    return textq("Deux échantillons inconnus doivent être départagés entre le mica et le feldspath. Voici leurs résultats. Échantillon A : dureté environ 2,5, car une pièce de cuivre le raye facilement; éclat nacré et brillant; il se sépare en feuilles minces et souples qu’on peut peler une à une. Échantillon B : dureté 6, car l’acier le raye difficilement; trace blanche; éclat vitreux à nacré; il se brise selon deux directions de clivage presque à angle droit, sans former de feuilles souples. (a) Identifie l’échantillon A. (1 point) (b) Identifie l’échantillon B. (1 point) (c) Justifie chaque identification par deux résultats de tests. (2 points) (4 points)",
+      ["l’échantillon A est le mica : feuilles minces et souples et faible dureté d’environ 2,5", "l’échantillon B est le feldspath : dureté 6 et clivage en deux directions presque à angle droit"],
+      "<b>Réponse modèle :</b> (a) L’échantillon A est le mica. (b) L’échantillon B est le feldspath. (c) Justification de A : il se sépare en feuilles minces et souples, le clivage en feuilles caractéristique du mica, et sa faible dureté d’environ 2,5 confirme un minéral tendre, très différent du feldspath. Justification de B : sa dureté de 6 correspond au feldspath, et son clivage en deux directions presque à angle droit, sans feuilles souples, est l’autre caractère qui le distingue du mica.<br><br><b>Points d’attribution :</b> 1 point pour l’échantillon A identifié comme le mica. 1 point pour l’échantillon B identifié comme le feldspath. 1 point pour la justification de A par deux résultats (feuilles minces et souples et dureté d’environ 2,5). 1 point pour la justification de B par deux résultats (dureté 6 et clivage en deux directions presque à angle droit).", {});
+  }
+]), ["Aucun test seul ne suffit toujours : cherche les deux résultats qui tranchent entre les deux noms donnés.", "Élimine d’abord le minéral que les résultats contredisent, puis nomme celui qui reste."]);
+E("s7f-u4-cr-sol-formation", 4, ["SC7.10.8", "SC7.10.9"], 2, "var", varset([
+  function () {
+    return textq("Sur le flanc d’une colline, le sol est mince et plein de cailloux, tandis que dans la vallée juste en dessous, le sol est profond et presque sans pierres. (a) Explique comment l’altération, l’érosion et le dépôt ont produit cette différence entre les deux sols. (2 points) (b) Dis lequel des deux sols convient le mieux à l’agriculture, et donne une raison liée à la grosseur de ses particules ou à son comportement avec l’eau. (1 point) (3 points)",
+      ["sur la colline, l’altération brise la roche, mais l’érosion par la pluie et la gravité emporte les débris vers le bas à mesure, donc le sol reste mince", "dans la vallée, le dépôt accumule les débris transportés, couche après couche, donc le sol devient profond", "le sol de la vallée convient mieux à l’agriculture : ses particules plus fines et mélangées retiennent l’eau et les nutriments, et sa profondeur laisse la place aux racines"],
+      "<b>Réponse modèle :</b> (a) Sur la colline, l’altération brise la roche en débris, par exemple par le gel de l’eau dans les fissures, mais l’érosion ne les laisse pas en place : la pluie et la gravité les emportent vers le bas à mesure qu’ils se forment, donc le sol de la colline reste mince et caillouteux. Dans la vallée, ces mêmes débris arrivent et s’y déposent, couche après couche, mélangés à la matière organique; le dépôt répété épaissit le sol, qui devient profond. (b) Le sol de la vallée convient mieux à l’agriculture : ses particules, plus fines et mieux mélangées que les cailloux de la colline, retiennent l’eau et les nutriments près des racines au lieu de les laisser filer, et sa profondeur donne aux racines la place de se développer.<br><br><b>Points d’attribution :</b> 1 point pour le rôle de l’altération et de l’érosion sur la colline (les débris formés sont emportés, le sol reste mince). 1 point pour le rôle du dépôt dans la vallée (les débris transportés s’accumulent, le sol devient profond). 1 point pour le sol de la vallée choisi pour l’agriculture, avec une raison liée à la grosseur des particules ou à la rétention de l’eau.", {});
+  },
+  function () {
+    return textq("Le long d’une rivière, le sol de la rive basse est profond et riche, tandis que sur la colline voisine, le sol est mince et rocailleux. (a) Explique comment l’altération, l’érosion et le dépôt ont produit cette différence entre les deux sols. (2 points) (b) Dis lequel des deux sols convient le mieux à l’agriculture, et donne une raison liée à la grosseur de ses particules ou à son comportement avec l’eau. (1 point) (3 points)",
+      ["sur la colline, l’altération brise la roche, mais l’érosion emporte les débris vers la rivière, donc le sol reste mince", "à chaque crue, la rivière dépose des sédiments fins sur la rive basse, ce qui épaissit et enrichit son sol couche après couche", "le sol de la rive convient mieux à l’agriculture : ses particules fines retiennent l’eau et les nutriments près des racines"],
+      "<b>Réponse modèle :</b> (a) Sur la colline, l’altération fragmente la roche, mais la pluie entraîne les débris vers le bas par érosion, donc le sol y reste mince et rocailleux. La rivière transporte ces débris et, à chaque crue, elle déborde sur la rive basse et y dépose une couche de sédiments fins; répété pendant longtemps, ce dépôt construit un sol profond et riche en matière fine et en nutriments. (b) Le sol de la rive convient mieux à l’agriculture : ses particules fines, déposées par la rivière, retiennent l’eau et les nutriments près des racines, tandis que le sol mince et rocailleux de la colline laisse l’eau s’écouler trop vite entre ses grosses particules.<br><br><b>Points d’attribution :</b> 1 point pour le rôle de l’altération et de l’érosion sur la colline (les débris formés sont emportés, le sol reste mince). 1 point pour le rôle du dépôt sur la rive (les crues déposent des sédiments fins qui épaississent le sol). 1 point pour le sol de la rive choisi pour l’agriculture, avec une raison liée à la grosseur des particules ou à la rétention de l’eau.", {});
+  },
+  function () {
+    return textq("Sur une pente raide et dénudée, le sol est presque absent et la roche paraît par endroits, tandis que sur le terrain plat juste au pied de la pente, le sol est épais. (a) Explique comment l’altération, l’érosion et le dépôt ont produit cette différence entre les deux sols. (2 points) (b) Dis lequel des deux sols convient le mieux à l’agriculture, et donne une raison liée à la grosseur de ses particules ou à son comportement avec l’eau. (1 point) (3 points)",
+      ["sur la pente, l’altération brise la roche, mais la gravité et l’eau de ruissellement emportent aussitôt les débris vers le bas, donc aucun sol épais ne peut s’accumuler", "au pied de la pente, les débris transportés ralentissent et se déposent, couche après couche, donc le sol s’épaissit", "le sol du pied de la pente convient mieux à l’agriculture : plus profond, il retient mieux l’eau grâce à ses particules fines mélangées"],
+      "<b>Réponse modèle :</b> (a) Sur la pente raide, l’altération brise la roche en débris, mais la gravité et l’eau qui ruisselle les emportent presque aussitôt vers le bas : c’est l’érosion, et elle empêche tout sol épais de s’accumuler sur la pente. Au pied de la pente, le terrain plat ralentit l’eau et les débris; ils s’y déposent, couche après couche, mélangés à la matière organique, et forment un sol épais. (b) Le sol au pied de la pente convient mieux à l’agriculture : il est profond, et ses particules fines et mélangées retiennent l’eau près des racines, tandis que la pente rocailleuse n’offre ni profondeur ni réserve d’eau aux plantes.<br><br><b>Points d’attribution :</b> 1 point pour le rôle de l’altération et de l’érosion sur la pente (les débris formés sont emportés, le sol reste presque absent). 1 point pour le rôle du dépôt au pied de la pente (les débris transportés s’accumulent, le sol devient épais). 1 point pour le sol du pied de la pente choisi pour l’agriculture, avec une raison liée à la grosseur des particules ou à la rétention de l’eau.", {});
+  },
+  function () {
+    return textq("Sur le sommet d’une butte exposée au vent, le sol est mince et grossier, tandis que dans le creux abrité juste à côté, le sol est profond et fin. (a) Explique comment l’altération, l’érosion et le dépôt ont produit cette différence entre les deux sols. (2 points) (b) Dis lequel des deux sols convient le mieux à l’agriculture, et donne une raison liée à la grosseur de ses particules ou à son comportement avec l’eau. (1 point) (3 points)",
+      ["sur le sommet, l’altération brise la roche, mais le vent et la pluie emportent les particules fines à mesure, donc il ne reste qu’un sol mince et grossier", "dans le creux abrité, les particules transportées ralentissent et se déposent, et la matière organique s’y accumule, donc le sol devient profond et fin", "le sol du creux convient mieux à l’agriculture : ses particules fines retiennent l’eau et les nutriments, contrairement au sol grossier du sommet qui se draine trop vite"],
+      "<b>Réponse modèle :</b> (a) Sur le sommet exposé, l’altération fragmente la roche, mais le vent et la pluie emportent les particules fines à mesure qu’elles se forment; il ne reste sur place que les grosses particules, trop lourdes à transporter, donc le sol reste mince et grossier. Dans le creux abrité, le vent ralentit et dépose les particules fines qu’il transportait; la pluie y dépose aussi des débris, et la matière organique des plantes s’y accumule, donc le dépôt répété construit un sol profond et fin. (b) Le sol du creux convient mieux à l’agriculture : ses particules fines laissent des espaces minuscules qui retiennent l’eau et les nutriments près des racines, tandis que le sol grossier du sommet laisse l’eau filer rapidement entre ses grosses particules.<br><br><b>Points d’attribution :</b> 1 point pour le rôle de l’altération et de l’érosion sur le sommet (les particules fines formées sont emportées, le sol reste mince et grossier). 1 point pour le rôle du dépôt dans le creux (les particules transportées s’y accumulent, le sol devient profond et fin). 1 point pour le sol du creux choisi pour l’agriculture, avec une raison liée à la grosseur des particules ou à la rétention de l’eau.", {});
+  }
+]), ["Suis les débris : formés par l’altération, déplacés par l’érosion, accumulés par le dépôt.", "Le meilleur sol agricole est presque toujours le sol profond, aux particules fines qui retiennent l’eau."]);
+
+/* ---------- Ajout du 21 novembre 2026 : plan de tests (decisions 9, 10, 11) ---------- */
+E("s7f-u4-catastrophe-effets", 4, ["SC7.10.4"], 2, "var", varset([
+  function () {
+    return mcq("Un séisme sous-marin déplace soudainement le fond de l’océan au large d’une côte. Quel effet à la surface peut suivre ce séisme pour les localités côtières?", "Un tsunami : de grandes vagues soulevées par le déplacement de l’eau atteignent la côte et inondent les terres basses", ["Une éruption : de la lave soulevée par le déplacement de l’eau atteint la côte et recouvre les terres basses du rivage", "Une chute de cendres : des cendres soulevées par le déplacement de l’eau tombent sur la côte et couvrent les terres basses", "Un glissement de neige : une avalanche soulevée par le déplacement de l’eau descend sur la côte et bloque les terres basses"], "Un séisme qui déplace le fond marin déplace aussi la colonne d’eau au-dessus : l’énergie voyage en vagues qui grandissent près de la côte et peuvent inonder les terres basses. C’est un effet de surface d’un séisme sous-marin.", {});
+  },
+  function () {
+    return mcq("Après une éruption, un vent régulier pousse le nuage de cendres volcaniques vers une ville située à 80 km du volcan, qui n’a reçu aucune lave. Quel effet de surface la ville subit-elle?", "Une chute de cendres qui couvre les toits et les récoltes, nuit à la respiration et perturbe les déplacements de la ville", ["Des secousses qui fissurent les fondations des bâtiments, nuisent aux routes et perturbent les déplacements de la ville", "Des coulées de lave qui couvrent les toits et les récoltes, brûlent les champs et perturbent les déplacements de la ville", "Une inondation côtière qui couvre les terres basses de la ville, noie les récoltes et perturbe ses déplacements quotidiens"], "Les cendres fines voyagent avec le vent bien au-delà du volcan : une ville sans lave ni secousses majeures peut quand même subir une chute de cendres, avec ses effets sur la santé, les bâtiments et le transport.", {});
+  },
+  function () {
+    return mcq("Un séisme frappe une ville construite sur un sol meuble et saturé d’eau. En plus des secousses, le sol se comporte par endroits comme un liquide et des bâtiments s’enfoncent. Quel énoncé décrit correctement cet effet de surface?", "Le sol meuble amplifie les secousses et perd sa solidité, ce qui aggrave les dommages aux bâtiments de la ville touchée", ["Le sol meuble absorbe les secousses et garde sa solidité, ce qui réduit les dommages aux bâtiments de la ville touchée", "Le sol meuble transforme les secousses en cendres, ce qui aggrave les dommages aux bâtiments de la ville touchée ici", "Le sol meuble empêche les secousses d’atteindre la surface, ce qui annule les dommages aux bâtiments de la ville"], "Un sol meuble et gorgé d’eau amplifie le tremblement et peut perdre sa solidité pendant le séisme : les bâtiments s’enfoncent ou basculent. L’effet de surface dépend donc aussi du sol, pas seulement de la force du séisme.", {});
+  },
+  function () {
+    return mcq("Une éruption produit une coulée de lave lente qui descend vers un village évacué depuis deux jours. Quel énoncé décrit correctement l’effet de surface de cette coulée?", "La lave brûle et ensevelit tout sur son passage, mais sa lenteur a laissé le temps d’évacuer les habitants du village", ["La lave refroidit et épargne tout sur son passage, et sa lenteur a laissé le temps d’évacuer les habitants du village", "La lave secoue et fissure tout sur son passage, mais sa lenteur a laissé le temps d’évacuer les habitants du village", "La lave inonde et noie tout sur son passage, mais sa profondeur a laissé le temps d’évacuer les habitants du village"], "Une coulée de lave détruit par brûlure et ensevelissement les bâtiments et les terres de son trajet; souvent lente, elle laisse en général le temps d’évacuer, contrairement aux secousses soudaines d’un séisme.", {});
+  }
+]), ["Relie chaque effet à son événement : secousses et tsunami pour le séisme; lave et cendres pour l’éruption.", "Un effet peut se produire loin de sa source : les cendres voyagent, les vagues aussi."]);

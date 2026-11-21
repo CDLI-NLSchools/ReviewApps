@@ -1,3 +1,7 @@
+// CRMARKS: s7f-u2-cr-instrument-paire=3
+// CRMARKS: s7f-u2-cr-instrument-releve=2
+// CRMARKS: s7f-u2-cr-thermometre-choix=3
+// CRMARKS: s7f-u2-cr-rayonnement-expliquer=2
 // CRMARKS: s7f-u2-cr-temp-explain=3
 // CRMARKS: s7f-u2-cr-expansion=3
 // CRMARKS: s7f-u2-cr-plateau=3
@@ -13,6 +17,113 @@
 // CRMARKS: s7f-u2-cr-design-test=4
 // CRMARKS: s7f-u2-cr-conclusion=3
 // CRMARKS: s7f-u2-cr-instrument-jobs=3
+// CRMARKS: s7f-u2-cr-instrument-conception=4
+// CRMARKS: s7f-u2-cr-dilatation-usage=2
+// CRMARKS: s7f-u2-cr-chaleur-specifique=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s7f-u2-instrument-match=2
+// CRMARKS: s7f-u2-instrument-how=2
+// CRMARKS: s7f-u2-thermometer-read=3
+// CRMARKS: s7f-u2-instrument-choose=4
+// CRMARKS: s7f-u2-temp-define=2
+// CRMARKS: s7f-u2-particle-points=2
+// CRMARKS: s7f-u2-particle-speed=3
+// CRMARKS: s7f-u2-states-compare=2
+// CRMARKS: s7f-u2-expansion-scenario=3
+// CRMARKS: s7f-u2-states-heated=3
+// CRMARKS: s7f-u2-change-name=2
+// CRMARKS: s7f-u2-plateau-read=3
+// CRMARKS: s7f-u2-change-particles=3
+// CRMARKS: s7f-u2-transfer-classify=2
+// CRMARKS: s7f-u2-transfer-particles=2
+// CRMARKS: s7f-u2-stove-three=3
+// CRMARKS: s7f-u2-absorb-classify=2
+// CRMARKS: s7f-u2-absorb-lab=4
+// CRMARKS: s7f-u2-shc-compare=3
+// CRMARKS: s7f-u2-shc-coastal=3
+// CRMARKS: s7f-u2-heat-vs-temp=2
+// CRMARKS: s7f-u2-thermoscope=2
+// CRMARKS: s7f-u2-scales=2
+// CRMARKS: s7f-u2-past-tech=3
+// CRMARKS: s7f-u2-approaches-compare=3
+// CRMARKS: s7f-u2-heating-adv=3
+// CRMARKS: s7f-u2-heating-disadv=3
+// CRMARKS: s7f-u2-pump-cycle=3
+// CRMARKS: s7f-u2-insulation-past=2
+// CRMARKS: s7f-u2-thermos=3
+// CRMARKS: s7f-u2-needs-tech=2
+// CRMARKS: s7f-u2-career-scenario=2
+// CRMARKS: s7f-u2-thermometer-build=2
+// CRMARKS: s7f-u2-calibrate=3
+// CRMARKS: s7f-u2-thermometer-test=4
+// CRMARKS: s7f-u2-thermometer-data=2
+// CRMARKS: s7f-u2-variables-plateau=2
+// CRMARKS: s7f-u2-experiment-chain=4
+// CRMARKS: s7f-u2-tools-safety=2
+// CRMARKS: s7f-u2-tools-accurate=3
+// CRMARKS: s7f-u2-table-build=2
+// CRMARKS: s7f-u2-graph-choice=4
+// CRMARKS: s7f-u2-design-absorb=3
+// CRMARKS: s7f-u2-design-challenge=3
+// CRMARKS: s7f-u2-apparatus-choice=3
+// CRMARKS: s7f-u2-graph-key=2
+// CRMARKS: s7f-u2-display-absorb=4
+// CRMARKS: s7f-u2-conclusion-support=3
+// CRMARKS: s7f-u2-conclusion-refute=3
+// CRMARKS: s7f-u2-absorption-prevoir=3
+// CRMARKS: s7f-u2-securite-scenario=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s7f-u2-instrument-match=a
+// BIMODAL: s7f-u2-instrument-how=b
+// BIMODAL: s7f-u2-thermometer-read=b
+// BIMODAL: s7f-u2-instrument-choose=b
+// BIMODAL: s7f-u2-temp-define=b
+// BIMODAL: s7f-u2-particle-points=b
+// BIMODAL: s7f-u2-particle-speed=a
+// BIMODAL: s7f-u2-states-compare=b
+// BIMODAL: s7f-u2-expansion-scenario=b
+// BIMODAL: s7f-u2-states-heated=b
+// BIMODAL: s7f-u2-change-name=b
+// BIMODAL: s7f-u2-plateau-read=a
+// BIMODAL: s7f-u2-change-particles=b
+// BIMODAL: s7f-u2-transfer-classify=b
+// BIMODAL: s7f-u2-transfer-particles=b
+// BIMODAL: s7f-u2-stove-three=b
+// BIMODAL: s7f-u2-absorb-classify=b
+// BIMODAL: s7f-u2-absorb-lab=b
+// BIMODAL: s7f-u2-shc-compare=b
+// BIMODAL: s7f-u2-shc-coastal=b
+// BIMODAL: s7f-u2-heat-vs-temp=b
+// BIMODAL: s7f-u2-thermoscope=b
+// BIMODAL: s7f-u2-scales=b
+// BIMODAL: s7f-u2-past-tech=b
+// BIMODAL: s7f-u2-approaches-compare=b
+// BIMODAL: s7f-u2-heating-adv=b
+// BIMODAL: s7f-u2-heating-disadv=b
+// BIMODAL: s7f-u2-pump-cycle=b
+// BIMODAL: s7f-u2-insulation-past=b
+// BIMODAL: s7f-u2-thermos=b
+// BIMODAL: s7f-u2-needs-tech=b
+// BIMODAL: s7f-u2-career-scenario=b
+// BIMODAL: s7f-u2-thermometer-build=b
+// BIMODAL: s7f-u2-calibrate=b
+// BIMODAL: s7f-u2-thermometer-test=b
+// BIMODAL: s7f-u2-thermometer-data=b
+// BIMODAL: s7f-u2-variables-plateau=b
+// BIMODAL: s7f-u2-experiment-chain=b
+// BIMODAL: s7f-u2-tools-safety=b
+// BIMODAL: s7f-u2-tools-accurate=b
+// BIMODAL: s7f-u2-table-build=b
+// BIMODAL: s7f-u2-graph-choice=b
+// BIMODAL: s7f-u2-design-absorb=b
+// BIMODAL: s7f-u2-design-challenge=b
+// BIMODAL: s7f-u2-apparatus-choice=b
+// BIMODAL: s7f-u2-graph-key=b
+// BIMODAL: s7f-u2-display-absorb=b
+// BIMODAL: s7f-u2-conclusion-support=b
+// BIMODAL: s7f-u2-conclusion-refute=b
+// BIMODAL: s7f-u2-absorption-prevoir=b
+// BIMODAL: s7f-u2-securite-scenario=b
 // Sciences 7, Unite 2 : La chaleur (SC7.4.1 a SC7.6.9), banque
 // construite le Nov 16, 2026.
 // Existing tests and question banks were reviewed only to gauge the expected depth and range of treatment. All items in this bank were written new for this app.
@@ -552,3 +663,309 @@ E("s7f-u2-cr-conclusion", 2, ["SC7.6.9"], 3, "var", varset([
    des examens composes. */
 var NO_COMPOSE_U2 = { "s7f-u2-cr-design-test": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U2[e.id]) { e.noCompose = true; } });
+
+
+
+/* Ajouts de l'allongement (20 nov. 2026) : SR sur SC7.4.2, SC7.4.6,
+   SC7.6.7, et deux entrées CR (SC7.4.1, 3 points; SC7.4.6, 2 points)
+   qui comblent les manques des Tests 1 et 3 de l'unité 2. Marqué
+   pour la révision SME. */
+
+E("s7f-u2-temperature-comparer", 2, ["SC7.4.2"], 2, "gen", function () {
+  var a = ri(5, 40), d = ri(2, 12), b = a + d;
+  var site = pick(["Deux bols d'eau laissés au soleil", "Deux tasses d'eau chaude laissées sur le comptoir", "Deux thermomètres placés dans une serre"]);
+  var unit = pick(["°C", "°C", "degrés Celsius"]);
+  return mcq(site[0] === "Deux thermomètres placés dans une serre"
+    ? "Dans une serre, un thermomètre à l'ombre indique " + a + " °C et un autre au soleil indique " + b + " °C. Lequel des énoncés est vrai?"
+    : site + " : l'un indique " + a + " " + unit + " et l'autre " + b + " " + unit + ". Lequel des énoncés est vrai?",
+    "Le deuxième est plus chaud que le premier de " + d + " " + unit + " : il contient plus d'énergie thermique en moyenne par particule",
+    ["Le premier est plus chaud que le deuxième de " + d + " " + unit + ", parce qu'il a été mesuré en premier",
+     "Les deux sont à la même température, parce que " + a + " et " + b + " sont des mesures du même genre d'eau",
+     "Le deuxième est plus froid que le premier de " + d + " " + unit + ", parce que les grands nombres sur un thermomètre indiquent le froid"],
+    "La température plus élevée est la plus chaude, et l'écart se calcule par soustraction : " + b + " \u2212 " + a + " = " + d + ". <b>Le deuxième est plus chaud que le premier de " + d + " " + unit + "</b>.", { a: a, b: b, d: d });
+}, ["La température compare l'énergie moyenne des particules; soustrais pour l'écart.", "Le plus grand nombre est le plus chaud; l'écart est le second moins le premier."]);
+
+E("s7f-u2-absorption-prevoir", 2, ["SC7.4.6"], 2, "var", varset([
+  function () {
+    return mcq("Deux plaques de métal identiques, l'une noire et mate, l'autre argentée et brillante, sont placées à la même distance d'une lampe chauffante. Que prévoit-on après dix minutes?",
+      "La plaque noire et mate devient plus chaude, parce que les surfaces sombres et mates absorbent davantage le rayonnement",
+      ["La plaque argentée et brillante devient nettement plus chaude que l'autre, parce que les surfaces brillantes et polies absorbent davantage le rayonnement de la lampe", "Les deux plaques de métal deviennent exactement également chaudes après dix minutes, parce qu'elles reçoivent toutes les deux exactement le même rayonnement de la lampe", "La plaque noire devient plus froide, parce que les surfaces sombres renvoient tout le rayonnement reçu"],
+      "À rayonnement égal, ce sont la couleur et la texture qui décident de l'absorption : sombre et mat absorbe plus. <b>La plaque noire et mate devient plus chaude</b>.", {});
+  },
+  function () {
+    return mcq("Un cycliste porte un chandail blanc un jour d'été ensoleillé, et un chandail noir le lendemain, par le même temps. Que prévoit-on?",
+      "Le chandail noir devient plus chaud au soleil, parce que les tissus sombres absorbent une plus grande part du rayonnement",
+      ["Le chandail blanc devient nettement plus chaud au soleil que le noir, parce que les tissus pâles et clairs absorbent une plus grande part du rayonnement solaire", "Les deux chandails du cycliste deviennent exactement également chauds au soleil, parce que la couleur d'un tissu ne change absolument rien à l'absorption du rayonnement", "Le chandail noir devient plus froid au soleil, parce que les tissus sombres repoussent le rayonnement solaire"],
+      "Les surfaces sombres absorbent une plus grande part du rayonnement solaire que les surfaces pâles. <b>Le chandail noir devient plus chaud au soleil</b>.", {});
+  },
+  function () {
+    return mcq("Deux toits voisins, l'un en bardeaux foncés et l'autre en métal pâle et poli, reçoivent le même soleil de midi. Que prévoit-on pour la température des greniers?",
+      "Le grenier sous les bardeaux foncés devient plus chaud, parce que la surface foncée absorbe plus de rayonnement",
+      ["Le grenier situé sous le toit de métal pâle et poli devient nettement plus chaud, parce que les surfaces polies et brillantes absorbent toujours plus de rayonnement solaire", "Les deux greniers voisins restent exactement à la même température pendant tout l'après-midi, parce que le soleil de midi chauffe tous les toits de la même façon", "Le grenier sous les bardeaux foncés devient plus froid, parce que les surfaces foncées bloquent le rayonnement"],
+      "Bardeaux foncés et mats contre métal pâle et poli : la surface foncée absorbe davantage. <b>Le grenier sous les bardeaux foncés devient plus chaud</b>.", {});
+  },
+  function () {
+    return mcq("On verse de l'eau chaude dans deux tasses identiques, l'une à fini noir mat et l'autre à fini blanc brillant, puis on attend. Que prévoit-on?",
+      "L'eau de la tasse noire mate se refroidit un peu plus vite, parce que les surfaces sombres et mates émettent aussi le rayonnement plus facilement",
+      ["L'eau chaude de la tasse blanche et brillante se refroidit nettement plus vite que l'autre, parce que les surfaces brillantes et polies émettent toujours plus de rayonnement que les surfaces mates", "L'eau chaude des deux tasses identiques se refroidit exactement au même rythme pendant toute l'attente, parce que la couleur de la tasse ne change absolument rien à l'émission de rayonnement", "L'eau de la tasse noire se réchauffe avec le temps, parce que les surfaces sombres créent de la chaleur"],
+      "Un bon absorbeur est aussi un bon émetteur : la surface noire et mate rayonne sa chaleur plus vite. <b>L'eau de la tasse noire mate se refroidit un peu plus vite</b>.", {});
+  }
+]), ["Les surfaces sombres et mates absorbent plus de rayonnement que les pâles et brillantes.", "Un bon absorbeur est aussi un bon émetteur quand l'objet est chaud."]);
+
+E("s7f-u2-securite-scenario", 2, ["SC7.6.7"], 1, "var", varset([
+  function () {
+    return mcq("Pendant un laboratoire sur la chaleur, une élève tient un bécher d'eau chaude à mains nues et se brûle légèrement. Quelle pratique sûre aurait prévenu cette brûlure?",
+      "Utiliser des pinces ou des gants isolants pour manipuler tout contenant chauffé pendant le laboratoire",
+      ["Refroidir le bécher chaud sous l'eau froide du robinet de l'évier avant même de vérifier avec soin s'il était encore chaud au toucher", "Demander à un autre élève de son équipe de tenir le bécher chaud à sa place à mains nues pendant toute la durée de l'activité de laboratoire", "Verser l'eau chaude dans un bécher en plastique avant de commencer l'expérience"],
+      "Les contenants chauffés se manipulent avec des pinces ou des gants isolants, jamais à mains nues. <b>Utiliser des pinces ou des gants isolants pour manipuler tout contenant chauffé</b>.", {});
+  },
+  function () {
+    return mcq("Un élève remarque qu'un thermomètre en verre s'est fissuré pendant un laboratoire. Que doit-il faire?",
+      "Avertir l'enseignante ou l'enseignant tout de suite et ne pas ramasser le verre brisé à mains nues",
+      ["Ramasser soigneusement les morceaux de verre brisé avec ses mains nues et les jeter directement dans la poubelle ordinaire de la classe de sciences", "Cacher discrètement le thermomètre en verre brisé sous la table de laboratoire et continuer l'activité en cours sans rien dire à personne de l'incident", "Rincer les morceaux dans l'évier et les garder pour les réutiliser au prochain laboratoire"],
+      "Le verre brisé et les instruments fissurés se signalent immédiatement à l'enseignant; on ne les ramasse jamais à mains nues. <b>Avertir l'enseignante ou l'enseignant tout de suite</b>.", {});
+  },
+  function () {
+    return mcq("Avant de chauffer une substance inconnue, un groupe d'élèves vérifie la fiche de sécurité et porte des lunettes de protection. Pourquoi ces précautions?",
+      "Parce que chauffer une substance peut libérer des vapeurs ou causer des éclaboussures, et les symboles de danger indiquent les risques à prévoir",
+      ["Parce que les lunettes de protection ne sont exigées que pendant les quelques minutes où l'enseignant regarde directement le groupe travailler à sa table", "Parce que la fiche de sécurité de la substance indique à l'avance la couleur exacte qu'elle prendra quand elle sera chauffée pendant l'expérience", "Parce que les substances inconnues sont toujours inoffensives et que ces gestes ne sont qu'une formalité"],
+      "La fiche de sécurité et les symboles SIMDUT décrivent les dangers réels; chauffer peut projeter ou dégager des vapeurs. <b>Parce que chauffer une substance peut libérer des vapeurs ou causer des éclaboussures</b>.", {});
+  },
+  function () {
+    return mcq("Une élève aux cheveux longs se penche au-dessus d'un brûleur allumé pour lire un thermomètre. Quel danger court-elle?",
+      "Ses cheveux peuvent prendre feu : il faut attacher les cheveux longs et porter des lunettes près d'une flamme",
+      ["Ses longs cheveux peuvent fondre très lentement au-dessus de la flamme du brûleur sans jamais risquer de s'enflammer vraiment pendant le laboratoire", "Aucun danger réel pour elle : la flamme d'un brûleur de laboratoire scolaire ne peut jamais atteindre les cheveux longs d'une élève penchée au-dessus", "Le seul danger est que ses cheveux bloquent sa vue du thermomètre pendant quelques secondes"],
+      "Cheveux longs, vêtements amples et flammes ne vont pas ensemble : on attache les cheveux et on porte des lunettes. <b>Ses cheveux peuvent prendre feu</b>.", {});
+  }
+]), ["Rappelle les règles de sécurité pour la chaleur, le verre et les flammes.", "Le bon geste se fait avant l'accident ou dès que le danger apparaît."]);
+
+E("s7f-u2-cr-thermometre-choix", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return textq("Une classe veut suivre la température d'une serre pendant un mois entier, y compris les fins de semaine quand personne n'est à l'école. Explique pourquoi un thermomètre enregistreur (thermographe) convient mieux qu'un thermomètre à alcool ordinaire pour cette tâche. Dans ta réponse, nomme DEUX caractéristiques à l'appui et explique comment chacune aide à accomplir la tâche. (3 points)",
+      ["Un thermographe enregistre les lectures en continu, même quand personne n'est présent pour les lire."],
+      "Points de notation (3) : 1 point pour nommer une caractéristique utile (enregistrement en continu; lectures maximale et minimale conservées; mesures à intervalles réguliers). 1 point pour une deuxième caractéristique distincte. 1 point pour expliquer comment les caractéristiques répondent au besoin d'un mois de données sans observateur. Réponse modèle : Un thermographe enregistre la température en continu, jour et nuit, donc aucune donnée n'est perdue les fins de semaine. Il garde aussi les valeurs maximales et minimales de chaque journée. <b>Un thermomètre à alcool ordinaire n'indique que le moment où quelqu'un le lit, donc le mois resterait presque vide de données</b>.", {});
+  },
+  function () {
+    return textq("Une équipe de sciences doit mesurer la température de l'eau d'un étang à plusieurs profondeurs, d'une surface glacée jusqu'à 3 mètres de fond. Explique pourquoi un thermomètre à sonde électronique convient mieux qu'un thermomètre à alcool ordinaire pour cette tâche. Dans ta réponse, nomme DEUX caractéristiques à l'appui et explique comment chacune aide à accomplir la tâche. (3 points)",
+      ["Une sonde électronique peut être descendue à la profondeur voulue au bout de son câble."],
+      "Points de notation (3) : 1 point pour nommer une caractéristique utile (sonde submersible au bout d'un long câble; lecture numérique lue à la surface; réponse rapide). 1 point pour une deuxième caractéristique distincte. 1 point pour expliquer comment les caractéristiques répondent au besoin de mesures à plusieurs profondeurs sous la glace. Réponse modèle : La sonde descend au bout de son câble jusqu'à la profondeur choisie, et la lecture numérique se lit à la surface sans sortir l'instrument de l'eau. <b>Un thermomètre à alcool devrait être retiré et lu à chaque profondeur, ce qui fausse la mesure et risque de le briser dans la glace</b>.", {});
+  },
+  function () {
+    return textq("Un élève construit un four solaire et veut savoir exactement à quel moment de l'après-midi son four atteint sa température la plus élevée. Explique pourquoi un thermomètre à maximum convient mieux qu'un thermomètre à alcool ordinaire pour cette tâche. Dans ta réponse, nomme DEUX caractéristiques à l'appui et explique comment chacune aide à accomplir la tâche. (3 points)",
+      ["Un thermomètre à maximum garde la lecture la plus élevée atteinte, même après un refroidissement."],
+      "Points de notation (3) : 1 point pour nommer une caractéristique utile (l'indice de maximum reste en place; la lecture peut se faire plus tard; remise à zéro simple). 1 point pour une deuxième caractéristique distincte. 1 point pour expliquer comment les caractéristiques répondent au besoin de connaître le sommet de l'après-midi. Réponse modèle : Le thermomètre à maximum retient la valeur la plus élevée atteinte pendant que l'élève est ailleurs. L'élève peut donc lire le sommet plus tard et le comparer d'une journée à l'autre. <b>Un thermomètre ordinaire n'affiche que la température du moment où on le regarde, donc le sommet de l'après-midi serait manqué</b>.", {});
+  }
+]), ["Choisis l'instrument selon la tâche : que doit-il faire sans observateur?", "Nomme des caractéristiques de l'instrument lui-même, pas seulement sa fonction."]);
+
+E("s7f-u2-cr-rayonnement-expliquer", 2, ["SC7.4.6"], 2, "var", varset([
+  function () {
+    return textq("L'intérieur d'une voiture noire garée au soleil devient beaucoup plus chaud que l'intérieur d'une voiture blanche garée à côté, par la même journée. Explique cet écart à l'aide de l'absorption du rayonnement, puis nomme UN changement, autre que la couleur de la voiture, qui réduirait l'échauffement intérieur de la voiture noire. (2 points)",
+      ["Les surfaces sombres absorbent une plus grande part du rayonnement solaire que les surfaces pâles."],
+      "Points de notation (2) : 1 point pour expliquer que la peinture noire absorbe une plus grande part du rayonnement solaire que la peinture blanche, qui en réfléchit davantage, de sorte que l'intérieur noir reçoit et garde plus d'énergie. 1 point pour un changement valable (pare-soleil réfléchissant sur le pare-brise, vitres teintées, stationnement à l'ombre, housse pâle). Réponse modèle : La peinture noire absorbe la plupart du rayonnement qui la frappe, tandis que la peinture blanche en réfléchit une grande partie; l'intérieur noir se réchauffe donc davantage. <b>Un pare-soleil réfléchissant sur le pare-brise réduirait l'échauffement de la voiture noire</b>.", {});
+  },
+  function () {
+    return textq("Les tuyaux d'un chauffe-eau solaire sur un toit sont peints en noir mat plutôt qu'en argent brillant. Explique ce choix à l'aide de l'absorption du rayonnement, puis nomme UN changement, autre que la couleur des tuyaux, qui augmenterait encore l'énergie captée. (2 points)",
+      ["Les surfaces noires et mates absorbent une plus grande part du rayonnement que les surfaces brillantes."],
+      "Points de notation (2) : 1 point pour expliquer que le noir mat absorbe la plus grande part du rayonnement solaire, tandis que l'argent brillant en réfléchirait la majeure partie, de sorte que l'eau des tuyaux noirs se réchauffe davantage. 1 point pour un changement valable (vitre de couverture qui garde la chaleur, orientation des panneaux vers le soleil, isolation des tuyaux, surface de captage plus grande). Réponse modèle : Peints en noir mat, les tuyaux absorbent presque tout le rayonnement qui les atteint et chauffent l'eau efficacement. <b>Une vitre de couverture au-dessus des tuyaux réduirait les pertes et augmenterait encore l'énergie captée</b>.", {});
+  },
+  function () {
+    return textq("Par une journée froide mais ensoleillée, un randonneur portant un manteau noir foncé a sensiblement plus chaud qu'un compagnon en manteau blanc, alors qu'ils marchent côte à côte. Explique cet écart à l'aide de l'absorption du rayonnement, puis nomme UN changement, autre que la couleur du manteau, qui aiderait le compagnon en blanc à se réchauffer. (2 points)",
+      ["Le manteau noir absorbe une plus grande part du rayonnement solaire que le manteau blanc."],
+      "Points de notation (2) : 1 point pour expliquer que le tissu foncé absorbe la plus grande part du rayonnement solaire et le transforme en chaleur, tandis que le tissu blanc en réfléchit la majeure partie. 1 point pour un changement valable (se placer en plein soleil plutôt qu'à l'ombre, ajouter une couche coupe-vent, marcher plus vite pour produire de la chaleur, porter une couche foncée par-dessus). Réponse modèle : Le manteau noir absorbe le rayonnement du soleil et se réchauffe; le manteau blanc en réfléchit la plus grande partie. <b>Le compagnon se réchaufferait en marchant en plein soleil et en ajoutant une couche coupe-vent</b>.", {});
+  }
+]), ["Commence par l'absorption : quelle surface prend le plus de rayonnement?", "Pour le changement, pense à bloquer, réfléchir ou évacuer le rayonnement."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s7f-u2-cr-instrument-conception closes Unit 2 Test
+   1 (4 marks, Level 3); s7f-u2-cr-dilatation-usage closes Unit 2 Test
+   2 (2 marks, Level 2); s7f-u2-cr-chaleur-specifique closes Unit 2 Test
+   3 (3 marks, Level 2). SME-flagged for the
+   specialist pass. */
+E("s7f-u2-cr-instrument-conception", 2, ["SC7.4.1"], 3, "var", varset([
+  function () {
+    return textq("Deux tâches de mesure délicates. Tâche A : mesurer la température à l’intérieur d’un terrarium scellé pour plantes tropicales, sans ouvrir le couvercle, car l’ouverture laisserait échapper l’air chaud et humide. Tâche B : mesurer la température à l’intérieur d’un four de potier en marche, qui dépasse largement 1000 °C, sans ouvrir la porte pendant la cuisson. (a) Pour la tâche A, choisis un instrument et justifie ton choix par une propriété de cet instrument. (1 point) (b) Pour la tâche B, choisis un instrument et justifie ton choix par une propriété de cet instrument. (1 point) (c) Nomme un instrument qui semble évident, mais qui ne convient pas à l’une des deux tâches, et explique la limite qui l’écarte. (1 point) (d) Dis ce qu’il faut faire pour que les lectures soient fiables. (1 point) (4 points)",
+      ["(a) Un thermomètre à sonde électronique : son capteur mince, installé à l’intérieur avant la fermeture, envoie la lecture à un affichage resté à l’extérieur, donc on lit sans ouvrir.", "(b) Un thermocouple : ses fils de deux métaux différents supportent les températures extrêmes et transforment la température en signal électrique lu à distance.", "(c) Un thermomètre à liquide en verre est écarté pour le four : sa portée est bien trop basse et le verre se briserait sous la chaleur.", "(d) Des lectures fiables : attendre que la lecture se stabilise, répéter les mesures et vérifier l’étalonnage de l’instrument."],
+      "<b>Réponse modèle :</b> (a) Tâche A : un thermomètre à sonde électronique. Son capteur mince peut être installé à l’intérieur du terrarium avant la fermeture, et son fil fait passer le signal jusqu’à l’affichage resté à l’extérieur : on obtient la température sans jamais ouvrir le couvercle. (b) Tâche B : un thermocouple. Ses deux fils de métaux différents, soudés à la jonction, supportent des températures bien au-delà de 1000 °C et produisent un signal électrique proportionnel à la température, lu sur un appareil à distance. (c) Un thermomètre à liquide en verre, l’instrument habituel de la classe, est écarté pour le four : sa portée s’arrête bien avant 1000 °C et le verre se briserait sous une telle chaleur. (d) Pour des lectures fiables, il faut placer le capteur au bon endroit, attendre que la lecture se stabilise avant de la noter, répéter les mesures et vérifier l’étalonnage de l’instrument, par exemple dans la glace fondante pour les basses températures.<br><br><b>Points d’attribution :</b> 1 point pour le choix de la tâche A, justifié par une propriété de l’instrument (capteur intérieur et lecture extérieure, sans ouverture). 1 point pour le choix de la tâche B, justifié par une propriété de l’instrument (résistance aux températures extrêmes et signal électrique). 1 point pour la limite qui écarte l’instrument inadapté (portée insuffisante et verre fragile pour le four). 1 point pour ce qui rend les lectures fiables (stabilisation, répétition et étalonnage vérifié).", {});
+  },
+  function () {
+    return textq("Deux tâches de mesure délicates. Tâche A : vérifier que la charge entière d’un camion frigorifique reste à 4 °C ou moins pendant un long trajet, sans ouvrir les portes à chaque contrôle, car chaque ouverture laisse entrer l’air chaud. Tâche B : mesurer la température du sol à 50 cm de profondeur dans un champ, pour décider de la date des semailles. (a) Pour la tâche A, choisis un instrument et justifie ton choix par une propriété de cet instrument. (1 point) (b) Pour la tâche B, choisis un instrument et justifie ton choix par une propriété de cet instrument. (1 point) (c) Nomme un instrument qui semble évident, mais qui ne convient pas à l’une des deux tâches, et explique la limite qui l’écarte. (1 point) (d) Dis ce qu’il faut faire pour que les lectures soient fiables. (1 point) (4 points)",
+      ["(a) Un thermomètre enregistreur à sonde : placé dans la charge, il mesure et conserve les lectures en continu pendant tout le trajet, sans ouverture des portes.", "(b) Un thermomètre à sonde longue électronique : sa tige atteint 50 cm de profondeur et la lecture se fait à la surface.", "(c) Un thermomètre à infrarouge est écarté pour le sol : il ne lit que la surface et ne dit rien de la température en profondeur.", "(d) Des lectures fiables : attendre que la sonde prenne la température du sol, répéter les mesures à plusieurs endroits et vérifier l’étalonnage."],
+      "<b>Réponse modèle :</b> (a) Tâche A : un thermomètre enregistreur à sonde, par exemple un thermomètre à résistance enregistreur. Placé au milieu de la charge avant le départ, il mesure en continu et conserve chaque lecture avec son heure : on peut prouver après le trajet que la charge est restée à 4 °C ou moins, sans ouvrir les portes en route. (b) Tâche B : un thermomètre à sonde longue. Sa tige rigide descend jusqu’à 50 cm de profondeur, là où la température compte pour les semailles, et l’affichage reste à la surface, facile à lire. (c) Un thermomètre à infrarouge, pointé sur le sol, est écarté pour la tâche B : il ne capte que le rayonnement de la surface, qui peut être chaude au soleil pendant que le sol en profondeur reste froid. (d) Pour des lectures fiables, il faut laisser à la sonde le temps d’atteindre la température du sol avant de lire, répéter la mesure à plusieurs endroits du champ et vérifier l’étalonnage de l’instrument.<br><br><b>Points d’attribution :</b> 1 point pour le choix de la tâche A, justifié par une propriété de l’instrument (enregistrement en continu, sans ouverture). 1 point pour le choix de la tâche B, justifié par une propriété de l’instrument (sonde qui atteint la profondeur voulue). 1 point pour la limite qui écarte l’instrument inadapté (l’infrarouge ne lit que la surface). 1 point pour ce qui rend les lectures fiables (stabilisation, répétition en plusieurs endroits et étalonnage vérifié).", {});
+  },
+  function () {
+    return textq("Deux tâches de mesure délicates. Tâche A : un potier veut suivre la montée en température de son four de potier pendant toute la cuisson, pour ajuster le chauffage au bon moment, alors que le four dépasse largement 1000 °C. Tâche B : un jardinier veut connaître la température du sol à 20 cm de profondeur, là où il sèmera ses graines. (a) Pour la tâche A, choisis un instrument et justifie ton choix par une propriété de cet instrument. (1 point) (b) Pour la tâche B, choisis un instrument et justifie ton choix par une propriété de cet instrument. (1 point) (c) Nomme un instrument qui semble évident, mais qui ne convient pas à l’une des deux tâches, et explique la limite qui l’écarte. (1 point) (d) Dis ce qu’il faut faire pour que les lectures soient fiables. (1 point) (4 points)",
+      ["(a) Un thermocouple relié à un affichage : il supporte la chaleur extrême et donne une lecture continue pendant toute la cuisson.", "(b) Un thermomètre de sol à longue tige métallique : sa tige atteint les 20 cm voulus et son cadran se lit à la surface.", "(c) Un thermomètre à infrarouge pointé sur la porte du four est écarté : il lirait la surface extérieure de la porte, et non l’intérieur du four.", "(d) Des lectures fiables : comparer avec un deuxième instrument ou un point connu, attendre l’équilibre et répéter les mesures."],
+      "<b>Réponse modèle :</b> (a) Tâche A : un thermocouple relié à un affichage. Sa jonction de deux métaux différents supporte les températures extrêmes du four et envoie un signal électrique continu : le potier suit la montée en température en direct, sans ouvrir le four. (b) Tâche B : un thermomètre de sol à longue tige métallique. Sa tige s’enfonce jusqu’à 20 cm, exactement à la profondeur des graines, et le cadran à son sommet se lit sans retirer l’instrument. (c) Un thermomètre à infrarouge pointé sur la porte fermée du four est écarté pour la tâche A : il mesurerait la surface extérieure de la porte, beaucoup plus froide que l’air intérieur du four, donc la lecture ne répondrait pas à la question. (d) Pour des lectures fiables, il faut attendre que chaque instrument atteigne la température du milieu mesuré, répéter les mesures et, quand c’est possible, comparer la lecture à celle d’un deuxième instrument ou à un point de référence connu.<br><br><b>Points d’attribution :</b> 1 point pour le choix de la tâche A, justifié par une propriété de l’instrument (résistance à la chaleur extrême et lecture continue à distance). 1 point pour le choix de la tâche B, justifié par une propriété de l’instrument (longue tige qui atteint la profondeur des graines). 1 point pour la limite qui écarte l’instrument inadapté (l’infrarouge ne lit que la surface extérieure de la porte). 1 point pour ce qui rend les lectures fiables (équilibre atteint, répétition et comparaison ou étalonnage).", {});
+  },
+  function () {
+    return textq("Deux tâches de mesure délicates. Tâche A : mesurer la température à l’intérieur d’un terrarium scellé qui abrite un petit lézard, plusieurs fois par jour, sans ouvrir le couvercle, car le lézard s’échapperait et l’air sec entrerait. Tâche B : vérifier que des aliments surgelés restent à moins 18 °C ou moins pendant tout leur transport dans un camion frigorifique. (a) Pour la tâche A, choisis un instrument et justifie ton choix par une propriété de cet instrument. (1 point) (b) Pour la tâche B, choisis un instrument et justifie ton choix par une propriété de cet instrument. (1 point) (c) Nomme un instrument qui semble évident, mais qui ne convient pas à l’une des deux tâches, et explique la limite qui l’écarte. (1 point) (d) Dis ce qu’il faut faire pour que les lectures soient fiables. (1 point) (4 points)",
+      ["(a) Un thermomètre à résistance à capteur intérieur : le capteur reste dans le terrarium et le fil mince passe par le joint, donc la lecture se fait de l’extérieur, sans ouverture.", "(b) Un thermomètre enregistreur à sonde : il conserve l’historique complet des températures du trajet et prouve que le seuil de moins 18 °C n’a jamais été dépassé.", "(c) Un thermomètre à alcool ordinaire est écarté pour les deux tâches : il faut ouvrir le contenant et le lire sur place, ce qui fausse la mesure et ne laisse aucune trace du trajet.", "(d) Des lectures fiables : capteurs étalonnés, mesures à plusieurs endroits (points chauds et points froids) et lectures répétées."],
+      "<b>Réponse modèle :</b> (a) Tâche A : un thermomètre à résistance dont le capteur est installé à l’intérieur du terrarium. La résistance du capteur varie avec la température et le signal voyage par un fil mince qui passe par le joint du couvercle : on lit la température de l’extérieur, plusieurs fois par jour, sans ouvrir et sans déranger le lézard. (b) Tâche B : un thermomètre enregistreur à sonde placé parmi les aliments. Il enregistre la température en continu pendant tout le transport : à l’arrivée, son historique montre si le seuil de moins 18 °C a été respecté du début à la fin. (c) Un thermomètre à alcool ordinaire, l’instrument habituel de la classe, est écarté pour ces deux tâches : il exige d’ouvrir le terrarium ou le camion et d’être lu sur place, au moment même, ce qui laisse entrer l’air extérieur, fausse la mesure et ne conserve aucune preuve des températures entre les contrôles. (d) Pour des lectures fiables, il faut des capteurs étalonnés, placés à plusieurs endroits représentatifs, y compris l’endroit le plus chaud du chargement, et des mesures répétées dans le temps.<br><br><b>Points d’attribution :</b> 1 point pour le choix de la tâche A, justifié par une propriété de l’instrument (capteur intérieur et lecture extérieure, sans ouverture). 1 point pour le choix de la tâche B, justifié par une propriété de l’instrument (enregistrement en continu qui prouve le respect du seuil). 1 point pour la limite qui écarte l’instrument inadapté (ouverture nécessaire et aucune lecture conservée). 1 point pour ce qui rend les lectures fiables (étalonnage, plusieurs emplacements et répétition).", {});
+  }
+]), ["Chaque tâche a une condition qui élimine la plupart des instruments : aucun contact avec l’intérieur, chaleur extrême, preuve continue, profondeur.", "Pour la fiabilité, pense à trois mots : stabiliser, répéter, étalonner."]);
+E("s7f-u2-cr-dilatation-usage", 2, ["SC7.4.3"], 2, "var", varset([
+  function () {
+    return textq("Un couvercle de métal vissé sur un pot de verre est impossible à dévisser. On passe le couvercle sous l’eau chaude pendant quelques secondes, et il se dévisse alors facilement. Explique ce résultat avec la théorie particulaire de la matière. (2 points)",
+      ["l’eau chaude transmet de l’énergie aux particules du métal, qui vibrent plus fort et s’écartent un peu les unes des autres", "le métal se dilate, un peu plus que le verre, donc le diamètre du couvercle augmente légèrement et il se desserre"],
+      "<b>Réponse modèle :</b> L’eau chaude transmet de l’énergie aux particules du couvercle de métal : elles vibrent plus fort et s’écartent un peu les unes des autres, sans devenir plus grosses elles-mêmes. Le métal se dilate donc, et il se dilate un peu plus que le verre du pot. Le diamètre du couvercle augmente légèrement, son serrage sur le filet du pot diminue, et il se dévisse facilement.<br><br><b>Points d’attribution :</b> 1 point pour le mécanisme particulaire (les particules chauffées vibrent plus fort et s’écartent, ce qui dilate le métal). 1 point pour le lien avec le résultat observé (le couvercle, dilaté plus que le verre, se desserre et se dévisse).", {});
+  },
+  function () {
+    return textq("On laisse de petits espaces entre les sections de rails d’une voie ferrée. Par une journée très chaude, ces espaces deviennent presque invisibles. Explique, avec la théorie particulaire de la matière, pourquoi ces espaces sont nécessaires et pourquoi ils rétrécissent par temps chaud. (2 points)",
+      ["en chauffant, les particules de l’acier vibrent plus fort et s’écartent, donc chaque section de rail s’allonge", "les sections plus longues remplissent les espaces; sans espaces, elles se pousseraient et déformeraient la voie"],
+      "<b>Réponse modèle :</b> Quand le soleil chauffe les rails, les particules de l’acier reçoivent plus d’énergie : elles vibrent plus fort et s’écartent un peu les unes des autres. Chaque section de rail s’allonge donc dans toutes les directions, surtout en longueur, et vient remplir l’espace laissé entre les sections, qui devient presque invisible. Ces espaces sont nécessaires : sans eux, les sections allongées se pousseraient les unes contre les autres et la voie se déformerait ou se tordrait.<br><br><b>Points d’attribution :</b> 1 point pour le mécanisme particulaire (les particules chauffées vibrent plus fort et s’écartent, ce qui allonge l’acier). 1 point pour le lien avec le résultat observé (les sections allongées remplissent les espaces, qui protègent la voie d’une déformation).", {});
+  },
+  function () {
+    return textq("Une balle de tennis de table bosselée est déposée dans de l’eau tiède, et la bosse ressort peu à peu jusqu’à ce que la balle redevienne ronde. Explique ce résultat avec la théorie particulaire de la matière. (2 points)",
+      ["l’air emprisonné dans la balle se réchauffe; ses particules bougent plus vite et frappent les parois plus fort et plus souvent", "cette poussée plus forte de l’air intérieur repousse la partie bosselée vers l’extérieur et rend sa forme à la balle"],
+      "<b>Réponse modèle :</b> L’eau tiède réchauffe l’air emprisonné dans la balle. Les particules de cet air bougent alors plus vite et frappent les parois de la balle plus fort et plus souvent : l’air chauffé pousse davantage vers l’extérieur, car un gaz chauffé tend à occuper plus d’espace. Cette poussée repousse la partie bosselée, qui est la partie la plus souple, jusqu’à ce que la balle reprenne sa forme ronde.<br><br><b>Points d’attribution :</b> 1 point pour le mécanisme particulaire (les particules d’air chauffées bougent plus vite et frappent les parois plus fort et plus souvent). 1 point pour le lien avec le résultat observé (la poussée de l’air intérieur repousse la bosse et rend sa forme à la balle).", {});
+  },
+  function () {
+    return textq("Les fils électriques tendus entre deux poteaux pendent plus bas au milieu d’une chaude journée d’été qu’au milieu d’une nuit froide d’hiver. Explique cette différence avec la théorie particulaire de la matière. (2 points)",
+      ["le jour, la chaleur fait vibrer les particules du métal plus fort; elles s’écartent et le fil s’allonge, donc il pend plus bas", "la nuit froide, les particules perdent de l’énergie, se rapprochent et le fil se contracte, donc il se retend"],
+      "<b>Réponse modèle :</b> Le jour, le soleil chauffe le métal des fils : ses particules vibrent plus fort et s’écartent un peu les unes des autres, donc le fil se dilate et devient plus long entre les deux poteaux. Un fil plus long, fixé aux mêmes deux points, pend nécessairement plus bas. La nuit froide, le phénomène inverse se produit : les particules perdent de l’énergie, se rapprochent, le fil se contracte et se retend.<br><br><b>Points d’attribution :</b> 1 point pour le mécanisme particulaire (les particules chauffées vibrent plus fort et s’écartent, ce qui allonge le fil). 1 point pour le lien avec le résultat observé (le fil allongé pend plus bas le jour, et le fil contracté se retend la nuit froide).", {});
+  }
+]), ["Chaleur : les particules bougent plus et s’écartent. Froid : elles se calment et se rapprochent.", "Les particules elles-mêmes ne grossissent pas; ce sont leurs écarts qui changent."]);
+E("s7f-u2-cr-chaleur-specifique", 2, ["SC7.4.7"], 2, "var", varset([
+  function () {
+    return textq("Sur une plage, deux observations reviennent chaque jour d’été. Observation 1 : à midi, le sable est brûlant sous les pieds pendant que la mer reste fraîche. Observation 2 : le soir, après le coucher du soleil, le sable est déjà froid pendant que la mer est encore tiède, plus chaude que le sable. (a) Explique l’observation 1 par la chaleur massique. (1 point) (b) Explique l’observation 2 par la chaleur massique. (1 point) (c) Énonce le principe général qui relie les deux observations. (1 point) (3 points)",
+      ["(a) Le sable, de faible chaleur massique, se réchauffe vite sous le même soleil; l’eau, de grande chaleur massique, se réchauffe lentement et reste fraîche.", "(b) Le soir, le sable perd vite sa chaleur et refroidit; l’eau, qui a emmagasiné beaucoup d’énergie, la perd lentement et reste tiède.", "(c) Principe : plus la chaleur massique d’une substance est grande, plus il faut d’énergie pour changer sa température, dans un sens comme dans l’autre."],
+      "<b>Réponse modèle :</b> (a) À midi, le sable et la mer reçoivent la même énergie du soleil. Le sable a une faible chaleur massique : peu d’énergie suffit à élever beaucoup sa température, donc il devient brûlant. L’eau a une grande chaleur massique : la même énergie n’élève que peu sa température, donc la mer reste fraîche. C’est aussi pourquoi l’air chauffé au-dessus du sable monte le jour et attire la brise de mer. (b) Le soir, le sable perd rapidement le peu d’énergie qu’il a emmagasinée et refroidit vite. L’eau, au contraire, a emmagasiné une grande quantité d’énergie pendant la journée et la perd lentement : elle reste tiède après le coucher du soleil, plus chaude que le sable, et l’air se déplace alors de la terre vers la mer. (c) Principe général : une substance de grande chaleur massique exige beaucoup d’énergie pour se réchauffer et en libère beaucoup en se refroidissant lentement; sa température change donc lentement dans les deux sens, contrairement à une substance de faible chaleur massique.<br><br><b>Points d’attribution :</b> 1 point pour l’observation 1 expliquée (le sable se réchauffe vite et l’eau lentement, sous la même énergie). 1 point pour l’observation 2 expliquée (le sable refroidit vite et l’eau perd lentement l’énergie emmagasinée). 1 point pour le principe général énoncé (une grande chaleur massique rend les changements de température lents, au réchauffement comme au refroidissement).", {});
+  },
+  function () {
+    return textq("Deux villes sont situées à la même latitude. Observation 1 : la ville côtière, au bord de l’océan, a des hivers nettement plus doux que la ville de l’intérieur des terres. Observation 2 : la ville côtière a aussi des étés plus frais que la ville de l’intérieur. (a) Explique l’observation 1 par la chaleur massique. (1 point) (b) Explique l’observation 2 par la chaleur massique. (1 point) (c) Énonce le principe général qui relie les deux observations. (1 point) (3 points)",
+      ["(a) L’hiver, l’océan perd lentement l’énergie emmagasinée pendant l’été et réchauffe l’air de la ville côtière, dont les hivers sont plus doux.", "(b) L’été, l’océan se réchauffe lentement et garde l’air côtier plus frais, pendant que la terre de l’intérieur se réchauffe vite.", "(c) Principe : l’eau, de grande chaleur massique, change de température lentement et adoucit ainsi les températures des terres voisines."],
+      "<b>Réponse modèle :</b> (a) Pendant l’été, l’océan emmagasine une énorme quantité d’énergie sans beaucoup se réchauffer. L’hiver, il perd cette énergie lentement et la cède à l’air qui passe au-dessus de lui : l’air qui atteint la ville côtière est réchauffé, donc ses hivers sont plus doux que ceux de l’intérieur. (b) L’été, le même océan se réchauffe très lentement; l’air côtier reste relativement frais, pendant que le sol de la ville de l’intérieur, de faible chaleur massique, se réchauffe vite et rend ses étés plus chauds. (c) Principe général : parce que l’eau a une grande chaleur massique, sa température change lentement dans les deux sens; une grande masse d’eau voisine adoucit donc le climat, avec des hivers moins froids et des étés moins chauds.<br><br><b>Points d’attribution :</b> 1 point pour l’observation 1 expliquée (l’océan rend lentement, l’hiver, l’énergie emmagasinée). 1 point pour l’observation 2 expliquée (l’océan se réchauffe lentement l’été et garde l’air côtier frais). 1 point pour le principe général énoncé (la grande chaleur massique de l’eau rend ses changements de température lents et adoucit le climat voisin).", {});
+  },
+  function () {
+    return textq("On remplit deux bouillottes identiques, l’une d’eau chaude et l’autre de sable sec chauffé à la même température, et on les place dans un lit froid. Observation 1 : après trois heures, la bouillotte d’eau est encore bien chaude. Observation 2 : après trois heures, la bouillotte de sable est déjà froide. (a) Explique l’observation 1 par la chaleur massique. (1 point) (b) Explique l’observation 2 par la chaleur massique. (1 point) (c) Énonce le principe général qui relie les deux observations. (1 point) (3 points)",
+      ["(a) L’eau, de grande chaleur massique, a emmagasiné beaucoup d’énergie et la perd lentement : elle reste chaude des heures.", "(b) Le sable, de faible chaleur massique, a emmagasiné peu d’énergie pour la même hausse de température et la perd vite : il refroidit rapidement.", "(c) Principe : à masse et à température égales, la substance de plus grande chaleur massique contient et rend plus d’énergie, plus lentement."],
+      "<b>Réponse modèle :</b> (a) Pour atteindre la température de départ, l’eau a dû absorber beaucoup d’énergie, car sa chaleur massique est grande. Dans le lit froid, elle cède cette énergie peu à peu : sa température baisse lentement et elle est encore bien chaude après trois heures. (b) Le sable, de faible chaleur massique, n’a emmagasiné que peu d’énergie pour atteindre la même température. Il la cède vite et sa température chute rapidement : après trois heures, il est déjà froid. (c) Principe général : plus la chaleur massique d’une substance est grande, plus elle emmagasine d’énergie pour une même hausse de température, et plus elle la rend lentement en refroidissant.<br><br><b>Points d’attribution :</b> 1 point pour l’observation 1 expliquée (l’eau emmagasine beaucoup d’énergie et la perd lentement). 1 point pour l’observation 2 expliquée (le sable emmagasine peu d’énergie et refroidit vite). 1 point pour le principe général énoncé (une grande chaleur massique signifie plus d’énergie emmagasinée et un refroidissement plus lent).", {});
+  },
+  function () {
+    return textq("Un mécanicien explique pourquoi les moteurs de voiture sont refroidis par de l’eau qui circule dans le moteur, puis dans un radiateur. Observation 1 : l’eau qui circule dans le moteur chaud absorbe beaucoup de chaleur sans que sa propre température monte beaucoup. Observation 2 : arrivée au radiateur, cette eau cède beaucoup de chaleur à l’air tout en ne refroidissant que de quelques degrés. (a) Explique l’observation 1 par la chaleur massique. (1 point) (b) Explique l’observation 2 par la chaleur massique. (1 point) (c) Énonce le principe général qui relie les deux observations. (1 point) (3 points)",
+      ["(a) L’eau, de grande chaleur massique, absorbe une grande quantité d’énergie pour une faible hausse de température : elle retire beaucoup de chaleur au moteur sans bouillir vite.", "(b) Au radiateur, l’eau doit perdre beaucoup d’énergie pour refroidir de quelques degrés seulement : elle cède donc beaucoup de chaleur à l’air.", "(c) Principe : une substance de grande chaleur massique transporte beaucoup d’énergie avec de petits changements de sa propre température."],
+      "<b>Réponse modèle :</b> (a) L’eau a une grande chaleur massique : il faut beaucoup d’énergie pour élever sa température d’un seul degré. En circulant dans le moteur, elle absorbe donc une grande quantité de chaleur tout en ne chauffant que modestement, ce qui protège le moteur de la surchauffe. (b) Au radiateur, la relation joue en sens inverse : pour que cette eau refroidisse de quelques degrés, elle doit céder une grande quantité d’énergie, qu’elle transmet à l’air qui traverse le radiateur. (c) Principe général : une substance de grande chaleur massique échange beaucoup d’énergie contre de petits changements de sa propre température; elle transporte donc efficacement la chaleur d’un endroit à un autre, ce qui fait de l’eau un excellent liquide de refroidissement.<br><br><b>Points d’attribution :</b> 1 point pour l’observation 1 expliquée (l’eau absorbe beaucoup de chaleur pour une faible hausse de température). 1 point pour l’observation 2 expliquée (l’eau cède beaucoup de chaleur pour une faible baisse de température). 1 point pour le principe général énoncé (une grande chaleur massique permet d’échanger beaucoup d’énergie avec de petits changements de température).", {});
+  }
+]), ["Le même principe explique le jour et le soir, l’hiver et l’été : suis l’énergie emmagasinée.", "Grande chaleur massique : température lente à changer, dans un sens comme dans l’autre."]);
+
+/* ---------- Ajout du 21 novembre 2026 : plan de tests (decisions 9, 10, 11) ---------- */
+E("s7f-u2-instrument-fonctions", 2, ["SC7.4.1"], 1, "var", varset([
+  function () {
+    return mcq("Comment un thermocouple mesure-t-il la température?", "Deux fils de métaux différents, soudés, produisent un signal électrique selon la chaleur", ["Un liquide coloré monte dans un tube de verre gradué selon la chaleur du milieu mesuré", "Deux lames de métaux différents se courbent ensemble selon la chaleur du milieu mesuré", "Un capteur capte le rayonnement invisible émis par la surface selon la chaleur mesurée"], "Le thermocouple joint deux métaux différents : leur jonction produit un signal électrique qui dépend de la température. C’est ce signal qu’on lit, pas une colonne de liquide.", {});
+  },
+  function () {
+    return mcq("Comment un thermomètre à résistance mesure-t-il la température?", "La résistance électrique de sa sonde métallique varie de façon régulière avec la chaleur", ["La hauteur d’un liquide coloré dans un tube gradué varie de façon régulière avec la chaleur", "La courbure de deux lames soudées ensemble varie de façon régulière avec la chaleur ambiante", "Le rayonnement capté à distance par sa lentille varie de façon régulière avec la chaleur émise"], "Dans un thermomètre à résistance, la résistance électrique de la sonde augmente ou diminue régulièrement quand la température change : on mesure cette résistance pour connaître la température.", {});
+  },
+  function () {
+    return mcq("Comment un thermomètre à infrarouge mesure-t-il la température?", "Il capte le rayonnement émis par la surface et le convertit en lecture de température", ["Il plonge une sonde métallique dans la matière et attend l’équilibre de température", "Il lit la hauteur d’un liquide qui monte dans un tube de verre gradué et scellé", "Il compare la courbure de deux lames métalliques soudées l’une contre l’autre"], "Le thermomètre à infrarouge n’a pas besoin de contact : il capte le rayonnement infrarouge que toute surface émet et le convertit en température de surface.", {});
+  },
+  function () {
+    return mcq("Comment un thermomètre à bilame, comme celui d’un thermostat, réagit-il à la température?", "Ses deux métaux soudés se dilatent inégalement, ce qui courbe la lame et déplace un contact", ["Son liquide soudé dans un tube se dilate inégalement, ce qui courbe la lame du thermostat", "Ses deux fils soudés produisent un courant, ce qui courbe la lame et déplace un contact", "Son capteur soudé capte un rayonnement, ce qui courbe la lame et déplace le contact visé"], "Un bilame soude deux métaux qui se dilatent de quantités différentes : la lame se courbe quand la température change, et cette courbure peut déplacer une aiguille ou un contact de thermostat.", {});
+  },
+  function () {
+    return mcq("Comment un thermomètre à liquide mesure-t-il la température?", "Son liquide se dilate en chauffant et monte dans un tube gradué jusqu’à la température", ["Sa résistance se dilate en chauffant et monte dans un tube gradué jusqu’à la température", "Ses deux métaux se dilatent en chauffant et se courbent dans un tube jusqu’à la température", "Son rayonnement se dilate en chauffant et monte dans un tube gradué jusqu’à la lecture"], "Le liquide du réservoir se dilate plus que le verre quand il chauffe : il monte dans le tube étroit, et la hauteur de la colonne indique la température sur l’échelle graduée.", {});
+  }
+]), ["Chaque instrument transforme la température en un signal différent : hauteur, courbure, courant, résistance ou rayonnement.", "Nomme d’abord le principe, puis l’instrument suit."]);
+E("s7f-u2-instrument-usages", 2, ["SC7.4.1"], 1, "var", varset([
+  function () {
+    return mcq("Quel usage convient le mieux à un thermomètre à liquide en verre?", "Mesurer l’eau d’un bécher pendant une expérience ordinaire de laboratoire scolaire", ["Mesurer la surface d’une glissoire au soleil sans jamais toucher le métal chaud", "Mesurer l’intérieur d’un four industriel chauffé à plusieurs centaines de degrés", "Mesurer la température d’un moteur en marche depuis une passerelle éloignée du lieu"], "Le thermomètre à liquide en verre est l’instrument courant des liquides de laboratoire, dans sa plage ordinaire. Le verre fragile et sa plage limitée l’excluent des chaleurs extrêmes et des mesures sans contact.", {});
+  },
+  function () {
+    return mcq("Quel usage convient le mieux à un thermomètre à infrarouge?", "Vérifier la surface chaude d’un appareil sans le toucher, depuis une courte distance", ["Plonger sa sonde dans un bécher d’eau tiède pendant une expérience de laboratoire", "Régler tout seul le chauffage d’une serre selon la température de l’air ambiant", "Enregistrer la température d’un four de potier pendant toute une cuisson longue"], "Le thermomètre à infrarouge lit une surface à distance, sans contact : il convient aux surfaces chaudes ou difficiles d’accès. Il ne plonge pas dans les liquides et ne commande aucun appareil.", {});
+  },
+  function () {
+    return mcq("Quel usage convient le mieux à un thermostat à bilame?", "Mettre le chauffage en marche et l’arrêter tout seul selon la température d’une pièce", ["Mesurer avec précision la température d’un liquide versé dans un bécher de laboratoire", "Lire la température d’une surface éloignée sans établir aucun contact avec cette surface", "Mesurer la chaleur extrême d’un four industriel pendant une cuisson de plusieurs heures"], "Le bilame se courbe avec la température et actionne un contact : le thermostat commande donc le chauffage automatiquement. Ce n’est ni un instrument de lecture précise ni un capteur à distance.", {});
+  },
+  function () {
+    return mcq("Quel usage convient le mieux à un thermocouple?", "Mesurer de très hautes températures, comme celles d’un four ou d’une flamme surveillée", ["Mesurer la température corporelle d’un élève en quelques secondes, sans aucun contact", "Mesurer l’eau tiède d’un bécher avec un instrument simple et peu coûteux de laboratoire", "Commander tout seul un chauffage domestique selon la température réglée de la pièce"], "Le thermocouple supporte des températures très élevées qui briseraient un thermomètre en verre : on l’emploie pour les fours et les flammes, avec un affichage du signal électrique.", {});
+  },
+  function () {
+    return mcq("Quel usage convient le mieux à un thermomètre à résistance?", "Fournir des lectures précises et répétables, envoyées par fils à un affichage électronique", ["Donner une lecture rapide d’une surface chaude sans établir le moindre contact avec elle", "Actionner mécaniquement l’interrupteur d’un chauffage sans aucun circuit électronique lié", "Mesurer les liquides d’une expérience scolaire avec un simple tube de verre peu coûteux"], "La sonde à résistance donne un signal électrique précis et stable, qu’un affichage électronique convertit en température : on l’emploie quand la précision et l’enregistrement comptent.", {});
+  }
+]), ["Associe chaque instrument à la tâche que son principe rend possible.", "Contact ou non, chaleur extrême ou ordinaire, lecture ou commande : trois questions qui décident."]);
+E("s7f-u2-lecture-echelle", 2, ["SC7.4.1"], 2, "gen", function () {
+  var pas = pick([1, 2, 5, 10]);
+  var depart = pick([-20, -10, 0, 10, 20]);
+  var contexte = pick(["plongé dans un bécher d’eau", "placé dans l’air d’une serre", "plongé dans un bain d’eau tiède", "placé dans l’air d’une classe"]);
+  var etapes = ri(3, 37);
+  var lecture = depart + etapes * pas;
+  var opts = [lecture - 2 * pas, lecture - pas, lecture, lecture + pas, lecture + 2 * pas];
+  var choix = [opts[0], opts[1], opts[3], opts[4]];
+  return mcq("Un thermomètre à liquide est " + contexte + ". Son échelle commence à " + depart + " °C et chaque petite division vaut " + pas + " °C. La colonne de liquide s’arrête après " + etapes + " petites divisions au-dessus du départ de l’échelle. Quelle est la lecture?",
+    lecture + " °C",
+    [choix[0] + " °C", choix[1] + " °C", choix[2] + " °C"],
+    "On multiplie le nombre de divisions par la valeur de chacune : " + etapes + " fois " + pas + " °C égale " + (etapes * pas) + " °C, qu’on ajoute au départ de " + depart + " °C : la lecture est de <b>" + lecture + " °C</b>.", { pas: pas, depart: depart, etapes: etapes, lecture: lecture });
+}, ["Multiplie les divisions par leur valeur, puis ajoute le départ de l’échelle.", "Une division de trop ou de moins décale la lecture d’exactement un pas."]);
+E("s7f-u2-instrument-tache", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return mcq("Une infirmière scolaire doit mesurer la température d’un front sans contact et obtenir le résultat en quelques secondes. Quel instrument choisir, et pourquoi?", "Le thermomètre à infrarouge, car il lit le rayonnement du front sans le toucher du tout", ["Le thermomètre à liquide, car il lit la hauteur du liquide après un long contact du front", "Le thermocouple de four, car ses fils soudés supportent les chaleurs extrêmes du front", "Le thermostat à bilame, car sa lame courbe commande le chauffage de la pièce de soins"], "La tâche exige une mesure sans contact et rapide : seul le thermomètre à infrarouge lit le rayonnement émis par la surface, sans toucher la peau.", {});
+  },
+  function () {
+    return mcq("Un élève mesure l’eau qui refroidit dans un bécher et consigne la lecture toutes les minutes. Quel instrument choisir, et pourquoi?", "Le thermomètre à liquide, car sa colonne se lit directement dans le liquide du bécher", ["Le thermomètre à infrarouge, car il lit la surface de l’eau sans jamais la toucher", "Le thermocouple de four, car il est conçu pour les températures extrêmes des fours", "Le thermostat à bilame, car il arrête le refroidissement dès la température atteinte"], "Pour un liquide ordinaire de laboratoire suivi minute par minute, le thermomètre à liquide plongé dans le bécher donne une lecture directe et suffisante.", {});
+  },
+  function () {
+    return mcq("Le gardien d’une patinoire veut que le système de réfrigération démarre et s’arrête tout seul pour garder la glace à la bonne température. Quel instrument choisir, et pourquoi?", "Le thermostat à bilame, car sa lame courbe actionne l’interrupteur sans aide humaine", ["Le thermomètre à liquide, car sa colonne monte et descend dans le tube de verre scellé", "Le thermomètre à infrarouge, car il lit la glace à distance depuis les estrades du lieu", "Le thermocouple de four, car ses fils soudés supportent des températures très élevées"], "La tâche est une commande automatique, pas une lecture : le bilame du thermostat se courbe avec la température et ouvre ou ferme le circuit tout seul.", {});
+  },
+  function () {
+    return mcq("Une station météo doit transmettre ses lectures de température par des fils jusqu’à un ordinateur qui les enregistre jour et nuit. Quel instrument choisir, et pourquoi?", "Le thermomètre à résistance, car son signal électrique voyage par les fils jusqu’à l’ordinateur", ["Le thermomètre à liquide, car sa colonne de verre se lit à l’œil nu dans le poste d’observation", "Le thermomètre à infrarouge, car il vise l’air ambiant à distance depuis le toit de la station", "Le thermostat à bilame, car sa lame commande un interrupteur mécanique dans le poste météo"], "L’enregistrement par ordinateur exige un signal électrique : la résistance de la sonde varie avec la température et ce signal se transmet par fils.", {});
+  }
+]), ["Souligne les exigences de la tâche : contact, vitesse, commande, transmission.", "L’instrument gagnant est celui dont le principe satisfait chaque exigence."]);
+E("s7f-u2-instrument-extremes", 2, ["SC7.4.1"], 3, "var", varset([
+  function () {
+    return mcq("Il faut mesurer la température à l’intérieur d’un haut-fourneau, où le métal fond, sans approcher l’instrument de l’ouverture. Quelle justification soutient le meilleur choix?", "Un thermocouple conçu pour les chaleurs extrêmes, car ses fils soudés supportent la chaleur et envoient le signal au loin", ["Un thermomètre à liquide en verre ordinaire, car son tube supporte la chaleur et envoie le signal au loin sans problème", "Un thermostat à bilame domestique ordinaire, car sa lame supporte la chaleur et envoie le signal au loin sans problème", "Un thermomètre à infrarouge de cuisine ordinaire, car sa lentille supporte la chaleur et mesure l’intérieur sans visée"], "Le thermocouple est conçu pour les températures extrêmes : sa jonction soudée supporte la chaleur du fourneau et son signal électrique se lit à distance. Le verre et les instruments domestiques y seraient détruits ou hors plage.", {});
+  },
+  function () {
+    return mcq("Des scientifiques veulent la température de la surface d’une coulée de lave en mouvement, sans y plonger aucun instrument. Quelle justification soutient le meilleur choix?", "Le thermomètre à infrarouge, car il capte le rayonnement de la lave à distance et donne sa température de surface sans contact", ["Le thermomètre à liquide, car il se plonge dans la lave à distance et donne sa température de surface sans aucun contact direct", "Le thermomètre à résistance, car il se plonge dans la lave à distance et donne sa température de surface sans contact direct", "Le thermostat à bilame, car il se fixe sur la lave à distance et donne sa température de surface sans aucun contact direct"], "Aucun instrument de contact ne survit dans une lave en mouvement : le thermomètre à infrarouge lit son rayonnement depuis un endroit sûr et donne la température de sa surface.", {});
+  },
+  function () {
+    return mcq("Un congélateur de laboratoire garde des échantillons à très basse température et un capteur doit y rester en permanence, relié à une alarme. Quelle justification soutient le meilleur choix?", "Un thermomètre à résistance en permanence dans le congélateur, car sa sonde donne un signal précis aux basses températures et peut déclencher l’alarme", ["Un thermomètre à liquide lu une fois par semaine dans le congélateur, car sa colonne donne un signal précis aux basses températures et déclenche l’alarme", "Un thermomètre à infrarouge pointé sur la porte du congélateur, car sa lentille donne un signal précis de l’intérieur et peut déclencher l’alarme", "Un thermostat à bilame lu à l’œil dans le congélateur, car sa lame donne un signal précis aux basses températures et peut déclencher l’alarme"], "Une surveillance permanente avec alarme exige un capteur électrique fixe : la sonde à résistance mesure en continu dans le froid et son signal peut déclencher l’alarme en cas d’écart.", {});
+  },
+  function () {
+    return mcq("Il faut suivre la température d’un four de cuisson de poterie pendant huit heures et garder la trace des valeurs sans rester sur place. Quelle justification soutient le meilleur choix?", "Un thermocouple relié à un enregistreur, car il supporte la chaleur du four pendant des heures et son signal s’enregistre tout seul", ["Un thermomètre à liquide relié à un enregistreur, car il supporte la chaleur du four pendant des heures et sa colonne s’enregistre toute seule", "Un thermomètre à infrarouge relié à un enregistreur, car il vise l’intérieur du four fermé pendant des heures et son signal s’enregistre tout seul", "Un thermostat à bilame relié à un enregistreur, car il supporte la chaleur du four pendant des heures et sa courbure s’enregistre toute seule"], "Le suivi long d’un four exige un capteur qui supporte la chaleur et produit un signal enregistrable : le thermocouple remplit les deux conditions, contrairement aux lectures ponctuelles ou aux instruments en verre.", {});
+  }
+]), ["Aux températures extrêmes, demande d’abord : l’instrument survit-il, et son signal peut-il sortir?", "Plage de mesure et mode de lecture décident ensemble du choix."]);
+E("s7f-u2-instrument-erreur", 2, ["SC7.4.1"], 3, "var", varset([
+  function () {
+    return mcq("Un élève pointe un thermomètre à infrarouge sur la vitre d’un four pour connaître la température de l’air intérieur, et consigne la valeur affichée. Quelle est la faille de ce montage?", "L’instrument mesure la surface de la vitre visée, pas l’air intérieur situé derrière la vitre du four", ["L’instrument mesure la température de l’air intérieur, mais son affichage arrondit toujours la valeur du four", "L’instrument exige un contact avec la vitre, donc la mesure sans contact fausse toujours la valeur du four", "L’instrument ne fonctionne jamais à travers une pièce chaude, donc la valeur affichée ne vaut rien du tout"], "Un thermomètre à infrarouge donne la température de la surface qu’il vise : ici la vitre, dont la température diffère de celle de l’air intérieur. La faille est dans le choix de la cible, pas dans l’instrument.", {});
+  },
+  function () {
+    return mcq("Une élève plonge un thermomètre à liquide dans l’eau chaude et lit la colonne après deux secondes, avant qu’elle cesse de monter. Quelle est la faille de cette mesure?", "Le liquide n’a pas encore atteint la température de l’eau : la lecture prise trop tôt est trop basse et instable", ["Le liquide a dépassé la température de l’eau : la lecture prise trop tôt est trop haute et instable à ce moment", "Le thermomètre mesure sa propre échelle : la lecture prise trop tôt ne dépend jamais de l’eau du bécher chauffé", "Le verre du thermomètre gonfle aussitôt : la lecture prise trop tôt dépend seulement du gonflement du verre"], "Le thermomètre indique la température de son propre liquide : il faut attendre l’équilibre avec l’eau. Une lecture après deux secondes, pendant que la colonne monte encore, sous-estime la température.", {});
+  },
+  function () {
+    return mcq("Un élève tient un thermomètre à liquide par le haut du tube, le réservoir à peine effleurant la surface de l’eau, pour mesurer l’eau du bécher. Quelle est la faille de ce montage?", "Le réservoir doit être entièrement plongé dans l’eau : un contact partiel donne la température entre l’air et l’eau", ["Le réservoir doit rester entièrement hors de l’eau : un contact complet donne la température entre l’air et l’eau", "Le tube doit être entièrement plongé dans l’eau : un contact partiel donne la température du tube plutôt que du liquide", "La main doit serrer le réservoir dans l’eau : un contact partiel donne la température de la main plutôt que du liquide"], "C’est le réservoir qui doit prendre la température du liquide : à peine effleuré, il reste influencé par l’air ambiant, et la lecture se situe entre les deux températures.", {});
+  },
+  function () {
+    return mcq("Pour régler le chauffage d’une serre, on fixe le thermostat à bilame juste au-dessus d’un tuyau de chauffage chaud. Quelle est la faille de ce montage?", "Le thermostat mesure l’air chauffé par le tuyau voisin, pas l’air moyen de la serre : le chauffage s’arrêtera trop tôt", ["Le thermostat mesure l’air moyen de la serre, pas l’air du tuyau voisin : le chauffage s’arrêtera au bon moment prévu", "Le thermostat casse dès qu’il approche d’un tuyau chaud, donc aucune lecture de la serre ne sera jamais possible ici", "Le thermostat mesure seulement la température du tuyau lui-même, donc le chauffage de la serre ne démarrera jamais"], "Un capteur commande selon l’endroit où il se trouve : près du tuyau, l’air local est plus chaud que la moyenne de la serre, donc le thermostat coupe le chauffage avant que la serre entière soit assez chaude.", {});
+  }
+]), ["Cherche l’écart entre ce que l’instrument mesure vraiment et ce qu’on veut mesurer.", "La plupart des failles sont des failles de cible, de contact ou de temps d’attente."]);
+E("s7f-u2-cr-instrument-paire", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return textq("Deux tâches de mesure (3 points)\n(a) Un cuisinier doit vérifier la température de surface d’une plaque de cuisson très chaude sans la toucher. (b) Une technicienne doit suivre la température à l’intérieur d’un four de laboratoire pendant une longue cuisson et enregistrer les valeurs. Pour chaque tâche, nomme l’instrument qui convient et justifie ton choix par le principe ou la propriété qui le rend apte à la tâche.", ["(a) le thermomètre à infrarouge : il lit le rayonnement de la surface, sans contact", "(b) le thermocouple (ou le thermomètre à résistance) relié à un enregistreur : il supporte la chaleur et son signal électrique s’enregistre"], "<b>Réponse modèle :</b> (a) Le thermomètre à infrarouge : il capte le rayonnement émis par la plaque et donne sa température de surface à distance, donc le cuisinier ne touche pas la surface dangereuse. (b) Le thermocouple relié à un enregistreur : sa jonction de deux métaux soudés supporte la chaleur du four pendant toute la cuisson, et le signal électrique produit peut être enregistré automatiquement, sans ouvrir le four.<br><br><b>Points d’attribution :</b> 1 point pour l’instrument de la tâche (a), nommé correctement. 1 point pour l’instrument de la tâche (b), nommé correctement. 1 point pour les justifications, chacune liée au principe ou à la condition décisive de sa tâche (sans contact; chaleur soutenue et signal enregistrable).", {});
+  },
+  function () {
+    return textq("Deux tâches de mesure (3 points)\n(a) Le responsable d’une serre veut que le chauffage démarre et s’arrête tout seul selon la température de l’air. (b) Une élève mesure l’eau tiède d’un bécher pendant une expérience et lit la valeur directement, à chaque minute. Pour chaque tâche, nomme l’instrument qui convient et justifie ton choix par le principe ou la propriété qui le rend apte à la tâche.", ["(a) le thermostat à bilame : sa lame se courbe avec la température et actionne l’interrupteur toute seule", "(b) le thermomètre à liquide : plongé dans le liquide, sa colonne se lit directement sur l’échelle"], "<b>Réponse modèle :</b> (a) Le thermostat à bilame : ses deux métaux soudés se dilatent inégalement, la lame se courbe quand la température de l’air change, et cette courbure ouvre ou ferme l’interrupteur du chauffage sans intervention humaine. (b) Le thermomètre à liquide : plongé dans l’eau du bécher, son liquide se dilate jusqu’à la température de l’eau, et la hauteur de la colonne se lit directement sur l’échelle graduée, minute par minute.<br><br><b>Points d’attribution :</b> 1 point pour l’instrument de la tâche (a), nommé correctement. 1 point pour l’instrument de la tâche (b), nommé correctement. 1 point pour les justifications, chacune liée au principe ou à la condition décisive de sa tâche (commande automatique; lecture directe dans un liquide ordinaire).", {});
+  }
+]), ["Une tâche à la fois : nomme l’instrument, puis la condition qu’il satisfait.", "La justification doit citer le principe de fonctionnement, pas seulement le nom."]);
+E("s7f-u2-cr-instrument-releve", 2, ["SC7.4.1"], 2, "var", varset([
+  function () {
+    return textq("Décris comment un thermomètre à liquide mesure la température d’un bécher d’eau chaude, et comment on prend correctement sa lecture. Ta description doit couvrir ce qui se passe dans l’instrument et les précautions de lecture. (2 points)", ["le liquide du réservoir se dilate en se réchauffant jusqu’à la température de l’eau et monte dans le tube; la hauteur de la colonne donne la température", "la lecture se prend quand la colonne cesse de monter, à la hauteur des yeux, le réservoir entièrement plongé"], "<b>Réponse modèle :</b> Le réservoir du thermomètre, entièrement plongé dans l’eau, se réchauffe jusqu’à la température de l’eau. Son liquide se dilate alors davantage que le verre et monte dans le tube étroit; quand la colonne cesse de monter, sa hauteur sur l’échelle graduée donne la température. On lit cette hauteur à la hauteur des yeux pour éviter l’erreur d’angle, sans retirer le thermomètre de l’eau.<br><br><b>Points d’attribution :</b> 1 point pour le fonctionnement (dilatation du liquide qui monte dans le tube jusqu’à l’équilibre). 1 point pour la lecture correcte (attendre l’arrêt de la colonne, lire à la hauteur des yeux, réservoir plongé).", {});
+  },
+  function () {
+    return textq("Décris comment un thermocouple mesure la température à l’intérieur d’un four en marche, et comment on obtient sa lecture. Ta description doit couvrir ce qui se passe dans l’instrument et où la lecture se prend. (2 points)", ["la jonction de deux fils de métaux différents, placée dans le four, produit un signal électrique qui dépend de la température", "la lecture se prend sur l’affichage relié aux fils, à l’extérieur du four, sans ouvrir la porte"], "<b>Réponse modèle :</b> La jonction soudée de deux fils de métaux différents est placée à l’intérieur du four; selon la température qu’elle atteint, elle produit un signal électrique plus ou moins fort. Les fils transportent ce signal jusqu’à un affichage situé à l’extérieur, qui le convertit en température : la lecture se prend donc sur l’affichage, sans ouvrir le four et sans exposer l’utilisateur à la chaleur.<br><br><b>Points d’attribution :</b> 1 point pour le fonctionnement (jonction de deux métaux qui produit un signal selon la température). 1 point pour la lecture (signal transmis par les fils et lu sur l’affichage extérieur).", {});
+  }
+]), ["Deux moitiés : ce qui se passe dans l’instrument, puis comment on lit.", "Le thermomètre indique sa propre température : l’équilibre fait partie de la réponse."]);
+E("s7f-u2-outils-securite", 2, ["SC7.6.7"], 2, "var", varset([
+  function () {
+    return mcq("Un bécher d’eau chauffe sur une plaque chauffante. Quelle conduite est la plus sécuritaire pour mesurer sa température avec un thermomètre en verre?", "Plonger le réservoir dans l’eau sans toucher les parois, attendre la lecture, puis retirer le thermomètre avant de déplacer le bécher", ["Utiliser le thermomètre comme bâton pour brasser l’eau chaude pendant le chauffage, puis le laisser appuyé contre la paroi du bécher", "Tenir le bécher chaud à la main au-dessus de la plaque pendant la lecture, puis poser le thermomètre en travers du bécher ouvert", "Secouer le thermomètre au-dessus du bécher pour le ramener à zéro, puis le plonger d’un coup sec dans l’eau portée à ébullition"], "Le thermomètre en verre est un instrument de mesure, pas un agitateur : on le plonge doucement, on attend la lecture à l’équilibre, et on le retire avant tout déplacement du récipient chaud.", {});
+  },
+  function () {
+    return mcq("Un thermomètre en verre tombe et se brise sur le paillasse, répandant son liquide et des éclats de verre. Quelle conduite est la plus sécuritaire?", "Avertir l’enseignante ou l’enseignant, éloigner les autres élèves et ne rien ramasser à mains nues avant les consignes de nettoyage", ["Ramasser les éclats à mains nues le plus vite possible et jeter le tout dans la poubelle ordinaire de la classe sans rien signaler", "Balayer les éclats vers le sol avec la main, puis continuer l’expérience comme si le bris ne changeait rien au travail en cours", "Verser de l’eau sur les éclats pour les diluer, puis essuyer le paillasse avec les serviettes de papier de son propre cahier d’élève"], "Un bris de verre avec liquide répandu se signale immédiatement : on s’éloigne, on avertit l’adulte responsable et le nettoyage suit la procédure prévue, jamais à mains nues.", {});
+  },
+  function () {
+    return mcq("Une élève doit transporter un bécher d’eau chaude de la plaque chauffante jusqu’à son poste de travail. Quelle conduite est la plus sécuritaire?", "Utiliser des pinces ou des gants résistants à la chaleur, vérifier que le trajet est libre et marcher lentement sans courir du tout", ["Tenir le bécher par le rebord avec deux doigts mouillés, vérifier que le trajet est libre et marcher vite pour finir plus tôt", "Remplir le bécher jusqu’au bord pour éviter les éclaboussures, puis le transporter à bout de bras au-dessus des cahiers des autres", "Poser le bécher chaud directement sur son cahier en arrivant, puis vérifier ensuite si la chaleur a marqué les pages du cahier"], "Un récipient chaud se transporte avec une protection contre la chaleur, sans être rempli à ras bord, sur un trajet dégagé, et se dépose sur une surface résistante à la chaleur.", {});
+  },
+  function () {
+    return mcq("Pendant le chauffage d’un liquide, un élève remarque une fissure dans le bécher qu’il s’apprête à utiliser. Quelle conduite est la plus sécuritaire?", "Mettre le bécher fissuré de côté, en prendre un intact et signaler la fissure à l’enseignante ou à l’enseignant responsable du laboratoire", ["Utiliser le bécher fissuré quand même, en le chauffant plus doucement pour que la fissure ne s’ouvre pas pendant l’expérience en cours", "Coller la fissure avec du ruban adhésif, puis utiliser le bécher comme les autres pour le chauffage prévu pendant toute la période", "Cacher le bécher fissuré au fond d’une armoire pour qu’aucun autre élève ne s’en serve pendant le reste de l’année scolaire entière"], "La verrerie fissurée peut céder sous la chaleur : on la retire du service et on la signale. La réparer avec du ruban ou la cacher laisse le danger en place pour quelqu’un d’autre.", {});
+  }
+]), ["Sécurité d’abord : verre fragile, surfaces chaudes, déplacements dégagés.", "Le thermomètre mesure; il ne brasse pas et ne sert pas d’appui."]);

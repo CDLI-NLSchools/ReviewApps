@@ -1,3 +1,5 @@
+// CRMARKS: s7f-u1-cr-succession-changement=3
+// CRMARKS: s7f-u1-cr-marais-changement=2
 // CRMARKS: s7f-u1-cr-factor-effect=2
 // CRMARKS: s7f-u1-cr-three-interactions=3
 // CRMARKS: s7f-u1-cr-web-change=3
@@ -14,6 +16,119 @@
 // CRMARKS: s7f-u1-cr-defend-position=3
 // CRMARKS: s7f-u1-cr-succession-stages=2
 // CRMARKS: s7f-u1-cr-succession-signs=3
+// CRMARKS: s7f-u1-cr-chaine-effets=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s7f-u1-factor-classify=2
+// CRMARKS: s7f-u1-tolerance-curve=3
+// CRMARKS: s7f-u1-interaction-classify=2
+// CRMARKS: s7f-u1-pond-interactions=3
+// CRMARKS: s7f-u1-biotic-abiotic-explore=2
+// CRMARKS: s7f-u1-biotic-abiotic-effect=3
+// CRMARKS: s7f-u1-symbiosis-define=2
+// CRMARKS: s7f-u1-symbiosis-types=2
+// CRMARKS: s7f-u1-symbiosis-scenarios=3
+// CRMARKS: s7f-u1-role-identify=2
+// CRMARKS: s7f-u1-consumer-types=2
+// CRMARKS: s7f-u1-niche-reason=3
+// CRMARKS: s7f-u1-classify-set=2
+// CRMARKS: s7f-u1-classify-set-hard=2
+// CRMARKS: s7f-u1-ecosystem-infer=3
+// CRMARKS: s7f-u1-energy-loss=2
+// CRMARKS: s7f-u1-web-removal=4
+// CRMARKS: s7f-u1-chain-order=2
+// CRMARKS: s7f-u1-energy-transfer=3
+// CRMARKS: s7f-u1-nutrient-cycle=2
+// CRMARKS: s7f-u1-succession-types=3
+// CRMARKS: s7f-u1-term-context=2
+// CRMARKS: s7f-u1-organization-set=3
+// CRMARKS: s7f-u1-web-chains=3
+// CRMARKS: s7f-u1-web-predict=4
+// CRMARKS: s7f-u1-harvest-knowledge=4
+// CRMARKS: s7f-u1-boreal-practice=2
+// CRMARKS: s7f-u1-boreal-effects=3
+// CRMARKS: s7f-u1-career-scenario=3
+// CRMARKS: s7f-u1-habitat-influences=2
+// CRMARKS: s7f-u1-habitat-tradeoffs=3
+// CRMARKS: s7f-u1-groups-interest=3
+// CRMARKS: s7f-u1-instrument-choose=2
+// CRMARKS: s7f-u1-record-format=3
+// CRMARKS: s7f-u1-record-plan=4
+// CRMARKS: s7f-u1-communicate-format=2
+// CRMARKS: s7f-u1-communicate-judge=3
+// CRMARKS: s7f-u1-evaluate-next-step=4
+// CRMARKS: s7f-u1-key-work=3
+// CRMARKS: s7f-u1-key-work-2=3
+// CRMARKS: s7f-u1-key-choose=3
+// CRMARKS: s7f-u1-variables-identify=2
+// CRMARKS: s7f-u1-design-controls=3
+// CRMARKS: s7f-u1-table-choose=2
+// CRMARKS: s7f-u1-graph-interpret=4
+// CRMARKS: s7f-u1-future-predict=3
+// CRMARKS: s7f-u1-future-predict-2=4
+// CRMARKS: s7f-u1-succession-order=2
+// CRMARKS: s7f-u1-interaction-classer=3
+// CRMARKS: s7f-u1-interaction-precise=3
+// CRMARKS: s7f-u1-energie-reseau=3
+// CRMARKS: s7f-u1-pyramide-calcul=3
+// CRMARKS: s7f-u1-recyclage-scenario=3
+// CRMARKS: s7f-u1-succession-signes-id=2
+// CRMARKS: s7f-u1-succession-signes-suite=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s7f-u1-factor-classify=a
+// BIMODAL: s7f-u1-tolerance-curve=a
+// BIMODAL: s7f-u1-interaction-classify=a
+// BIMODAL: s7f-u1-pond-interactions=a
+// BIMODAL: s7f-u1-biotic-abiotic-explore=b
+// BIMODAL: s7f-u1-biotic-abiotic-effect=b
+// BIMODAL: s7f-u1-symbiosis-define=b
+// BIMODAL: s7f-u1-symbiosis-types=b
+// BIMODAL: s7f-u1-symbiosis-scenarios=b
+// BIMODAL: s7f-u1-role-identify=a
+// BIMODAL: s7f-u1-consumer-types=a
+// BIMODAL: s7f-u1-niche-reason=b
+// BIMODAL: s7f-u1-classify-set=a
+// BIMODAL: s7f-u1-classify-set-hard=b
+// BIMODAL: s7f-u1-ecosystem-infer=b
+// BIMODAL: s7f-u1-energy-loss=b
+// BIMODAL: s7f-u1-web-removal=b
+// BIMODAL: s7f-u1-chain-order=b
+// BIMODAL: s7f-u1-energy-transfer=a
+// BIMODAL: s7f-u1-nutrient-cycle=b
+// BIMODAL: s7f-u1-succession-types=b
+// BIMODAL: s7f-u1-term-context=b
+// BIMODAL: s7f-u1-organization-set=b
+// BIMODAL: s7f-u1-web-chains=b
+// BIMODAL: s7f-u1-web-predict=b
+// BIMODAL: s7f-u1-harvest-knowledge=b
+// BIMODAL: s7f-u1-boreal-practice=b
+// BIMODAL: s7f-u1-boreal-effects=b
+// BIMODAL: s7f-u1-career-scenario=a
+// BIMODAL: s7f-u1-habitat-influences=b
+// BIMODAL: s7f-u1-habitat-tradeoffs=b
+// BIMODAL: s7f-u1-groups-interest=b
+// BIMODAL: s7f-u1-instrument-choose=b
+// BIMODAL: s7f-u1-record-format=b
+// BIMODAL: s7f-u1-record-plan=b
+// BIMODAL: s7f-u1-communicate-format=b
+// BIMODAL: s7f-u1-communicate-judge=b
+// BIMODAL: s7f-u1-evaluate-next-step=b
+// BIMODAL: s7f-u1-key-work=b
+// BIMODAL: s7f-u1-key-work-2=b
+// BIMODAL: s7f-u1-key-choose=b
+// BIMODAL: s7f-u1-variables-identify=b
+// BIMODAL: s7f-u1-design-controls=b
+// BIMODAL: s7f-u1-table-choose=b
+// BIMODAL: s7f-u1-graph-interpret=b
+// BIMODAL: s7f-u1-future-predict=b
+// BIMODAL: s7f-u1-future-predict-2=b
+// BIMODAL: s7f-u1-succession-order=b
+// BIMODAL: s7f-u1-interaction-classer=b
+// BIMODAL: s7f-u1-interaction-precise=b
+// BIMODAL: s7f-u1-energie-reseau=b
+// BIMODAL: s7f-u1-pyramide-calcul=a
+// BIMODAL: s7f-u1-recyclage-scenario=b
+// BIMODAL: s7f-u1-succession-signes-id=b
+// BIMODAL: s7f-u1-succession-signes-suite=b
 // Sciences 7, Unité 1 : Les interactions au sein des écosystèmes
 // (SC7.1.1 à SC7.3.13), banque construite le Nov 16, 2026.
 // Existing tests and question banks were reviewed only to gauge the expected depth and range of treatment. All items in this bank were written new for this app.
@@ -698,3 +813,329 @@ E("s7f-u1-cr-succession-stages", 1, ["SC7.3.13", "SC7.1.10"], 2, "var", varset([
    des examens composes. */
 var NO_COMPOSE_U1 = { "s7f-u1-cr-design-experiment": true };
 BANK.forEach(function (e) { if (NO_COMPOSE_U1[e.id]) { e.noCompose = true; } });
+
+
+
+/* Ajouts de l'allongement (20 nov. 2026) : profondeur chiffrée dans
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, sections 6-7 :
+   SR sur SC7.1.2, SC7.1.3, SC7.1.7, SC7.1.8, SC7.1.9, SC7.1.10 x2, et
+   une entrée CR de 2 points, niveau 2, qui comble le manque du
+   Test 1 de l'unité 1. Marqué pour la révision SME. */
+
+E("s7f-u1-interaction-classer", 1, ["SC7.1.2"], 2, "var", varset([
+  function () {
+    return mcq("Les castors construisent un barrage qui fait monter le niveau d'un ruisseau. Comment classer cette interaction?",
+      "Un facteur biotique, les castors, modifie un facteur abiotique, le niveau de l'eau du ruisseau",
+      ["Un facteur abiotique modifie un autre facteur abiotique, sans qu'aucun être vivant soit impliqué", "Deux facteurs biotiques, les castors et les poissons, interagissent entre eux dans le ruisseau", "Aucun des deux facteurs n'a d'effet sur l'autre, ni pendant la construction ni après"],
+      "Il faut d'abord décider quel côté est vivant (biotique) et lequel ne l'est pas (abiotique), puis suivre le sens de l'effet. <b>Un facteur biotique, les castors, modifie un facteur abiotique, le niveau de l'eau du ruisseau</b>.", {});
+  },
+  function () {
+    return mcq("Une sécheresse fait baisser le niveau d'un étang et les plantes du bord meurent. Comment classer cette interaction?",
+      "Un facteur abiotique, le manque d'eau, modifie un facteur biotique, les plantes du bord de l'étang",
+      ["Un facteur biotique modifie un facteur abiotique, sans qu'il y ait d'effet en retour", "Deux facteurs biotiques, les plantes et les animaux, interagissent entre eux dans l'étang", "Aucun des deux facteurs n'a d'effet sur l'autre pendant toute la saison sèche"],
+      "Le manque d'eau est non vivant et les plantes sont vivantes; l'effet va du côté non vivant vers le côté vivant. <b>Un facteur abiotique, le manque d'eau, modifie un facteur biotique, les plantes du bord de l'étang</b>.", {});
+  },
+  function () {
+    return mcq("Les vers de terre creusent des galeries qui aèrent le sol d'un jardin. Comment classer cette interaction?",
+      "Un facteur biotique, les vers, modifie un facteur abiotique, les espaces d'air et d'eau dans le sol",
+      ["Un facteur abiotique modifie un facteur biotique, sans qu'il y ait d'effet en retour", "Deux facteurs abiotiques, le sol et l'air, interagissent entre eux dans le jardin", "Aucun des deux facteurs n'a d'effet sur l'autre pendant toute la saison de jardinage"],
+      "Les vers sont vivants et les espaces du sol ne le sont pas; l'effet va du vivant vers le non-vivant. <b>Un facteur biotique, les vers, modifie un facteur abiotique, les espaces d'air et d'eau dans le sol</b>.", {});
+  },
+  function () {
+    return mcq("Le vent fort et froid de l'hiver tue les bourgeons d'un pommier au printemps. Comment classer cette interaction?",
+      "Un facteur abiotique, le gel, modifie un facteur biotique, les bourgeons de l'arbre",
+      ["Un facteur biotique modifie un facteur abiotique, sans qu'il y ait d'effet en retour", "Deux facteurs biotiques, l'arbre et les insectes, interagissent entre eux au printemps", "Aucun des deux facteurs n'a d'effet sur l'autre pendant tout l'hiver qui suit"],
+      "Le gel est non vivant et les bourgeons sont vivants; l'effet va du non-vivant vers le vivant. <b>Un facteur abiotique, le gel, modifie un facteur biotique, les bourgeons de l'arbre</b>.", {});
+  },
+  function () {
+    return mcq("La lumière du soleil réchauffe l'air à l'intérieur d'une serre. Comment classer cette interaction?",
+      "Un facteur abiotique, la lumière du soleil, modifie un facteur abiotique, la température de l'air",
+      ["Un facteur biotique modifie un facteur abiotique, sans qu'il y ait d'effet en retour", "Un facteur biotique modifie un autre facteur biotique quelque part dans la serre", "Aucun des deux facteurs n'a d'effet sur l'autre par une journée ensoleillée"],
+      "Ici, les deux côtés sont non vivants : la lumière et la température sont des facteurs abiotiques. <b>Un facteur abiotique, la lumière du soleil, modifie un facteur abiotique, la température de l'air</b>.", {});
+  },
+  function () {
+    return mcq("Les racines d'un arbre font craquer un trottoir de béton en grandissant. Comment classer cette interaction?",
+      "Un facteur biotique, les racines, modifie un facteur abiotique, la surface de béton",
+      ["Un facteur abiotique modifie un facteur biotique, sans qu'il y ait d'effet en retour", "Deux facteurs abiotiques, le béton et le sol, interagissent entre eux avec le temps", "Aucun des deux facteurs n'a d'effet sur l'autre pendant que l'arbre grandit"],
+      "Les racines sont vivantes et le béton ne l'est pas; l'effet va du vivant vers le non-vivant. <b>Un facteur biotique, les racines, modifie un facteur abiotique, la surface de béton</b>.", {});
+  }
+]), ["Décide d'abord quel côté est vivant (biotique) et lequel ne l'est pas (abiotique).", "Suis ensuite le sens de l'effet : qui modifie quoi?"]);
+
+E("s7f-u1-interaction-precise", 1, ["SC7.1.3"], 2, "var", varset([
+  function () {
+    return mcq("Les lichens qui poussent sur un rocher nu sécrètent des acides faibles qui désagrègent lentement la surface du rocher. Quel énoncé décrit exactement cette interaction?",
+      "Les lichens (biotiques) transforment le rocher (abiotique) en particules qui deviendront du sol",
+      ["Le rocher (abiotique) nourrit les lichens (biotiques) en leur donnant ses minéraux directement", "Les lichens et le rocher sont deux facteurs abiotiques qui réagissent chimiquement ensemble", "Le rocher protège les lichens, et les lichens n'ont absolument aucun effet sur le rocher"],
+      "L'interaction précise va des lichens vers le rocher : leurs acides désagrègent la surface et préparent la formation du sol. <b>Les lichens (biotiques) transforment le rocher (abiotique) en particules qui deviendront du sol</b>.", {});
+  },
+  function () {
+    return mcq("Les plantes d'un marais ralentissent l'eau qui traverse le marais, ce qui laisse déposer les sédiments. Quel énoncé décrit exactement cette interaction?",
+      "Les plantes (biotiques) modifient le courant et les dépôts (abiotiques) de l'eau du marais",
+      ["L'eau du marais (abiotique) décide seule de l'endroit où les plantes (biotiques) peuvent pousser", "Les plantes et les sédiments sont deux facteurs biotiques qui se disputent l'espace du marais", "Les plantes n'ont aucun effet sur l'eau tant que le niveau du marais reste le même"],
+      "L'effet précis décrit va des plantes vers l'eau : elles ralentissent le courant et favorisent le dépôt des sédiments. <b>Les plantes (biotiques) modifient le courant et les dépôts (abiotiques) de l'eau du marais</b>.", {});
+  },
+  function () {
+    return mcq("L'ombre d'un grand érable garde le sol sous l'arbre plus frais et plus humide que le sol au soleil. Quel énoncé décrit exactement cette interaction?",
+      "L'érable (biotique) modifie la température et l'humidité (abiotiques) du sol sous sa couronne",
+      ["Le soleil (abiotique) ordonne à l'érable (biotique) de faire de l'ombre à cet endroit précis", "L'érable et le sol sont deux facteurs biotiques qui échangent de l'énergie entre eux", "Le sol sous l'arbre reste frais uniquement parce qu'aucun rayon ne peut traverser les feuilles"],
+      "L'effet décrit va de l'arbre vers les conditions du sol : son ombre refroidit le sol et garde son humidité. <b>L'érable (biotique) modifie la température et l'humidité (abiotiques) du sol sous sa couronne</b>.", {});
+  },
+  function () {
+    return mcq("Les bactéries dans les racines des pois transforment l'azote de l'air en une forme que la plante peut utiliser, et le sol autour s'enrichit. Quel énoncé décrit exactement cette interaction?",
+      "Les bactéries (biotiques) modifient la teneur en azote (abiotique) du sol autour des racines",
+      ["L'azote de l'air (abiotique) crée les bactéries (biotiques) directement dans les racines des pois", "Les bactéries et la plante sont deux facteurs abiotiques qui réagissent dans le sol ensemble", "Les bactéries n'ont d'effet que sur la plante et ne changent rien du tout dans le sol"],
+      "L'effet précis va des bactéries vers la composition du sol : l'azote devient disponible et le sol s'enrichit. <b>Les bactéries (biotiques) modifient la teneur en azote (abiotique) du sol autour des racines</b>.", {});
+  }
+]), ["Repère l'effet précis décrit dans le scénario, pas un effet inventé.", "L'effet va de l'être vivant vers le facteur non vivant nommé."]);
+
+E("s7f-u1-energie-reseau", 1, ["SC7.1.7"], 2, "var", varset([
+  function () {
+    return mcq("D'où vient presque toute l'énergie qui alimente un réseau alimentaire terrestre?",
+      "Du Soleil, captée par les producteurs (les plantes vertes) grâce à la photosynthèse",
+      ["Des décomposeurs, qui fabriquent de l'énergie entièrement nouvelle à partir des restes des organismes morts de l'écosystème", "Du sol lui-même, dont les minéraux et l'eau fournissent toute l'énergie nécessaire à toutes les plantes qui y poussent", "De la Lune, dont la lumière permet aux plantes de pousser pendant la nuit entière"],
+      "L'énergie entre dans le réseau par les producteurs, qui captent la lumière du Soleil. <b>Du Soleil, captée par les producteurs (les plantes vertes) grâce à la photosynthèse</b>.", {});
+  },
+  function () {
+    return mcq("Dans un réseau alimentaire, que devient la plus grande partie de l'énergie quand elle passe d'un niveau trophique au suivant?",
+      "Elle est perdue pour le réseau, surtout sous forme de chaleur liée aux activités de l'organisme",
+      ["Elle est entièrement transmise au niveau trophique suivant, sans qu'aucune perte ne survienne en cours de route", "Elle retourne directement aux producteurs, qui la réutilisent indéfiniment pour fabriquer encore plus de nourriture", "Elle est emmagasinée dans le sol, où les décomposeurs la transforment en lumière"],
+      "À chaque transfert, environ 90 % de l'énergie se perd, surtout en chaleur; seulement une fraction sert à construire le niveau suivant. <b>Elle est perdue pour le réseau, surtout sous forme de chaleur liée aux activités de l'organisme</b>.", {});
+  },
+  function () {
+    return mcq("Un réseau alimentaire d'un étang commence par des algues microscopiques. Quel rôle jouent les algues dans le transfert d'énergie?",
+      "Ce sont les producteurs : elles captent l'énergie du Soleil et la rendent disponible aux consommateurs",
+      ["Ce sont les décomposeurs de l'étang : elles décomposent les organismes morts qui tombent au fond de l'eau", "Ce sont les consommateurs primaires : elles mangent les petits animaux de l'étang", "Ce sont les prédateurs du sommet : elles fournissent l'énergie en mangeant les poissons"],
+      "Les algues photosynthétiques sont la porte d'entrée de l'énergie dans le réseau de l'étang. <b>Ce sont les producteurs : elles captent l'énergie du Soleil et la rendent disponible aux consommateurs</b>.", {});
+  },
+  function () {
+    return mcq("Pourquoi un réseau alimentaire compte-t-il rarement plus de quatre ou cinq niveaux trophiques?",
+      "Parce que l'énergie diminue à chaque transfert, il n'en reste plus assez pour nourrir un niveau de plus",
+      ["Parce que les prédateurs du sommet de la chaîne refusent catégoriquement de manger les animaux des niveaux inférieurs", "Parce que les producteurs cessent de fournir de l'énergie après le quatrième niveau atteint", "Parce que les décomposeurs consomment toute l'énergie restante avant le cinquième niveau"],
+      "Avec environ 90 % de perte à chaque transfert, l'énergie disponible devient trop faible pour soutenir d'autres niveaux. <b>Parce que l'énergie diminue à chaque transfert, il n'en reste plus assez pour nourrir un niveau de plus</b>.", {});
+  }
+]), ["L'énergie entre dans le réseau par les producteurs, puis se perd à chaque transfert.", "Environ 90 % se perd à chaque niveau, surtout en chaleur."]);
+
+E("s7f-u1-pyramide-calcul", 1, ["SC7.1.8"], 2, "gen", function () {
+  var start = pick([5000, 8000, 10000, 20000, 40000, 50000, 80000, 100000, 200000, 500000]);
+  var lvl = pick([2, 3, 4]);
+  var chain = pick([
+    ["les plantes", "les sauterelles", "les grenouilles", "les couleuvres"],
+    ["le phytoplancton", "le zooplancton", "les petits poissons", "les grands poissons"],
+    ["l'herbe", "les lièvres", "les renards", "les loups"]
+  ]);
+  var e = start;
+  for (var k = 1; k < lvl; k++) e = e / 10;
+  function fmt(x) { return String(x).replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+  var wrongs = [fmt(e * 10) + " kJ", fmt(e / 10) + " kJ", fmt(start - e) + " kJ"].filter(function (w) { return w !== fmt(e) + " kJ"; });
+  while (wrongs.length < 3) wrongs.push(fmt(e * (wrongs.length + 3)) + " kJ");
+  return mcq("Dans une pyramide d'énergie, " + chain[0] + " (les producteurs) reçoivent " + fmt(start) + " kJ d'énergie. À chaque niveau, environ 10 % seulement de l'énergie est transmise au niveau suivant. Combien d'énergie se rend jusqu'à " + chain[lvl - 1] + ", au niveau " + lvl + "?",
+    fmt(e) + " kJ", wrongs.slice(0, 3),
+    "Chaque transfert garde environ 10 % de l'énergie : " + fmt(start) + " kJ \u2192 " + fmt(start / 10) + " kJ \u2192 " + (lvl >= 3 ? fmt(start / 100) + " kJ \u2192 " : "") + (lvl >= 4 ? fmt(start / 1000) + " kJ \u2192 " : "") + "<b>" + fmt(e) + " kJ</b> au niveau " + lvl + ". C'est la règle du 10 % qui dessine la pyramide.", { start: start, lvl: lvl });
+}, ["Applique la règle du 10 % une fois par niveau à franchir.", "Pars de l'énergie des producteurs et divise par 10 à chaque niveau."]);
+
+E("s7f-u1-recyclage-scenario", 1, ["SC7.1.9"], 2, "var", varset([
+  function () {
+    return mcq("Un tronc d'épinette tombé reste des années sur le sol de la forêt. Comment la matière qu'il contient est-elle recyclée?",
+      "Les champignons et les bactéries décomposent le bois et retournent ses nutriments au sol pour les nouvelles plantes",
+      ["Les nutriments contenus dans le bois disparaissent complètement de la forêt au moment précis où l'arbre meurt et tombe au sol", "Les nutriments restent enfermés dans le bois dur pour toujours et ne sont jamais utilisés de nouveau par aucun être vivant de la forêt", "Les animaux transportent tous les nutriments du bois à l'extérieur de la forêt pour de bon"],
+      "La matière n'est ni créée ni détruite : les décomposeurs décomposent les organismes morts et retournent leurs nutriments au sol. <b>Les champignons et les bactéries décomposent le bois et retournent ses nutriments au sol pour les nouvelles plantes</b>.", {});
+  },
+  function () {
+    return mcq("Les feuilles s'accumulent sous un érable chaque automne. Comment la matière qu'elles contiennent est-elle recyclée?",
+      "Les décomposeurs du sol décomposent les feuilles et libèrent leurs nutriments pour les racines de l'arbre",
+      ["Les nutriments des feuilles mortes sont entièrement détruits par leur chute vers le sol pendant l'automne de chaque année", "Les nutriments s'envolent dans l'air sous forme de gaz et ne retournent jamais au sol de la forêt", "L'arbre réabsorbe les feuilles mortes entières à travers l'écorce de son tronc pendant tout l'hiver qui suit leur chute"],
+      "Les décomposeurs du sol décomposent les feuilles mortes et rendent leurs nutriments disponibles aux producteurs. <b>Les décomposeurs du sol décomposent les feuilles et libèrent leurs nutriments pour les racines de l'arbre</b>.", {});
+  },
+  function () {
+    return mcq("Un agriculteur épand du fumier composté sur son champ avant de semer. Comment la matière qu'il contient est-elle recyclée?",
+      "Les décomposeurs achèvent la décomposition du fumier et libèrent des nutriments que les cultures peuvent absorber",
+      ["Les nutriments contenus dans le fumier traversent le sol entier sans jamais être utilisés par les cultures qui poussent dans le champ", "Les nutriments du fumier se retransforment directement en fumier frais pour l'année suivante", "Les plantes des cultures absorbent le fumier entier directement par leurs feuilles pendant qu'il repose encore sur le sol du champ"],
+      "Le compostage commence la décomposition et les décomposeurs du sol la terminent, libérant les nutriments. <b>Les décomposeurs achèvent la décomposition du fumier et libèrent des nutriments que les cultures peuvent absorber</b>.", {});
+  },
+  function () {
+    return mcq("Le corps d'une baleine coule au fond de l'océan après sa mort. Comment la matière qu'il contient est-elle recyclée?",
+      "Les charognards et les décomposeurs décomposent le corps pendant des années et recyclent ses nutriments dans l'écosystème océanique",
+      ["Les nutriments du corps de la baleine sont retirés de l'océan pour toujours dès qu'il atteint le fond profond et froid de la mer", "Le corps entier de la baleine se dissout entièrement dans l'eau de l'océan en une seule journée après avoir coulé au fond", "Les nutriments remontent à la surface sans changer, encore en un seul morceau solide"],
+      "Même au fond de l'océan, charognards et décomposeurs décomposent le corps et retournent ses nutriments à l'écosystème. <b>Les charognards et les décomposeurs décomposent le corps pendant des années et recyclent ses nutriments dans l'écosystème océanique</b>.", {});
+  }
+]), ["La matière n'est ni créée ni détruite : elle est recyclée dans l'écosystème.", "Les décomposeurs retournent les nutriments des organismes morts au sol."]);
+
+E("s7f-u1-succession-signes-id", 1, ["SC7.1.10"], 1, "var", varset([
+  function () {
+    return mcq("Sur un rocher nu laissé par un glacier qui se retire, on voit des croûtes de lichens et de petites mousses dans les fissures. Que montrent ces signes?",
+      "Le début d'une succession primaire : des espèces pionnières commencent à former du sol",
+      ["La fin complète d'une succession écologique : la communauté stable et finale est déjà entièrement installée sur le rocher nu", "Une succession secondaire rapide et complète : toute la forêt repousse après un feu de forêt sur la surface du rocher nu", "Aucune succession : les lichens et les mousses ne font pas partie des écosystèmes"],
+      "Les lichens et les mousses sur rocher nu sont les pionniers classiques de la succession primaire. <b>Le début d'une succession primaire : des espèces pionnières commencent à former du sol</b>.", {});
+  },
+  function () {
+    return mcq("Dans un champ abandonné depuis trois ans, les herbes hautes et les fleurs sauvages couvrent le sol, et de jeunes aulnes commencent à paraître. Que montrent ces signes?",
+      "Une succession secondaire en cours : les arbustes succèdent aux plantes herbacées sur un sol déjà formé",
+      ["Une succession primaire qui commence : les pionniers créent le premier sol du champ", "La fin définitive de toute succession dans ce champ : plus aucun changement ne se produira jamais dans cette communauté à l'avenir", "Une perturbation majeure qui a détruit l'écosystème au complet : le champ ne pourra plus jamais changer ni se rétablir par la suite"],
+      "Le sol existe déjà et les étapes se succèdent (herbes, puis arbustes) : c'est une succession secondaire en cours. <b>Une succession secondaire en cours : les arbustes succèdent aux plantes herbacées sur un sol déjà formé</b>.", {});
+  },
+  function () {
+    return mcq("Le long d'une dune de sable récente, des herbes de dune enracinées retiennent le sable, et le sable s'accumule autour d'elles. Que montrent ces signes?",
+      "Une succession en cours : les plantes pionnières stabilisent la dune et préparent l'arrivée d'autres espèces",
+      ["La fin complète d'une succession : la dune de sable a déjà atteint sa communauté stable, mature et définitive depuis longtemps", "Aucune succession d'aucune sorte : le sable de la dune bouge beaucoup trop pour qu'un écosystème puisse s'y installer un jour", "Une succession primaire terminée : le sol de la dune est déjà profond et riche"],
+      "Les herbes pionnières qui stabilisent un milieu neuf sont un signe de succession en cours. <b>Une succession en cours : les plantes pionnières stabilisent la dune et préparent l'arrivée d'autres espèces</b>.", {});
+  },
+  function () {
+    return mcq("Après un feu de forêt, le sol est couvert de cendres, mais dès l'été suivant, l'épilobe et d'autres plantes à croissance rapide le recouvrent. Que montrent ces signes?",
+      "Le début d'une succession secondaire : le sol a survécu au feu et les plantes pionnières le recolonisent",
+      ["Le début d'une succession primaire : il faudra des siècles avant la moindre plante", "La communauté stable et finale de la succession : ces plantes à croissance rapide resteront dominantes dans le secteur pour toujours", "Aucune succession possible après un feu : un feu de forêt met fin définitivement à tous les changements d'un écosystème forestier"],
+      "Le sol intact après un feu permet une succession secondaire rapide, amorcée par les plantes pionnières. <b>Le début d'une succession secondaire : le sol a survécu au feu et les plantes pionnières le recolonisent</b>.", {});
+  }
+]), ["Rocher nu et lichens : succession primaire. Sol déjà formé : succession secondaire.", "Les pionniers sont les premiers signes; la communauté finale vient en dernier."]);
+
+E("s7f-u1-succession-signes-suite", 1, ["SC7.1.10"], 2, "var", varset([
+  function () {
+    return mcq("Un étang peu profond se comble lentement : les quenouilles avancent des bords vers le centre, année après année. Quel signe annonce l'étape suivante de la succession?",
+      "Des arbustes comme les saules s'installent sur les bords asséchés pendant que l'eau libre diminue",
+      ["Les grands poissons reviennent en nombre dans l'eau de plus en plus profonde de l'étang", "Une forêt d'épinettes pousse directement dans l'eau libre au centre de l'étang dès l'an prochain", "L'étang se transforme instantanément en rocher nu sur tout son fond en une saison"],
+      "À mesure que l'étang se comble, la végétation de marais cède la place aux arbustes des bords asséchés. Le signe est : <b>des arbustes comme les saules s'installent sur les bords asséchés pendant que l'eau libre diminue</b>.", {});
+  },
+  function () {
+    return mcq("Sur une coulée de lave refroidie vieille de dix ans, on trouve des lichens, quelques mousses et une mince couche de particules dans les creux. Quel signe montre que la succession avance?",
+      "La couche de particules s'épaissit et de petites plantes enracinées commencent à pousser dans les creux",
+      ["Des arbres matures de pleine hauteur dominent déjà toute la surface de la coulée de lave", "La lave redevient liquide et recouvre les lichens qui s'y étaient installés au début", "Les lichens disparaissent tous et le rocher redevient exactement comme au premier jour"],
+      "L'épaississement du jeune sol et l'arrivée de plantes enracinées marquent la progression de la succession primaire. <b>La couche de particules s'épaissit et de petites plantes enracinées commencent à pousser dans les creux</b>.", {});
+  },
+  function () {
+    return mcq("Un terrain vague en ville, non entretenu depuis cinq ans, est passé d'un sol nu à des herbes, puis à des arbustes le long des clôtures. Quel signe indiquerait que la succession se poursuit?",
+      "De jeunes arbres grandissent parmi les arbustes et commencent à leur faire de l'ombre",
+      ["Les herbes disparaissent complètement et le sol redevient nu comme au premier été", "Les arbustes cessent de changer et le terrain reste identique pour les siècles à venir", "Le terrain se recouvre de rocher nu à mesure que les arbustes vieillissent et meurent"],
+      "La succession se poursuit quand l'étape suivante (les jeunes arbres) commence à remplacer l'étape des arbustes. <b>De jeunes arbres grandissent parmi les arbustes et commencent à leur faire de l'ombre</b>.", {});
+  },
+  function () {
+    return mcq("Dans un marais salé, la partie la plus haute, rarement inondée, porte maintenant des arbustes bas au lieu des herbes du marais. Que montre ce signe?",
+      "La succession transforme le marais en un milieu plus sec à mesure que les dépôts élèvent le sol",
+      ["Le marais retourne en arrière : il redeviendra un fond marin profond dans quelques années", "Les arbustes prouvent que la succession du marais est terminée pour toujours à cet endroit", "Les herbes du marais ont été remplacées parce que la mer recouvre le site plus souvent qu'avant"],
+      "L'accumulation de dépôts élève le sol, l'inondation diminue, et des plantes de milieu plus sec (les arbustes) remplacent les herbes. <b>La succession transforme le marais en un milieu plus sec à mesure que les dépôts élèvent le sol</b>.", {});
+  }
+]), ["Cherche le signe que l'étape suivante commence à remplacer l'étape actuelle.", "Le sol qui s'épaissit et les plantes plus grandes annoncent la suite."]);
+
+E("s7f-u1-cr-marais-changement", 1, ["SC7.1.2"], 2, "var", varset([
+  function () {
+    return textq("Un marais près d'une école est drainé au printemps pour construire un terrain de sport. L'année suivante, les grenouilles qui vivaient dans le marais ont disparu du secteur. Explique DEUX effets du drainage : un effet sur un facteur abiotique et un effet sur un facteur biotique. (2 points)",
+      ["Le drainage enlève l'eau stagnante, un facteur abiotique dont dépendait la communauté du marais."],
+      "Points de notation (2) : 1 point pour un effet abiotique (l'eau stagnante est enlevée, le sol s'assèche et l'habitat d'eau peu profonde disparaît). 1 point pour un effet biotique lié (les grenouilles perdent l'eau nécessaire à leur reproduction et disparaissent; les plantes du marais et les insectes et oiseaux qui en dépendent diminuent aussi). Réponse modèle : Le drainage enlève l'eau stagnante du marais et assèche le sol. Sans eau pour pondre leurs œufs, <b>les grenouilles ne peuvent plus se reproduire, et la communauté biotique les perd</b>.", {});
+  },
+  function () {
+    return textq("Un agriculteur plante une rangée d'arbres le long d'un champ venteux. Après quelques années, le sol du champ reste humide plus longtemps après la pluie. Explique DEUX effets de la rangée d'arbres : un effet sur un facteur abiotique et un effet sur un facteur biotique. (2 points)",
+      ["Les arbres ralentissent le vent au niveau du sol, un facteur abiotique qui agit sur le champ."],
+      "Points de notation (2) : 1 point pour un effet abiotique (les arbres réduisent la vitesse du vent sur le champ, donc moins d'eau s'évapore du sol et le sol reste humide plus longtemps; l'ombre refroidit aussi la surface). 1 point pour un effet biotique lié (les cultures poussent mieux avec l'humidité, et les oiseaux et les insectes trouvent abri et nourriture dans la rangée). Réponse modèle : La rangée ralentit le vent, donc le sol perd moins d'eau par évaporation. Avec un sol plus humide, <b>les plantes cultivées poussent plus vigoureusement pendant les périodes sèches</b>.", {});
+  },
+  function () {
+    return textq("Le sel de voirie utilisé en hiver se lave dans un petit étang chaque printemps. À l'été, les escargots de l'étang ont presque disparu. Explique DEUX effets du sel : un effet sur un facteur abiotique et un effet sur un facteur biotique. (2 points)",
+      ["Le sel augmente la concentration de sel dans l'eau de l'étang, un facteur abiotique."],
+      "Points de notation (2) : 1 point pour un effet abiotique (le sel dissous change la composition chimique de l'eau, dont la concentration de sel augmente chaque printemps). 1 point pour un effet biotique lié (les escargots et d'autres organismes d'eau douce ne tolèrent pas l'eau plus salée; leurs populations chutent, ce qui touche les animaux qui s'en nourrissent). Réponse modèle : Le ruissellement rend l'eau de l'étang plus salée chaque printemps. Les escargots d'eau douce ne survivent pas à ce changement, donc <b>leur population s'effondre, et les oiseaux et les poissons qui les mangeaient perdent une source de nourriture</b>.", {});
+  }
+]), ["Un effet doit toucher un facteur abiotique, l'autre un facteur biotique.", "Relie-les : le changement abiotique explique souvent le changement biotique."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s7f-u1-cr-chaine-effets closes Unit 1 Test
+   1 (3 marks, Level 3). SME-flagged for the
+   specialist pass. */
+E("s7f-u1-cr-chaine-effets", 1, ["SC7.1.1", "SC7.1.2"], 3, "var", varset([
+  function () {
+    return textq("Un étang de castor est drainé pour construire une route : le barrage est ouvert et l’eau s’écoule en quelques jours, jusqu’à ce que le fond de l’étang soit à sec. (a) Nomme le changement abiotique qui déclenche la chaîne d’effets. (1 point) (b) Prédis un effet de ce changement sur un organisme ou une population de l’étang, et justifie ta prédiction. (1 point) (c) Prédis un deuxième effet, en cascade, sur un autre organisme lié au premier. (1 point) (3 points)",
+      ["le changement abiotique est la disparition de l’eau de l’étang (la quantité d’eau diminue jusqu’à l’assèchement)", "les poissons et les plantes aquatiques perdent leur habitat et meurent ou quittent le secteur", "les hérons qui mangeaient ces poissons perdent une source de nourriture et diminuent ou partent"],
+      "<b>Réponse modèle :</b> (a) Le changement abiotique est la perte de l’eau : l’étang peu profond disparaît et son fond s’assèche. (b) Les poissons et les plantes aquatiques qui vivaient dans cette eau perdent leur habitat; sans eau, ils meurent ou doivent quitter le secteur, donc leurs populations chutent, ce qui suit directement de la disparition de l’eau. (c) En cascade, les hérons qui se nourrissaient de ces poissons perdent une source importante de nourriture : ils fréquentent moins le secteur ou leur population diminue.<br><br><b>Points d’attribution :</b> 1 point pour le changement abiotique nommé (la disparition de l’eau de l’étang). 1 point pour un premier effet sur un organisme ou une population, justifié par ce changement. 1 point pour un deuxième effet, en cascade, sur un autre organisme lié au premier.", {});
+  },
+  function () {
+    return textq("Au printemps, une crue tardive fait monter l’eau d’un marais bien au-dessus de son niveau habituel, et l’eau profonde recouvre les plantes basses du marais pendant deux semaines. (a) Nomme le changement abiotique qui déclenche la chaîne d’effets. (1 point) (b) Prédis un effet de ce changement sur un organisme ou une population du marais, et justifie ta prédiction. (1 point) (c) Prédis un deuxième effet, en cascade, sur un autre organisme lié au premier. (1 point) (3 points)",
+      ["le changement abiotique est la hausse du niveau de l’eau (la quantité et la profondeur de l’eau augmentent)", "les plantes basses restent sous l’eau trop longtemps, reçoivent peu de lumière et meurent en grand nombre", "les insectes et les canards qui mangeaient ces plantes perdent leur nourriture et diminuent"],
+      "<b>Réponse modèle :</b> (a) Le changement abiotique est la hausse du niveau de l’eau : l’eau devient beaucoup plus profonde dans le marais. (b) Les plantes basses restent complètement submergées pendant deux semaines; elles reçoivent trop peu de lumière pour bien faire la photosynthèse et beaucoup meurent, donc leur population diminue, ce qui suit directement de l’eau plus profonde. (c) En cascade, les insectes et les canards qui se nourrissaient de ces plantes perdent leur nourriture : leurs populations diminuent à leur tour ou ils quittent le marais.<br><br><b>Points d’attribution :</b> 1 point pour le changement abiotique nommé (la hausse du niveau de l’eau). 1 point pour un premier effet sur un organisme ou une population, justifié par ce changement. 1 point pour un deuxième effet, en cascade, sur un autre organisme lié au premier.", {});
+  },
+  function () {
+    return textq("On plante des arbres d’ombrage le long d’un ruisseau où vivent de jeunes saumons. Après quelques années, l’ombre des arbres refroidit l’eau du ruisseau pendant les journées chaudes de l’été. (a) Nomme le changement abiotique qui déclenche la chaîne d’effets. (1 point) (b) Prédis un effet de ce changement sur un organisme ou une population du ruisseau, et justifie ta prédiction. (1 point) (c) Prédis un deuxième effet, en cascade, sur un autre organisme lié au premier. (1 point) (3 points)",
+      ["le changement abiotique est la baisse de la température de l’eau (l’eau reçoit moins de lumière et de chaleur)", "les jeunes saumons survivent mieux, car l’eau froide contient plus d’oxygène dissous et reste dans leur intervalle de tolérance", "les visons et les hérons qui mangent les saumons disposent de plus de proies et sont mieux nourris"],
+      "<b>Réponse modèle :</b> (a) Le changement abiotique est la baisse de la température de l’eau : à l’ombre, l’eau absorbe moins de chaleur du soleil. (b) Les jeunes saumons survivent mieux dans cette eau plus froide, parce qu’elle contient plus d’oxygène dissous et qu’elle reste dans l’intervalle de températures qu’ils tolèrent bien, donc leur population augmente. (c) En cascade, les visons et les hérons qui chassent les jeunes saumons trouvent plus de proies : ils sont mieux nourris et leurs populations peuvent augmenter.<br><br><b>Points d’attribution :</b> 1 point pour le changement abiotique nommé (la baisse de la température de l’eau). 1 point pour un premier effet sur un organisme ou une population, justifié par ce changement. 1 point pour un deuxième effet, en cascade, sur un autre organisme lié au premier.", {});
+  },
+  function () {
+    return textq("La poussière d’une carrière voisine se dépose en couche épaisse sur les feuilles des plantes d’un pré, jour après jour, pendant tout un été. (a) Nomme le changement abiotique qui déclenche la chaîne d’effets. (1 point) (b) Prédis un effet de ce changement sur un organisme ou une population du pré, et justifie ta prédiction. (1 point) (c) Prédis un deuxième effet, en cascade, sur un autre organisme lié au premier. (1 point) (3 points)",
+      ["le changement abiotique est la diminution de la lumière qui atteint les feuilles (la couche de poussière couvre leur surface)", "les plantes font moins de photosynthèse, poussent moins et produisent moins de nourriture et de graines", "les sauterelles qui mangeaient ces plantes ont moins de nourriture et leur population diminue"],
+      "<b>Réponse modèle :</b> (a) Le changement abiotique est la diminution de la lumière reçue par les feuilles : la couche de poussière couvre leur surface et bloque une partie de la lumière du soleil. (b) Avec moins de lumière, les plantes font moins de photosynthèse; elles poussent plus lentement et produisent moins de matière, donc la population de plantes du pré s’affaiblit, ce qui suit directement du manque de lumière. (c) En cascade, les sauterelles qui se nourrissaient de ces plantes trouvent moins de nourriture : leur population diminue, et les oiseaux qui mangent les sauterelles sont touchés ensuite.<br><br><b>Points d’attribution :</b> 1 point pour le changement abiotique nommé (la diminution de la lumière reçue par les feuilles). 1 point pour un premier effet sur un organisme ou une population, justifié par ce changement. 1 point pour un deuxième effet, en cascade, sur un autre organisme lié au premier.", {});
+  }
+]), ["Commence par le facteur non vivant qui change, puis suis la chaîne un maillon à la fois.", "Chaque effet doit mener au suivant : changement abiotique, premier organisme touché, puis organisme lié au premier."]);
+
+/* ---------- Ajout du 21 novembre 2026 : plan de tests (decisions 9, 10, 11) ---------- */
+E("s7f-u1-succession-releves", 1, ["SC7.1.10"], 1, "var", varset([
+  function () {
+    return mcq("Sur un sentier abandonné près d’un étang, on ne voyait que de la terre nue il y a cinq ans. Aujourd’hui, des mousses couvrent les pierres et de petites herbes poussent entre elles. Quel signe de succession écologique ce relevé montre-t-il?", "Des organismes pionniers s’installent et préparent le sol pour les plantes suivantes", ["Des arbres matures forment déjà une canopée fermée au-dessus de tout le sentier", "Le sentier reste exactement pareil, sans aucun changement dans les espèces présentes", "Un étang profond remplace entièrement le sentier depuis la première saison chaude"], "Les mousses sont des organismes pionniers : leur installation sur un site nu, suivie de petites herbes, est un signe que la succession a commencé et que le sol se forme.", {});
+  },
+  function () {
+    return mcq("Dans un ancien stationnement de gravier, une élève note que le gravier nu est maintenant parsemé de pissenlits et de trèfle, et que le sol sous les plantes est plus foncé qu’avant. Quel signe de succession ce relevé montre-t-il?", "La matière organique s’accumule et le sol s’enrichit sous les premières plantes", ["Les plantes matures du site ont cessé de changer depuis plusieurs générations", "Le gravier redevient complètement nu, sans aucune plante, année après année", "Le stationnement se transforme en forêt mature dès la première saison chaude"], "Un sol qui fonce sous les premières plantes signale l’accumulation de matière organique : c’est un signe classique de succession en cours sur un site perturbé.", {});
+  },
+  function () {
+    return mcq("Après le retrait d’une clôture, une bande de pelouse tondue cesse d’être entretenue. Deux ans plus tard, on y trouve des herbes hautes et de jeunes aulnes. Quel signe de succession ce relevé montre-t-il?", "Des plantes plus grandes remplacent graduellement les plantes basses du début", ["Les mêmes plantes basses occupent le site, sans aucun changement de hauteur", "Le site retourne à la terre nue et reste sans plantes pendant plusieurs années", "Des arbres matures de grande taille dominent le site dès la première saison"], "Le remplacement graduel des herbes basses par des arbustes comme l’aulne est un signe de succession : chaque étape modifie les conditions pour la suivante.", {});
+  },
+  function () {
+    return mcq("Sur une dune côtière stabilisée par des herbes de plage, on observe maintenant de petits épinettes rabougris du côté abrité. Quel signe de succession ce relevé montre-t-il?", "Des arbres commencent à s’établir là où seules des herbes pionnières poussaient avant", ["Les herbes de plage ont disparu complètement et la dune redevient du sable nu et mobile", "La dune reste couverte des mêmes herbes, sans aucune nouvelle espèce, depuis toujours", "Un marais profond se forme au centre de la dune dès la première saison de croissance"], "L’arrivée d’arbres sur un site autrefois limité aux herbes pionnières montre que les étapes précédentes ont stabilisé le sol et créé l’abri nécessaire : la succession avance.", {});
+  }
+]), ["Cherche le changement d’espèces ou de sol par rapport à l’état de départ.", "Un signe de succession montre un début de changement, pas un état final stable."]);
+E("s7f-u1-succession-etapes", 1, ["SC7.1.10"], 2, "var", varset([
+  function () {
+    return mcq("Un site présente un sol de 2 cm d’épaisseur, couvert surtout de lichens et de mousses, avec quelques herbes éparses. À quelle étape de la succession ce site se trouve-t-il le plus probablement?", "À une étape précoce, où les pionniers forment encore un sol très mince sur le site", ["À une étape finale, où un sol profond soutient une forêt mature et stable du site", "À une étape intermédiaire, où des arbustes denses dominent déjà tout le site entier", "À une étape avancée, où de grands arbres forment une canopée fermée sur le site"], "Un sol de 2 cm avec lichens et mousses indique une étape précoce : les pionniers commencent à peine à former le sol. Les étapes avancées ont un sol plus profond et des plantes plus grandes.", {});
+  },
+  function () {
+    return mcq("Un site présente un sol de 15 cm d’épaisseur, couvert d’arbustes et de jeunes bouleaux, sans arbres matures. À quelle étape de la succession ce site se trouve-t-il le plus probablement?", "À une étape intermédiaire, où les arbustes et les jeunes arbres occupent le site", ["À une étape précoce, où les lichens et les mousses forment un sol mince du site", "À une étape finale, où une forêt mature et stable couvre entièrement tout le site", "À une étape nulle, où aucun organisme ne vit encore sur la surface rocheuse du site"], "Un sol déjà épais de 15 cm, avec arbustes et jeunes arbres mais sans forêt mature, correspond à une étape intermédiaire de la succession.", {});
+  },
+  function () {
+    return mcq("Quelle suite place ces signes dans l’ordre habituel de la succession sur une roche nue?", "Lichens sur la roche, puis mousses et sol mince, puis herbes, puis arbustes du site", ["Arbustes sur la roche, puis arbres matures, puis lichens, puis sol mince du site", "Herbes sur la roche, puis lichens, puis arbres matures, puis mousses du site entier", "Sol profond sur la roche, puis forêts matures, puis herbes, puis lichens du site"], "Sur la roche nue, les lichens pionniers arrivent d’abord, puis les mousses aident à former un sol mince; les herbes suivent, puis les arbustes quand le sol s’épaissit.", {});
+  },
+  function () {
+    return mcq("Un site présente un sol profond de 30 cm, couvert d’épinettes matures et d’un sous-bois stable depuis des années. À quelle étape de la succession ce site se trouve-t-il le plus probablement?", "À une étape avancée, où une communauté forestière mature occupe durablement le site", ["À une étape précoce, où les lichens pionniers forment un sol mince sur tout le site", "À une étape initiale, où la roche nue ne porte encore aucun organisme vivant du site", "À une étape intermédiaire, où les arbustes remplacent les herbes basses sur le site"], "Un sol profond et une forêt mature stable signalent une étape avancée : la succession a eu le temps de traverser les étapes des pionniers, des herbes et des arbustes.", {});
+  }
+]), ["Lis les deux indices ensemble : l’épaisseur du sol et le type de plantes présentes.", "Sol mince et pionniers : début. Sol profond et arbres matures : étape avancée."]);
+E("s7f-u1-succession-prevoir", 1, ["SC7.1.10"], 2, "var", varset([
+  function () {
+    return mcq("Sur une pente brûlée il y a deux ans, le sol est intact et couvert d’herbes et de jeunes framboisiers. Si on laisse le site tranquille, quel changement prévoit-on le plus probablement ensuite?", "Des arbustes et de jeunes arbres s’établiront et remplaceront peu à peu les herbes", ["Le site redeviendra de la roche nue, sans sol ni plantes, pendant plusieurs années", "Les mêmes herbes resteront les seules plantes du site pendant plusieurs siècles", "Une forêt mature complète apparaîtra d’un seul coup dès la saison chaude suivante"], "Avec un sol intact, la succession secondaire se poursuit : après les herbes et les premiers arbustes, des arbustes plus grands et de jeunes arbres s’établissent graduellement.", {});
+  },
+  function () {
+    return mcq("Des lichens et des mousses couvrent maintenant une dalle de roche autrefois nue, et une mince couche de sol s’accumule dans les crevasses. Quel changement prévoit-on le plus probablement ensuite?", "De petites herbes s’enracineront dans le sol des crevasses et s’y établiront peu à peu", ["De grands arbres matures pousseront directement sur la roche nue dès la saison suivante", "Les lichens disparaîtront et la dalle redeviendra nue pour toujours dès l’hiver suivant", "La dalle se transformera en étang profond avant même l’arrivée des premières herbes"], "Le sol mince formé par les pionniers permet l’étape suivante : de petites herbes s’enracinent dans les crevasses. Les arbres exigent un sol beaucoup plus profond.", {});
+  },
+  function () {
+    return mcq("Un pré abandonné est dominé par des arbustes, et de jeunes pins poussent déjà à travers les arbustes. Quel changement prévoit-on le plus probablement ensuite?", "Les jeunes pins grandiront et formeront peu à peu une jeune forêt au-dessus des arbustes", ["Les arbustes disparaîtront et le pré redeviendra une pelouse tondue dès la saison suivante", "Les pins resteront de jeunes pousses sans grandir pendant plusieurs siècles entiers", "Le pré se transformera en marais profond avant même que les pins puissent grandir"], "Quand de jeunes arbres poussent déjà parmi les arbustes, l’étape suivante habituelle est leur croissance en jeune forêt, qui ombrage graduellement les arbustes.", {});
+  },
+  function () {
+    return mcq("Après l’assèchement d’un petit étang, son fond boueux est colonisé par des quenouilles et des herbes de marais. Quel changement prévoit-on le plus probablement ensuite, si l’assèchement se maintient?", "Des arbustes de milieux humides s’établiront à mesure que les débris végétaux épaissiront le sol", ["Les quenouilles resteront les seules plantes du site pendant plusieurs siècles sans changement", "L’étang profond reviendra d’un seul coup dès la première pluie de la saison chaude suivante", "De grands arbres matures pousseront dans la boue profonde dès la première saison de croissance"], "L’accumulation de débris végétaux épaissit le sol d’un marais qui s’assèche : des arbustes tolérant l’humidité peuvent alors s’établir, étape suivante de la succession.", {});
+  }
+]), ["Pars de l’étape actuelle et avance d’une seule étape, pas jusqu’à la fin.", "Chaque étape prépare la suivante en modifiant le sol et l’abri."]);
+E("s7f-u1-succession-affirmation", 1, ["SC7.1.10"], 3, "var", varset([
+  function () {
+    return mcq("Une élève affirme : « Il n’y a aucune succession sur cette falaise, car on n’y voit que des lichens. » Les relevés montrent des lichens sur la roche, des mousses dans les crevasses et un début de sol. Quelle évaluation de son affirmation est correcte?", "Elle est fausse : les lichens, les mousses et le sol naissant sont des signes de succession", ["Elle est juste : les lichens, les mousses et le sol naissant prouvent l’absence de succession", "Elle est juste : la succession ne commence que lorsque les arbres matures couvrent la falaise", "Elle est fausse : les lichens montrent que la falaise a déjà atteint son étape finale stable"], "Les lichens et les mousses sont les organismes pionniers de la succession sur la roche nue, et le sol qui commence à se former en est un autre signe : l’affirmation contredit les signes observés.", {});
+  },
+  function () {
+    return mcq("Un élève affirme : « La succession est terminée dans ce champ, car il est plein de plantes. » Les relevés montrent surtout des herbes annuelles et quelques arbustes de deux ans sur un sol mince. Quelle évaluation de son affirmation est correcte?", "Elle est prématurée : des herbes et de jeunes arbustes indiquent une succession encore en cours", ["Elle est exacte : un champ plein de plantes a toujours terminé sa succession de façon définitive", "Elle est prématurée : les herbes annuelles prouvent que le champ est déjà une forêt mature stable", "Elle est exacte : les arbustes de deux ans montrent que plus aucun changement n’est possible ici"], "Un champ d’herbes annuelles et de jeunes arbustes sur sol mince est une étape précoce ou intermédiaire : la succession se poursuit tant que les communautés continuent de se remplacer.", {});
+  },
+  function () {
+    return mcq("Une élève affirme : « Ce terrain vague subit une succession, car les espèces y changent chaque année. » Les relevés montrent des herbes la première année, puis des arbustes, puis de jeunes saules, avec un sol qui s’épaissit. Quelle évaluation de son affirmation est correcte?", "Elle est appuyée : le remplacement ordonné des espèces et le sol qui s’épaissit sont des signes de succession", ["Elle est contredite : le remplacement des espèces et le sol qui s’épaissit prouvent l’absence de succession", "Elle est appuyée : les changements annuels montrent que le terrain est déjà devenu une forêt mature stable", "Elle est indécidable : aucun relevé d’espèces ni de sol ne peut jamais renseigner sur la succession en cours"], "Le remplacement graduel et ordonné des communautés, accompagné de l’épaississement du sol, est précisément la signature de la succession écologique : les signes appuient l’affirmation.", {});
+  },
+  function () {
+    return mcq("Un élève affirme : « Il y a une succession dans cette cour, car une nouvelle plante est apparue ce printemps. » Le seul changement noté est un pissenlit dans une fissure du trottoir, sans autre changement d’espèces ni de sol en cinq ans. Quelle évaluation de son affirmation est correcte?", "Elle est mal appuyée : une seule plante nouvelle, sans remplacement de communautés, ne suffit pas comme signe", ["Elle est bien appuyée : une seule plante nouvelle suffit toujours à prouver une succession complète du site", "Elle est mal appuyée : le pissenlit prouve que la cour est déjà rendue à l’étape finale de la succession", "Elle est bien appuyée : l’absence de changement de sol prouve que la succession avance très rapidement ici"], "La succession est le remplacement graduel de communautés entières, avec des changements de sol : une seule plante isolée, sans autre changement en cinq ans, n’est pas un signe suffisant.", {});
+  }
+]), ["Confronte l’affirmation aux signes décrits, un signe à la fois.", "La succession exige un remplacement de communautés dans le temps, pas un seul individu."]);
+E("s7f-u1-succession-donnees", 1, ["SC7.1.10"], 3, "var", varset([
+  function () {
+    return mcq("Un relevé compte les plantes d’une parcelle en 2018, en 2021 et en 2024 : les herbes passent de 90 à 60 puis à 30 plants, les arbustes de 5 à 25 puis à 45 plants, et les jeunes arbres de 0 à 3 puis à 12 plants. Quelle interprétation de ces données est correcte?", "La succession avance : les arbustes et les jeunes arbres remplacent graduellement les herbes de la parcelle", ["La succession recule : les arbustes et les jeunes arbres disparaissent graduellement de la parcelle étudiée", "Aucun changement réel : les nombres montrent une communauté stable et inchangée pendant toute la période", "La succession est terminée : les herbes dominent encore largement la parcelle à la fin de la période étudiée"], "Les herbes diminuent pendant que les arbustes et les jeunes arbres augmentent régulièrement : c’est le remplacement graduel des communautés qui définit la succession.", {});
+  },
+  function () {
+    return mcq("On mesure l’épaisseur du sol d’un site rocheux et le couvert de lichens : en 2015, sol de 0,5 cm et lichens sur 20 pour cent de la roche; en 2020, sol de 1,5 cm et mousses présentes; en 2025, sol de 3 cm et herbes dans les crevasses. Quelle interprétation de ces données est correcte?", "Les données montrent une succession primaire en cours : le sol s’épaissit et les plantes succèdent aux pionniers", ["Les données montrent une succession terminée : le sol s’épaissit et la forêt mature couvre déjà tout le site rocheux", "Les données montrent un site sans changement : le sol et les organismes restent identiques pendant toute la période", "Les données montrent une succession secondaire : le sol profond du départ explique la rapidité des changements notés"], "Le sol passe de 0,5 à 3 cm pendant que lichens, mousses puis herbes se succèdent sur une roche au départ presque nue : c’est une succession primaire en cours, encore loin de la forêt.", {});
+  },
+  function () {
+    return mcq("Un relevé annuel d’une pente brûlée donne le couvert végétal suivant : année 1, herbes 80 pour cent; année 3, herbes 55 pour cent et arbustes 30 pour cent; année 5, herbes 35 pour cent, arbustes 45 pour cent et jeunes arbres 10 pour cent. Quelle interprétation est correcte?", "Le couvert se déplace des herbes vers les arbustes puis les jeunes arbres, signe d’une succession secondaire en cours", ["Le couvert reste dominé par les herbes du début à la fin, signe d’une communauté stable qui ne change pas du tout", "Le couvert montre une forêt mature dès l’année 5, signe que la succession secondaire est déjà entièrement terminée", "Le couvert recule vers la roche nue chaque année, signe que la succession secondaire a échoué sur cette pente brûlée"], "Après un feu sur un sol intact, la succession est secondaire : les pourcentages montrent les herbes qui cèdent graduellement la place aux arbustes, puis aux jeunes arbres.", {});
+  },
+  function () {
+    return mcq("Deux parcelles sont suivies pendant dix ans. Parcelle A : les mêmes herbes dominent chaque année, le sol reste à 8 cm. Parcelle B : les herbes diminuent, les arbustes augmentent, le sol passe de 8 à 14 cm. Quelle interprétation compare correctement les données?", "Seule la parcelle B montre des signes de succession : ses espèces changent et son sol s’épaissit avec le temps", ["Seule la parcelle A montre des signes de succession : ses espèces stables et son sol constant en sont les signes", "Les deux parcelles montrent la même succession : des espèces qui changent comptent autant que des espèces stables", "Aucune parcelle ne montre de succession : seuls les arbres matures peuvent servir de signe dans ce genre de suivi"], "La succession se reconnaît au changement : remplacement d’espèces et épaississement du sol dans la parcelle B. La parcelle A, stable, ne montre pas de succession pendant la période suivie.", {});
+  }
+]), ["Suis le sens des changements : quelles espèces augmentent, lesquelles diminuent?", "Des nombres qui bougent dans un ordre reconnaissable racontent la succession."]);
+E("s7f-u1-cr-succession-changement", 1, ["SC7.1.10"], 2, "var", varset([
+  function () {
+    return textq("Le marais salé de la baie près du village change lentement : les herbes de marais reculent, des arbustes tolérant le sel s’installent sur les parties plus hautes, et la boue accumulée élève le sol par endroits. Décris DEUX signes qui montrent que la succession est en cours dans ce marais, et dis ce que chaque signe indique sur la suite du changement. (3 points)", ["un signe observé (par exemple le recul des herbes et l’installation des arbustes) et ce qu’il indique", "un deuxième signe observé (par exemple l’accumulation de boue qui élève le sol) et ce qu’il indique"], "<b>Réponse modèle :</b> Premier signe : les herbes de marais reculent pendant que des arbustes tolérant le sel s’installent sur les parties hautes; ce remplacement d’une communauté par une autre indique que la succession avance vers une étape dominée par les arbustes. Deuxième signe : la boue et les débris accumulés élèvent le sol par endroits; un sol plus élevé et moins inondé indique que des plantes de milieux plus secs pourront s’établir ensuite. Chaque signe est à la fois une preuve du changement passé et un indice du changement à venir.<br><br><b>Points d’attribution :</b> 1 point pour le premier signe correctement décrit. 1 point pour le deuxième signe correctement décrit. 1 point pour ce que les signes indiquent sur la suite du changement (remplacement de communautés, conditions modifiées).", {});
+  },
+  function () {
+    return textq("La forêt derrière l’école a brûlé il y a six ans. Aujourd’hui, les herbes du début ont cédé la place à des framboisiers et à de jeunes trembles, et le sol forestier s’est reformé sous la litière nouvelle. Décris DEUX signes qui montrent que la succession est en cours dans cette forêt, et dis ce que chaque signe indique sur la suite du changement. (3 points)", ["un signe observé (par exemple le remplacement des herbes par les framboisiers et les jeunes trembles) et ce qu’il indique", "un deuxième signe observé (par exemple le sol forestier qui se reforme sous la litière) et ce qu’il indique"], "<b>Réponse modèle :</b> Premier signe : les herbes pionnières d’après-feu sont remplacées par des framboisiers et de jeunes trembles; ce remplacement indique que la succession secondaire avance vers une jeune forêt. Deuxième signe : la litière nouvelle reforme un sol forestier riche en matière organique; ce sol indique que des arbres plus exigeants et une communauté forestière plus stable pourront s’établir ensuite. Le sol intact après le feu explique la rapidité de cette succession secondaire.<br><br><b>Points d’attribution :</b> 1 point pour le premier signe correctement décrit. 1 point pour le deuxième signe correctement décrit. 1 point pour ce que les signes indiquent sur la suite du changement (remplacement de communautés, conditions modifiées).", {});
+  }
+]), ["Nomme deux signes observables, puis dis ce que chacun annonce pour la suite.", "Un signe de succession regarde dans les deux sens : changement passé et changement à venir."]);
