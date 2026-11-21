@@ -2713,39 +2713,9 @@ var qrcode = function() {
       <button type="button" id="presetFinal" class="alt">Final review</button>
       <button type="button" id="presetAll" class="alt">All units</button>
     </div>
-    <div class="presetrow" id="testScopeRow" hidden>
-      <label><span id="testScopeLab">A single test</span>
-        <select id="testUnitSel"></select>
-      </label>
-      <label><span id="testNumLab">Test</span>
-        <select id="testNumSel"></select>
-      </label>
-      <span class="hint" id="testScopeNote"></span>
-      <span class="hint" id="testPlanNote"></span>
-      <label>More multiple choice
-        <input type="number" id="testXMcIn" min="0" max="30" value="0">
-      </label>
-      <label>More written
-        <input type="number" id="testXCrIn" min="0" max="20" value="0">
-      </label>
-    </div>
     <div class="grid" id="unitGrid"></div>
     <p class="hint" style="margin:10px 0 4px;">By indicator (optional, leave all unchecked to use every indicator in the units you picked):</p>
     <div class="indbox" id="indBox"></div>
-    <div class="adv">
-      <label>Multiple choice
-        <input type="number" id="mcCountIn" min="0" max="60" value="10">
-      </label>
-      <label>Constructed Response
-        <input type="number" id="ncCountIn" min="0" max="60" value="5">
-      </label>
-      <label>Dual-form questions
-        <select id="bmIn">
-          <option value="on" selected>Answer choices on</option>
-          <option value="off">Answer choices off</option>
-        </select>
-      </label>
-    </div>
     <div class="adv" id="pkInRow" hidden>
       <label class="chk"><input type="checkbox" id="pkInChk"> Include prior knowledge questions</label>
     </div>
@@ -2770,8 +2740,11 @@ var qrcode = function() {
     <div class="group">
       <h3>Practice online</h3>
       <div class="adv">
-        <label>Number of questions (online practice)
-          <input type="number" id="countIn" min="1" max="60" value="10">
+        <label>Multiple choice
+          <input type="number" id="oMcIn" min="0" max="60" value="7">
+        </label>
+        <label>Fill-in
+          <input type="number" id="oFiIn" min="0" max="60" value="3">
         </label>
         <label>Checking (online practice)
           <select id="chkIn">
@@ -2780,13 +2753,60 @@ var qrcode = function() {
           </select>
         </label>
       </div>
+      <input type="hidden" id="countIn" value="10">
+      <div class="adv">
+        <label><span id="oTestLab">Practise for a test (optional)</span>
+          <select id="oTestUnitSel"></select>
+        </label>
+        <label id="oTestNumWrap" hidden><span id="oTestNumLab">Test</span>
+          <select id="oTestNumSel"></select>
+        </label>
+        <span class="hint" id="oTestNote"></span>
+      </div>
       <div class="modebar">
         <button type="button" id="goOnline">Practice online</button>
         <button type="button" id="pkCheckBtn" hidden>Start prerequisite check</button>
       </div>
     </div>
     <div class="group">
-      <h3>Print a sheet or exam</h3>
+      <h3>Build a Practice Test</h3>
+      <div class="presetrow" id="testScopeRow" hidden>
+        <label><span id="testScopeLab">A single test</span>
+          <select id="testUnitSel"></select>
+        </label>
+        <label><span id="testNumLab">Test</span>
+          <select id="testNumSel"></select>
+        </label>
+        <span class="hint" id="testScopeNote"></span>
+        <span class="hint" id="testPlanNote"></span>
+        <label>More multiple choice
+          <input type="number" id="testXMcIn" min="0" max="30" value="0">
+        </label>
+        <label>More written
+          <input type="number" id="testXCrIn" min="0" max="20" value="0">
+        </label>
+      </div>
+      <div class="presetrow" id="mathTestRow" hidden>
+        <label><span id="mathTestLab">A single test</span>
+          <select id="mathUnitSel"></select>
+        </label>
+        <span class="hint" id="mathTestNote"></span>
+      </div>
+      <p class="hint">Tests and exams are built from the scope at the top of the builder, or from a test you choose here.</p>
+      <div class="modebar">
+        <button type="button" id="goExam" class="amber">Make a practice exam</button>
+      </div>
+    </div>
+    <div class="group">
+      <h3>Build a Practice Sheet</h3>
+      <div class="adv">
+        <label>Multiple choice
+          <input type="number" id="mcCountIn" min="0" max="60" value="10">
+        </label>
+        <label>Constructed Response
+          <input type="number" id="ncCountIn" min="0" max="60" value="5">
+        </label>
+      </div>
       <div class="adv">
         <label><input type="checkbox" id="keyChk" checked> Include answer key</label>
         <label><input type="checkbox" id="codeChk" checked> Include set code and QR</label>
@@ -2811,12 +2831,17 @@ var qrcode = function() {
       </div>
       <div class="modebar">
         <button type="button" id="goSheet" class="amber">Make a practice sheet</button>
-        <button type="button" id="goExam" class="amber">Make a practice exam</button>
       </div>
     </div>
     <div class="modebar">
       <button type="button" id="copyLink" class="alt">Copy link to these settings</button>
       <button type="button" class="alt" id="advToolsBtn" hidden>Advanced tools</button>
+      <label>Dual-form questions
+        <select id="bmIn">
+          <option value="on" selected>Answer choices on</option>
+          <option value="off">Answer choices off</option>
+        </select>
+      </label>
     </div>
     <p class="hint" id="teacherNote" hidden>Advanced tools are on: question editing controls will appear on practice sets, sheets and tests you make. Any link you copy to share with students leaves advanced tools out; only the clearly labelled teacher link buttons keep them. <a href="#" id="advToolsOff">Turn off advanced tools</a></p>
     <p class="hint" id="poolInfo"></p>
@@ -3761,7 +3786,7 @@ function unitCheckboxes(){
     return '<label class="chk"><input type="checkbox" class="unitChk" value="'+u+'"'+(state.units.indexOf(+u)>=0?" checked":"")+'> '+L9("Unit ","Unité ")+u+L9(": "," : ")+UNITS[u]+"</label>";
   }).join("");
   Array.prototype.forEach.call(document.querySelectorAll(".unitChk"),function(cb){
-    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;hidCtl.pkOnly=false;state.testSel=null;tTestSelSync();readUnits();renderIndicators();updatePoolInfo();});
+    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;hidCtl.pkOnly=false;state.testSel=null;tTestSelSync();tMathTestSync();readUnits();renderIndicators();updatePoolInfo();});
   });
 }
 function readUnits(){
@@ -3773,7 +3798,7 @@ function renderIndicators(){
     return '<label><input type="checkbox" class="indChk" value="'+c+'"'+(state.inds.indexOf(c)>=0?" checked":"")+"> <b>"+c+"</b>"+L9(": ",", ")+esc(INDICATORS[c]||"")+"</label>";
   }).join(""):'<span class="hint">'+L9("Pick at least one unit above.","Choisis au moins une unité ci-dessus.")+'</span>';
   Array.prototype.forEach.call(document.querySelectorAll(".indChk"),function(cb){
-    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;state.testSel=null;tTestSelSync();readInds();updatePoolInfo();});
+    cb.addEventListener("change",function(){state.midCap=false;state.finalCap=false;state.testSel=null;tTestSelSync();tMathTestSync();readInds();updatePoolInfo();});
   });
 }
 function readInds(){
@@ -3819,13 +3844,29 @@ function updatePoolInfo(){refreshFace();refreshPkCheckBtn();refreshPkToggle();
    identical set for a student. The prior knowledge switch left
    this group on Nov 18, 2026: it renders in the main builder for
    everyone (see refreshPkToggle), and its stash default is off. */
-var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null,bm:"on",txmc:0,txcr:0};
+var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null,bm:"on",txmc:0,txcr:0,omc:7,ofi:3};
+/* Builder restructure state (Nov 20, 2026): ONLINE_SPLIT says
+   the Practice online section's two counts govern the next
+   online draw. It starts engaged on a fresh visit, is engaged
+   by any link carrying omc or ofi, and is disengaged by a link
+   carrying only the legacy count, so a pre-restructure link
+   (seeded ones above all) composes exactly the set it always
+   composed; editing either online count engages it again, and
+   the missed-questions retry disengages it so its own count
+   governs, as it always has. oTestSel is the online section's
+   own test tailoring: null, or {kind:"preset",which},
+   {kind:"unit",unit} or {kind:"test",unit,test}; it scopes
+   one online set and never touches the shared scope. */
+var ONLINE_SPLIT=true;
+var oTestSel=null;
 function tCtlVal(id,fb){var el=$(id);return el?el.value:fb;}
 function tPkOn(){var el=$("pkChk");return el?!!el.checked:!!hidCtl.pk;}
 function tGateStudentUI(){
-  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk"),bm=$("bmIn"),xm=$("testXMcIn"),xc=$("testXCrIn");
+  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk"),bm=$("bmIn"),xm=$("testXMcIn"),xc=$("testXCrIn"),om=$("oMcIn"),of=$("oFiIn");
   if(mc)hidCtl.mc=mc.value;
   if(nc)hidCtl.nc=nc.value;
+  if(om)hidCtl.omc=om.value;
+  if(of)hidCtl.ofi=of.value;
   if(l1&&l2&&l3)hidCtl.mix=[l1.value,l2.value,l3.value];
   if(pk)hidCtl.pk=!!pk.checked;
   if(en)hidCtl.enr=!!en.checked;
@@ -3842,8 +3883,12 @@ function tGateStudentUI(){
 }
 function settings(){
   readUnits();readInds();
+  if(ONLINE_SPLIT&&!pkOnlyActive()){var _om0=$("oMcIn"),_of0=$("oFiIn"),_ci0=$("countIn");if(_om0&&_of0&&_ci0)_ci0.value=(Math.max(0,Math.min(60,+_om0.value||0)))+(Math.max(0,Math.min(60,+_of0.value||0)));}
   return {units:state.units.slice(),inds:state.inds.slice(),midCap:state.midCap,finalCap:state.finalCap,testSel:state.testSel?{unit:state.testSel.unit,test:state.testSel.test}:null,
     count:Math.max(1,Math.min(60,+$("countIn").value||10)),
+    oMc:Math.max(0,Math.min(60,+tCtlVal("oMcIn",hidCtl.omc)||0)),
+    oFi:Math.max(0,Math.min(60,+tCtlVal("oFiIn",hidCtl.ofi)||0)),
+    oSplit:ONLINE_SPLIT,
     mcCount:Math.max(0,Math.min(60,+tCtlVal("mcCountIn",hidCtl.mc)||0)),
     ncCount:Math.max(0,Math.min(60,+tCtlVal("ncCountIn",hidCtl.nc)||0)),
     testXMc:Math.max(0,Math.min(30,+tCtlVal("testXMcIn",hidCtl.txmc)||0)),
@@ -4070,6 +4115,7 @@ function retryMissed(){
   if(!missed.length)return;
   state.inds=missed;
   if(retryWillSwitch())RETRY_AS_EACH=true;
+  ONLINE_SPLIT=false;
   $("countIn").value=Math.min(15,Math.max(5,missed.length*2));
   _suppressSeedOnce=true;
   ANALYTICS_RETRY_KIND="ordinary";
@@ -4174,6 +4220,40 @@ function tFlipDir(section,it){
 function tFlipHtml(section,it,i){
   var d=tFlipDir(section,it);if(!d)return "";
   return '<button type="button" class="alt" data-tflip="'+section+":"+i+'">'+(d==="off"?"Choices off":"Choices on")+"</button>";
+}
+/* Dual-form select all (builder restructure, Nov 20, 2026):
+   the Dual-form questions control at the Advanced tools door
+   acts on a composed exam paper as a select all beside the
+   per-question flips. Turning choices off moves every
+   dual-form question in Section A into Section B in written
+   form; turning them on returns every stripped dual-form
+   question in Section B to Section A, through the same strip
+   and unstrip primitives, at the same marks, as the
+   per-question flip. The caller stands down exactly where the
+   flip stands down. */
+function tFlipAllBm(off){
+  if(typeof examState==="undefined"||!examState||typeof T==="undefined"||!T)return;
+  var ex=examState.ex,moved=false;
+  if(off){
+    for(var i=ex.srItems.length-1;i>=0;i--){
+      var it=ex.srItems[i];
+      if(!it.q||it.q.type!=="mc"||!bimodalClass(it.q._entry))continue;
+      var sq=tStripSlot(it.q);if(sq===it.q)continue;
+      ex.srItems.splice(i,1);
+      ex.crItems.push({q:sq,marks:(typeof CR_MARKS!=="undefined"&&CR_MARKS[it.q._entry.id])||2});
+      moved=true;
+    }
+  }else{
+    for(var j=ex.crItems.length-1;j>=0;j--){
+      var it2=ex.crItems[j];
+      if(!it2.q||it2.q.type==="mc"||!bimodalClass(it2.q._entry))continue;
+      var mq=tUnstripSlot(it2.q);if(!mq)continue;
+      ex.crItems.splice(j,1);
+      ex.srItems.push({q:mq,marks:1});
+      moved=true;
+    }
+  }
+  if(moved){T.edited=true;renderExam();}
 }
 function tUnstripSlot(q){
   if(!q||q.type==="mc"||!bimodalClass(q._entry))return null;
@@ -5678,7 +5758,42 @@ function tAddSheetEntry(id,pickedQ){
   sheetState.items.push((pickedQ&&pickedQ._entry===e&&!avoid[canonQ(pickedQ)])?tAdoptPicked(e,pickedQ,avoid):tFreezeSlot(e,null,avoid,T.salt));
   T.edited=true;renderSheet();
 }
-var lastSettings=null,onlineThin=false;
+var lastSettings=null,onlineThin=false,onlineNote=null,onlineEffUnits=null;
+/* Online two-count draw (builder restructure, Nov 20, 2026):
+   the Practice online section deals its two counts separately,
+   the sheet draw discipline carried online. The multiple
+   choice part takes the entries that deal as multiple choice;
+   the fill-in part takes the entries that deal as fill-in
+   (numeric and text answers) plus the dual-form entries,
+   stripped. While the dual-form toggle is off, dual-form
+   entries serve the fill-in part only, never the multiple
+   choice part, as the toggle has always meant. An entry dealt
+   in the multiple choice part is never dealt again in the
+   fill-in part. Each part honours the level mix on its own
+   pool, and a part whose pool cannot supply its count in
+   distinct questions deals what it holds and reports the
+   shortfall (shortMc and shortFi), following the papers'
+   short-flag pattern: the other part is never topped up to
+   hide it. */
+function drawOnlineSet(s,units,inds,cap){
+  var mc=drawSet(units,inds,s.oMc,s.mix,s.order,cap,function(e){return probeType(e)==="mc"&&(!bimodalClass(e)||s.bimodal);});
+  var usedMc={};mc.items.forEach(function(q){usedMc[q._entry.id]=1;});
+  var fi=drawSet(units,inds,s.oFi,s.mix,s.order,cap,function(e){return !usedMc[e.id]&&(probeType(e)!=="mc"||!!bimodalClass(e));});
+  function fixMc(q){var tries=0;while(q.type!=="mc"&&tries<40){var nq=q._entry.gen();nq._entry=q._entry;q=nq;tries++;}return q;}
+  function fixFi(q){
+    if(q.type==="mc"&&bimodalClass(q._entry))return stripQ(q);
+    var tries=0;
+    while(q.type==="mc"&&tries<40){var nq=q._entry.gen();nq._entry=q._entry;q=nq;if(q.type==="mc"&&bimodalClass(q._entry))return stripQ(q);tries++;}
+    return q;
+  }
+  var mcItems=mc.items.map(fixMc),fiItems=fi.items.map(fixFi);
+  var items=mcItems.concat(fiItems);
+  if(s.order==="unit"){items.sort(function(a,b){return a._entry.unit-b._entry.unit;});}
+  else{items=shuffle(items);}
+  function distinct(list){var seen={};list.forEach(function(q){seen[q._entry.id]=1;});return Object.keys(seen).length;}
+  var mcD=distinct(mcItems),fiD=distinct(fiItems);
+  return {items:items,thin:mc.thin||fi.thin||items.length<(s.oMc+s.oFi),pool:mc.pool+fi.pool,shortMc:mcD<s.oMc,shortFi:fiD<s.oFi,mcDistinct:mcD,fiDistinct:fiD};
+}
 function startOnline(){
   tRestoreTitle();
   stopExamTimer();
@@ -5686,7 +5801,22 @@ function startOnline(){
   PKONLY_DRAW=!!s.pkOnly;
   PKONLY_GROUPS=(PKONLY_DRAW&&typeof PKRETRY_GROUPS!=="undefined"&&PKRETRY_GROUPS&&PKRETRY_GROUPS.length)?PKRETRY_GROUPS:(PKONLY_DRAW&&s.pkGroups&&s.pkGroups.length?s.pkGroups:null);
   PKRETRY_GROUPS=null;
-  var res=withSeed(_sd,function(){return drawSet(s.units,s.inds,s.count,s.mix,s.order,s.finalCap?"final":s.midCap);});
+  var _osplit=s.oSplit&&!s.pkOnly;
+  if(_osplit&&(s.oMc+s.oFi)<1){$("session").innerHTML='<div class="card"><p>'+L9("Set the Multiple choice and Fill-in counts to at least one question in total, then start again.","Règle les nombres de questions à choix multiple et à réponse courte à au moins une question au total, puis recommence.")+'</p></div>';return;}
+  var _ou=s.units,_oi=s.inds,_ocap=s.finalCap?"final":s.midCap;
+  if(_osplit&&oTestSel){
+    if(oTestSel.kind==="preset"){var _pc=(window.__COURSE&&window.__COURSE.presets)?window.__COURSE.presets[oTestSel.which]:null;if(_pc){_ou=_pc.units.slice();_oi=[];_ocap=oTestSel.which==="final"?"final":(_pc.cap?true:false);}}
+    else if(oTestSel.kind==="unit"){_ou=[oTestSel.unit];_oi=[];_ocap=false;}
+    else if(oTestSel.kind==="test"){var _te=testMapList(window.__COURSE,oTestSel.unit,oTestSel.test);if(_te){_ou=[oTestSel.unit];_oi=_te.inds.slice();_ocap=false;}}
+  }
+  onlineEffUnits=_ou;onlineNote=null;
+  var res=withSeed(_sd,function(){return _osplit?drawOnlineSet(s,_ou,_oi,_ocap):drawSet(s.units,s.inds,s.count,s.mix,s.order,s.finalCap?"final":s.midCap);});
+  if(_osplit&&(res.shortMc||res.shortFi)){
+    var _sp=[];
+    if(res.shortMc)_sp.push(L9("only "+res.mcDistinct+" different multiple choice questions are available yet, of the "+s.oMc+" you asked for","seulement "+res.mcDistinct+" questions à choix multiple différentes sont disponibles pour le moment, sur les "+s.oMc+" demandées"));
+    if(res.shortFi)_sp.push(L9("only "+res.fiDistinct+" different fill-in questions are available yet, of the "+s.oFi+" you asked for","seulement "+res.fiDistinct+" questions à réponse courte différentes sont disponibles pour le moment, sur les "+s.oFi+" demandées"));
+    onlineNote=L9("Heads up: ","Attention : ")+_sp.join(L9(" and "," et "))+L9(", so this set repeats some question shapes with new numbers.",", alors cette série répète certaines formes de questions avec de nouveaux nombres.");
+  }
   PKONLY_DRAW=false;PKONLY_GROUPS=null;
   current=res.items;checkedCount=0;correctCount=0;checkMode=(s.chk==="end")?"end":"each";if(RETRY_AS_EACH){checkMode="each";RETRY_AS_EACH=false;}endGraded=false;setResults={};helpUsed={};ANALYTICS_FINISHED=false;
   lastSettings=s;onlineThin=res.thin;T=null;
@@ -5716,8 +5846,8 @@ function renderOnline(scroll){
      save only matches when the pkonly link state is reproduced)
      renders panel-free as well. */
   var box=$("session");
-  if(!current.length){box.innerHTML='<div class="card"><p>'+(s.units.length?L9("No questions match that selection yet.","Aucune question ne correspond encore à cette sélection."):L9("Choose at least one unit above, or use the Mid-course review or Final review button, then start again.","Choisis au moins une unité ci-dessus, ou utilise le bouton Révision de mi-parcours ou Révision finale, puis recommence."))+'</p></div>';return;}
-  var html='<div class="card'+(checkMode==="end"?" endmode":"")+'"><h2>'+L9("Online practice","Pratique en ligne")+'</h2>'+(pkOnlyActive()?"":refPanelsHtml(s.units))+(res.thin?'<p class="thinNote">'+L9("Heads up: the question bank is still thin for this selection, so this set repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.","Attention : la banque de questions est encore mince pour cette sélection, alors cette série répète la pratique sur la même forme de question (avec de nouveaux nombres), car il n'y a pas encore assez de questions différentes pour la remplir.")+'</p>':"")+'<p class="scoreline" id="score"></p>';
+  if(!current.length){box.innerHTML='<div class="card"><p>'+((onlineEffUnits||s.units).length?L9("No questions match that selection yet.","Aucune question ne correspond encore à cette sélection."):L9("Choose at least one unit above, or use the Mid-course review or Final review button, then start again.","Choisis au moins une unité ci-dessus, ou utilise le bouton Révision de mi-parcours ou Révision finale, puis recommence."))+'</p></div>';return;}
+  var html='<div class="card'+(checkMode==="end"?" endmode":"")+'"><h2>'+L9("Online practice","Pratique en ligne")+'</h2>'+(pkOnlyActive()?"":refPanelsHtml(onlineEffUnits||s.units))+(onlineNote?'<p class="thinNote">'+onlineNote+'</p>':(res.thin?'<p class="thinNote">'+L9("Heads up: the question bank is still thin for this selection, so this set repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.","Attention : la banque de questions est encore mince pour cette sélection, alors cette série répète la pratique sur la même forme de question (avec de nouveaux nombres), car il n'y a pas encore assez de questions différentes pour la remplir.")+'</p>':""))+'<p class="scoreline" id="score"></p>';
   current.forEach(function(q,i){
     html+='<div class="q" id="q'+i+'"><div class="qhead"><b>Question '+(i+1)+'</b> '+tags(q)+'</div><div class="prompt">'+stepHTML(q.prompt)+'</div>';
     if(q.figure)html+='<div class="fig">'+q.figure+'</div>';
@@ -6830,6 +6960,7 @@ function startExam(){
   if(!TEACHER&&SHUFFLE_OPTS){ex.srItems.forEach(function(it){it.q=shufQ(it.q);});ex.crItems.forEach(function(it){it.q=shufQ(it.q);});}
   tPrintFreezeStart("exam");
   renderExam();
+  var _sb=$("session");if(_sb)_sb.scrollIntoView({behavior:scrollBehavior()});
 }
 function renderExam(){
   stopExamTimer();
@@ -8053,6 +8184,7 @@ function settingsToURL(){
   else if(s.units.length)p.set("unit",s.units.join(","));
   if(s.inds.length)p.set("indicator",s.inds.join(","));
   p.set("count",s.count);p.set("order",s.order);
+  if(s.oSplit){p.set("omc",s.oMc);p.set("ofi",s.oFi);}
   if(s.mcCount!==10)p.set("mc",s.mcCount);
   if(s.ncCount!==5)p.set("nc",s.ncCount);
   if(s.testXMc)p.set("txmc",s.testXMc);
@@ -8079,6 +8211,8 @@ function applyURL(){
   else if(p.get("unit")){state.units=p.get("unit").split(",").map(Number).filter(function(u){return UNITS[u];});touched=true;}
   if(p.get("indicator")){state.inds=p.get("indicator").split(",").map(function(x){return x.trim();});touched=true;}
   if(p.get("count"))$("countIn").value=p.get("count");
+  if(p.get("omc")!==null||p.get("ofi")!==null){ONLINE_SPLIT=true;if(p.get("omc")!==null&&$("oMcIn"))$("oMcIn").value=p.get("omc");if(p.get("ofi")!==null&&$("oFiIn"))$("oFiIn").value=p.get("ofi");if($("countIn")&&$("oMcIn")&&$("oFiIn"))$("countIn").value=(Math.max(0,Math.min(60,+$("oMcIn").value||0)))+(Math.max(0,Math.min(60,+$("oFiIn").value||0)));}
+  else if(p.get("count")!==null)ONLINE_SPLIT=false;
   if(p.get("mc")!==null)$("mcCountIn").value=p.get("mc");
   if(p.get("nc")!==null)$("ncCountIn").value=p.get("nc");
   if(p.get("txmc")!==null&&$("testXMcIn"))$("testXMcIn").value=p.get("txmc");
@@ -8108,7 +8242,7 @@ function applyURL(){
   if(p.get("rkeep")==="1")RETRY_KEEP=true;
   return touched;
 }
-function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");hidCtl.pkOnly=false;hidCtl.pkGroups=null;state.testSel=null;tTestSelSync();unitCheckboxes();renderIndicators();updatePoolInfo();}
+function setPreset(units,cap){state.units=units;state.inds=[];state.midCap=(cap===true);state.finalCap=(cap==="final");hidCtl.pkOnly=false;hidCtl.pkGroups=null;state.testSel=null;tTestSelSync();tMathTestSync();unitCheckboxes();renderIndicators();updatePoolInfo();}
 if(!window.__NOCOURSE){
 if(window.__COURSE){var __c=window.__COURSE;var __e=document.getElementById("appTitle");if(__e)__e.textContent=(__c.appName||(__c.shortName+" Review"));var __e2=document.getElementById("appSubName");if(__e2)__e2.textContent=(__c.longName||__c.shortName);var __e3=document.getElementById("faceTitle");if(__e3)__e3.textContent=(__c.appName||((__c.longName||__c.shortName)+" Review"));var __e4=document.getElementById("presetMid");if(__e4&&__c.presets.mid)__e4.textContent=__c.presets.mid.label;var __e5=document.getElementById("presetFinal");if(__e5&&__c.presets.final)__e5.textContent=__c.presets.final.label;}
 /* French static markup (student side): when the active course is
@@ -8139,6 +8273,11 @@ if(window.__COURSE&&window.__COURSE.language==="fr"){
     "Make one up":"En inventer un",
     "Set a seed, then use Copy link below: every student who opens the link gets the exact same questions in the same order. Leave it blank and each student gets a fresh set. Students never type the seed word; it only shapes the link the teacher copies.":"Entre un code, puis utilise Copier le lien ci-dessous : chaque élève qui ouvre le lien reçoit exactement les mêmes questions dans le même ordre. Laisse-le vide et chaque élève reçoit un nouvel ensemble. Les élèves ne tapent jamais le mot de code; il sert seulement à former le lien que l'enseignant copie.",
     "Practice online":"Pratique en ligne",
+    "Fill-in":"Réponse courte",
+    "Practise for a test (optional)":"Pratiquer pour un test (facultatif)",
+    "Build a Practice Test":"Créer un test de pratique",
+    "Build a Practice Sheet":"Créer une feuille d'entraînement",
+    "Tests and exams are built from the scope at the top of the builder, or from a test you choose here.":"Les tests et les examens sont construits à partir de la sélection en haut du panneau, ou d'un test choisi ici.",
     "Number of questions (online practice)":"Nombre de questions (pratique en ligne)",
     "Checking (online practice)":"Correction (pratique en ligne)",
     "Check each question as I go":"Corrige chaque question au fur et à mesure",
@@ -8249,6 +8388,102 @@ function tTestSelSync(){
   ["testXMcIn","testXCrIn"].forEach(function(id){var el=$(id);if(el)el.addEventListener("change",function(){tTestSelSync();});});
   tTestSelSync();
 })();
+["oMcIn","oFiIn"].forEach(function(id){var el=$(id);if(el)el.addEventListener("input",function(){ONLINE_SPLIT=true;var ci=$("countIn"),a=$("oMcIn"),b=$("oFiIn");if(ci&&a&&b)ci.value=(Math.max(0,Math.min(60,+a.value||0)))+(Math.max(0,Math.min(60,+b.value||0)));refreshFace();});});
+(function(){var bm=$("bmIn");if(!bm)return;bm.addEventListener("change",function(){
+  /* The dual-form control at the Advanced tools door: on a
+     composed exam paper the change is also the select all
+     (tFlipAllBm), standing down exactly where the per-question
+     flip stands down. Everywhere else it is the setting change
+     it has always been, governing the next composition and
+     what the teacher editors strip on add. */
+  if(!TEACHER||typeof T==="undefined"||!T||T.view!=="exam"||typeof examState==="undefined"||!examState)return;
+  if(typeof tFlipStandsDown==="function"&&tFlipStandsDown())return;
+  tFlipAllBm(bm.value==="off");
+});})();
+/* Online test tailoring sync (builder restructure, Nov 20,
+   2026): the Practice online section's own selector. Its
+   options are the mid-course and final scopes, every unit, and
+   (for a mapped course) the tests of the chosen unit. The
+   choice lives in oTestSel and scopes one online set; the
+   shared scope above is never touched, so the test and sheet
+   sections keep working from it, and the section's counts
+   still govern the tailored set's size and mix. */
+function oTestSync(){
+  var us=$("oTestUnitSel"),ns=$("oTestNumSel"),wrap=$("oTestNumWrap"),note=$("oTestNote");
+  if(!us||!ns)return;
+  var C=window.__COURSE;
+  if(!us.options.length){
+    var opts=['<option value="">'+L9("Use the scope above","Utiliser la sélection ci-dessus")+"</option>"];
+    if(C&&C.presets&&C.presets.mid)opts.push('<option value="preset:mid">'+(C.presets.mid.faceLabel||C.presets.mid.label)+"</option>");
+    if(C&&C.presets&&C.presets.final)opts.push('<option value="preset:final">'+(C.presets.final.faceLabel||C.presets.final.label)+"</option>");
+    Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}).forEach(function(u){opts.push('<option value="unit:'+u+'">'+L9("Unit ","Unité ")+u+L9(": "," : ")+UNITS[u]+"</option>");});
+    us.innerHTML=opts.join("");
+  }
+  us.value=oTestSel?(oTestSel.kind==="preset"?("preset:"+oTestSel.which):("unit:"+oTestSel.unit)):"";
+  var showNum=false;
+  if(oTestSel&&oTestSel.kind!=="preset"&&C&&C.testMap&&C.testMap[oTestSel.unit]){
+    var list=C.testMap[oTestSel.unit]||[];
+    ns.innerHTML='<option value="">'+L9("Whole unit","Unité entière")+"</option>"+list.map(function(t){return '<option value="'+t.test+'">'+testNameFor(t.test)+"</option>";}).join("");
+    ns.value=oTestSel.kind==="test"?String(oTestSel.test):"";
+    showNum=true;
+  }
+  if(wrap)wrap.hidden=!showNum;
+  if(note){
+    if(!oTestSel)note.textContent="";
+    else if(oTestSel.kind==="preset"){var pc=C.presets[oTestSel.which];note.textContent=L9("Practice set for the ","Série de pratique pour la ")+(pc.faceLabel||pc.label)+L9(", built from the same scope the review covers.",", construite à partir de la même sélection que couvre la révision.");}
+    else if(oTestSel.kind==="test")note.textContent=L9("Practice set for "+testScopeLabel(oTestSel)+", built from the same indicators that test covers.","Série de pratique pour "+testScopeLabel(oTestSel)+", construite à partir des mêmes notions que couvre ce test.");
+    else note.textContent=L9("Practice set for ","Série de pratique pour ")+(UNITS[oTestSel.unit]||"")+L9(", using every indicator in the unit.",", avec toutes les notions de l'unité.");
+  }
+}
+(function(){
+  var us=$("oTestUnitSel"),ns=$("oTestNumSel");if(!us||!ns)return;
+  us.addEventListener("change",function(){
+    var v=us.value;
+    if(!v)oTestSel=null;
+    else if(v.indexOf("preset:")===0)oTestSel={kind:"preset",which:v.slice(7)};
+    else oTestSel={kind:"unit",unit:+v.slice(5)};
+    oTestSync();
+  });
+  ns.addEventListener("change",function(){
+    if(!oTestSel||oTestSel.kind==="preset")return;
+    var n=+ns.value;
+    oTestSel=n?{kind:"test",unit:oTestSel.unit,test:n}:{kind:"unit",unit:oTestSel.unit};
+    oTestSync();
+  });
+  oTestSync();
+})();
+/* Math unit test selection (builder restructure, Nov 20,
+   2026): a mathematics course with no test map chooses its
+   single test by unit alone, in the Build a Practice Test
+   section. The choice drives the shared scope to exactly that
+   unit, so Make a practice exam composes the unit test
+   composition the app already builds. The row mirrors the
+   shared scope the way the test row does: any later unit or
+   indicator change quietly retires it. */
+function tMathTestSync(){
+  var row=$("mathTestRow");if(!row)return;
+  var C=window.__COURSE;
+  var isMath=!!(C&&(C.subject==="Mathematics"||C.subject==="Mathématiques"));
+  if(!C||C.testMap||!isMath){row.hidden=true;return;}
+  row.hidden=false;
+  var sel=$("mathUnitSel");
+  if(sel&&!sel.options.length){
+    sel.innerHTML='<option value="">'+L9("Choose a unit","Choisis une unité")+"</option>"+Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}).map(function(u){return '<option value="'+u+'">'+L9("Unit ","Unité ")+u+L9(": "," : ")+UNITS[u]+"</option>";}).join("");
+  }
+  var whole=state.units.length===1&&!state.inds.length;
+  if(sel)sel.value=whole?String(state.units[0]):"";
+  var note=$("mathTestNote");
+  if(note)note.textContent=whole?L9("Practice test for "+(UNITS[state.units[0]]||"")+", built from the whole unit.","Test de pratique pour "+(UNITS[state.units[0]]||"")+", construit à partir de toute l'unité."):"";
+}
+(function(){
+  var sel=$("mathUnitSel");if(!sel)return;
+  sel.addEventListener("change",function(){
+    var u=+sel.value;if(!u)return;
+    state.units=[u];state.inds=[];state.midCap=false;state.finalCap=false;hidCtl.pkOnly=false;hidCtl.pkGroups=null;state.testSel=null;
+    unitCheckboxes();renderIndicators();tMathTestSync();updatePoolInfo();
+  });
+  tMathTestSync();
+})();
 $("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;return;}startOnline();});
 $("seedGen").addEventListener("click",function(){var words=["otter","maple","harbour","compass","lantern","meadow","pebble","willow","falcon","juniper","birch","cove"];$("seedIn").value=pick(words)+"-"+ri(10,99);refreshFace();});
 $("seedIn").addEventListener("input",refreshFace);
@@ -8277,7 +8512,7 @@ a11yInit();
 var urlTouched=applyURL();
 if(window.__COURSE&&!ANALYTICS_OPEN_SENT){ANALYTICS_OPEN_SENT=true;countEvent("course_open",[analyticsCourse()]);}
 tGateStudentUI();
-unitCheckboxes();renderIndicators();updatePoolInfo();
+unitCheckboxes();renderIndicators();updatePoolInfo();tMathTestSync();
 if(advSetRestore()){
   /* A set carried across an Advanced tools switch was restored
      verbatim, with its answer state: the switch changed nothing
