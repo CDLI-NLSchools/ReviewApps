@@ -355,10 +355,17 @@ function u1EndClause(deg,a){
   return a>0?"both ends rise":"both ends fall";
 }
 function u1Plot(fn,x0,x1,o){ /* axes-and-curve SVG, y-range fitted from samples and capped */
+  /* y-fit (Nov 21, 2026): fit over the central 60 percent of the window and
+     always include the marked points, with a generous cap, so a continuous
+     curve's interior extrema are never clipped into a false break by the
+     steep tails at the window edges (a cubic dipping to -124 between its
+     roots was cut at the old -90 cap and drew as two separate branches). */
   o=o||{}; var W=440,H=250,pad=26,i,x,y,mn=1e18,mx=-1e18;
-  for(i=0;i<=200;i++){ x=x0+(x1-x0)*i/200; y=fn(x); if(isFinite(y)){ if(y<mn)mn=y; if(y>mx)mx=y; } }
-  var y1=(o.y1!==undefined)?o.y1:Math.min(90,Math.max(12,Math.ceil(mx*1.2)));
-  var y0=(o.y0!==undefined)?o.y0:Math.max(-90,Math.min(-12,Math.floor(mn*1.2)));
+  var fx0=x0+(x1-x0)*0.2, fx1=x1-(x1-x0)*0.2;
+  for(i=0;i<=200;i++){ x=fx0+(fx1-fx0)*i/200; y=fn(x); if(isFinite(y)){ if(y<mn)mn=y; if(y>mx)mx=y; } }
+  (o.points||[]).forEach(function(p){ if(p[1]<mn)mn=p[1]; if(p[1]>mx)mx=p[1]; });
+  var y1=(o.y1!==undefined)?o.y1:Math.min(400,Math.max(12,Math.ceil(mx*1.2)));
+  var y0=(o.y0!==undefined)?o.y0:Math.max(-400,Math.min(-12,Math.floor(mn*1.2)));
   var X=function(v){ return pad+(v-x0)/(x1-x0)*(W-2*pad); };
   var Y=function(v){ return H-pad-(v-y0)/(y1-y0)*(H-2*pad); };
   var out='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:440px;background:#fff;border:1px solid #d8d2c4;border-radius:6px" xmlns="http://www.w3.org/2000/svg">';
