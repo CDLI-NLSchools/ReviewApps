@@ -133,7 +133,8 @@ bank_loader = ('<script>\n'
                '   (banks/ in the shell folder), assembled from that course\'s\n'
                '   per-unit bank sources. The module registers its entries\n'
                '   through E below and publishes its constructed-response\n'
-               '   marks as window.__BANK_CRMARKS. */\n'
+               '   marks as window.__BANK_CRMARKS and its bimodal manifest\n'
+               '   as window.__BANK_BIMODAL. */\n'
                'var BANK=[];\n'
                # E accepts the optional seventh argument the applied
                # courses' banks pass (a two-stage hint pair) and stores
@@ -150,7 +151,8 @@ bank_loader = ('<script>\n'
                '   exact and also works from a local folder, where fetching a\n'
                '   script file would be blocked. */\n'
                'if(window.__COURSE){document.write(\'<script src="banks/\'+window.__COURSE.bankFile+\'"><\\/script>\');\n'
-               '  document.write(\'<script>window.CR_MARKS=window.__BANK_CRMARKS||{};<\\/script>\');}\n'
+               '  document.write(\'<script>window.CR_MARKS=window.__BANK_CRMARKS||{};<\\/script>\');\n'
+               '  document.write(\'<script>window.BIMODAL=window.__BANK_BIMODAL||{};<\\/script>\');}\n'
                '</script>\n\n')
 html = html[:bs] + bank_loader + html[main_start:]
 
@@ -177,6 +179,20 @@ html = html[:s] + ('/* ============ Constructed-response fit ============ */\n'
                    '   browsers run them in order, making this line the one\n'
                    '   that counts there). */\n'
                    'var CR_MARKS=window.__BANK_CRMARKS||{};\n'
+                   '/* Bimodal manifest (Nov 19, 2026): the entries whose\n'
+                   '   multiple-choice questions may be stripped to\n'
+                   '   constructed response, mapped to their checkability\n'
+                   '   class; see Spec-Bimodal-Questions-2026-11-19.md.\n'
+                   '   bimodalClass and stripQ live with the composer. */\n'
+                   'var BIMODAL=window.__BANK_BIMODAL||{};\n'
+                   '/* Dual-form toggle state (Nov 19, 2026): false (the\n'
+                   '   default) means bimodal entries deal with their\n'
+                   '   answer choices, in selected response; true means\n'
+                   '   they deal stripped, in constructed response.\n'
+                   '   startExam sets it from the set\'s settings before\n'
+                   '   composing; test scope ignores it, because the\n'
+                   '   blueprint governs there. */\n'
+                   'var BIMODAL_OFF=false;\n'
                    '/* ============ selection engine ============ */\n'
                    '/* Exam scopes in the unified shell are the preset unit\n'
                    '   selections in the course configuration. One course\n'
@@ -418,8 +434,28 @@ rep('function examShortNow(ex){var t=examLive(ex);if(ex.single)return (t.sr<11||
 # unchanged. The single-unit branch above is untouched (the
 # junior standalone judges its unit tests at SR under 11 or CR
 # under 14, the legacy values).
+# Second remedy (Nov 20, 2026; Math-3201-Midcourse-Shortfall-
+# Diagnosis-2026-11-20.md): the multi-unit resolution now mirrors
+# composeExam's own. A selection matching a configured exam scope
+# (an exam entry carrying a units list, matched on the sorted unit
+# key, last match wins, exactly as the composer resolves it) is
+# judged against that scope's own srCount / crMarks whenever the
+# scope carries the full blueprint triple (total, srCount,
+# crMarks); Science 1206's mid and final papers (20 SR / 20 CR)
+# were previously judged against its pooled fallback (30 SR) and
+# flagged short on every exact paper. A scope without the full
+# triple (Chemistry 2202's mid carries perUnit only) falls through
+# to the chain below, unchanged. In the fallback branch, a
+# configured crMarks is now read with a typeof check instead of
+# (crMarks || 20), so Biology 2201's configured crMarks of 0 (a
+# 40-question all-selected-response exam) is honoured rather than
+# read as a 20-mark constructed-response floor; an absent crMarks
+# still defaults to 20, and the srCount default is untouched. The
+# legacy generic tail (the "3,4" branch and the 30 / 20 floor)
+# still governs only selections no configured scope or totalled
+# fallback claims.
 rep('return u==="3,4"?(t.sr<11||t.cr<14):(t.sr<30||t.cr<20);}',
-    'var fb2=window.__COURSE&&window.__COURSE.exam&&window.__COURSE.exam.fallback;if(fb2&&fb2.total)return (t.sr<(fb2.srCount||30)||t.cr<(fb2.crMarks||20));return u==="3,4"?(t.sr<11||t.cr<14):(t.sr<30||t.cr<20);}', count=1)
+    'var ex2=window.__COURSE&&window.__COURSE.exam;var sc2=null;if(ex2){Object.keys(ex2).forEach(function(nm2){var scx=ex2[nm2];if(scx&&scx.units&&scx.units.slice().sort(function(a,b){return a-b;}).join()===u)sc2=scx;});}if(sc2&&typeof sc2.total==="number"&&typeof sc2.srCount==="number"&&typeof sc2.crMarks==="number")return (t.sr<sc2.srCount||t.cr<sc2.crMarks);var fb2=window.__COURSE&&window.__COURSE.exam&&window.__COURSE.exam.fallback;if(fb2&&fb2.total)return (t.sr<(fb2.srCount||30)||t.cr<(typeof fb2.crMarks==="number"?fb2.crMarks:20));return u==="3,4"?(t.sr<11||t.cr<14):(t.sr<30||t.cr<20);}', count=1)
 
 # ---------- staged hints (config key: hints) ----------
 # The applied courses' standalones (Math 2202 and 3202) give every
@@ -1312,17 +1348,62 @@ rep("var km=/^(\\d+)\\.\\s*Answer:/.exec(normT(dText(n)));",
 # teacher parameters and lands on the picker; shared and seeded links
 # are untouched because they still boot through ?course= as before.
 rep('h1{font-size:1.35rem;margin:0 0 4px;}',
-    'h1{font-size:1.35rem;margin:0 0 4px;}\n'
-    '  .allcourses{font-size:.82rem;margin:0 0 6px;}\n'
-    '  .allcourses a{color:var(--accent);text-decoration:none;}\n'
-    '  .allcourses a:hover,.allcourses a:focus-visible{text-decoration:underline;}\n'
-    '  .applogo{height:44px;width:auto;display:block;margin:0 0 10px;}\n'
+    'h1{font-size:1.55rem;margin:0 0 8px;}\n'
+    '  .allcourses{font-size:.82rem;margin:0 0 20px;}\n'
+    '  .allcourses a{color:var(--accent);text-decoration:none;border:1.5px solid var(--accent);border-radius:8px;padding:9px 16px;font-size:.9rem;}\n'
+    '  .allcourses a:hover,.allcourses a:focus-visible{opacity:.88;}\n'
+    '  .applogo{height:54px;width:auto;display:block;margin:0 0 10px;}\n'
     '  .applogo-d{display:none;}\n'
     '  html[data-a11y-theme="dark"] .applogo-l{display:none;}\n'
     '  html[data-a11y-theme="dark"] .applogo-d{display:block;}\n'
     '  html[data-a11y-theme="dark"] .allcourses a{color:#5eead4;}\n'
     '  .sheetbrand{margin:0 0 10px;}\n'
     '  .sheetbrand img{height:18px;width:auto;display:block;}',
+    count=1)
+
+# ---------- Style pass (owner decision, November 20, 2026) ----------
+# The adopt set and the adapted set from the Gemini style proposal, as
+# scoped in Style-Proposal-Analysis-2026-11-20.md: more air around
+# options and question headers, a reserved scrollbar, larger headings
+# and score line, and ruled separation between questions on screen.
+# The .q treatment is screen-only by construction: the base rule keeps
+# margin-bottom:18px for every medium, and the @media screen block
+# replaces that margin with padding and rules on screen only. Print
+# never sees it (printed questions are .pq elements in #printArea, and
+# the print rules are untouched). The first question carries id="q0"
+# in the renderer, so .q#q0 takes the top rule. The .presetrow[hidden]
+# guard, the colour variables, the font stack, the dark-mode rules and
+# the .adv input styles are deliberately not touched.
+rep('body{margin:0;background:var(--bg);color:var(--ink);}',
+    'body{margin:0;background:var(--bg);color:var(--ink);overflow-y:scroll;}',
+    count=1)
+rep('.opts{margin:10px 0 4px;display:flex;flex-direction:column;gap:6px;}',
+    '.opts{margin:15px 0 20px;display:flex;flex-direction:column;gap:10px;}',
+    count=1)
+rep('.qhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;}',
+    '.qhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:20px;}',
+    count=1)
+rep('.sub{font-size:.9rem;color:#4b5a61;margin:0 0 16px;line-height:1.45;}',
+    '.sub{font-size:.9rem;color:#4b5a61;margin:15px 0 16px;line-height:1.45;}',
+    count=1)
+rep('.refbody{margin-top:8px;line-height:1.55;font-size:.95rem;}',
+    '.refbody{margin-top:15px;line-height:1.55;font-size:.95rem;}',
+    count=1)
+rep('.scoreline{font-size:.95rem;font-weight:bold;margin:6px 0 14px;}',
+    '.scoreline{font-size:1rem;font-weight:bold;margin:12px 0 14px;}',
+    count=1)
+rep('h2{font-size:1.05rem;margin:0 0 10px;}',
+    'h2{font-size:1.35rem;margin:0 0 12px;}',
+    count=1)
+rep('h3{margin:0 0 2px;font-size:.95rem;color:var(--accent);}',
+    'h3{margin:18px 0 8px;font-size:1.2rem;color:var(--accent);}',
+    count=1)
+rep('.q{margin-bottom:18px;}',
+    '.q{margin-bottom:18px;}\n'
+    '  @media screen{\n'
+    '    .q{border-bottom:1px solid var(--line);padding:26px 0 22px;margin-bottom:0;}\n'
+    '    .q#q0{border-top:1px solid var(--line);}\n'
+    '  }',
     count=1)
 rep('<h1 id="appTitle">Review Apps</h1>',
     '<img class="applogo applogo-l" src="cdli-logo.svg" alt="CDLI">\n'
@@ -2691,6 +2772,1211 @@ rep('$("presetAll").addEventListener("click",function(){setPreset(window.__COURS
     '  });\n'
     '  tTestSelSync();\n'
     '})();', count=1)
+
+# ---------- bimodal questions: the dual-form toggle (Nov 19, 2026) ----------
+# Spec-Bimodal-Questions-2026-11-19.md. The composer side (bimodalClass,
+# stripQ, the pool and draw rules) lives in the composer snippet; this
+# section wires the teacher-facing toggle through the chassis machinery:
+# the setup control, settings, link persistence, the sheet and online
+# draws, and the teacher freeze/pick/token paths, so a stripped item
+# never renders options on any surface and a choices-on item never
+# occupies Section B.
+rep('var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null};',
+    'var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null,bm:"on"};', count=1)
+rep('pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk");',
+    'pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk"),bm=$("bmIn");', count=1)
+rep('  if(pi)hidCtl.pkIn=!!pi.checked;\n',
+    '  if(pi)hidCtl.pkIn=!!pi.checked;\n  if(bm)hidCtl.bm=bm.value;\n', count=1)
+rep('["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk"]',
+    '["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk","bmIn"]', count=1)
+rep('        <label>Constructed Response\n'
+    '          <input type="number" id="ncCountIn" min="0" max="60" value="5">\n'
+    '        </label>',
+    '        <label>Constructed Response\n'
+    '          <input type="number" id="ncCountIn" min="0" max="60" value="5">\n'
+    '        </label>\n'
+    '        <label>Dual-form questions\n'
+    '          <select id="bmIn">\n'
+    '            <option value="on" selected>Answer choices on</option>\n'
+    '            <option value="off">Answer choices off</option>\n'
+    '          </select>\n'
+    '        </label>', count=1)
+rep('    ncCount:Math.max(0,Math.min(60,+tCtlVal("ncCountIn",hidCtl.nc)||0)),\n',
+    '    ncCount:Math.max(0,Math.min(60,+tCtlVal("ncCountIn",hidCtl.nc)||0)),\n'
+    '    bimodal:tCtlVal("bmIn",hidCtl.bm)!=="off",\n', count=1)
+rep('  if(s.ncCount!==5)p.set("nc",s.ncCount);\n',
+    '  if(s.ncCount!==5)p.set("nc",s.ncCount);\n'
+    '  if(!s.bimodal)p.set("bm","0");\n', count=1)
+rep('  if(p.get("nc")!==null)$("ncCountIn").value=p.get("nc");\n',
+    '  if(p.get("nc")!==null)$("ncCountIn").value=p.get("nc");\n'
+    '  if(p.get("bm")==="0"){hidCtl.bm="off";if($("bmIn"))$("bmIn").value="off";}\n', count=1)
+rep('    "Constructed Response":"Réponse construite",\n',
+    '    "Constructed Response":"Réponse construite",\n'
+    '    "Dual-form questions":"Questions à double forme",\n'
+    '    "Answer choices on":"Avec les choix de réponses",\n'
+    '    "Answer choices off":"Sans les choix de réponses",\n', count=1)
+# Class (b) stripped items self-check online whatever their answer length.
+rep('function isProseText(q){return !!q&&q.type==="text"&&!!q.answers&&q.answers.length>0&&Math.min.apply(null,q.answers.map(function(a){return String(a).length;}))>PROSE_TEXT_MIN;}',
+    'function isProseText(q){return !!q&&q.type==="text"&&((q.selfCheck===true)||(!!q.answers&&q.answers.length>0&&Math.min.apply(null,q.answers.map(function(a){return String(a).length;}))>PROSE_TEXT_MIN));}', count=1)
+# Sheets: with the choices off, bimodal entries join the constructed part
+# (and leave the multiple-choice part); fixType strips their draws
+# instead of redrawing them into another shape.
+rep('  var mc=drawSet(s.units,s.inds,s.mcCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)==="mc";});',
+    '  var mc=drawSet(s.units,s.inds,s.mcCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)==="mc"&&(!bimodalClass(e)||s.bimodal);});', count=1)
+rep('  var nc=drawSet(s.units,s.inds,s.ncCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)!=="mc";});',
+    '  var nc=drawSet(s.units,s.inds,s.ncCount,s.mix,s.order,s.finalCap?"final":s.midCap,function(e){return probeType(e)!=="mc"||(!s.bimodal&&!!bimodalClass(e));});', count=1)
+rep('  function fixType(q,wantMc){\n'
+    '    var tries=0;\n',
+    '  function fixType(q,wantMc){\n'
+    '    if(!wantMc&&!s.bimodal&&q.type==="mc"&&bimodalClass(q._entry))return stripQ(q);\n'
+    '    var tries=0;\n', count=1)
+# Online practice: with the choices off, any bimodal draw is stripped.
+rep('  lastSettings=s;onlineThin=res.thin;T=null;',
+    '  lastSettings=s;onlineThin=res.thin;T=null;\n'
+    '  if(!s.bimodal)current=current.map(function(q){return (q.type==="mc"&&bimodalClass(q._entry))?stripQ(q):q;});', count=1)
+# Exams: the composer reads the toggle through the BIMODAL_OFF global.
+rep('  var ex=withSeed(_sd,function(){return _plan?composeExam(s.units,s.inds,pkOn,_plan):composeExam(s.units,s.inds,pkOn);});',
+    '  BIMODAL_OFF=!s.bimodal;\n'
+    '  var ex=withSeed(_sd,function(){return _plan?composeExam(s.units,s.inds,pkOn,_plan):composeExam(s.units,s.inds,pkOn);});', count=1)
+# Answer keys: a stripped item's key is the correct option's own text.
+rep('var ans=q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmtAns(q.answer):esc(q.answers[0]));',
+    'var ans=q.answerText?esc(q.answerText):(q.type==="mc"?esc(q.options[q.correct]):(q.type==="num"?fmtAns(q.answer):esc(q.answers[0])));', count=2)
+# Teacher machinery: raw slots carry the stripped answer text and the
+# self-check flag; stream candidates for a non-mc slot are stripped at
+# the draw, so frozen slots, set codes and number redraws all keep the
+# stripped form with the same stream coordinates.
+rep('function tRawQ(q){var r={p:q.prompt,t:q.type,s:q.solution};if(q.type==="mc"){r.o=q.options;r.c=q.correct;}else if(q.type==="num"){r.a=q.answer;r.to=q.tol;}else{r.an=q.answers;}if(q.figure)r.f=q.figure;return r;}',
+    'function tRawQ(q){var r={p:q.prompt,t:q.type,s:q.solution};if(q.type==="mc"){r.o=q.options;r.c=q.correct;}else if(q.type==="num"){r.a=q.answer;r.to=q.tol;}else{r.an=q.answers;}if(q.answerText)r.at=q.answerText;if(q.selfCheck)r.sc=1;if(q.figure)r.f=q.figure;return r;}', count=1)
+rep('function tCanMake(e,type){for(var k=0;k<8;k++){try{var q=e.gen();if(q&&q.type===type)return true;}catch(err){}}return false;}',
+    'function tCanMake(e,type){if(type&&type!=="mc"&&bimodalClass(e))return true;for(var k=0;k<8;k++){try{var q=e.gen();if(q&&q.type===type)return true;}catch(err){}}return false;}', count=1)
+rep('    var k,cand;\n'
+    '    for(k=0;k<60;k++){cand=e.gen();cand._entry=e;\n'
+    '      if(wantType&&cand.type!==wantType)continue;\n'
+    '      if(avoid&&avoid[canonQ(cand)])continue;\n'
+    '      return {q:cand,idx:k};}\n'
+    '    for(k=60;k<120;k++){cand=e.gen();cand._entry=e;\n'
+    '      if(wantType&&cand.type!==wantType)continue;\n'
+    '      return {q:cand,idx:k};}\n'
+    '    cand=e.gen();cand._entry=e;return {q:cand,idx:120};',
+    '    var k,cand;\n'
+    '    for(k=0;k<60;k++){cand=e.gen();cand._entry=e;if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);\n'
+    '      if(wantType&&cand.type!==wantType)continue;\n'
+    '      if(avoid&&avoid[canonQ(cand)])continue;\n'
+    '      return {q:cand,idx:k};}\n'
+    '    for(k=60;k<120;k++){cand=e.gen();cand._entry=e;if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);\n'
+    '      if(wantType&&cand.type!==wantType)continue;\n'
+    '      return {q:cand,idx:k};}\n'
+    '    cand=e.gen();cand._entry=e;if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);return {q:cand,idx:120};', count=1)
+rep('  var best=null,k,cand;\n'
+    '  for(k=0;k<60;k++){cand=e.gen();cand._entry=e;if(wantType&&cand.type!==wantType)continue;if(avoid&&avoid[canonQ(cand)])continue;best=cand;break;}\n'
+    '  if(!best){for(k=0;k<60;k++){cand=e.gen();cand._entry=e;if(wantType&&cand.type!==wantType)continue;best=cand;break;}}\n'
+    '  if(!best){best=e.gen();best._entry=e;}',
+    '  var best=null,k,cand;\n'
+    '  for(k=0;k<60;k++){cand=e.gen();cand._entry=e;if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);if(wantType&&cand.type!==wantType)continue;if(avoid&&avoid[canonQ(cand)])continue;best=cand;break;}\n'
+    '  if(!best){for(k=0;k<60;k++){cand=e.gen();cand._entry=e;if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);if(wantType&&cand.type!==wantType)continue;best=cand;break;}}\n'
+    '  if(!best){best=e.gen();best._entry=e;if(wantType&&wantType!=="mc"&&best.type==="mc"&&bimodalClass(e))best=stripQ(best);}', count=1)
+rep('        var cand=e.gen();cand._entry=e;\n'
+    '        if(!tTypeOk(cand,wantType))continue;',
+    '        var cand=e.gen();cand._entry=e;\n'
+    '        if(wantType&&wantType!=="mc"&&cand.type==="mc"&&bimodalClass(e))cand=stripQ(cand);\n'
+    '        if(!tTypeOk(cand,wantType))continue;', count=1)
+rep('function tTypeOk(q,wantType){',
+    'function tStripSlot(q){if(!q||q.type!=="mc"||!bimodalClass(q._entry))return q;var s2=stripQ(q);if(s2._ts)s2._ts={n:s2._ts.n,i:s2._ts.i,t:s2.type,raw:s2._ts.raw?tRawQ(s2):null};return s2;}\n'
+    'function tTypeOk(q,wantType){', count=1)
+rep('  if(raw){q={prompt:raw.p,type:raw.t,solution:raw.s,_entry:e};if(raw.o){q.options=raw.o;q.correct=raw.c;}if(raw.t==="num"){q.answer=raw.a;q.tol=raw.to;}else if(raw.an){q.answers=raw.an;}if(raw.f)q.figure=raw.f;}\n'
+    '  else{q=tStreamDraw(e,n,idx,salt);}',
+    '  if(raw){q={prompt:raw.p,type:raw.t,solution:raw.s,_entry:e};if(raw.o){q.options=raw.o;q.correct=raw.c;}if(raw.t==="num"){q.answer=raw.a;q.tol=raw.to;}else if(raw.an){q.answers=raw.an;}if(raw.at)q.answerText=raw.at;if(raw.sc)q.selfCheck=true;if(raw.f)q.figure=raw.f;}\n'
+    '  else{q=tStreamDraw(e,n,idx,salt);}\n'
+    '  var declT=raw?raw.t:(at<0?(tok.slice(-1)==="N"?"num":(tok.slice(-1)==="T"?"text":"mc")):"mc");\n'
+    '  if(q.type==="mc"&&declT!=="mc"&&bimodalClass(e))q=stripQ(q);', count=1)
+# Teacher picks, swaps and adds into Section B insert bimodal entries
+# stripped; online picks follow the set's toggle the same way.
+rep('    it.q=tFreezeSlot(e2,section==="sr"?"mc":null,avoid,T.salt);',
+    '    it.q=tFreezeSlot(e2,section==="sr"?"mc":null,avoid,T.salt);if(section==="cr")it.q=tStripSlot(it.q);', count=1)
+rep('it.q=useQ?tAdoptPicked(e3,useQ,avoid):tFreezeSlot(e3,section==="sr"?"mc":null,avoid,T.salt);if(section==="cr")it.marks=CR_MARKS[e3.id];',
+    'it.q=useQ?tAdoptPicked(e3,useQ,avoid):tFreezeSlot(e3,section==="sr"?"mc":null,avoid,T.salt);if(section==="cr")it.q=tStripSlot(it.q);if(section==="cr")it.marks=CR_MARKS[e3.id];', count=1)
+rep('  else ex.crItems.push({q:useQ?tAdoptPicked(e,useQ,avoid):tFreezeSlot(e,null,avoid,T.salt),marks:CR_MARKS[e.id]});',
+    '  else{var _aq=useQ?tAdoptPicked(e,useQ,avoid):tFreezeSlot(e,null,avoid,T.salt);ex.crItems.push({q:tStripSlot(_aq),marks:CR_MARKS[e.id]});}', count=1)
+rep('current[i]=(pickedQ&&pickedQ._entry===e2&&!avoid[canonQ(pickedQ)])?tAdoptPicked(e2,pickedQ,avoid):tFreezeSlot(e2,null,avoid,T.salt);T.edited=true;',
+    'current[i]=(pickedQ&&pickedQ._entry===e2&&!avoid[canonQ(pickedQ)])?tAdoptPicked(e2,pickedQ,avoid):tFreezeSlot(e2,null,avoid,T.salt);if(lastSettings&&lastSettings.bimodal===false)current[i]=tStripSlot(current[i]);T.edited=true;', count=1)
+rep('  current.push((pickedQ&&pickedQ._entry===e&&!avoid[canonQ(pickedQ)])?tAdoptPicked(e,pickedQ,avoid):tFreezeSlot(e,null,avoid,T.salt));',
+    '  current.push((pickedQ&&pickedQ._entry===e&&!avoid[canonQ(pickedQ)])?tAdoptPicked(e,pickedQ,avoid):tFreezeSlot(e,null,avoid,T.salt));if(lastSettings&&lastSettings.bimodal===false)current[current.length-1]=tStripSlot(current[current.length-1]);', count=1)
+
+# ---------- Shell fixes (owner direction, November 20, 2026) ----------
+# Three fixes from the owner's review of the live shell the same day.
+# 1. The prior knowledge switch in the builder stacked its checkbox
+#    above its label, because .adv label lays its contents out as a
+#    column. The switch renders exactly once (the builder row; the
+#    teacher bar copy was removed on Nov 18, 2026), so one label is
+#    affected: it takes the shell's own checkbox-label class (chk,
+#    as the accessibility checkboxes use), and a scoped rule lays an
+#    .adv checkbox label out as a row, following the .a11yGrid
+#    label.chk precedent.
+# 2. The course page header was crowded: the All courses pill sat
+#    tight under the course title. The Gemini style package's header
+#    treatment (Style-Proposal-Analysis-2026-11-20.md) gives the h1
+#    30px margins top and bottom; Phase C took the size only, because
+#    the base h1 rule also reaches the printed sheets' headings. The
+#    margins are now applied scoped to the course page title
+#    (#appTitle), so the header stack (logo, title, pill) gets the
+#    suggested air and nothing outside the header moves: the picker
+#    heading and every printed heading keep the base rule.
+# 3. The face card Start button, pressed with no units selected,
+#    opened the builder and scrolled it into view, carrying the user
+#    down the page. It now opens the builder in place, with no
+#    scroll: the builder shows the selection state as it stands (no
+#    units checked, the question count untouched) for the user to
+#    see and change before proceeding. A selection made by hand, or
+#    applied from a seeded link by applyURL, still goes straight to
+#    the questions through startOnline, exactly as before.
+rep('  .adv label{font-size:.85rem;display:flex;flex-direction:column;gap:4px;}',
+    '  .adv label{font-size:.85rem;display:flex;flex-direction:column;gap:4px;}\n'
+    '  .adv label.chk{flex-direction:row;align-items:center;gap:6px;}',
+    count=1)  # PK switch label lays out as a row
+rep('      <label><input type="checkbox" id="pkInChk"> Include prior knowledge questions</label>',
+    '      <label class="chk"><input type="checkbox" id="pkInChk"> Include prior knowledge questions</label>',
+    count=1)  # PK switch label takes the checkbox-label class
+rep('  h1{font-size:1.55rem;margin:0 0 8px;}',
+    '  h1{font-size:1.55rem;margin:0 0 8px;}\n'
+    '  #appTitle{margin:30px 0 30px;}',
+    count=1)  # header air, scoped to the course page title
+rep('$("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;bb.scrollIntoView({behavior:scrollBehavior()});return;}startOnline();});',
+    '$("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;return;}startOnline();});',
+    count=1)  # Start with no selection opens the builder without scrolling
+
+# ---------- Option lettering on sheets and online (owner direction, November 20, 2026) ----------
+# The exam and test paper has always lettered its multiple choice
+# options (bold A. to D.), and its answer keys cite the letter. The
+# practice sheet and the online practice view never did: the sheet
+# marked each option with an open circle and the online view showed
+# bare radio buttons, so a teacher could not refer to "option B" on
+# the two surfaces students use most. The five reps below letter
+# every remaining option list in the exam paper's format:
+#   1. online practice (renderOnline): the letter follows the radio
+#      input; the input, its name and value are untouched, so
+#      checking, resume and shuffle behaviour are unchanged. The
+#      prerequisite check and the student set view render through
+#      this same function, so they are lettered by the same rep.
+#   2. the practice sheet (renderSheet): the circle bullet is
+#      replaced by the bold letter, character for character the
+#      exam paper's label.
+#   3. the worked example (renderExample): lettered the same way;
+#      the correct option keeps its check mark.
+#   4. the teacher question prompt (tQPromptHtml, the question shown
+#      in the exam and sheet teacher panels): lettered to match
+#      what students see.
+#   5. the practice sheet answer key: a multiple choice answer now
+#      cites its letter in parentheses before the answer text, as
+#      the exam key does; the Word export walker keys its own
+#      letter insertion off the answer element's bare text, finds
+#      the letter already present and falls back to a plain walk,
+#      so the letter lands exactly once in the Word file too.
+# The Word and Docs export paths needed no change: the walker's
+# optText already strips a leading "A. " prefix as well as the
+# circle, and the exam paper has always sent lettered labels
+# through the same walker. The walker's circle branch stays: a
+# teacher-edited sheet can still carry a hand-typed circle label,
+# and the branch letters it in the Word file as before.
+rep('      html+=\'<div class="opts">\'+q.options.map(function(o,j){return \'<label><input type="radio" name="opt\'+i+\'" value="\'+j+\'"> <span>\'+o+\'</span></label>\';}).join("")+\'</div>\';',
+    '      html+=\'<div class="opts">\'+q.options.map(function(o,j){return \'<label><input type="radio" name="opt\'+i+\'" value="\'+j+\'"> <b>\'+"ABCD"[j]+\'.</b> <span>\'+o+\'</span></label>\';}).join("")+\'</div>\';',
+    count=1)  # online practice options carry their letter
+rep('    if(q.type==="mc"){html+=\'<div class="opts">\'+q.options.map(function(o){return \'<label style="display:block;margin:4px 0;">\\u25CB \'+o+\'</label>\';}).join("")+\'</div>\';}',
+    '    if(q.type==="mc"){html+=\'<div class="opts">\'+q.options.map(function(o,oi){return \'<label style="display:block;margin:4px 0;"><b>\'+"ABCD"[oi]+\'.</b> \'+o+\'</label>\';}).join("")+\'</div>\';}',
+    count=1)  # practice sheet options lettered, exam format
+rep('  if(exq.type==="mc"){h+=\'<div class="opts">\'+exq.options.map(function(o,j){return "<label>\\u25CB "+o+(j===exq.correct?" <b>\\u2713 "+L9("correct","bonne réponse")+"</b>":"")+"</label>";}).join("")+"</div>";}',
+    '  if(exq.type==="mc"){h+=\'<div class="opts">\'+exq.options.map(function(o,j){return "<label><b>"+"ABCD"[j]+".</b> "+o+(j===exq.correct?" <b>\\u2713 "+L9("correct","bonne réponse")+"</b>":"")+"</label>";}).join("")+"</div>";}',
+    count=1)  # worked example options lettered
+rep('  if(q.type==="mc"&&q.options)h+=\'<div class="opts">\'+q.options.map(function(o){return \'<div>\\u25CB \'+(typeof o==="string"?o:o.t)+\'</div>\';}).join("")+\'</div>\';',
+    '  if(q.type==="mc"&&q.options)h+=\'<div class="opts">\'+q.options.map(function(o,oi){return \'<div><b>\'+"ABCD"[oi]+\'.</b> \'+(typeof o==="string"?o:o.t)+\'</div>\';}).join("")+\'</div>\';',
+    count=1)  # teacher panel question prompt lettered
+rep('    html+=\'<div class="solp"><p><b>\'+(i+1)+\'.</b> \'+L9("Answer: ","Réponse : ")+\'<b>\'+ans+\'</b></p><div style="line-height:1.5;font-size:.92rem;">\'+stepHTML(q.solution)+\'</div></div>\';',
+    '    html+=\'<div class="solp"><p><b>\'+(i+1)+\'.</b> \'+L9("Answer: ","Réponse : ")+\'<b>\'+(q.type==="mc"&&typeof q.correct==="number"?"("+"ABCD"[q.correct]+") ":"")+ans+\'</b></p><div style="line-height:1.5;font-size:.92rem;">\'+stepHTML(q.solution)+\'</div></div>\';',
+    count=1)  # sheet answer key cites the letter for multiple choice
+
+# ---------- Per-question dual-form flip in the exam teacher panel (owner direction, November 20, 2026) ----------
+# In the teacher panel on a composed exam paper, each dual-form
+# question now carries a small Choices off or Choices on button
+# beside the other per-question controls. Flipping moves the
+# question to the other section in the other form, preserving the
+# sections convention (Section A selected response first, Section B
+# constructed response last): choices off strips the question
+# through the existing tStripSlot, so its saved set token records
+# the written form exactly as a composed Section B slot does, and
+# the question lands in Section B at its CR_MARKS value; choices on
+# redraws the slot's own stream candidate, the multiple choice
+# question the stripped form came from, so the identical question
+# returns to Section A at one mark. A raw-frozen slot (a bank pick,
+# or a set adopted from a seed) keeps only its stripped form, so
+# choices on there freezes a fresh multiple choice draw of the same
+# entry, the same fallback the slot machinery already uses when a
+# stored form cannot be redrawn. Section totals and the paper total
+# recompute because renderExam recomputes them from the item lists
+# on every render. The flip stands down in test scope (a mapped
+# test, or a single-unit paper, which is a unit test): there the
+# blueprint governs each question's form, the same line the
+# composer's bimodal rule and the builder's dual-form toggle
+# observe, so no button is rendered there at all. Four reps:
+#   1. the helpers after tStripSlot: tFlipStandsDown, tFlipDir,
+#      tFlipHtml and tUnstripSlot.
+#   2. the exam panel row renders the button between Remove and
+#      the move buttons.
+#   3. tWireExam wires data-tflip to the new tOpExam op.
+#   4. tOpExam gains the flip op: splice from one section, push
+#      into the other at the travelling marks, mark edited, render.
+rep('function tStripSlot(q){if(!q||q.type!=="mc"||!bimodalClass(q._entry))return q;var s2=stripQ(q);if(s2._ts)s2._ts={n:s2._ts.n,i:s2._ts.i,t:s2.type,raw:s2._ts.raw?tRawQ(s2):null};return s2;}',
+    'function tStripSlot(q){if(!q||q.type!=="mc"||!bimodalClass(q._entry))return q;var s2=stripQ(q);if(s2._ts)s2._ts={n:s2._ts.n,i:s2._ts.i,t:s2.type,raw:s2._ts.raw?tRawQ(s2):null};return s2;}\n'
+    +'/* Per-question dual-form flip (Nov 20, 2026): see tFlipDir. */\n'
+    +'function tFlipStandsDown(){\n'
+    +'  if(typeof examState==="undefined"||!examState)return true;\n'
+    +'  if(examState.testScope||examState.single)return true;\n'
+    +'  if(typeof T!=="undefined"&&T&&T.scope&&T.scope.test)return true;\n'
+    +'  return false;\n'
+    +'}\n'
+    +'function tFlipDir(section,it){\n'
+    +'  var q=it&&it.q,e=q&&q._entry;\n'
+    +'  if(!e||!bimodalClass(e)||tFlipStandsDown())return null;\n'
+    +'  if(section==="sr")return q.type==="mc"?"off":null;\n'
+    +'  return q.type==="mc"?null:"on";\n'
+    +'}\n'
+    +'function tFlipHtml(section,it,i){\n'
+    +'  var d=tFlipDir(section,it);if(!d)return "";\n'
+    +'  return \'<button type="button" class="alt" data-tflip="\'+section+":"+i+\'">\'+(d==="off"?"Choices off":"Choices on")+"</button>";\n'
+    +'}\n'
+    +'function tUnstripSlot(q){\n'
+    +'  if(!q||q.type==="mc"||!bimodalClass(q._entry))return null;\n'
+    +'  var e=q._entry,ts=q._ts;\n'
+    +'  if(ts&&!ts.raw&&typeof T!=="undefined"&&T){\n'
+    +'    var cand=tStreamDraw(e,ts.n||0,ts.i||0,T.salt);\n'
+    +'    if(cand&&cand.type==="mc"){cand._tuid="u"+(++_tUid);cand._ts={n:ts.n||0,i:ts.i||0,t:"mc",raw:null};return cand;}\n'
+    +'  }\n'
+    +'  if(typeof T==="undefined"||!T||typeof examState==="undefined"||!examState)return null;\n'
+    +'  var fq=tFreezeSlot(e,"mc",tAvoidAll(tExamAllQ()),T.salt);\n'
+    +'  return (fq&&fq.type==="mc")?fq:null;\n'
+    +'}',
+    count=1)  # dual-form flip helpers after tStripSlot
+rep('data-trem="\'+section+":"+i+\'">Remove</button>\'+tMoveHtml(section+":"+i,i,section==="sr"?ex.srItems.length:ex.crItems.length)',
+    'data-trem="\'+section+":"+i+\'">Remove</button>\'+tFlipHtml(section,it,i)+tMoveHtml(section+":"+i,i,section==="sr"?ex.srItems.length:ex.crItems.length)',
+    count=1)  # exam panel row carries the flip button
+rep('  wire("data-trem",function(sec,i){tOpExam(sec,"remove",i);});',
+    '  wire("data-trem",function(sec,i){tOpExam(sec,"remove",i);});\n'
+    +'  wire("data-tflip",function(sec,i){tOpExam(sec,"flip",i);});',
+    count=1)  # flip button wiring in the exam panel
+rep('  var avoid=tAvoidAll(tExamAllQ());\n  var wantType=section==="sr"?"mc":it.q.type;',
+    '  if(op==="flip"){\n'
+    +'    var dir=tFlipDir(section,it);if(!dir)return;\n'
+    +'    if(dir==="off"){\n'
+    +'      var sq=tStripSlot(it.q);if(sq===it.q)return;\n'
+    +'      ex.srItems.splice(i,1);\n'
+    +'      ex.crItems.push({q:sq,marks:(typeof CR_MARKS!=="undefined"&&CR_MARKS[it.q._entry.id])||2});\n'
+    +'    }else{\n'
+    +'      var mq=tUnstripSlot(it.q);if(!mq)return;\n'
+    +'      ex.crItems.splice(i,1);\n'
+    +'      ex.srItems.push({q:mq,marks:1});\n'
+    +'    }\n'
+    +'    T.edited=true;renderExam();return;\n'
+    +'  }\n'
+    +'  var avoid=tAvoidAll(tExamAllQ());\n  var wantType=section==="sr"?"mc":it.q.type;',
+    count=1)  # the flip op in tOpExam
+
+# ---------- Builder UI: prominent counts, test preset summary and steppers (owner direction, November 20, 2026) ----------
+# Two moves in the builder, both presentation-level: the settings
+# machinery (ids, settings(), the teacher-gate stash and the URL
+# parameters) is untouched, so every existing read resolves exactly
+# as before.
+#   1. The Multiple choice and Constructed Response count controls
+#      and the Dual-form questions select leave the bottom of the
+#      "Print a sheet or exam" panel and sit directly under the
+#      scope selection (units, then indicators), where a teacher
+#      setting up a paper looks first. The print panel keeps only
+#      its print-only choices: answer key, set code and QR, and
+#      the two working space selectors.
+#   2. The single-test scope row gains a preset summary and two
+#      steppers. The summary (testPlanSummary) reports what the
+#      mapped test composes: it trial-composes the test from the
+#      live plan (testPlanFor) at sync time and reports the dealt
+#      selected response count, constructed response items and
+#      marks and the total, falling back to the plan's own targets
+#      when no paper can be dealt yet, so the figures always come
+#      from the composition and plan data of the moment, never
+#      from constants a later plan change would strand. The
+#      steppers (More multiple choice, More written) are teacher
+#      controls on the counts pattern: stashed by tGateStudentUI,
+#      read by settings() as testXMc and testXCr, carried by the
+#      settings URL as txmc and txcr. In startExam, when a mapped
+#      test is active and either stepper is above zero,
+#      extendTestPaper extends the composed blueprint paper after
+#      composition: extra selected response items and extra
+#      constructed response items (each at its CR_MARKS value,
+#      bimodal entries stripped, as the composer's own test-scope
+#      draw deals them) drawn from the same pool the composer
+#      built for the test (same units, indicators, scope cap and
+#      topic slices), preferring entries the paper has not dealt,
+#      with no entry in both sections. The blueprint stays the
+#      floor and governs composition itself; the steppers at zero
+#      compose exactly the blueprint paper. A shortfall against a
+#      stepper flags the paper short, the honest signal the
+#      composer already uses. The saved set records the dealt
+#      questions as usual, so student links and print show the
+#      extended paper with its real totals.
+rep('      <div class="adv">\n'
+    +'        <label>Multiple choice\n'
+    +'          <input type="number" id="mcCountIn" min="0" max="60" value="10">\n'
+    +'        </label>\n'
+    +'        <label>Constructed Response\n'
+    +'          <input type="number" id="ncCountIn" min="0" max="60" value="5">\n'
+    +'        </label>\n'
+    +'        <label>Dual-form questions\n'
+    +'          <select id="bmIn">\n'
+    +'            <option value="on" selected>Answer choices on</option>\n'
+    +'            <option value="off">Answer choices off</option>\n'
+    +'          </select>\n'
+    +'        </label>\n'
+    +'        <label><input type="checkbox" id="keyChk" checked> Include answer key</label>',
+    '      <div class="adv">\n'
+    +'        <label><input type="checkbox" id="keyChk" checked> Include answer key</label>',
+    count=1)  # counts and dual-form select leave the print panel
+rep('    <div class="indbox" id="indBox"></div>\n'
+    +'    <div class="adv" id="pkInRow" hidden>',
+    '    <div class="indbox" id="indBox"></div>\n'
+    +'    <div class="adv">\n'
+    +'      <label>Multiple choice\n'
+    +'        <input type="number" id="mcCountIn" min="0" max="60" value="10">\n'
+    +'      </label>\n'
+    +'      <label>Constructed Response\n'
+    +'        <input type="number" id="ncCountIn" min="0" max="60" value="5">\n'
+    +'      </label>\n'
+    +'      <label>Dual-form questions\n'
+    +'        <select id="bmIn">\n'
+    +'          <option value="on" selected>Answer choices on</option>\n'
+    +'          <option value="off">Answer choices off</option>\n'
+    +'        </select>\n'
+    +'      </label>\n'
+    +'    </div>\n'
+    +'    <div class="adv" id="pkInRow" hidden>',
+    count=1)  # counts and dual-form select sit under the scope selection
+rep('      <span class="hint" id="testScopeNote"></span>\n'
+    +'    </div>',
+    '      <span class="hint" id="testScopeNote"></span>\n'
+    +'      <span class="hint" id="testPlanNote"></span>\n'
+    +'      <label>More multiple choice\n'
+    +'        <input type="number" id="testXMcIn" min="0" max="30" value="0">\n'
+    +'      </label>\n'
+    +'      <label>More written\n'
+    +'        <input type="number" id="testXCrIn" min="0" max="20" value="0">\n'
+    +'      </label>\n'
+    +'    </div>',
+    count=1)  # test row gains the preset summary and the two steppers
+rep('    "Dual-form questions":"Questions à double forme",',
+    '    "Dual-form questions":"Questions à double forme",\n'
+    +'    "More multiple choice":"Plus de choix multiples",\n'
+    +'    "More written":"Plus de réponses écrites",',
+    count=1)  # French statics for the stepper labels
+rep('pkGroups:null,bm:"on"};',
+    'pkGroups:null,bm:"on",txmc:0,txcr:0};',
+    count=1)  # stepper fallbacks join the teacher-gate stash
+rep('pi=$("pkInChk"),bm=$("bmIn");',
+    'pi=$("pkInChk"),bm=$("bmIn"),xm=$("testXMcIn"),xc=$("testXCrIn");',
+    count=1)  # tGateStudentUI reads the stepper inputs
+rep('  if(bm)hidCtl.bm=bm.value;',
+    '  if(bm)hidCtl.bm=bm.value;\n'
+    +'  if(xm)hidCtl.txmc=xm.value;\n'
+    +'  if(xc)hidCtl.txcr=xc.value;',
+    count=1)  # stepper values stashed before the student gate
+rep('["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk","bmIn"].forEach(function(id){',
+    '["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk","bmIn","testXMcIn","testXCrIn"].forEach(function(id){',
+    count=1)  # steppers are teacher controls, removed for students
+rep('    mcCount:Math.max(0,Math.min(60,+tCtlVal("mcCountIn",hidCtl.mc)||0)),\n'
+    +'    ncCount:Math.max(0,Math.min(60,+tCtlVal("ncCountIn",hidCtl.nc)||0)),',
+    '    mcCount:Math.max(0,Math.min(60,+tCtlVal("mcCountIn",hidCtl.mc)||0)),\n'
+    +'    ncCount:Math.max(0,Math.min(60,+tCtlVal("ncCountIn",hidCtl.nc)||0)),\n'
+    +'    testXMc:Math.max(0,Math.min(30,+tCtlVal("testXMcIn",hidCtl.txmc)||0)),\n'
+    +'    testXCr:Math.max(0,Math.min(20,+tCtlVal("testXCrIn",hidCtl.txcr)||0)),',
+    count=1)  # settings() reads the steppers
+rep('  if(s.mcCount!==10)p.set("mc",s.mcCount);\n'
+    +'  if(s.ncCount!==5)p.set("nc",s.ncCount);',
+    '  if(s.mcCount!==10)p.set("mc",s.mcCount);\n'
+    +'  if(s.ncCount!==5)p.set("nc",s.ncCount);\n'
+    +'  if(s.testXMc)p.set("txmc",s.testXMc);\n'
+    +'  if(s.testXCr)p.set("txcr",s.testXCr);',
+    count=1)  # settings URL carries the steppers
+rep('  if(p.get("mc")!==null)$("mcCountIn").value=p.get("mc");\n'
+    +'  if(p.get("nc")!==null)$("ncCountIn").value=p.get("nc");',
+    '  if(p.get("mc")!==null)$("mcCountIn").value=p.get("mc");\n'
+    +'  if(p.get("nc")!==null)$("ncCountIn").value=p.get("nc");\n'
+    +'  if(p.get("txmc")!==null&&$("testXMcIn"))$("testXMcIn").value=p.get("txmc");\n'
+    +'  if(p.get("txcr")!==null&&$("testXCrIn"))$("testXCrIn").value=p.get("txcr");',
+    count=1)  # applyURL restores the steppers
+rep('  return {unit:s.testSel.unit,test:s.testSel.test,inds:e.inds.slice(),topics:e.topics||null};\n}',
+    '  return {unit:s.testSel.unit,test:s.testSel.test,inds:e.inds.slice(),topics:e.topics||null};\n'
+    +'}\n'
+    +'function testPlanSummary(sel){\n'
+    +'  /* What the mapped test composes, read from the live plan\n'
+    +'     and a trial composition at sync time (Nov 20, 2026): the\n'
+    +'     dealt counts of an actual composeExam paper for the\n'
+    +'     test, falling back to the plan targets when no paper can\n'
+    +'     be dealt yet (the bank still loading, an empty pool).\n'
+    +'     Nothing here is a constant: when the test plan changes,\n'
+    +'     the summary follows it. */\n'
+    +'  var C=window.__COURSE,plan=testPlanFor(C,sel.unit,sel.test);\n'
+    +'  if(!plan)return "";\n'
+    +'  var sr=plan.sr,crM=plan.cr,crN=null,tot=plan.sr+plan.cr;\n'
+    +'  var act=testSelActive({units:state.units,inds:state.inds,testSel:sel});\n'
+    +'  if(act){\n'
+    +'    try{\n'
+    +'      var ex=composeExam([sel.unit],act.inds,tPkOn(),plan);\n'
+    +'      if(ex&&(ex.srItems.length||ex.crItems.length)){sr=ex.srItems.length;crN=ex.crItems.length;crM=ex.crMarks;tot=ex.total;}\n'
+    +'    }catch(e){}\n'
+    +'  }\n'
+    +'  var out=L9("Test plan: ","Plan du test : ")+sr+L9(" selected response, "," réponses choisies, ")+(crN===null?"":crN+" ")+L9("constructed response (","réponses construites (")+crM+L9(" marks), "," points), ")+tot+L9(" marks in total."," points au total.");\n'
+    +'  var xm=Math.max(0,Math.min(30,+tCtlVal("testXMcIn",hidCtl.txmc)||0)),xc=Math.max(0,Math.min(20,+tCtlVal("testXCrIn",hidCtl.txcr)||0));\n'
+    +'  if(xm>0||xc>0){\n'
+    +'    var adds=[];\n'
+    +'    if(xm>0)adds.push(xm+L9(" more multiple choice"," choix multiples de plus"));\n'
+    +'    if(xc>0)adds.push(xc+L9(" more written"," réponses écrites de plus"));\n'
+    +'    out+=L9(" Plus your additions: "," Plus tes ajouts : ")+adds.join(", ")+".";\n'
+    +'  }\n'
+    +'  return out;\n'
+    +'}\n'
+    +'function extendTestPaper(ex,s,plan){\n'
+    +'  /* Teacher steppers on a mapped test (Nov 20, 2026): extend\n'
+    +'     the composed blueprint paper with extra questions drawn\n'
+    +'     from the same pool the composer built for the test, the\n'
+    +'     composer filters mirrored (scope cap, prior\n'
+    +'     knowledge practice rule, enrichment and noCompose out,\n'
+    +'     the plans topic slices). Selected response extras are\n'
+    +'     single marks; written extras are whole items at their\n'
+    +'     CR_MARKS value, bimodal entries stripped, exactly as\n'
+    +'     the test-scope draw deals them. An entry the\n'
+    +'     paper already deals is not dealt again while undealt\n'
+    +'     entries remain, and no entry lands in both sections.\n'
+    +'     The blueprint is untouched: at zero the paper is the\n'
+    +'     blueprint paper exactly, and a shortfall against a\n'
+    +'     stepper flags the paper short rather than inventing\n'
+    +'     questions. */\n'
+    +'  var xMc=s.testXMc||0,xCr=s.testXCr||0;\n'
+    +'  if(xMc<=0&&xCr<=0)return;\n'
+    +'  var C=window.__COURSE||{};\n'
+    +'  var pool=poolFor(s.units,s.inds,scopeCap(s.units));\n'
+    +'  if(C.pkPracticeOnly&&!tPkOn())pool=pool.filter(function(e){return !isPK(e);});\n'
+    +'  pool=pool.filter(function(e){return !e.enrich&&!e.noCompose;});\n'
+    +'  if(plan&&plan.topics)pool=pool.filter(function(e){return e.indicators.every(function(c){var t=plan.topics[c];return !t||e.topic===t;});});\n'
+    +'  var seen={},used={};\n'
+    +'  ex.srItems.concat(ex.crItems).forEach(function(it){seen[canonQ(it.q)]=1;used[it.q._entry.id]=1;});\n'
+    +'  function genFrom(e){var q=e.gen();q._entry=e;return q;}\n'
+    +'  var gotMc=0;\n'
+    +'  if(xMc>0){\n'
+    +'    var srC=shuffle(pool.filter(function(e){return probeType(e)==="mc"&&!used[e.id];}));\n'
+    +'    for(var i=0;i<srC.length&&gotMc<xMc;i++){\n'
+    +'      var q=null,c=null,tries=0;\n'
+    +'      do{q=genFrom(srC[i]);c=canonQ(q);tries++;}while((q.type!=="mc"||seen[c])&&tries<25);\n'
+    +'      if(q.type!=="mc"||seen[c])continue;\n'
+    +'      seen[c]=1;used[srC[i].id]=1;ex.srItems.push({q:q,marks:1});gotMc++;\n'
+    +'    }\n'
+    +'  }\n'
+    +'  var gotCr=0;\n'
+    +'  if(xCr>0){\n'
+    +'    var crC=shuffle(pool.filter(function(e){return typeof CR_MARKS!=="undefined"&&CR_MARKS[e.id]!==undefined&&CR_MARKS[e.id]>=2&&e.level>=2&&!used[e.id];}));\n'
+    +'    for(var j=0;j<crC.length&&gotCr<xCr;j++){\n'
+    +'      var cq=null,cc=null,t2=0;\n'
+    +'      do{cq=genFrom(crC[j]);if(bimodalClass(crC[j]))cq=stripQ(cq);cc=canonQ(cq);t2++;}while(seen[cc]&&t2<25);\n'
+    +'      if(seen[cc])continue;\n'
+    +'      seen[cc]=1;used[crC[j].id]=1;ex.crItems.push({q:cq,marks:CR_MARKS[crC[j].id]});gotCr++;\n'
+    +'    }\n'
+    +'  }\n'
+    +'  var byUL=function(a,b){return a.q._entry.unit-b.q._entry.unit||a.q._entry.level-b.q._entry.level;};\n'
+    +'  ex.srItems.sort(byUL);ex.crItems.sort(byUL);\n'
+    +'  ex.srMarks=ex.srItems.length;\n'
+    +'  ex.crMarks=ex.crItems.reduce(function(a,it){return a+it.marks;},0);\n'
+    +'  ex.l3Marks=ex.crItems.filter(function(it){return it.q._entry.level===3;}).reduce(function(a,it){return a+it.marks;},0);\n'
+    +'  ex.total=ex.srMarks+ex.crMarks;\n'
+    +'  if(gotMc<xMc||gotCr<xCr)ex.short=true;\n'
+    +'}',
+    count=1)  # preset summary and paper extension helpers after testSelActive
+rep('  var ex=withSeed(_sd,function(){return _plan?composeExam(s.units,s.inds,pkOn,_plan):composeExam(s.units,s.inds,pkOn);});',
+    '  var ex=withSeed(_sd,function(){var e0=_plan?composeExam(s.units,s.inds,pkOn,_plan):composeExam(s.units,s.inds,pkOn);if(e0&&_plan&&(s.testXMc>0||s.testXCr>0))extendTestPaper(e0,s,_plan);return e0;});',
+    count=1)  # startExam extends a mapped test paper by the steppers
+rep('  if(note)note.textContent=sel?L9("Practice set for "+testScopeLabel(sel)+", built from the same indicators that test covers.","Série de pratique pour "+testScopeLabel(sel)+", construite à partir des mêmes notions que couvre ce test."):"";',
+    '  if(note)note.textContent=sel?L9("Practice set for "+testScopeLabel(sel)+", built from the same indicators that test covers.","Série de pratique pour "+testScopeLabel(sel)+", construite à partir des mêmes notions que couvre ce test."):"";\n'
+    +'  var pn=$("testPlanNote");if(pn)pn.textContent=sel?testPlanSummary(sel):"";',
+    count=1)  # the test row sync refreshes the preset summary
+rep('    state.testSel={unit:u,test:n};\n'
+    +'    unitCheckboxes();renderIndicators();tTestSelSync();updatePoolInfo();\n'
+    +'  });\n'
+    +'  tTestSelSync();\n'
+    +'})();',
+    '    state.testSel={unit:u,test:n};\n'
+    +'    unitCheckboxes();renderIndicators();tTestSelSync();updatePoolInfo();\n'
+    +'  });\n'
+    +'  ["testXMcIn","testXCrIn"].forEach(function(id){var el=$(id);if(el)el.addEventListener("change",function(){tTestSelSync();});});\n'
+    +'  tTestSelSync();\n'
+    +'})();',
+    count=1)  # stepper changes refresh the preset summary
+
+# ---------- Test plan: the plan-capped combined rule (Ruling 4, November 20, 2026) ----------
+# The mapped-test composition targets in testPlanFor change from the
+# lengthening formula of earlier the same day to the plan-capped
+# combined rule the owner adopted in the evening rulings, measured
+# against the post-registration pools before this change in
+# Test-Plan-Remeasure-2026-11-20.md: SR = min(max(10, 5n), 6n, 24)
+# at per-entry instance cap 2 for a test blueprinting n indicators
+# with n at least 2, the written target held at 12 marks with no
+# step-down band, and the written set at most 8 items per paper
+# (denominations of 2 marks or more cap a 12-mark set at 6 items by
+# construction; the re-measurement dealt at most 6 on every test).
+# The eight single-indicator tests are exempt and keep the earlier
+# plan exactly. Every reader of the plan (the composer, the preset
+# summary and steppers in the builder UI section above, the start
+# wiring) reads plan.sr and plan.cr at run time, so the one function
+# carries the whole change.
+rep('  /* Composition targets for one mapped test, re-baselined\n'
+    '     November 20, 2026 (Science-Test-Lengthening-Feasibility-\n'
+    '     2026-11-20.md, Section 7; amends Spec-Test-Shaped-Practice-\n'
+    '     2026-11-19.md Section 3 decision D1): the mapped tests as\n'
+    '     first shipped were too short to read as real tests, so the\n'
+    '     target is now set by the number of blueprinted indicators\n'
+    '     on the test, not by the test\'s share of the unit test.\n'
+    '     SR = min(max(10, 3n), 4n, 18), where n is the number of\n'
+    '     indicators on the test (a topic-split indicator counts\n'
+    '     once on each test that takes a slice of it): about three\n'
+    '     selected-response items per indicator, floored at 10,\n'
+    '     capped by what four per indicator gives and by 18 overall.\n'
+    '     CR follows its band schedule: 10 marks when SR is 8 or\n'
+    '     fewer, 8 marks when SR is 9 to 14, 6 marks when SR is 15\n'
+    '     or more. A single-indicator test therefore deals to its\n'
+    '     14-mark ceiling (SR 4, CR 10); the owner\'s decision of\n'
+    '     November 20, 2026 leaves those tests at the ceiling, with\n'
+    '     no folding, merging or whole-unit option. Returns null\n'
+    '     when the course maps no such test. */',
+    '  /* Composition targets for one mapped test, re-baselined\n'
+    '     November 20, 2026 under Ruling 4 of the evening rulings\n'
+    '     (Test-Plan-Remeasure-2026-11-20.md; the plan-capped\n'
+    '     combined rule of Test-Value-Target-Audit-2026-11-20.md,\n'
+    '     with the written item cap at the owner amendment of 8):\n'
+    '     for a test blueprinting n indicators with n at least 2,\n'
+    '     SR = min(max(10, 5n), 6n, 24), dealt at per-entry\n'
+    '     instance cap 2, and the written target is held at 12\n'
+    '     marks with no step-down band. The written set is at\n'
+    '     most 8 items per paper: written denominations are 2\n'
+    '     marks or more, so a 12-mark target can never need more\n'
+    '     than 6 items, and the re-measurement dealt at most 6\n'
+    '     on every test. The eight single-indicator tests are\n'
+    '     exempt and keep the earlier plan exactly (the branch\n'
+    '     below): SR = min(max(10, 3n), 4n, 18) with the band\n'
+    '     schedule (10 marks when SR is 8 or fewer, 8 when SR is\n'
+    '     9 to 14, 6 when SR is 15 or more), which for n = 1\n'
+    '     deals SR 4 and CR 10, the 14-mark ceiling the owner\n'
+    '     decision of November 20, 2026 leaves those tests at,\n'
+    '     with no folding, merging or whole-unit option. A\n'
+    '     topic-split indicator counts once on each test that\n'
+    '     takes a slice of it. Returns null when the course\n'
+    '     maps no such test. */',
+    count=1)  # testPlanFor comment: the adopted rule replaces the lengthening note
+rep('  var sr=Math.min(Math.max(10,3*n),4*n,18);\n'
+    '  var cr=sr<=8?10:(sr>=15?6:8);\n'
+    '  return {sr:sr,cr:cr,topics:e.topics||null};',
+    '  if(n===1){\n'
+    '    var sr1=Math.min(Math.max(10,3*n),4*n,18);\n'
+    '    return {sr:sr1,cr:sr1<=8?10:(sr1>=15?6:8),topics:e.topics||null};\n'
+    '  }\n'
+    '  var sr=Math.min(Math.max(10,5*n),6*n,24);\n'
+    '  return {sr:sr,cr:12,topics:e.topics||null};',
+    count=1)  # testPlanFor body: plan-capped SR, written target held at 12, n = 1 exempt
+
+# ---------- Builder restructure: mode-first sections (Spec-Builder-Restructure-2026-11-20.md, November 20, 2026) ----------
+# The builder is reorganised by the output a teacher or student
+# came to make. The shared scope (units, indicators, prior
+# knowledge, the review preset buttons as scope shortcuts) stays
+# at the top, and the seed block stays shared just above the
+# sections: the seed shapes every output, so it is never
+# presented as an online-only feature. Three sections follow.
+#   Section 1, Practice online: its own Multiple choice and
+#   Fill-in counts (the new two-count draw below), the Checking
+#   select, and an optional test selector that scopes one online
+#   set to a test or exam blueprint's indicators without
+#   touching the shared scope. The legacy single count input
+#   stays in the section as a hidden field: every existing read
+#   and write of it (settings, the face, the prerequisite check,
+#   the missed-questions retry, applyURL) resolves exactly as
+#   before, and a link carrying only the legacy count disengages
+#   the two-count draw (ONLINE_SPLIT), so pre-restructure links,
+#   seeded ones above all, compose the sets they always
+#   composed. New links carry omc and ofi beside count, which
+#   stays the total.
+#   Section 2, Build a Practice Test: the single-test selector
+#   moves here out of the scope area, with its plan summary and
+#   the extension steppers, and the Make a practice exam button
+#   beside it; mathematics courses without a test map choose
+#   their test by unit alone (mathTestRow). Composing a test or
+#   exam now scrolls the paper into view: the copy link step,
+#   with the paper previewing.
+#   Section 3, Build a Practice Sheet: the Multiple choice and
+#   Constructed Response counts move here with the print-only
+#   choices.
+#   The Dual-form questions select leaves the builder flow for
+#   the Advanced tools door (the modebar beside Copy link and
+#   the Advanced tools button), where the teacher gate already
+#   kept it from students. Its setting and URL parameter are
+#   untouched. On a composed exam paper it also acts as a select
+#   all beside the per-question flips (tFlipAllBm), standing
+#   down exactly where the flip stands down.
+rep('''    <div class="presetrow" id="testScopeRow" hidden>
+      <label><span id="testScopeLab">A single test</span>
+        <select id="testUnitSel"></select>
+      </label>
+      <label><span id="testNumLab">Test</span>
+        <select id="testNumSel"></select>
+      </label>
+      <span class="hint" id="testScopeNote"></span>
+      <span class="hint" id="testPlanNote"></span>
+      <label>More multiple choice
+        <input type="number" id="testXMcIn" min="0" max="30" value="0">
+      </label>
+      <label>More written
+        <input type="number" id="testXCrIn" min="0" max="20" value="0">
+      </label>
+    </div>
+    <div class="grid" id="unitGrid"></div>''',
+    '''    <div class="grid" id="unitGrid"></div>''',
+    count=1)  # the test selector leaves the scope area (re-inserted in Build a Practice Test below)
+rep('''    <div class="indbox" id="indBox"></div>
+    <div class="adv">
+      <label>Multiple choice
+        <input type="number" id="mcCountIn" min="0" max="60" value="10">
+      </label>
+      <label>Constructed Response
+        <input type="number" id="ncCountIn" min="0" max="60" value="5">
+      </label>
+      <label>Dual-form questions
+        <select id="bmIn">
+          <option value="on" selected>Answer choices on</option>
+          <option value="off">Answer choices off</option>
+        </select>
+      </label>
+    </div>
+    <div class="adv" id="pkInRow" hidden>''',
+    '''    <div class="indbox" id="indBox"></div>
+    <div class="adv" id="pkInRow" hidden>''',
+    count=1)  # the counts row leaves the scope area (counts to the sheet section, dual-form to the Advanced tools door)
+rep('''    <div class="group">
+      <h3>Practice online</h3>
+      <div class="adv">
+        <label>Number of questions (online practice)
+          <input type="number" id="countIn" min="1" max="60" value="10">
+        </label>
+        <label>Checking (online practice)
+          <select id="chkIn">
+            <option value="each">Check each question as I go</option>
+            <option value="end">Check everything at the end</option>
+          </select>
+        </label>
+      </div>''',
+    '''    <div class="group">
+      <h3>Practice online</h3>
+      <div class="adv">
+        <label>Multiple choice
+          <input type="number" id="oMcIn" min="0" max="60" value="7">
+        </label>
+        <label>Fill-in
+          <input type="number" id="oFiIn" min="0" max="60" value="3">
+        </label>
+        <label>Checking (online practice)
+          <select id="chkIn">
+            <option value="each">Check each question as I go</option>
+            <option value="end">Check everything at the end</option>
+          </select>
+        </label>
+      </div>
+      <input type="hidden" id="countIn" value="10">
+      <div class="adv">
+        <label><span id="oTestLab">Practise for a test (optional)</span>
+          <select id="oTestUnitSel"></select>
+        </label>
+        <label id="oTestNumWrap" hidden><span id="oTestNumLab">Test</span>
+          <select id="oTestNumSel"></select>
+        </label>
+        <span class="hint" id="oTestNote"></span>
+      </div>''',
+    count=1)  # Practice online: two counts, the legacy count kept hidden, the section's own test selector
+rep('''    <div class="group">
+      <h3>Print a sheet or exam</h3>
+      <div class="adv">
+        <label><input type="checkbox" id="keyChk" checked> Include answer key</label>
+        <label><input type="checkbox" id="codeChk" checked> Include set code and QR</label>
+        <label>Working space for multiple choice
+          <select id="wsMcIn">
+            <option value="2.3">Extra space</option>
+            <option value="1">Full space</option>
+            <option value="0.5">Half space</option>
+            <option value="0.25">A little space</option>
+            <option value="0" selected>None: use your own paper</option>
+          </select>
+        </label>
+        <label>Working space for constructed response
+          <select id="wsCrIn">
+            <option value="2.3" selected>Extra space</option>
+            <option value="1">Full space</option>
+            <option value="0.5">Half space</option>
+            <option value="0.25">A little space</option>
+            <option value="0">None: use your own paper</option>
+          </select>
+        </label>
+      </div>
+      <div class="modebar">
+        <button type="button" id="goSheet" class="amber">Make a practice sheet</button>
+        <button type="button" id="goExam" class="amber">Make a practice exam</button>
+      </div>
+    </div>''',
+    '''    <div class="group">
+      <h3>Build a Practice Test</h3>
+      <div class="presetrow" id="testScopeRow" hidden>
+        <label><span id="testScopeLab">A single test</span>
+          <select id="testUnitSel"></select>
+        </label>
+        <label><span id="testNumLab">Test</span>
+          <select id="testNumSel"></select>
+        </label>
+        <span class="hint" id="testScopeNote"></span>
+        <span class="hint" id="testPlanNote"></span>
+        <label>More multiple choice
+          <input type="number" id="testXMcIn" min="0" max="30" value="0">
+        </label>
+        <label>More written
+          <input type="number" id="testXCrIn" min="0" max="20" value="0">
+        </label>
+      </div>
+      <div class="presetrow" id="mathTestRow" hidden>
+        <label><span id="mathTestLab">A single test</span>
+          <select id="mathUnitSel"></select>
+        </label>
+        <span class="hint" id="mathTestNote"></span>
+      </div>
+      <p class="hint">Tests and exams are built from the scope at the top of the builder, or from a test you choose here.</p>
+      <div class="modebar">
+        <button type="button" id="goExam" class="amber">Make a practice exam</button>
+      </div>
+    </div>
+    <div class="group">
+      <h3>Build a Practice Sheet</h3>
+      <div class="adv">
+        <label>Multiple choice
+          <input type="number" id="mcCountIn" min="0" max="60" value="10">
+        </label>
+        <label>Constructed Response
+          <input type="number" id="ncCountIn" min="0" max="60" value="5">
+        </label>
+      </div>
+      <div class="adv">
+        <label><input type="checkbox" id="keyChk" checked> Include answer key</label>
+        <label><input type="checkbox" id="codeChk" checked> Include set code and QR</label>
+        <label>Working space for multiple choice
+          <select id="wsMcIn">
+            <option value="2.3">Extra space</option>
+            <option value="1">Full space</option>
+            <option value="0.5">Half space</option>
+            <option value="0.25">A little space</option>
+            <option value="0" selected>None: use your own paper</option>
+          </select>
+        </label>
+        <label>Working space for constructed response
+          <select id="wsCrIn">
+            <option value="2.3" selected>Extra space</option>
+            <option value="1">Full space</option>
+            <option value="0.5">Half space</option>
+            <option value="0.25">A little space</option>
+            <option value="0">None: use your own paper</option>
+          </select>
+        </label>
+      </div>
+      <div class="modebar">
+        <button type="button" id="goSheet" class="amber">Make a practice sheet</button>
+      </div>
+    </div>''',
+    count=1)  # the print panel splits into Build a Practice Test and Build a Practice Sheet
+rep('''    <div class="modebar">
+      <button type="button" id="copyLink" class="alt">Copy link to these settings</button>
+      <button type="button" class="alt" id="advToolsBtn" hidden>Advanced tools</button>
+    </div>''',
+    '''    <div class="modebar">
+      <button type="button" id="copyLink" class="alt">Copy link to these settings</button>
+      <button type="button" class="alt" id="advToolsBtn" hidden>Advanced tools</button>
+      <label>Dual-form questions
+        <select id="bmIn">
+          <option value="on" selected>Answer choices on</option>
+          <option value="off">Answer choices off</option>
+        </select>
+      </label>
+    </div>''',
+    count=1)  # the dual-form select takes its place at the Advanced tools door
+rep('''var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null,bm:"on",txmc:0,txcr:0};''',
+    '''var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null,bm:"on",txmc:0,txcr:0,omc:7,ofi:3};
+/* Builder restructure state (Nov 20, 2026): ONLINE_SPLIT says
+   the Practice online section's two counts govern the next
+   online draw. It starts engaged on a fresh visit, is engaged
+   by any link carrying omc or ofi, and is disengaged by a link
+   carrying only the legacy count, so a pre-restructure link
+   (seeded ones above all) composes exactly the set it always
+   composed; editing either online count engages it again, and
+   the missed-questions retry disengages it so its own count
+   governs, as it always has. oTestSel is the online section's
+   own test tailoring: null, or {kind:"preset",which},
+   {kind:"unit",unit} or {kind:"test",unit,test}; it scopes
+   one online set and never touches the shared scope. */
+var ONLINE_SPLIT=true;
+var oTestSel=null;''',
+    count=1)  # restructure state: the split engagement flag and the online test tailoring
+rep('''  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk"),bm=$("bmIn"),xm=$("testXMcIn"),xc=$("testXCrIn");
+  if(mc)hidCtl.mc=mc.value;
+  if(nc)hidCtl.nc=nc.value;''',
+    '''  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk"),bm=$("bmIn"),xm=$("testXMcIn"),xc=$("testXCrIn"),om=$("oMcIn"),of=$("oFiIn");
+  if(mc)hidCtl.mc=mc.value;
+  if(nc)hidCtl.nc=nc.value;
+  if(om)hidCtl.omc=om.value;
+  if(of)hidCtl.ofi=of.value;''',
+    count=1)  # the teacher gate stash learns the online counts
+rep('''function settings(){
+  readUnits();readInds();
+  return {units:state.units.slice(),inds:state.inds.slice(),midCap:state.midCap,finalCap:state.finalCap,testSel:state.testSel?{unit:state.testSel.unit,test:state.testSel.test}:null,
+    count:Math.max(1,Math.min(60,+$("countIn").value||10)),''',
+    '''function settings(){
+  readUnits();readInds();
+  if(ONLINE_SPLIT&&!pkOnlyActive()){var _om0=$("oMcIn"),_of0=$("oFiIn"),_ci0=$("countIn");if(_om0&&_of0&&_ci0)_ci0.value=(Math.max(0,Math.min(60,+_om0.value||0)))+(Math.max(0,Math.min(60,+_of0.value||0)));}
+  return {units:state.units.slice(),inds:state.inds.slice(),midCap:state.midCap,finalCap:state.finalCap,testSel:state.testSel?{unit:state.testSel.unit,test:state.testSel.test}:null,
+    count:Math.max(1,Math.min(60,+$("countIn").value||10)),
+    oMc:Math.max(0,Math.min(60,+tCtlVal("oMcIn",hidCtl.omc)||0)),
+    oFi:Math.max(0,Math.min(60,+tCtlVal("oFiIn",hidCtl.ofi)||0)),
+    oSplit:ONLINE_SPLIT,''',
+    count=1)  # settings(): the online counts ride along, and the legacy count mirrors their total while the split is engaged
+rep('''  p.set("count",s.count);p.set("order",s.order);''',
+    '''  p.set("count",s.count);p.set("order",s.order);
+  if(s.oSplit){p.set("omc",s.oMc);p.set("ofi",s.oFi);}''',
+    count=1)  # settings URLs carry omc and ofi beside count while the split is engaged
+rep('''  if(p.get("count"))$("countIn").value=p.get("count");''',
+    '''  if(p.get("count"))$("countIn").value=p.get("count");
+  if(p.get("omc")!==null||p.get("ofi")!==null){ONLINE_SPLIT=true;if(p.get("omc")!==null&&$("oMcIn"))$("oMcIn").value=p.get("omc");if(p.get("ofi")!==null&&$("oFiIn"))$("oFiIn").value=p.get("ofi");if($("countIn")&&$("oMcIn")&&$("oFiIn"))$("countIn").value=(Math.max(0,Math.min(60,+$("oMcIn").value||0)))+(Math.max(0,Math.min(60,+$("oFiIn").value||0)));}
+  else if(p.get("count")!==null)ONLINE_SPLIT=false;''',
+    count=1)  # applyURL: omc or ofi engages the split; count alone keeps the legacy draw
+rep('''  if(retryWillSwitch())RETRY_AS_EACH=true;
+  $("countIn").value=Math.min(15,Math.max(5,missed.length*2));''',
+    '''  if(retryWillSwitch())RETRY_AS_EACH=true;
+  ONLINE_SPLIT=false;
+  $("countIn").value=Math.min(15,Math.max(5,missed.length*2));''',
+    count=1)  # the missed-questions retry keeps its own count: the split disengages for its draw
+rep('''var lastSettings=null,onlineThin=false;''',
+    '''var lastSettings=null,onlineThin=false,onlineNote=null,onlineEffUnits=null;''',
+    count=1)  # online draw state: the shortfall note and the effective scope of the last online draw
+rep('''function startOnline(){
+  tRestoreTitle();''',
+    '''/* Online two-count draw (builder restructure, Nov 20, 2026):
+   the Practice online section deals its two counts separately,
+   the sheet draw discipline carried online. The multiple
+   choice part takes the entries that deal as multiple choice;
+   the fill-in part takes the entries that deal as fill-in
+   (numeric and text answers) plus the dual-form entries,
+   stripped. While the dual-form toggle is off, dual-form
+   entries serve the fill-in part only, never the multiple
+   choice part, as the toggle has always meant. An entry dealt
+   in the multiple choice part is never dealt again in the
+   fill-in part. Each part honours the level mix on its own
+   pool, and a part whose pool cannot supply its count in
+   distinct questions deals what it holds and reports the
+   shortfall (shortMc and shortFi), following the papers'
+   short-flag pattern: the other part is never topped up to
+   hide it. */
+function drawOnlineSet(s,units,inds,cap){
+  var mc=drawSet(units,inds,s.oMc,s.mix,s.order,cap,function(e){return probeType(e)==="mc"&&(!bimodalClass(e)||s.bimodal);});
+  var usedMc={};mc.items.forEach(function(q){usedMc[q._entry.id]=1;});
+  var fi=drawSet(units,inds,s.oFi,s.mix,s.order,cap,function(e){return !usedMc[e.id]&&(probeType(e)!=="mc"||!!bimodalClass(e));});
+  function fixMc(q){var tries=0;while(q.type!=="mc"&&tries<40){var nq=q._entry.gen();nq._entry=q._entry;q=nq;tries++;}return q;}
+  function fixFi(q){
+    if(q.type==="mc"&&bimodalClass(q._entry))return stripQ(q);
+    var tries=0;
+    while(q.type==="mc"&&tries<40){var nq=q._entry.gen();nq._entry=q._entry;q=nq;if(q.type==="mc"&&bimodalClass(q._entry))return stripQ(q);tries++;}
+    return q;
+  }
+  var mcItems=mc.items.map(fixMc),fiItems=fi.items.map(fixFi);
+  var items=mcItems.concat(fiItems);
+  if(s.order==="unit"){items.sort(function(a,b){return a._entry.unit-b._entry.unit;});}
+  else{items=shuffle(items);}
+  function distinct(list){var seen={};list.forEach(function(q){seen[q._entry.id]=1;});return Object.keys(seen).length;}
+  var mcD=distinct(mcItems),fiD=distinct(fiItems);
+  return {items:items,thin:mc.thin||fi.thin||items.length<(s.oMc+s.oFi),pool:mc.pool+fi.pool,shortMc:mcD<s.oMc,shortFi:fiD<s.oFi,mcDistinct:mcD,fiDistinct:fiD};
+}
+function startOnline(){
+  tRestoreTitle();''',
+    count=1)  # the online two-count draw, ahead of startOnline
+rep('''  var res=withSeed(_sd,function(){return drawSet(s.units,s.inds,s.count,s.mix,s.order,s.finalCap?"final":s.midCap);});''',
+    '''  var _osplit=s.oSplit&&!s.pkOnly;
+  if(_osplit&&(s.oMc+s.oFi)<1){$("session").innerHTML='<div class="card"><p>'+L9("Set the Multiple choice and Fill-in counts to at least one question in total, then start again.","Règle les nombres de questions à choix multiple et à réponse courte à au moins une question au total, puis recommence.")+'</p></div>';return;}
+  var _ou=s.units,_oi=s.inds,_ocap=s.finalCap?"final":s.midCap;
+  if(_osplit&&oTestSel){
+    if(oTestSel.kind==="preset"){var _pc=(window.__COURSE&&window.__COURSE.presets)?window.__COURSE.presets[oTestSel.which]:null;if(_pc){_ou=_pc.units.slice();_oi=[];_ocap=oTestSel.which==="final"?"final":(_pc.cap?true:false);}}
+    else if(oTestSel.kind==="unit"){_ou=[oTestSel.unit];_oi=[];_ocap=false;}
+    else if(oTestSel.kind==="test"){var _te=testMapList(window.__COURSE,oTestSel.unit,oTestSel.test);if(_te){_ou=[oTestSel.unit];_oi=_te.inds.slice();_ocap=false;}}
+  }
+  onlineEffUnits=_ou;onlineNote=null;
+  var res=withSeed(_sd,function(){return _osplit?drawOnlineSet(s,_ou,_oi,_ocap):drawSet(s.units,s.inds,s.count,s.mix,s.order,s.finalCap?"final":s.midCap);});
+  if(_osplit&&(res.shortMc||res.shortFi)){
+    var _sp=[];
+    if(res.shortMc)_sp.push(L9("only "+res.mcDistinct+" different multiple choice questions are available yet, of the "+s.oMc+" you asked for","seulement "+res.mcDistinct+" questions à choix multiple différentes sont disponibles pour le moment, sur les "+s.oMc+" demandées"));
+    if(res.shortFi)_sp.push(L9("only "+res.fiDistinct+" different fill-in questions are available yet, of the "+s.oFi+" you asked for","seulement "+res.fiDistinct+" questions à réponse courte différentes sont disponibles pour le moment, sur les "+s.oFi+" demandées"));
+    onlineNote=L9("Heads up: ","Attention : ")+_sp.join(L9(" and "," et "))+L9(", so this set repeats some question shapes with new numbers.",", alors cette série répète certaines formes de questions avec de nouveaux nombres.");
+  }''',
+    count=1)  # startOnline: the split draw, the tailored scope, and the honest shortfall note; the legacy line stands untouched for legacy draws
+rep('''  if(!current.length){box.innerHTML='<div class="card"><p>'+(s.units.length?L9("No questions match that selection yet."''',
+    '''  if(!current.length){box.innerHTML='<div class="card"><p>'+((onlineEffUnits||s.units).length?L9("No questions match that selection yet."''',
+    count=1)  # the empty-set message reads the effective (possibly tailored) scope
+rep('''(pkOnlyActive()?"":refPanelsHtml(s.units))''',
+    '''(pkOnlyActive()?"":refPanelsHtml(onlineEffUnits||s.units))''',
+    count=1)  # reference panels follow the effective scope of the set on screen
+rep('''+(res.thin?'<p class="thinNote">'+L9("Heads up: the question bank is still thin for this selection, so this set repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.","Attention : la banque de questions est encore mince pour cette sélection, alors cette série répète la pratique sur la même forme de question (avec de nouveaux nombres), car il n'y a pas encore assez de questions différentes pour la remplir.")+'</p>':"")''',
+    '''+(onlineNote?'<p class="thinNote">'+onlineNote+'</p>':(res.thin?'<p class="thinNote">'+L9("Heads up: the question bank is still thin for this selection, so this set repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.","Attention : la banque de questions est encore mince pour cette sélection, alors cette série répète la pratique sur la même forme de question (avec de nouveaux nombres), car il n'y a pas encore assez de questions différentes pour la remplir.")+'</p>':""))''',
+    count=1)  # the specific shortfall note takes the thin note's place when a count ran dry
+rep('''function tUnstripSlot(q){''',
+    '''/* Dual-form select all (builder restructure, Nov 20, 2026):
+   the Dual-form questions control at the Advanced tools door
+   acts on a composed exam paper as a select all beside the
+   per-question flips. Turning choices off moves every
+   dual-form question in Section A into Section B in written
+   form; turning them on returns every stripped dual-form
+   question in Section B to Section A, through the same strip
+   and unstrip primitives, at the same marks, as the
+   per-question flip. The caller stands down exactly where the
+   flip stands down. */
+function tFlipAllBm(off){
+  if(typeof examState==="undefined"||!examState||typeof T==="undefined"||!T)return;
+  var ex=examState.ex,moved=false;
+  if(off){
+    for(var i=ex.srItems.length-1;i>=0;i--){
+      var it=ex.srItems[i];
+      if(!it.q||it.q.type!=="mc"||!bimodalClass(it.q._entry))continue;
+      var sq=tStripSlot(it.q);if(sq===it.q)continue;
+      ex.srItems.splice(i,1);
+      ex.crItems.push({q:sq,marks:(typeof CR_MARKS!=="undefined"&&CR_MARKS[it.q._entry.id])||2});
+      moved=true;
+    }
+  }else{
+    for(var j=ex.crItems.length-1;j>=0;j--){
+      var it2=ex.crItems[j];
+      if(!it2.q||it2.q.type==="mc"||!bimodalClass(it2.q._entry))continue;
+      var mq=tUnstripSlot(it2.q);if(!mq)continue;
+      ex.crItems.splice(j,1);
+      ex.srItems.push({q:mq,marks:1});
+      moved=true;
+    }
+  }
+  if(moved){T.edited=true;renderExam();}
+}
+function tUnstripSlot(q){''',
+    count=1)  # tFlipAllBm: the select all behind the relocated dual-form control
+rep('''  tPrintFreezeStart("exam");
+  renderExam();
+}
+function renderExam(){''',
+    '''  tPrintFreezeStart("exam");
+  renderExam();
+  var _sb=$("session");if(_sb)_sb.scrollIntoView({behavior:scrollBehavior()});
+}
+function renderExam(){''',
+    count=1)  # composing a test or exam lands on the paper: the copy link step, previewing
+rep('''    "Practice online":"Pratique en ligne",''',
+    '''    "Practice online":"Pratique en ligne",
+    "Fill-in":"Réponse courte",
+    "Practise for a test (optional)":"Pratiquer pour un test (facultatif)",
+    "Build a Practice Test":"Créer un test de pratique",
+    "Build a Practice Sheet":"Créer une feuille d'entraînement",
+    "Tests and exams are built from the scope at the top of the builder, or from a test you choose here.":"Les tests et les examens sont construits à partir de la sélection en haut du panneau, ou d'un test choisi ici.",''',
+    count=1)  # French statics for the new sections and labels
+rep('''state.testSel=null;tTestSelSync();readUnits();renderIndicators();updatePoolInfo();''',
+    '''state.testSel=null;tTestSelSync();tMathTestSync();readUnits();renderIndicators();updatePoolInfo();''',
+    count=1)  # unit changes re-sync the math test row
+rep('''state.testSel=null;tTestSelSync();readInds();updatePoolInfo();''',
+    '''state.testSel=null;tTestSelSync();tMathTestSync();readInds();updatePoolInfo();''',
+    count=1)  # indicator changes re-sync the math test row
+rep('''state.testSel=null;tTestSelSync();unitCheckboxes();renderIndicators();updatePoolInfo();''',
+    '''state.testSel=null;tTestSelSync();tMathTestSync();unitCheckboxes();renderIndicators();updatePoolInfo();''',
+    count=1)  # presets re-sync the math test row
+rep('''$("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;return;}startOnline();});''',
+    '''["oMcIn","oFiIn"].forEach(function(id){var el=$(id);if(el)el.addEventListener("input",function(){ONLINE_SPLIT=true;var ci=$("countIn"),a=$("oMcIn"),b=$("oFiIn");if(ci&&a&&b)ci.value=(Math.max(0,Math.min(60,+a.value||0)))+(Math.max(0,Math.min(60,+b.value||0)));refreshFace();});});
+(function(){var bm=$("bmIn");if(!bm)return;bm.addEventListener("change",function(){
+  /* The dual-form control at the Advanced tools door: on a
+     composed exam paper the change is also the select all
+     (tFlipAllBm), standing down exactly where the per-question
+     flip stands down. Everywhere else it is the setting change
+     it has always been, governing the next composition and
+     what the teacher editors strip on add. */
+  if(!TEACHER||typeof T==="undefined"||!T||T.view!=="exam"||typeof examState==="undefined"||!examState)return;
+  if(typeof tFlipStandsDown==="function"&&tFlipStandsDown())return;
+  tFlipAllBm(bm.value==="off");
+});})();
+/* Online test tailoring sync (builder restructure, Nov 20,
+   2026): the Practice online section's own selector. Its
+   options are the mid-course and final scopes, every unit, and
+   (for a mapped course) the tests of the chosen unit. The
+   choice lives in oTestSel and scopes one online set; the
+   shared scope above is never touched, so the test and sheet
+   sections keep working from it, and the section's counts
+   still govern the tailored set's size and mix. */
+function oTestSync(){
+  var us=$("oTestUnitSel"),ns=$("oTestNumSel"),wrap=$("oTestNumWrap"),note=$("oTestNote");
+  if(!us||!ns)return;
+  var C=window.__COURSE;
+  if(!us.options.length){
+    var opts=['<option value="">'+L9("Use the scope above","Utiliser la sélection ci-dessus")+"</option>"];
+    if(C&&C.presets&&C.presets.mid)opts.push('<option value="preset:mid">'+(C.presets.mid.faceLabel||C.presets.mid.label)+"</option>");
+    if(C&&C.presets&&C.presets.final)opts.push('<option value="preset:final">'+(C.presets.final.faceLabel||C.presets.final.label)+"</option>");
+    Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}).forEach(function(u){opts.push('<option value="unit:'+u+'">'+L9("Unit ","Unité ")+u+L9(": "," : ")+UNITS[u]+"</option>");});
+    us.innerHTML=opts.join("");
+  }
+  us.value=oTestSel?(oTestSel.kind==="preset"?("preset:"+oTestSel.which):("unit:"+oTestSel.unit)):"";
+  var showNum=false;
+  if(oTestSel&&oTestSel.kind!=="preset"&&C&&C.testMap&&C.testMap[oTestSel.unit]){
+    var list=C.testMap[oTestSel.unit]||[];
+    ns.innerHTML='<option value="">'+L9("Whole unit","Unité entière")+"</option>"+list.map(function(t){return '<option value="'+t.test+'">'+testNameFor(t.test)+"</option>";}).join("");
+    ns.value=oTestSel.kind==="test"?String(oTestSel.test):"";
+    showNum=true;
+  }
+  if(wrap)wrap.hidden=!showNum;
+  if(note){
+    if(!oTestSel)note.textContent="";
+    else if(oTestSel.kind==="preset"){var pc=C.presets[oTestSel.which];note.textContent=L9("Practice set for the ","Série de pratique pour la ")+(pc.faceLabel||pc.label)+L9(", built from the same scope the review covers.",", construite à partir de la même sélection que couvre la révision.");}
+    else if(oTestSel.kind==="test")note.textContent=L9("Practice set for "+testScopeLabel(oTestSel)+", built from the same indicators that test covers.","Série de pratique pour "+testScopeLabel(oTestSel)+", construite à partir des mêmes notions que couvre ce test.");
+    else note.textContent=L9("Practice set for ","Série de pratique pour ")+(UNITS[oTestSel.unit]||"")+L9(", using every indicator in the unit.",", avec toutes les notions de l'unité.");
+  }
+}
+(function(){
+  var us=$("oTestUnitSel"),ns=$("oTestNumSel");if(!us||!ns)return;
+  us.addEventListener("change",function(){
+    var v=us.value;
+    if(!v)oTestSel=null;
+    else if(v.indexOf("preset:")===0)oTestSel={kind:"preset",which:v.slice(7)};
+    else oTestSel={kind:"unit",unit:+v.slice(5)};
+    oTestSync();
+  });
+  ns.addEventListener("change",function(){
+    if(!oTestSel||oTestSel.kind==="preset")return;
+    var n=+ns.value;
+    oTestSel=n?{kind:"test",unit:oTestSel.unit,test:n}:{kind:"unit",unit:oTestSel.unit};
+    oTestSync();
+  });
+  oTestSync();
+})();
+/* Math unit test selection (builder restructure, Nov 20,
+   2026): a mathematics course with no test map chooses its
+   single test by unit alone, in the Build a Practice Test
+   section. The choice drives the shared scope to exactly that
+   unit, so Make a practice exam composes the unit test
+   composition the app already builds. The row mirrors the
+   shared scope the way the test row does: any later unit or
+   indicator change quietly retires it. */
+function tMathTestSync(){
+  var row=$("mathTestRow");if(!row)return;
+  var C=window.__COURSE;
+  var isMath=!!(C&&(C.subject==="Mathematics"||C.subject==="Mathématiques"));
+  if(!C||C.testMap||!isMath){row.hidden=true;return;}
+  row.hidden=false;
+  var sel=$("mathUnitSel");
+  if(sel&&!sel.options.length){
+    sel.innerHTML='<option value="">'+L9("Choose a unit","Choisis une unité")+"</option>"+Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}).map(function(u){return '<option value="'+u+'">'+L9("Unit ","Unité ")+u+L9(": "," : ")+UNITS[u]+"</option>";}).join("");
+  }
+  var whole=state.units.length===1&&!state.inds.length;
+  if(sel)sel.value=whole?String(state.units[0]):"";
+  var note=$("mathTestNote");
+  if(note)note.textContent=whole?L9("Practice test for "+(UNITS[state.units[0]]||"")+", built from the whole unit.","Test de pratique pour "+(UNITS[state.units[0]]||"")+", construit à partir de toute l'unité."):"";
+}
+(function(){
+  var sel=$("mathUnitSel");if(!sel)return;
+  sel.addEventListener("change",function(){
+    var u=+sel.value;if(!u)return;
+    state.units=[u];state.inds=[];state.midCap=false;state.finalCap=false;hidCtl.pkOnly=false;hidCtl.pkGroups=null;state.testSel=null;
+    unitCheckboxes();renderIndicators();tMathTestSync();updatePoolInfo();
+  });
+  tMathTestSync();
+})();
+$("faceStart").addEventListener("click",function(){if(!settings().units.length){var bb=$("builderBox");bb.open=true;return;}startOnline();});''',
+    count=1)  # wiring: online count engagement, the dual-form select all, the online test selector, the math unit test row
+rep('''unitCheckboxes();renderIndicators();updatePoolInfo();
+if(advSetRestore()){''',
+    '''unitCheckboxes();renderIndicators();updatePoolInfo();tMathTestSync();
+if(advSetRestore()){''',
+    count=1)  # boot: the math test row reflects a scope the URL carried
+
+# ---------- Test plan: SR cap 18 and the single-indicator lift (Rulings 10 and 11, November 20, 2026) ----------
+# Two changes to testPlanFor, both owner-ruled on the evening of
+# November 20, 2026 after the Ruling 4 plan landed. Ruling 10: the
+# selected response cap comes down from 24 to 18, so a mapped test
+# models what can reasonably be completed in a class; a teacher who
+# wants more coverage can add items in the paper editor. Plan totals
+# become 22 (n = 2), 27 (n = 3) and 30 (n = 4 and wider), nothing
+# above 30. Ruling 11: the eight single-indicator tests leave the
+# exempt 14-mark formula and take the same shape as a two-indicator
+# test, SR 10 and CR 12 for 22 marks; a teacher testing one outcome
+# would not make the test worth 14 points, and both pools on those
+# eight outcomes are deepened with slack in the same build (the
+# bank tranche recorded in the build report addendum of
+# November 21, 2026). Every reader of the plan reads plan.sr and
+# plan.cr at run time, so the one function carries both changes.
+rep('  /* Composition targets for one mapped test, re-baselined\n'
+    '     November 20, 2026 under Ruling 4 of the evening rulings\n'
+    '     (Test-Plan-Remeasure-2026-11-20.md; the plan-capped\n'
+    '     combined rule of Test-Value-Target-Audit-2026-11-20.md,\n'
+    '     with the written item cap at the owner amendment of 8):\n'
+    '     for a test blueprinting n indicators with n at least 2,\n'
+    '     SR = min(max(10, 5n), 6n, 24), dealt at per-entry\n'
+    '     instance cap 2, and the written target is held at 12\n'
+    '     marks with no step-down band. The written set is at\n'
+    '     most 8 items per paper: written denominations are 2\n'
+    '     marks or more, so a 12-mark target can never need more\n'
+    '     than 6 items, and the re-measurement dealt at most 6\n'
+    '     on every test. The eight single-indicator tests are\n'
+    '     exempt and keep the earlier plan exactly (the branch\n'
+    '     below): SR = min(max(10, 3n), 4n, 18) with the band\n'
+    '     schedule (10 marks when SR is 8 or fewer, 8 when SR is\n'
+    '     9 to 14, 6 when SR is 15 or more), which for n = 1\n'
+    '     deals SR 4 and CR 10, the 14-mark ceiling the owner\n'
+    '     decision of November 20, 2026 leaves those tests at,\n'
+    '     with no folding, merging or whole-unit option. A\n'
+    '     topic-split indicator counts once on each test that\n'
+    '     takes a slice of it. Returns null when the course\n'
+    '     maps no such test. */',
+    '  /* Composition targets for one mapped test, re-baselined\n'
+    '     November 21, 2026 under Rulings 10 and 11 of the\n'
+    '     November 20, 2026 evening rulings: the selected\n'
+    '     response cap comes down from 24 to 18, so the tests\n'
+    '     model what can reasonably be completed in a class\n'
+    '     (a teacher who wants more coverage can add items in\n'
+    '     the paper editor), and the eight single-indicator\n'
+    '     tests leave their 14-mark exemption. For a test\n'
+    '     blueprinting n indicators with n at least 2,\n'
+    '     SR = min(max(10, 5n), 6n, 18), dealt at per-entry\n'
+    '     instance cap 2, and the written target is held at\n'
+    '     12 marks with no step-down band; plan totals run\n'
+    '     22 (n = 2), 27 (n = 3) and 30 (n = 4 and wider),\n'
+    '     nothing above 30. The written set is at most 8\n'
+    '     items per paper: written denominations are 2 marks\n'
+    '     or more, so a 12-mark target can never need more\n'
+    '     than 6 items. A single-indicator test (the branch\n'
+    '     below) takes the same shape as a two-indicator\n'
+    '     test, SR 10 and CR 12 for 22 marks: a teacher\n'
+    '     testing one outcome would not make the test worth\n'
+    '     14 points, and both pools on those eight outcomes\n'
+    '     were deepened with slack in the same build so the\n'
+    '     plan deals with room to spare. A topic-split\n'
+    '     indicator counts once on each test that takes a\n'
+    '     slice of it. Returns null when the course maps no\n'
+    '     such test. */',
+    count=1)  # testPlanFor comment: cap 18 and the single-indicator lift replace the Ruling 4 note
+rep('  if(n===1){\n'
+    '    var sr1=Math.min(Math.max(10,3*n),4*n,18);\n'
+    '    return {sr:sr1,cr:sr1<=8?10:(sr1>=15?6:8),topics:e.topics||null};\n'
+    '  }\n'
+    '  var sr=Math.min(Math.max(10,5*n),6*n,24);\n'
+    '  return {sr:sr,cr:12,topics:e.topics||null};',
+    '  if(n===1){\n'
+    '    return {sr:10,cr:12,topics:e.topics||null};\n'
+    '  }\n'
+    '  var sr=Math.min(Math.max(10,5*n),6*n,18);\n'
+    '  return {sr:sr,cr:12,topics:e.topics||null};',
+    count=1)  # testPlanFor body: SR cap 18; n = 1 takes SR 10, CR 12
 
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
