@@ -23,31 +23,30 @@
         internally on every call);
         Re-baselined November 20, 2026 for the adopted test plan
         (Ruling 4 of the evening rulings; Test-Plan-Remeasure-
-        2026-11-20.md): the plan targets are now SR =
+        2026-11-20.md): the plan targets were SR =
         min(max(10, 5n), 6n, 24) with the written target held
         at 12 (the eight single-indicator tests exempt, at 14
-        as before). The re-measurement, run against the
-        post-registration pools before the plan changed, found
-        68 of 95 tests dealing their plan exactly and 27 tests
-        whose pools deal a measured profile under it, flagged
-        short by the composer on every such paper: five are
-        written-bound (their written pools cannot sum to 12),
-        the rest are selected-response bound, most by the
-        written section's claim on dual-form entries (in test
-        scope the claim is a hard exclusion from the SR draw,
-        so a written set that claims a thin pool's SR stock at
-        a level starves that level's band). Those 27 tests are
-        pinned in EXPECTED_SHORT below with the dealt SR and
-        CR values the re-measurement observed; for them this
-        check requires, in at least 10 of 12 compositions, a
-        paper inside the test's scope whose dealt values are
-        among the measured ones and whose short flag is honest
-        (set whenever the dealt values fall below the plan,
-        clear only on a paper that deals the plan in full).
-        The pins are the measured record, not a relaxation:
-        if a later bank change lets a pinned test deal more,
-        its papers stop matching the pin and this gate fails
-        until the pin is re-measured;
+        as before), and 27 tests whose pools dealt a measured
+        profile under it were pinned in EXPECTED_SHORT.
+        Re-baselined again November 21, 2026 for Rulings 9, 10
+        and 11 of the same evening: the SR cap is now 18
+        (plan totals 22, 27 and 30), the eight single-
+        indicator tests take SR 10 and CR 12 like a two-
+        indicator test, and the residual was closed by
+        authoring, re-priced under the cap against a fresh
+        control-verified re-measurement (hidden_files/test-
+        plan-cap-remeasure-2026-11-21): 27 entries on the
+        multi-indicator tests (22 selected response, 5
+        written) and 51 entries deepening the eight single-
+        indicator outcomes with slack on both sides (39
+        selected response, 12 written). EXPECTED_SHORT is
+        therefore empty: every mapped test is expected to
+        deal its full plan at the standing bar. The pin
+        mechanism stays: if a later bank change leaves a
+        test short, this gate fails until the shortfall is
+        re-measured, priced and either authored away or
+        pinned here with its measured profile and the
+        reason, never silently absorbed;
      5. level balance, REPORTED, not pass/fail, under the
         owner's test-scope rulings of November 19, 2026 as
         clarified later the same evening. Within a test paper
@@ -161,40 +160,16 @@ function expectedMaps() {
 const EXPECTED = expectedMaps();
 
 /* ---------- measured short profiles under the adopted plan ----------
-   The 27 tests whose pools cannot deal the adopted plan in full
-   (Test-Plan-Remeasure-2026-11-20.md, Sections 2 and 3): the
-   dealt SR and CR values observed across the re-measurement's
-   trials (12 to 24 per test; dealing on these tests was
-   constant or near-constant). Keyed course|unit|test. */
-const EXPECTED_SHORT = {
-  "sci-7|3|2": { sr: [14], cr: [12] },
-  "sci-7-fr|2|3": { sr: [16], cr: [12] },
-  "sci-7-fr|3|2": { sr: [11], cr: [12] },
-  "sci-7-fr|4|2": { sr: [16], cr: [12] },
-  "sci-8|1|1": { sr: [10], cr: [10] },
-  "sci-8|4|2": { sr: [8], cr: [12] },
-  "sci-8|4|3": { sr: [7], cr: [12] },
-  "sci-8-fr|4|1": { sr: [15], cr: [11] },
-  "sci-8-fr|4|2": { sr: [9], cr: [12] },
-  "sci-8-fr|4|3": { sr: [7], cr: [12] },
-  "sci-9|1|1": { sr: [9], cr: [12] },
-  "sci-9|1|3": { sr: [9], cr: [12] },
-  "sci-9|2|1": { sr: [23, 24], cr: [12] },
-  "sci-9|2|3": { sr: [9], cr: [12] },
-  "sci-9|3|1": { sr: [13], cr: [12] },
-  "sci-9|3|3": { sr: [19, 20], cr: [12] },
-  "sci-9|4|1": { sr: [10], cr: [10] },
-  "sci-9|4|2": { sr: [10], cr: [10] },
-  "sci-9|4|3": { sr: [8], cr: [12] },
-  "sci-9-fr|1|1": { sr: [8], cr: [12] },
-  "sci-9-fr|1|2": { sr: [13, 14], cr: [12] },
-  "sci-9-fr|1|3": { sr: [9], cr: [12] },
-  "sci-9-fr|2|1": { sr: [23, 24], cr: [12] },
-  "sci-9-fr|3|1": { sr: [12], cr: [12] },
-  "sci-9-fr|3|3": { sr: [20], cr: [12] },
-  "sci-9-fr|4|1": { sr: [10], cr: [10] },
-  "sci-9-fr|4|2": { sr: [8], cr: [12] },
-};
+   Empty since the November 21, 2026 re-baseline (Rulings 9, 10
+   and 11): the 27 profiles pinned here under the cap-24 plan
+   were closed by the capped plan itself and by the exactness
+   authoring priced from test-plan-cap-remeasure-2026-11-21,
+   and the eight single-indicator tests left their exemption
+   with both pools deepened. A test that falls short in future
+   is pinned here again with its measured dealt SR and CR
+   values, keyed course|unit|test, with the reason recorded in
+   the build addendum that re-baselines this gate. */
+const EXPECTED_SHORT = {};
 
 /* ---------- registry and shell machinery ---------- */
 global.window = {};
