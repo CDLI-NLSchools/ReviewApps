@@ -2,6 +2,11 @@
 /* Interrupted-set resume gate (Nov 2026): a student who is interrupted
    mid set keeps their answers on the device, and reopening the
    identical set offers Resume or Start fresh.
+   Stored set (Nov 21, 2026): the online save also carries the dealt
+   set itself, written at deal time, so an unseeded set that could
+   never redraw identically is offered back at boot, as a banner and
+   never applied on its own; a save whose entry has left the bank is
+   dropped silently, and an expired save is not offered.
    Run: NODE_PATH=/home/hatch/workspace/physics-2204-review/node_modules node tests/gate-resume.js
    jsdom gives each window its own localStorage, so the harness
    installs one shared in-memory Storage across the simulated page
@@ -137,6 +142,110 @@ function resumeKey(shared) { return Object.keys(shared).find((k) => k.endsWith("
   ok(ev(d, "!!sheetState") === true, "sheet: the sheet drew for the scope check");
   await sleep(500);
   ok(!resumeKey(shared2), "sheet: drawing a sheet writes no resume save");
+  d.window.close();
+
+  /* ===== stored set: an untouched, unseeded set is offered back =====
+     The set below is drawn with no seed, so it could never redraw
+     identically; only the stored set can bring it back. The plain
+     course visit draws nothing, so any offer there is the boot
+     offer. The harness re-runs resumeBootCheck once the bank has
+     settled, the same loader-timing adaptation settleBoot makes
+     for the boot dispatch itself. */
+  const shared3 = {};
+  d = await boot("course=physics-3204&unit=1", shared3);
+  const nStored = ev(d, "current ? current.length : 0");
+  ok(nStored >= 3, "stored set: unseeded set drew (" + nStored + " questions)");
+  const canonStored = ev(d, "current.map(function(q){return canonQ(q);})");
+  await sleep(1200); /* deal-time save, debounce included */
+  const key3 = resumeKey(shared3);
+  ok(!!key3, "stored set: a freshly dealt, untouched set writes a resume save");
+  const payload3 = key3 ? JSON.parse(shared3[key3]) : null;
+  ok(!!payload3 && !!payload3.body && Array.isArray(payload3.body.items) && payload3.body.items.length === nStored,
+     "stored set: the save carries the dealt set itself, one serialized question per question dealt");
+  ok(!!payload3 && payload3.body.items.every(function(it){return !!it.e;}),
+     "stored set: every serialized question names its bank entry");
+  d.window.close();
+
+  d = await boot("course=physics-3204", shared3);
+  ev(d, `(function(){if(!document.getElementById("resumeBar")&&!(typeof current!=="undefined"&&current&&current.length))resumeBootCheck();})()`);
+  ok(!!d.window.document.getElementById("resumeBar"), "stored set: the untouched set is offered on return, before anything is drawn");
+  ok(ev(d, "current ? current.length : 0") === 0, "stored set: the offer is a banner only; the set is not applied on its own");
+  ev(d, `document.getElementById("resumeGoBtn").click()`);
+  ok(ev(d, "current ? current.length : 0") === nStored, "stored set: Resume rebuilds the full set");
+  ok(JSON.stringify(ev(d, "current.map(function(q){return canonQ(q);})")) === JSON.stringify(canonStored),
+     "stored set: the rebuilt set is the dealt set, question for question, in order");
+  ok(!d.window.document.getElementById("resumeBar"), "stored set: the banner clears once the set is rebuilt");
+  d.window.close();
+
+  /* ===== stored set: answers entered before leaving restore ===== */
+  const shared4 = {};
+  d = await boot("course=physics-3204&unit=1", shared4);
+  const q0type4 = ev(d, `(function(){
+    var q=current[0];
+    if(q.type==="mc"){var r=document.querySelector('input[name="opt0"][value="'+q.correct+'"]');r.checked=true;r.dispatchEvent(new window.Event("change",{bubbles:true}));}
+    else{var inp=document.getElementById("ans0");inp.value=(q.type==="num"?String(q.answer):q.answers[0]);inp.dispatchEvent(new window.Event("input",{bubbles:true}));}
+    return q.type;})()`);
+  ev(d, `document.querySelector('[data-check="0"]').click()`);
+  await sleep(1200);
+  ok(!!resumeKey(shared4), "stored answers: progress on the unseeded set is saved");
+  d.window.close();
+
+  d = await boot("course=physics-3204", shared4);
+  ev(d, `(function(){if(!document.getElementById("resumeBar")&&!(typeof current!=="undefined"&&current&&current.length))resumeBootCheck();})()`);
+  ok(!!d.window.document.getElementById("resumeBar"), "stored answers: the interrupted unseeded set is offered on return");
+  ev(d, `document.getElementById("resumeGoBtn").click()`);
+  const restored4 = ev(d, `(function(){
+    var q=current[0];
+    if(q.type==="mc"){var s=document.querySelector('input[name="opt0"]:checked');return s&&+s.value===q.correct;}
+    var inp=document.getElementById("ans0");return inp&&inp.value!=="";
+  })()`);
+  ok(restored4 === true, "stored answers: the saved answer is back in place (question type " + q0type4 + ")");
+  ok(ev(d, `document.getElementById("fb0").dataset.done`) === "1", "stored answers: the checked state is restored");
+  d.window.close();
+
+  /* ===== stored set: an entry that left the bank drops the save ===== */
+  const shared5 = {};
+  d = await boot("course=physics-3204&unit=1", shared5);
+  await sleep(1200);
+  const key5 = resumeKey(shared5);
+  ok(!!key5, "dropped save: the dealt set wrote its save before tampering");
+  if (key5) {
+    const p5 = JSON.parse(shared5[key5]);
+    p5.body.items[0].e = "entry-that-no-longer-exists";
+    shared5[key5] = JSON.stringify(p5);
+  }
+  d.window.close();
+
+  d = await boot("course=physics-3204", shared5);
+  ev(d, `(function(){if(!document.getElementById("resumeBar")&&!(typeof current!=="undefined"&&current&&current.length))resumeBootCheck();})()`);
+  await sleep(300);
+  ok(!d.window.document.getElementById("resumeBar"), "dropped save: a set whose entry left the bank is not offered");
+  ok(!resumeKey(shared5), "dropped save: the save is discarded silently");
+  ok(ev(d, "current ? current.length : 0") === 0, "dropped save: nothing is applied");
+  d.window.close();
+
+  d = await boot("course=physics-3204&unit=1", shared5);
+  ok(ev(d, "current ? current.length : 0") > 0, "dropped save: the course still deals a fresh set afterwards");
+  d.window.close();
+
+  /* ===== stored set: an expired save is not offered ===== */
+  const shared6 = {};
+  d = await boot("course=physics-3204&unit=1", shared6);
+  await sleep(1200);
+  const key6 = resumeKey(shared6);
+  ok(!!key6, "expiry: the dealt set wrote its save before ageing");
+  if (key6) {
+    const p6 = JSON.parse(shared6[key6]);
+    p6.ts = Date.now() - 8 * 24 * 60 * 60 * 1000;
+    shared6[key6] = JSON.stringify(p6);
+  }
+  d.window.close();
+
+  d = await boot("course=physics-3204", shared6);
+  ev(d, `(function(){if(!document.getElementById("resumeBar")&&!(typeof current!=="undefined"&&current&&current.length))resumeBootCheck();})()`);
+  await sleep(300);
+  ok(!d.window.document.getElementById("resumeBar"), "expiry: a stored-set save older than the 7-day TTL is not offered");
+  ok(!resumeKey(shared6), "expiry: the expired save is discarded");
   d.window.close();
 
   console.log(fail ? "RESUME GATE FAIL (" + fail + ")" : "RESUME GATE PASS: " + pass + " assertions");

@@ -5275,7 +5275,23 @@ function advSetRestore(){
    different set replaces the save, so a set a teacher has since
    edited (its signature changed) is never resurrected. Saves
    expire after RESUME_TTL_DAYS days. The sheet view is an output
-   surface, not an answering surface, and is not covered. */
+   surface, not an answering surface, and is not covered.
+   Stored set (Nov 21, 2026): the online save also carries the
+   dealt set itself, serialized the way the exam save and the
+   Advanced tools capture serialize questions, and it is written
+   when the set is dealt, before any answer is entered. An
+   unseeded set never redraws identically, so the signature offer
+   above could never reach the student it was designed for (the
+   bell-rings case, usually on a phone); the stored set can. On
+   return, before anything is drawn, the stored set is rebuilt
+   against the current bank: if every entry still exists and
+   every dealt question is reconstructed, the banner offers that
+   exact set at boot, and Resume rebuilds it verbatim with the
+   saved answers and states in place. If any entry no longer
+   builds, the save is dropped silently and the visit behaves as
+   if there were no save. A save whose set could not be stored
+   (the device storage was full) keeps the signature-only form
+   and the redraw offer above. */
 var RESUME_TTL_DAYS=7;
 var RESUME_TTL_MS=RESUME_TTL_DAYS*24*60*60*1000;
 var RESUME_KEY=(window.__COURSE?window.__COURSE.storagePrefix:"app")+"-resume-v1";
@@ -5332,9 +5348,10 @@ function resumeSaveNow(){
   try{
     if(current&&current.length&&document.getElementById("againBtn")){
       var st=resumeCaptureState();
-      if(!resumeHasProgress(st)){try{store.removeItem(RESUME_KEY);}catch(e){}return;}
       var sig=resumeSig("online",current);_resumeLiveSig=sig;
-      store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"online",ts:Date.now(),sig:sig,body:{state:st,checked:checkedCount,correct:correctCount,results:setResults,help:helpUsed,checkMode:checkMode,endGraded:!!endGraded,nohint:NO_HINT?1:0,noex:NO_EX?1:0}}));
+      var body={items:current.map(advQSer),state:st,checked:checkedCount,correct:correctCount,results:setResults,help:helpUsed,checkMode:checkMode,endGraded:!!endGraded,nohint:NO_HINT?1:0,noex:NO_EX?1:0,seed:sessionSeed||"",s:lastSettings,thin:!!onlineThin};
+      try{store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"online",ts:Date.now(),sig:sig,body:body}));}
+      catch(e2){delete body.items;try{store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"online",ts:Date.now(),sig:sig,body:body}));}catch(e3){}}
       if(_resumeBannerSig&&_resumeBannerSig===sig)resumeHideBanner();
     }else if(examState&&examState.ex&&document.getElementById("printPaperBtn")){
       var items=examState.ex.srItems.map(function(it){return it.q;}).concat(examState.ex.crItems.map(function(it){return it.q;}));
@@ -5356,6 +5373,14 @@ function resumeShowBanner(save,mode){
   if(save.view==="exam"){
     lead=L9("You started this practice test earlier on this device, and it is saved.","Tu as commencé ce test de pratique plus tôt sur cet appareil, et il est enregistré.");
     detail=L9("Resume brings back the same test with its timer where it left off. Start fresh clears the saved test.","Reprendre ramène le même test avec son minuteur où il s'était arrêté. Recommencer efface le test enregistré.");
+  }else if(mode==="onlineBoot"){
+    if(resumeHasProgress((save.body||{}).state||[])){
+      lead=L9("You started this set earlier on this device, and your answers are saved.","Tu as commencé cette série plus tôt sur cet appareil, et tes réponses sont enregistrées.");
+      detail=L9("Resume brings back the same set with your answers in place. Start fresh clears the saved work.","Reprendre ramène la même série avec tes réponses en place. Recommencer efface le travail enregistré.");
+    }else{
+      lead=L9("You started this set earlier on this device, and it is saved.","Tu as commencé cette série plus tôt sur cet appareil, et elle est enregistrée.");
+      detail=L9("Resume brings back the same set. Start fresh clears the saved set.","Reprendre ramène la même série. Recommencer efface la série enregistrée.");
+    }
   }else{
     lead=L9("You started this set earlier on this device, and your answers are saved.","Tu as commencé cette série plus tôt sur cet appareil, et tes réponses sont enregistrées.");
     detail=L9("Resume puts your saved answers back in place. Start fresh clears the saved work.","Reprendre remet tes réponses enregistrées en place. Recommencer efface le travail enregistré.");
@@ -5364,7 +5389,7 @@ function resumeShowBanner(save,mode){
   if(sess.firstChild)sess.insertBefore(bar,sess.firstChild);else sess.appendChild(bar);
   $("resumeGoBtn").addEventListener("click",function(){
     countEvent("resume_accept",[analyticsCourse()]);
-    if(save.view==="online")resumeApplyOnline(save);
+    if(save.view==="online"){if(mode==="onlineBoot")resumeRebuildOnline(save);else resumeApplyOnline(save);}
     else if(mode==="examBoot")resumeRebuildExam(save);
     else{examState.t0=Date.now()-((save.body&&save.body.elapsed)||0);_resumeAppliedSig=save.sig;resumeHideBanner();renderExam();}
   });
@@ -5423,12 +5448,41 @@ function resumeAfterRender(view){
   }
   resumeSaveSoon();
 }
+function resumeStoredItems(save){
+  var b=save&&save.body;
+  if(!b||!b.items||!b.items.length)return null;
+  var items=[];
+  for(var i=0;i<b.items.length;i++){var q=advQDes(b.items[i]);if(!q)return null;items.push(q);}
+  return items;
+}
+function resumeRebuildOnline(save){
+  var items=null;try{items=resumeStoredItems(save);}catch(e){items=null;}
+  if(!items){resumeDrop();resumeHideBanner();return;}
+  var b=save.body||{};
+  stopExamTimer();
+  current=items;sessionSeed=b.seed||"";
+  lastSettings=b.s||settings();onlineThin=!!b.thin;
+  checkMode=b.checkMode||((lastSettings&&lastSettings.chk==="end")?"end":"each");endGraded=!!b.endGraded;
+  if(b.nohint)NO_HINT=true;if(b.noex)NO_EX=true;
+  if(b.s&&b.s.pkOnly&&typeof hidCtl!=="undefined"&&hidCtl)hidCtl.pkOnly=true;
+  T=null;
+  if(TEACHER){T=advTCtx("online",{T:null},lastSettings);current.forEach(advAdopt);}
+  renderOnline(false);
+  resumeApplyOnline(save);
+  _resumeAppliedSig=_resumeLiveSig;
+}
 function resumeBootCheck(){
   if(!window.__COURSE||_resumeDrawn)return;
   if(current&&current.length)return;
   if(examState||sheetState)return;
-  var save=resumeLoad();if(!save||save.view!=="exam")return;
-  resumeShowBanner(save,"examBoot");
+  var save=resumeLoad();if(!save)return;
+  if(save.view==="exam"){resumeShowBanner(save,"examBoot");return;}
+  if(save.view!=="online")return;
+  if(!save.body||!save.body.items)return;
+  if(typeof BANK==="undefined"||!BANK.length)return;
+  var items=null;try{items=resumeStoredItems(save);}catch(e){items=null;}
+  if(!items){resumeDrop();return;}
+  resumeShowBanner(save,"onlineBoot");
 }
 if(window.__COURSE){
   var _rsess=$("session");

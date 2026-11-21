@@ -4366,6 +4366,125 @@ rep('  .adv label{font-size:.85rem;display:flex;flex-direction:column;gap:4px;}\
     '  .adv label.chk{flex-direction:row;align-items:center;gap:6px;}\n'
     '  #oTestNumWrap[hidden]{display:none;}', count=1)  # Test row hidden guard
 
+# ---------- Resume: the dealt online set rides the save (owner direction, November 21, 2026) ----------
+# Jason's approval, Nov 21, 2026 ("I like it - let's do it"): the
+# interrupted-set resume stored answers but not questions, so the
+# Resume offer could only appear when the identical set was drawn
+# again, which holds for seeded and shared sets and effectively
+# never for an unseeded random set, the bell-rings case the
+# feature exists for. The online save now carries the dealt set
+# itself, serialized with advQSer the way the exam save and the
+# Advanced tools capture already serialize questions, and it is
+# written when the set is dealt, before any answer is entered;
+# the interaction saves keep refreshing the answers and states in
+# the same save. On return, resumeBootCheck rebuild-validates the
+# stored set against the current bank before offering: every
+# entry must still exist and every dealt question must
+# reconstruct, or the save is dropped silently and the visit
+# behaves as if there were no save. The offer itself is unchanged
+# in kind: a banner, never an automatic restore; Resume rebuilds
+# the exact set verbatim (resumeRebuildOnline, modelled on the
+# Advanced tools online restore) and puts the saved answers and
+# states back through the existing apply path. Seeded and shared
+# sets keep the redraw offer exactly as before, and the exam save
+# is untouched. Two recorded choices: if writing the full save
+# fails because device storage is full, the save falls back to
+# the signature-only form (no stored set) and keeps the redraw
+# offer; and the boot validation never runs against an unloaded
+# bank, so a bank that failed to load cannot drop a save.
+rep('   expire after RESUME_TTL_DAYS days. The sheet view is an output\n'
+    '   surface, not an answering surface, and is not covered. */',
+    '   expire after RESUME_TTL_DAYS days. The sheet view is an output\n'
+    '   surface, not an answering surface, and is not covered.\n'
+    '   Stored set (Nov 21, 2026): the online save also carries the\n'
+    '   dealt set itself, serialized the way the exam save and the\n'
+    '   Advanced tools capture serialize questions, and it is written\n'
+    '   when the set is dealt, before any answer is entered. An\n'
+    '   unseeded set never redraws identically, so the signature offer\n'
+    '   above could never reach the student it was designed for (the\n'
+    '   bell-rings case, usually on a phone); the stored set can. On\n'
+    '   return, before anything is drawn, the stored set is rebuilt\n'
+    '   against the current bank: if every entry still exists and\n'
+    '   every dealt question is reconstructed, the banner offers that\n'
+    '   exact set at boot, and Resume rebuilds it verbatim with the\n'
+    '   saved answers and states in place. If any entry no longer\n'
+    '   builds, the save is dropped silently and the visit behaves as\n'
+    '   if there were no save. A save whose set could not be stored\n'
+    '   (the device storage was full) keeps the signature-only form\n'
+    '   and the redraw offer above. */', count=1)  # resume header: the stored set
+rep('      var st=resumeCaptureState();\n'
+    '      if(!resumeHasProgress(st)){try{store.removeItem(RESUME_KEY);}catch(e){}return;}\n'
+    '      var sig=resumeSig("online",current);_resumeLiveSig=sig;\n'
+    '      store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"online",ts:Date.now(),sig:sig,body:{state:st,checked:checkedCount,correct:correctCount,results:setResults,help:helpUsed,checkMode:checkMode,endGraded:!!endGraded,nohint:NO_HINT?1:0,noex:NO_EX?1:0}}));',
+    '      var st=resumeCaptureState();\n'
+    '      var sig=resumeSig("online",current);_resumeLiveSig=sig;\n'
+    '      var body={items:current.map(advQSer),state:st,checked:checkedCount,correct:correctCount,results:setResults,help:helpUsed,checkMode:checkMode,endGraded:!!endGraded,nohint:NO_HINT?1:0,noex:NO_EX?1:0,seed:sessionSeed||"",s:lastSettings,thin:!!onlineThin};\n'
+    '      try{store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"online",ts:Date.now(),sig:sig,body:body}));}\n'
+    '      catch(e2){delete body.items;try{store.setItem(RESUME_KEY,JSON.stringify({v:1,view:"online",ts:Date.now(),sig:sig,body:body}));}catch(e3){}}',
+    count=1)  # resumeSaveNow: the dealt set is saved at deal time, progress or not
+rep('  }else{\n'
+    '    lead=L9("You started this set earlier on this device, and your answers are saved.","Tu as commencé cette série plus tôt sur cet appareil, et tes réponses sont enregistrées.");\n'
+    '    detail=L9("Resume puts your saved answers back in place. Start fresh clears the saved work.","Reprendre remet tes réponses enregistrées en place. Recommencer efface le travail enregistré.");\n'
+    '  }',
+    '  }else if(mode==="onlineBoot"){\n'
+    '    if(resumeHasProgress((save.body||{}).state||[])){\n'
+    '      lead=L9("You started this set earlier on this device, and your answers are saved.","Tu as commencé cette série plus tôt sur cet appareil, et tes réponses sont enregistrées.");\n'
+    '      detail=L9("Resume brings back the same set with your answers in place. Start fresh clears the saved work.","Reprendre ramène la même série avec tes réponses en place. Recommencer efface le travail enregistré.");\n'
+    '    }else{\n'
+    '      lead=L9("You started this set earlier on this device, and it is saved.","Tu as commencé cette série plus tôt sur cet appareil, et elle est enregistrée.");\n'
+    '      detail=L9("Resume brings back the same set. Start fresh clears the saved set.","Reprendre ramène la même série. Recommencer efface la série enregistrée.");\n'
+    '    }\n'
+    '  }else{\n'
+    '    lead=L9("You started this set earlier on this device, and your answers are saved.","Tu as commencé cette série plus tôt sur cet appareil, et tes réponses sont enregistrées.");\n'
+    '    detail=L9("Resume puts your saved answers back in place. Start fresh clears the saved work.","Reprendre remet tes réponses enregistrées en place. Recommencer efface le travail enregistré.");\n'
+    '  }', count=1)  # resumeShowBanner: boot-offer wording for the stored set
+rep('    if(save.view==="online")resumeApplyOnline(save);',
+    '    if(save.view==="online"){if(mode==="onlineBoot")resumeRebuildOnline(save);else resumeApplyOnline(save);}',
+    count=1)  # banner Resume button: a boot offer rebuilds the stored set
+rep('function resumeBootCheck(){\n'
+    '  if(!window.__COURSE||_resumeDrawn)return;\n'
+    '  if(current&&current.length)return;\n'
+    '  if(examState||sheetState)return;\n'
+    '  var save=resumeLoad();if(!save||save.view!=="exam")return;\n'
+    '  resumeShowBanner(save,"examBoot");\n'
+    '}',
+    'function resumeStoredItems(save){\n'
+    '  var b=save&&save.body;\n'
+    '  if(!b||!b.items||!b.items.length)return null;\n'
+    '  var items=[];\n'
+    '  for(var i=0;i<b.items.length;i++){var q=advQDes(b.items[i]);if(!q)return null;items.push(q);}\n'
+    '  return items;\n'
+    '}\n'
+    'function resumeRebuildOnline(save){\n'
+    '  var items=null;try{items=resumeStoredItems(save);}catch(e){items=null;}\n'
+    '  if(!items){resumeDrop();resumeHideBanner();return;}\n'
+    '  var b=save.body||{};\n'
+    '  stopExamTimer();\n'
+    '  current=items;sessionSeed=b.seed||"";\n'
+    '  lastSettings=b.s||settings();onlineThin=!!b.thin;\n'
+    '  checkMode=b.checkMode||((lastSettings&&lastSettings.chk==="end")?"end":"each");endGraded=!!b.endGraded;\n'
+    '  if(b.nohint)NO_HINT=true;if(b.noex)NO_EX=true;\n'
+    '  if(b.s&&b.s.pkOnly&&typeof hidCtl!=="undefined"&&hidCtl)hidCtl.pkOnly=true;\n'
+    '  T=null;\n'
+    '  if(TEACHER){T=advTCtx("online",{T:null},lastSettings);current.forEach(advAdopt);}\n'
+    '  renderOnline(false);\n'
+    '  resumeApplyOnline(save);\n'
+    '  _resumeAppliedSig=_resumeLiveSig;\n'
+    '}\n'
+    'function resumeBootCheck(){\n'
+    '  if(!window.__COURSE||_resumeDrawn)return;\n'
+    '  if(current&&current.length)return;\n'
+    '  if(examState||sheetState)return;\n'
+    '  var save=resumeLoad();if(!save)return;\n'
+    '  if(save.view==="exam"){resumeShowBanner(save,"examBoot");return;}\n'
+    '  if(save.view!=="online")return;\n'
+    '  if(!save.body||!save.body.items)return;\n'
+    '  if(typeof BANK==="undefined"||!BANK.length)return;\n'
+    '  var items=null;try{items=resumeStoredItems(save);}catch(e){items=null;}\n'
+    '  if(!items){resumeDrop();return;}\n'
+    '  resumeShowBanner(save,"onlineBoot");\n'
+    '}', count=1)  # stored-set validation, rebuild and the boot offer
+
 # ---------- em dash sweep (Jason's global rule: no em dashes anywhere) ----------
 # The chassis carries six UI strings with a \u2014 escape; convert them in the
 # built shell so the unified app ships clean. Label separators become colons,
