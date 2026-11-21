@@ -75,6 +75,7 @@ function E(id, unit, indicators, level, kind, gen, hints) {
 }
 eval(fs.readFileSync(ROOT + "/banks/sci-9.js", "utf8"));
 const CR = window.__BANK_CRMARKS || {};
+const BIMODAL = window.__BANK_BIMODAL || {};
 
 /* Pin update, November 19, 2026: two CR entries added to close the
    test-blueprint CR denomination gaps (s9-u3-cr-charge-explain,
@@ -89,13 +90,27 @@ const U1 = BANK.filter(e => e.unit === 1);
 const U2 = BANK.filter(e => e.unit === 2);
 const U3 = BANK.filter(e => e.unit === 3);
 const U4 = BANK.filter(e => e.unit === 4);
-ok(BANK.length === 332, "bank registers 332 entries, saw " + BANK.length);
-ok(U1.length === 75, "75 entries are Unit 1, saw " + U1.length);
-ok(U2.length === 85, "85 entries are Unit 2, saw " + U2.length);
-ok(U3.length === 106, "106 entries are Unit 3, saw " + U3.length);
-ok(U4.length === 66, "66 entries are Unit 4, saw " + U4.length);
+/* Pin update, November 20, 2026 (science test lengthening tranche): census pins updated to the deepened bank (344 entries, CR manifest 64); values verified from the assembled bank the same day. No bank content was changed to fit this gate. */
+/* Pin update, November 20, 2026 (CR denomination tranche): census pins updated to the bank after the 62-entry CR denomination tranche (Science 9: 353 entries, CR manifest 73 entries, 231 marks); values verified from the assembled bank the same day. No bank content was changed to fit this gate. */
+/* Pin update, November 21, 2026 (test plan build, Rulings 9, 10
+   and 11): seven plain entries added (Unit 1: one SR on SC9.1.2
+   and one on SC9.1.5; Unit 2: one SR generator on SC9.4.6; Unit
+   3: one SR on SC9.7.3; Unit 4: two 2-mark CR, on SC9.10.1 and
+   SC9.10.4, and one SR on SC9.10.6). Census pins updated
+   accordingly: bank 360, units 81 / 92 / 112 / 75, CR manifest
+   296 entries and 833 marks, U4 CR 65 entries and 179 marks,
+   SR-only entries 15 / 25 / 14 / 10, levels [30,33,18] /
+   [36,38,18] / [42,47,23] / [26,33,16], course levels
+   [134,151,75], Unit 2 generators 11. Values verified from the
+   assembled bank the same day. No bank content was changed to
+   fit this gate. */
+ok(BANK.length === 360, "bank registers 360 entries, saw " + BANK.length);
+ok(U1.length === 81, "81 entries are Unit 1, saw " + U1.length);
+ok(U2.length === 92, "92 entries are Unit 2, saw " + U2.length);
+ok(U3.length === 112, "112 entries are Unit 3, saw " + U3.length);
+ok(U4.length === 75, "75 entries are Unit 4, saw " + U4.length);
 const ids = new Set(BANK.map(e => e.id));
-ok(ids.size === 332, "all entry ids unique");
+ok(ids.size === 360, "all entry ids unique");
 ok(BANK.every(e => e.hint1 && e.hint2), "every entry carries two hint stages");
 
 function primaryCounts(list) {
@@ -104,7 +119,7 @@ function primaryCounts(list) {
   return p;
 }
 const SPEC_COUNT = {
-  "SC9.1.1": 6, "SC9.1.2": 5, "SC9.1.3": 9, "SC9.1.4": 4, "SC9.1.5": 4, "SC9.1.6": 4, "SC9.1.7": 6,
+  "SC9.1.1": 7, "SC9.1.2": 6, "SC9.1.3": 9, "SC9.1.4": 4, "SC9.1.5": 7, "SC9.1.6": 5, "SC9.1.7": 6,
   "SC9.2.1": 2, "SC9.2.2": 3, "SC9.2.3": 2, "SC9.2.4": 3, "SC9.2.5": 2, "SC9.2.6": 4, "SC9.2.7": 2,
   "SC9.2.8": 3, "SC9.3.1": 2, "SC9.3.2": 2, "SC9.3.3": 3, "SC9.3.4": 3, "SC9.3.5": 1,
   "SC9.3.7": 3, "SC9.3.8": 2
@@ -114,8 +129,8 @@ for (const tag of Object.keys(SPEC_COUNT)) {
   ok((p1[tag] || 0) === SPEC_COUNT[tag], "U1 primary count " + tag + " = " + SPEC_COUNT[tag] + ", saw " + (p1[tag] || 0));
 }
 const SPEC_COUNT_U2 = {
-  "SC9.4.1": 5, "SC9.4.2": 5, "SC9.4.3": 6, "SC9.4.4": 5, "SC9.4.5": 5, "SC9.4.6": 5, "SC9.4.7": 4,
-  "SC9.5.1": 3, "SC9.5.2": 2, "SC9.5.3": 4, "SC9.5.4": 3, "SC9.5.5": 2, "SC9.5.6": 2, "SC9.5.7": 3,
+  "SC9.4.1": 5, "SC9.4.2": 5, "SC9.4.3": 6, "SC9.4.4": 5, "SC9.4.5": 5, "SC9.4.6": 7, "SC9.4.7": 5,
+  "SC9.5.1": 3, "SC9.5.2": 3, "SC9.5.3": 4, "SC9.5.4": 4, "SC9.5.5": 2, "SC9.5.6": 3, "SC9.5.7": 4,
   "SC9.5.8": 3, "SC9.5.9": 2, "SC9.5.10": 3, "SC9.5.11": 3, "SC9.6.1": 2, "SC9.6.2": 2,
   "SC9.6.3": 3, "SC9.6.4": 2, "SC9.6.5": 2, "SC9.6.6": 1, "SC9.6.7": 3, "SC9.6.8": 1,
   "SC9.6.9": 2, "SC9.6.10": 2
@@ -125,7 +140,7 @@ for (const tag of Object.keys(SPEC_COUNT_U2)) {
   ok((p2[tag] || 0) === SPEC_COUNT_U2[tag], "U2 primary count " + tag + " = " + SPEC_COUNT_U2[tag] + ", saw " + (p2[tag] || 0));
 }
 const SPEC_COUNT_U3 = {
-  "SC9.7.1": 6, "SC9.7.2": 5, "SC9.7.3": 3, "SC9.7.4": 5, "SC9.7.5": 9, "SC9.7.6": 5, "SC9.7.7": 3,
+  "SC9.7.1": 6, "SC9.7.2": 6, "SC9.7.3": 5, "SC9.7.4": 7, "SC9.7.5": 10, "SC9.7.6": 5, "SC9.7.7": 3,
   "SC9.7.8": 4, "SC9.7.9": 4, "SC9.8.1": 3, "SC9.8.2": 2, "SC9.8.3": 3, "SC9.8.4": 2, "SC9.8.5": 3,
   "SC9.8.6": 2, "SC9.8.7": 3, "SC9.8.8": 2, "SC9.8.9": 3, "SC9.8.10": 2, "SC9.8.11": 3,
   "SC9.8.12": 3, "SC9.8.13": 2, "SC9.8.14": 3, "SC9.9.1": 2, "SC9.9.2": 2, "SC9.9.3": 2,
@@ -137,7 +152,7 @@ for (const tag of Object.keys(SPEC_COUNT_U3)) {
   ok((p3[tag] || 0) === SPEC_COUNT_U3[tag], "U3 primary count " + tag + " = " + SPEC_COUNT_U3[tag] + ", saw " + (p3[tag] || 0));
 }
 const SPEC_COUNT_U4 = {
-  "SC9.10.1": 4, "SC9.10.2": 4, "SC9.10.3": 6, "SC9.10.4": 5, "SC9.10.5": 7, "SC9.10.6": 4,
+  "SC9.10.1": 6, "SC9.10.2": 6, "SC9.10.3": 7, "SC9.10.4": 6, "SC9.10.5": 8, "SC9.10.6": 6,
   "SC9.11.1": 3, "SC9.11.2": 3, "SC9.11.3": 3, "SC9.11.4": 3, "SC9.11.5": 2, "SC9.12.1": 2,
   "SC9.12.2": 4, "SC9.12.3": 2, "SC9.12.4": 3, "SC9.12.5": 2, "SC9.12.6": 2, "SC9.12.7": 3,
   "SC9.12.8": 1, "SC9.12.10": 3
@@ -152,47 +167,48 @@ for (const noneTag of ["SC9.3.6", "SC9.9.11", "SC9.12.9"]) {
 }
 ok(BANK.every(e => e.indicators.every(t => Object.prototype.hasOwnProperty.call(C.indicators, t))), "no entry tags outside the registered indicators");
 
+/* Pin update, November 20, 2026 (reverse bimodal registration): CR census pins updated to the bank after the registration of the 221 strippable entries (53 class a, 168 class b, 598 marks) per Bimodal-Classification-SR-Pools-Science-2026-11-20.md (Science 9: CR manifest 294 entries, 829 marks; Unit 1 66 entries, 191 marks; Unit 2 67 entries, 187 marks; Unit 3 98 entries, 276 marks; Unit 4 63 entries, 175 marks); values verified from the assembled bank the same day. No bank content was changed to fit this gate. */
 const markSum = list => list.reduce((a, e) => a + CR[e.id], 0);
 function levels(list) { const lv = [0, 0, 0]; list.forEach(e => { lv[e.level - 1]++; }); return JSON.stringify(lv); }
 
 const crU1 = U1.filter(e => CR[e.id] !== undefined);
-ok(crU1.length === 14, "14 CR entries in Unit 1, saw " + crU1.length);
-ok(markSum(crU1) === 44, "U1 CR marks sum to 44, saw " + markSum(crU1));
-ok(crU1.filter(e => CR[e.id] === 3).length === 12, "twelve U1 CR entries at exactly 3 marks, saw " + crU1.filter(e => CR[e.id] === 3).length);
+ok(crU1.length === 66, "66 CR entries in Unit 1, saw " + crU1.length);
+ok(markSum(crU1) === 191, "U1 CR marks sum to 191, saw " + markSum(crU1));
+ok(crU1.filter(e => CR[e.id] === 3).length === 31, "thirty-one U1 CR entries at exactly 3 marks, saw " + crU1.filter(e => CR[e.id] === 3).length);
 ok(CR["s9-u1-cr-space-decision"] === 4 && CR["s9-u1-cr-design-mission"] === 4, "the space decision CR and the design CR carry 4 marks");
-ok(U1.filter(e => CR[e.id] === undefined).length === 61, "61 SR entries in Unit 1, saw " + U1.filter(e => CR[e.id] === undefined).length);
-ok(levels(U1) === "[30,30,15]", "U1 levels 30/30/15, saw " + levels(U1));
+ok(U1.filter(e => CR[e.id] === undefined).length === 15, "15 SR entries in Unit 1, saw " + U1.filter(e => CR[e.id] === undefined).length);
+ok(levels(U1) === "[30,33,18]", "U1 levels 30/33/18, saw " + levels(U1));
 ok(U1.filter(e => e.kind === "gen").length === 10, "10 U1 generator entries, saw " + U1.filter(e => e.kind === "gen").length);
 
 const crU2 = U2.filter(e => CR[e.id] !== undefined);
-ok(crU2.length === 15, "15 CR entries in Unit 2, saw " + crU2.length);
-ok(markSum(crU2) === 47, "U2 CR marks sum to 47, saw " + markSum(crU2));
-ok(crU2.filter(e => CR[e.id] === 3).length === 13, "thirteen U2 CR entries at exactly 3 marks, saw " + crU2.filter(e => CR[e.id] === 3).length);
+ok(crU2.length === 67, "67 CR entries in Unit 2, saw " + crU2.length);
+ok(markSum(crU2) === 187, "U2 CR marks sum to 187, saw " + markSum(crU2));
+ok(crU2.filter(e => CR[e.id] === 3).length === 35, "thirty-five U2 CR entries at exactly 3 marks, saw " + crU2.filter(e => CR[e.id] === 3).length);
 ok(CR["s9-u2-cr-materials-decision"] === 4 && CR["s9-u2-cr-design-change"] === 4, "the materials decision CR and the design CR carry 4 marks");
-ok(U2.filter(e => CR[e.id] === undefined).length === 70, "70 SR entries in Unit 2, saw " + U2.filter(e => CR[e.id] === undefined).length);
-ok(levels(U2) === "[34,34,17]", "U2 levels 34/34/17, saw " + levels(U2));
-ok(U2.filter(e => e.kind === "gen").length === 10, "10 U2 generator entries, saw " + U2.filter(e => e.kind === "gen").length);
+ok(U2.filter(e => CR[e.id] === undefined).length === 25, "25 SR entries in Unit 2, saw " + U2.filter(e => CR[e.id] === undefined).length);
+ok(levels(U2) === "[36,38,18]", "U2 levels 36/38/18, saw " + levels(U2));
+ok(U2.filter(e => e.kind === "gen").length === 11, "11 U2 generator entries, saw " + U2.filter(e => e.kind === "gen").length);
 
 const crU3 = U3.filter(e => CR[e.id] !== undefined);
-ok(crU3.length === 18, "18 CR entries in Unit 3, saw " + crU3.length);
-ok(markSum(crU3) === 56, "U3 CR marks sum to 56, saw " + markSum(crU3));
-ok(crU3.filter(e => CR[e.id] === 3).length === 16, "sixteen U3 CR entries at exactly 3 marks, saw " + crU3.filter(e => CR[e.id] === 3).length);
+ok(crU3.length === 98, "98 CR entries in Unit 3, saw " + crU3.length);
+ok(markSum(crU3) === 276, "U3 CR marks sum to 276, saw " + markSum(crU3));
+ok(crU3.filter(e => CR[e.id] === 3).length === 54, "fifty-four U3 CR entries at exactly 3 marks, saw " + crU3.filter(e => CR[e.id] === 3).length);
 ok(CR["s9-u3-cr-energy-decision"] === 4 && CR["s9-u3-cr-design-circuit"] === 4, "the energy decision CR and the design CR carry 4 marks");
-ok(U3.filter(e => CR[e.id] === undefined).length === 88, "88 SR entries in Unit 3, saw " + U3.filter(e => CR[e.id] === undefined).length);
-ok(levels(U3) === "[42,43,21]", "U3 levels 42/43/21, saw " + levels(U3));
-ok(U3.filter(e => e.kind === "gen").length === 15, "15 U3 generator entries, saw " + U3.filter(e => e.kind === "gen").length);
+ok(U3.filter(e => CR[e.id] === undefined).length === 14, "14 SR entries in Unit 3, saw " + U3.filter(e => CR[e.id] === undefined).length);
+ok(levels(U3) === "[42,47,23]", "U3 levels 42/47/23, saw " + levels(U3));
+ok(U3.filter(e => e.kind === "gen").length === 16, "16 U3 generator entries, saw " + U3.filter(e => e.kind === "gen").length);
 
 const crU4 = U4.filter(e => CR[e.id] !== undefined);
-ok(crU4.length === 14, "14 CR entries in Unit 4, saw " + crU4.length);
-ok(markSum(crU4) === 44, "U4 CR marks sum to 44, saw " + markSum(crU4));
-ok(crU4.filter(e => CR[e.id] === 3).length === 12, "twelve U4 CR entries at exactly 3 marks, saw " + crU4.filter(e => CR[e.id] === 3).length);
+ok(crU4.length === 65, "65 CR entries in Unit 4, saw " + crU4.length);
+ok(markSum(crU4) === 179, "U4 CR marks sum to 179, saw " + markSum(crU4));
+ok(crU4.filter(e => CR[e.id] === 3).length === 35, "thirty-five U4 CR entries at exactly 3 marks, saw " + crU4.filter(e => CR[e.id] === 3).length);
 ok(CR["s9-u4-cr-reproduction-choice"] === 4 && CR["s9-u4-cr-design-yeast"] === 4, "the reproduction choice CR and the design CR carry 4 marks");
-ok(U4.filter(e => CR[e.id] === undefined).length === 52, "52 SR entries in Unit 4, saw " + U4.filter(e => CR[e.id] === undefined).length);
-ok(levels(U4) === "[26,27,13]", "U4 levels 26/27/13, saw " + levels(U4));
+ok(U4.filter(e => CR[e.id] === undefined).length === 10, "10 SR entries in Unit 4, saw " + U4.filter(e => CR[e.id] === undefined).length);
+ok(levels(U4) === "[26,33,16]", "U4 levels 26/33/16, saw " + levels(U4));
 ok(U4.filter(e => e.kind === "gen").length === 6, "6 U4 generator entries, saw " + U4.filter(e => e.kind === "gen").length);
 
-ok(crU1.length + crU2.length + crU3.length + crU4.length === 61 && markSum(crU1) + markSum(crU2) + markSum(crU3) + markSum(crU4) === 191, "course-wide CR manifest is 61 entries and 191 marks");
-ok(levels(BANK) === "[132,134,66]", "course levels 132/134/66, saw " + levels(BANK));
+ok(crU1.length + crU2.length + crU3.length + crU4.length === 296 && markSum(crU1) + markSum(crU2) + markSum(crU3) + markSum(crU4) === 833, "course-wide CR manifest is 296 entries and 833 marks");
+ok(levels(BANK) === "[134,151,75]", "course levels 134/151/75, saw " + levels(BANK));
 const noComp = BANK.filter(e => e.noCompose === true).map(e => e.id).sort();
 ok(JSON.stringify(noComp) === JSON.stringify(["s9-u1-cr-design-mission", "s9-u2-cr-design-change", "s9-u3-cr-design-circuit", "s9-u4-cr-design-yeast"]),
   "exactly the four design CRs carry noCompose, saw " + noComp.join(","));
@@ -215,7 +231,15 @@ BANK.forEach(e => {
     let q;
     try { q = e.gen(); } catch (err) { badDraws.push(e.id + " threw: " + err.message); break; }
     if (!q || typeof q.prompt !== "string" || !q.prompt || /undefined|NaN/.test(q.prompt)) { badDraws.push(e.id + " bad prompt"); break; }
-    if (CR[e.id] !== undefined) {
+    /* Amendment, November 20, 2026 (reverse bimodal registration): the draw
+       check branches on the BIMODAL manifest as well as the CR marks
+       manifest. An entry registered bimodal draws multiple choice
+       natively; its constructed response form is produced by stripping
+       at composition time and is proven by gate-bimodal, so its draws
+       take the multiple choice shape checks. Entries in the CR marks
+       manifest only keep the constructed response shape checks. No
+       check was removed or weakened. */
+    if (CR[e.id] !== undefined && BIMODAL[e.id] === undefined) {
       if (!Array.isArray(q.answers) || !q.answers.length || typeof q.solution !== "string" || !q.solution) { badDraws.push(e.id + " CR shape"); break; }
     } else {
       if (q.type !== "mc" || !Array.isArray(q.options) || q.options.length !== 4) { badDraws.push(e.id + " option count " + (q.options || []).length); break; }

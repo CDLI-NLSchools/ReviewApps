@@ -158,7 +158,17 @@ function settleSet(dom) {
   let rt = await boot("course=chem-2202&teacher=1");
   let dt = rt.dom.window.document;
   await waitBank(rt.dom);
-  const pick = JSON.parse(ev(rt.dom, "(function(){var C=window.__COURSE;var units=Object.keys(C.testMap).sort(function(a,b){return a-b;});for(var ui=0;ui<units.length;ui++){var u=+units[ui],list=C.testMap[u];for(var ti=0;ti<list.length;ti++){var e=list[ti],plan=testPlanFor(C,u,e.test);if(!plan)continue;var pool=poolFor([u],e.inds,scopeCap([u])).filter(function(x){return !x.enrich&&!x.noCompose;});if(plan.topics)pool=pool.filter(function(x){return x.indicators.every(function(c){var t=plan.topics[c];return !t||x.topic===t;});});var srP=pool.filter(function(x){return probeType(x)==='mc';}).length;var crP=pool.filter(function(x){return typeof CR_MARKS!=='undefined'&&CR_MARKS[x.id]!==undefined&&CR_MARKS[x.id]>=2&&x.level>=2;}).length;if(srP>=plan.sr+3&&crP>=Math.ceil(plan.cr/2)+2)return JSON.stringify({unit:u,test:e.test,sr:plan.sr,cr:plan.cr});}}return 'null';})()"));
+  /* Fixture note, November 21, 2026 (test plan cap, Ruling 10):
+     the pick below used to take the FIRST mapped test whose SR
+     pool held plan.sr + 3 entries. At the old cap of 24 that
+     screen selected Unit 2 Test 2 (pool 43); at the cap of 18 it
+     selects Unit 2 Test 1 (pool 22), whose undealt, unclaimed
+     stock cannot actually fill the steppers, and four assertions
+     failed on the fixture rather than the behaviour. The screen
+     now takes the qualifying test with the deepest SR headroom
+     (pool entries minus plan SR), which is Unit 2 Test 2 under
+     both caps. No assertion changed. */
+  const pick = JSON.parse(ev(rt.dom, "(function(){var C=window.__COURSE;var units=Object.keys(C.testMap).sort(function(a,b){return a-b;});var best=null;for(var ui=0;ui<units.length;ui++){var u=+units[ui],list=C.testMap[u];for(var ti=0;ti<list.length;ti++){var e=list[ti],plan=testPlanFor(C,u,e.test);if(!plan)continue;var pool=poolFor([u],e.inds,scopeCap([u])).filter(function(x){return !x.enrich&&!x.noCompose;});if(plan.topics)pool=pool.filter(function(x){return x.indicators.every(function(c){var t=plan.topics[c];return !t||x.topic===t;});});var srP=pool.filter(function(x){return probeType(x)==='mc';}).length;var crP=pool.filter(function(x){return typeof CR_MARKS!=='undefined'&&CR_MARKS[x.id]!==undefined&&CR_MARKS[x.id]>=2&&x.level>=2;}).length;if(srP>=plan.sr+3&&crP>=Math.ceil(plan.cr/2)+2){var head=srP-plan.sr;if(!best||head>best.head)best={unit:u,test:e.test,sr:plan.sr,cr:plan.cr,head:head};}}}return best?JSON.stringify(best):'null';})()"));
   ok(!!pick, "steppers: Chemistry 2202 has a mapped test with pools deep enough to extend");
   if (pick) {
     const us = dt.getElementById("testUnitSel"), ts = dt.getElementById("testNumSel");
