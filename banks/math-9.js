@@ -5670,6 +5670,10 @@ E("u8-tangent-central-inscribed", 8, ["9.5"], 3, "gen", function () {
 // B1. 9.8 L2 MC: the angle in a semicircle, asked at C with no right-angle mark given away.
 E("u8-add-semicircle-right-angle", 8, ["9.8"], 2, "gen", function () {
   var gam = 2 * ri(18, 72);
+  /* Guard (Ruling 7, Nov 21, 2026): at gam = 90 the given angle is 45 degrees, where the
+     "given" distractor and the "90 - given" distractor coincide and the draw deals only
+     three distinct options; redraw gam so 45 degrees is never the given angle. */
+  while (gam === 90) gam = 2 * ri(18, 72);
   var rot = pick([0, 14, -14, 28]);
   var atA = Math.random() < 0.5;
   var A = u8Rot([-1, 0], rot), B = u8Rot([1, 0], rot), C = u8Rot(u8P(gam), rot);
