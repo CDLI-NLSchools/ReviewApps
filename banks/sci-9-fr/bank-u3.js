@@ -1,3 +1,5 @@
+// CRMARKS: s9f-u3-cr-proprietes-charge=3
+// CRMARKS: s9f-u3-cr-langage-circuit=3
 // CRMARKS: s9f-u3-cr-flow-language=3
 // CRMARKS: s9f-u3-cr-series-parallel-data=3
 // CRMARKS: s9f-u3-cr-bulb-removed=3
@@ -16,6 +18,158 @@
 // CRMARKS: s9f-u3-cr-design-circuit=4
 // CRMARKS: s9f-u3-cr-applications=3
 // CRMARKS: s9f-u3-cr-charge-explain=3
+// CRMARKS: s9f-u3-cr-statique-courant=2
+// CRMARKS: s9f-u3-cr-courant-serie=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s9f-u3-static-def=2
+// CRMARKS: s9f-u3-charge-states=2
+// CRMARKS: s9f-u3-electroscope-detect=3
+// CRMARKS: s9f-u3-discharge=3
+// CRMARKS: s9f-u3-laws-charges=2
+// CRMARKS: s9f-u3-pith-balls=2
+// CRMARKS: s9f-u3-balloon-wall=2
+// CRMARKS: s9f-u3-attract-repel-test=3
+// CRMARKS: s9f-u3-charge-interactions=3
+// CRMARKS: s9f-u3-static-not-harnessed=2
+// CRMARKS: s9f-u3-compare-table=2
+// CRMARKS: s9f-u3-voltage-def=2
+// CRMARKS: s9f-u3-circuit-parts=2
+// CRMARKS: s9f-u3-cell-how=3
+// CRMARKS: s9f-u3-coulomb=3
+// CRMARKS: s9f-u3-series-identify=2
+// CRMARKS: s9f-u3-parallel-identify=2
+// CRMARKS: s9f-u3-series-current-rule=2
+// CRMARKS: s9f-u3-gen-series-voltage=2
+// CRMARKS: s9f-u3-gen-parallel-current=2
+// CRMARKS: s9f-u3-total-resistance=2
+// CRMARKS: s9f-u3-energy-def=2
+// CRMARKS: s9f-u3-cost-factors=2
+// CRMARKS: s9f-u3-power-meaning=3
+// CRMARKS: s9f-u3-gen-power-vi=2
+// CRMARKS: s9f-u3-gen-energy-kwh=2
+// CRMARKS: s9f-u3-gen-cost=2
+// CRMARKS: s9f-u3-gen-efficiency=2
+// CRMARKS: s9f-u3-efficiency-meaning=3
+// CRMARKS: s9f-u3-efficiency-heat-loss=3
+// CRMARKS: s9f-u3-generator-parts=2
+// CRMARKS: s9f-u3-station-types=2
+// CRMARKS: s9f-u3-transmission=3
+// CRMARKS: s9f-u3-static-tech=2
+// CRMARKS: s9f-u3-lightning-rod=2
+// CRMARKS: s9f-u3-photocopier=3
+// CRMARKS: s9f-u3-careers-match=2
+// CRMARKS: s9f-u3-lights-uses=2
+// CRMARKS: s9f-u3-series-use-case=2
+// CRMARKS: s9f-u3-parallel-use-case=3
+// CRMARKS: s9f-u3-cells-flashlight=2
+// CRMARKS: s9f-u3-cells-lighthouse=3
+// CRMARKS: s9f-u3-fuse-breaker=2
+// CRMARKS: s9f-u3-grounding-prong=3
+// CRMARKS: s9f-u3-gen-cells-voltage=2
+// CRMARKS: s9f-u3-precise-terms-cost=3
+// CRMARKS: s9f-u3-precise-terms-bill=3
+// CRMARKS: s9f-u3-lighting-evaluate=2
+// CRMARKS: s9f-u3-past-current=2
+// CRMARKS: s9f-u3-energuide-purpose=3
+// CRMARKS: s9f-u3-reduce-action=2
+// CRMARKS: s9f-u3-bill-compare=3
+// CRMARKS: s9f-u3-approaches=3
+// CRMARKS: s9f-u3-approach-fit=3
+// CRMARKS: s9f-u3-criteria-analysis=2
+// CRMARKS: s9f-u3-decision-balance=2
+// CRMARKS: s9f-u3-decision-evidence=3
+// CRMARKS: s9f-u3-constraints=2
+// CRMARKS: s9f-u3-constraint-case=3
+// CRMARKS: s9f-u3-symbols=2
+// CRMARKS: s9f-u3-gen-ohm-resistance=2
+// CRMARKS: s9f-u3-gen-ohm-current=3
+// CRMARKS: s9f-u3-gen-ohm-voltage=3
+// CRMARKS: s9f-u3-meter-placement=2
+// CRMARKS: s9f-u3-gen-meter-read=3
+// CRMARKS: s9f-u3-best-fit=2
+// CRMARKS: s9f-u3-variables=2
+// CRMARKS: s9f-u3-instrument-use=3
+// CRMARKS: s9f-u3-safe-practice=2
+// CRMARKS: s9f-u3-testable-judge=3
+// CRMARKS: s9f-u3-applications=3
+// CRMARKS: s9f-u3-env-criteria=2
+// CRMARKS: s9f-u3-env-apply=3
+// CRMARKS: s9f-u3-circuits-comportement=2
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s9f-u3-static-def=b
+// BIMODAL: s9f-u3-charge-states=a
+// BIMODAL: s9f-u3-electroscope-detect=b
+// BIMODAL: s9f-u3-discharge=b
+// BIMODAL: s9f-u3-laws-charges=a
+// BIMODAL: s9f-u3-pith-balls=a
+// BIMODAL: s9f-u3-balloon-wall=b
+// BIMODAL: s9f-u3-attract-repel-test=b
+// BIMODAL: s9f-u3-charge-interactions=a
+// BIMODAL: s9f-u3-static-not-harnessed=b
+// BIMODAL: s9f-u3-compare-table=a
+// BIMODAL: s9f-u3-voltage-def=b
+// BIMODAL: s9f-u3-circuit-parts=b
+// BIMODAL: s9f-u3-cell-how=b
+// BIMODAL: s9f-u3-coulomb=a
+// BIMODAL: s9f-u3-series-identify=a
+// BIMODAL: s9f-u3-parallel-identify=a
+// BIMODAL: s9f-u3-series-current-rule=a
+// BIMODAL: s9f-u3-gen-series-voltage=a
+// BIMODAL: s9f-u3-gen-parallel-current=a
+// BIMODAL: s9f-u3-total-resistance=a
+// BIMODAL: s9f-u3-energy-def=b
+// BIMODAL: s9f-u3-cost-factors=a
+// BIMODAL: s9f-u3-power-meaning=b
+// BIMODAL: s9f-u3-gen-power-vi=a
+// BIMODAL: s9f-u3-gen-energy-kwh=b
+// BIMODAL: s9f-u3-gen-cost=a
+// BIMODAL: s9f-u3-gen-efficiency=a
+// BIMODAL: s9f-u3-efficiency-meaning=b
+// BIMODAL: s9f-u3-efficiency-heat-loss=b
+// BIMODAL: s9f-u3-generator-parts=b
+// BIMODAL: s9f-u3-station-types=a
+// BIMODAL: s9f-u3-transmission=b
+// BIMODAL: s9f-u3-static-tech=b
+// BIMODAL: s9f-u3-lightning-rod=b
+// BIMODAL: s9f-u3-photocopier=b
+// BIMODAL: s9f-u3-careers-match=a
+// BIMODAL: s9f-u3-lights-uses=b
+// BIMODAL: s9f-u3-series-use-case=b
+// BIMODAL: s9f-u3-parallel-use-case=b
+// BIMODAL: s9f-u3-cells-flashlight=a
+// BIMODAL: s9f-u3-cells-lighthouse=b
+// BIMODAL: s9f-u3-fuse-breaker=b
+// BIMODAL: s9f-u3-grounding-prong=b
+// BIMODAL: s9f-u3-gen-cells-voltage=b
+// BIMODAL: s9f-u3-precise-terms-cost=b
+// BIMODAL: s9f-u3-precise-terms-bill=b
+// BIMODAL: s9f-u3-lighting-evaluate=b
+// BIMODAL: s9f-u3-past-current=a
+// BIMODAL: s9f-u3-energuide-purpose=b
+// BIMODAL: s9f-u3-reduce-action=b
+// BIMODAL: s9f-u3-bill-compare=b
+// BIMODAL: s9f-u3-approaches=b
+// BIMODAL: s9f-u3-approach-fit=b
+// BIMODAL: s9f-u3-criteria-analysis=b
+// BIMODAL: s9f-u3-decision-balance=b
+// BIMODAL: s9f-u3-decision-evidence=b
+// BIMODAL: s9f-u3-constraints=a
+// BIMODAL: s9f-u3-constraint-case=a
+// BIMODAL: s9f-u3-symbols=a
+// BIMODAL: s9f-u3-gen-ohm-resistance=a
+// BIMODAL: s9f-u3-gen-ohm-current=b
+// BIMODAL: s9f-u3-gen-ohm-voltage=a
+// BIMODAL: s9f-u3-meter-placement=a
+// BIMODAL: s9f-u3-gen-meter-read=b
+// BIMODAL: s9f-u3-best-fit=b
+// BIMODAL: s9f-u3-variables=b
+// BIMODAL: s9f-u3-instrument-use=b
+// BIMODAL: s9f-u3-safe-practice=b
+// BIMODAL: s9f-u3-testable-judge=b
+// BIMODAL: s9f-u3-applications=b
+// BIMODAL: s9f-u3-env-criteria=a
+// BIMODAL: s9f-u3-env-apply=b
+// BIMODAL: s9f-u3-circuits-comportement=a
 // Sciences 9, Unité 3 : L'électricité (SC9.7.1 à SC9.9.13), banque
 // construite le Nov 16, 2026, selon la spécification d'auteur de
 // l'unité Électricité. Toutes les questions sont originales et ont
@@ -494,3 +648,129 @@ var TOPIC_U3 = {
   "s9f-u3-cr-bulb-removed": "circuits"
 };
 BANK.forEach(function (e) { if (TOPIC_U3[e.id]) { e.topic = TOPIC_U3[e.id]; } });
+
+/* Ajouts de l'allongement (20 nov. 2026). */
+E("s9f-u3-circuits-comportement", 3, ["SC9.7.5"], 2, "gen", function () {
+  var V = pick([6, 9, 12, 18, 24, 36]), n = pick([2, 3, 4, 6]), mode = ri(0, 3);
+  function fV(x) { return String(Math.round(x * 10) / 10).replace(".", ","); }
+  if (mode === 0) {
+    return mcq(n + " ampoules identiques sont branchées en série sur une source de " + V + " V. Quelle est la tension aux bornes de chaque ampoule?",
+      fV(V / n) + " V : la tension de la source se partage également entre les ampoules branchées en série dans le circuit",
+      [V + " V : chaque ampoule branchée en série reçoit à elle seule la pleine tension totale de la source du circuit",
+       fV(V * n) + " V : la tension totale s'additionne à chaque ampoule ajoutée dans le circuit en série par l'élève",
+       fV(Math.max(V - n, 1)) + " V : chaque ampoule ajoutée fait perdre exactement un volt à la tension de la source du circuit"],
+      "En série, la tension se partage également : " + V + " V ÷ " + n + " ampoules = <b>" + fV(V / n) + " V</b> par ampoule.", { V: V, n: n });
+  }
+  if (mode === 1) {
+    return mcq(n + " ampoules identiques sont branchées en parallèle sur une source de " + V + " V. Quelle est la tension aux bornes de chaque ampoule?",
+      V + " V : chaque branche en parallèle est reliée directement à la source et reçoit sa pleine tension totale",
+      [fV(V / n) + " V : la tension de la source se partage également entre toutes les branches du circuit en parallèle",
+       fV(V * n) + " V : chaque branche du circuit ajoute la pleine tension de la source à celle de toutes les autres branches",
+       fV(Math.max(V - n, 1)) + " V : chaque branche ajoutée fait perdre exactement un volt à la tension disponible dans le circuit"],
+      "En parallèle, chaque branche reçoit la pleine tension de la source : <b>" + V + " V</b> par ampoule, quel que soit leur nombre.", { V: V, n: n });
+  }
+  var series = Math.random() < 0.5;
+  if (mode === 2) {
+    if (series) {
+      return mcq(n + " ampoules identiques sont branchées en série et brillent normalement. L'une d'elles grille. Que se passe-t-il?",
+        "Elles s'éteignent toutes : le seul trajet du courant est coupé, donc le courant cesse partout dans le circuit en série",
+        ["Les autres ampoules brillent plus fort qu'avant, car elles se partagent maintenant toute la tension de la source entre elles seulement",
+         "Les autres ampoules restent exactement aussi brillantes qu'avant, car chacune d'elles possède son propre trajet complet et indépendant",
+         "Seule l'ampoule voisine de l'ampoule grillée s'éteint avec elle, et toutes les autres ampoules du circuit continuent de briller normalement"],
+        "En série, il n'y a qu'un seul trajet : une seule coupure interrompt le courant partout. <b>Elles s'éteignent toutes</b>.", { n: n });
+    }
+    return mcq(n + " ampoules identiques sont branchées en parallèle et brillent normalement. L'une d'elles grille. Que se passe-t-il?",
+      "Les autres restent aussi brillantes : chacune a son propre trajet complet jusqu'à la source et garde la pleine tension",
+      ["Elles s'éteignent toutes en même temps, car le trajet unique du courant dans le circuit est complètement coupé par l'ampoule grillée",
+       "Elles brillent nettement plus faiblement qu'avant, car la tension de la source se partage maintenant entre un plus petit nombre de branches",
+       "Elles brillent nettement plus fort qu'avant, car tout le courant fourni par la source passe maintenant dans les deux branches restantes du circuit"],
+      "En parallèle, chaque branche est indépendante : les autres gardent la pleine tension et la même brillance. <b>Les autres restent aussi brillantes</b>.", { n: n });
+  }
+  if (series) {
+    return mcq("Un circuit en série alimenté par une source de " + V + " V contient " + n + " ampoules identiques. On ajoute une ampoule identique en série. Que devient la brillance de chaque ampoule?",
+      "Chaque ampoule brille moins : la tension de la source se partage entre plus d'ampoules, donc chacune en reçoit moins",
+      ["Chaque ampoule brille exactement autant qu'avant l'ajout : la source du circuit fournit automatiquement plus de tension totale dès qu'on ajoute des ampoules en série",
+       "Chaque ampoule du circuit brille nettement plus fort qu'avant : le courant total qui traverse le circuit augmente automatiquement à chaque ampoule ajoutée en série",
+       "La brillance des ampoules ne dépend que de la source d'alimentation : le nombre d'ampoules branchées en série dans le circuit ne change jamais rien du tout à leur éclat"],
+      "À tension totale fixe, plus d'ampoules en série signifie moins de volts par ampoule : " + V + " V partagés entre " + (n + 1) + " ampoules au lieu de " + n + ". <b>Chaque ampoule brille moins</b>.", { V: V, n: n });
+  }
+  return mcq("Un circuit en parallèle alimenté par une source de " + V + " V contient " + n + " ampoules identiques. On ajoute une ampoule identique en parallèle. Que devient la brillance de chaque ampoule?",
+    "Chaque ampoule brille autant qu'avant : chaque branche reçoit toujours la pleine tension de la source de " + V + " V",
+    ["Chaque ampoule brille moins : la tension de la source se partage maintenant entre un plus grand nombre de branches",
+     "Chaque ampoule brille plus fort : la source fournit plus de courant total, donc chaque branche en reçoit davantage",
+     "Les ampoules d'origine s'éteignent : toute la tension de la source passe dans la nouvelle branche ajoutée"],
+    "En parallèle, ajouter une branche ne change pas la tension des autres : chacune garde les " + V + " V de la source. <b>Chaque ampoule brille autant qu'avant</b>.", { V: V, n: n });
+}, ["En série, la tension se partage; en parallèle, chaque branche reçoit la pleine tension.", "Une coupure arrête tout en série, mais seulement sa branche en parallèle."]);
+
+BANK.forEach(function (e) { if (e.id === "s9f-u3-circuits-comportement") { e.topic = "circuits"; } });
+
+
+E("s9f-u3-cr-proprietes-charge", 3, ["SC9.7.2"], 2, "var", varset([
+  function () {
+    return textq("Deux balles de liège suspendues à des fils sont touchées avec la même tige de plastique frottée, puis elles se repoussent l'une l'autre. Explique ce comportement : dis ce que la tige a transféré aux balles, pourquoi elles se repoussent, et ce qui se passerait si l'une des balles était touchée ensuite avec une tige de verre frottée portant la charge opposée. (3 points)",
+      ["La tige de plastique frottée transfère une charge négative aux deux balles."],
+      "Points de notation (3) : 1 point pour le transfert (le frottement charge la tige, qui transfère le même genre de charge aux deux balles par contact). 1 point pour la répulsion (des charges de même signe se repoussent). 1 point pour la prédiction (la tige de verre porte la charge opposée; la balle touchée perd ou inverse sa charge, donc la répulsion diminue ou devient une attraction). Réponse modèle : Les deux balles reçoivent la même charge de la tige, et les charges de même signe se repoussent. <b>Après le contact avec la tige de verre chargée positivement, la balle touchée serait neutralisée ou chargée positivement, et les deux balles s'attireraient</b>.", {});
+  },
+  function () {
+    return textq("Un électroscope à feuilles d'or est touché par une tige chargée négativement : ses feuilles s'écartent. Explique ce comportement : dis ce qui se déplace dans l'électroscope, pourquoi les feuilles s'écartent, et ce qui se passerait si on approchait ensuite, sans toucher, une tige chargée positivement du bouton de l'électroscope. (3 points)",
+      ["Ce sont les électrons qui se déplacent dans les parties métalliques de l'électroscope."],
+      "Points de notation (3) : 1 point pour le déplacement (les électrons de la tige passent dans l'électroscope et descendent dans les feuilles; seuls les électrons bougent dans un métal). 1 point pour l'écartement (les deux feuilles portent la même charge négative et se repoussent). 1 point pour la prédiction (la tige positive approchée attire les électrons vers le bouton; les feuilles perdent une partie de leur charge et se rapprochent). Réponse modèle : Les électrons descendent dans les feuilles, qui se repoussent parce qu'elles portent la même charge. <b>La tige positive approchée rappelle les électrons vers le haut, et les feuilles se rapprochent</b>.", {});
+  },
+  function () {
+    return textq("Par une journée sèche, une élève reçoit une petite décharge en touchant une poignée de porte métallique après avoir marché sur un tapis en chaussettes. Explique la décharge : dis comment l'élève s'est chargée, pourquoi la charge s'est accumulée sur elle plutôt que de s'écouler, et pourquoi la décharge se produit au moment du contact avec la poignée. (3 points)",
+      ["Le frottement des chaussettes sur le tapis transfère des électrons à l'élève."],
+      "Points de notation (3) : 1 point pour la charge par frottement (les chaussettes sur le tapis transfèrent des électrons; l'élève porte une charge nette). 1 point pour l'accumulation (l'air sec et les semelles isolantes empêchent la charge de s'écouler; le corps la garde). 1 point pour la décharge (la poignée métallique conductrice offre un trajet : la charge s'y déplace d'un coup, ce qui produit l'étincelle et la sensation). Réponse modèle : Chargée par friction et isolée du sol, l'élève garde sa charge jusqu'à ce qu'un conducteur lui offre une voie de sortie. <b>Au contact de la poignée métallique, la charge s'écoule d'un coup : c'est la décharge ressentie</b>.", {});
+  }
+]), ["Seuls les électrons se déplacent; charges semblables se repoussent, contraires s'attirent.", "Suis la charge : d'où elle vient, où elle se trouve, quelle force en résulte."]);
+
+
+E("s9f-u3-cr-langage-circuit", 3, ["SC9.7.4"], 2, "var", varset([
+  function () {
+    return textq("Un élève décrit un circuit ainsi : « La tension du courant est de 6 ampères, et le courant traverse la résistance de 12 volts. » Réécris la description correctement pour une pile de 6 V qui fait passer 0,5 A dans une résistance de 12 Ω, en utilisant chaque terme (tension, courant, résistance) avec sa bonne grandeur et sa bonne unité. Explique en une phrase ce que mesure chacun des trois termes. (3 points)",
+      ["La tension se mesure en volts, le courant en ampères et la résistance en ohms."],
+      "Points de notation (3) : 1 point pour la description réécrite correctement (la pile fournit une tension de 6 V; le courant est de 0,5 A; la résistance est de 12 Ω). 1 point pour deux des trois définitions (la tension est l'énergie fournie à chaque charge; le courant est le débit des charges; la résistance est l'opposition au passage du courant). 1 point pour la troisième définition, et la cohérence avec la loi d'Ohm (6 V ÷ 12 Ω = 0,5 A). Réponse modèle : La pile de 6 V fait passer un courant de 0,5 A dans la résistance de 12 Ω. <b>La tension mesure l'énergie par charge, le courant le débit des charges, et la résistance l'opposition au courant</b>.", {});
+  },
+  function () {
+    return textq("Un élève écrit : « J'ai augmenté la résistance du circuit, donc le voltage du courant a augmenté dans l'ampoule. » À pile inchangée, explique pourquoi cet énoncé est fautif : dis ce qui arrive réellement au courant quand la résistance augmente, ce qui reste fixé par la pile, et la relation qui relie les trois grandeurs. (3 points)",
+      ["À tension fixée par la pile, augmenter la résistance diminue le courant."],
+      "Points de notation (3) : 1 point pour identifier l'erreur (le courant ne possède pas de « voltage »; la tension appartient à la source et aux bornes des éléments). 1 point pour l'effet réel (à tension constante, une résistance plus grande laisse passer un courant plus faible; l'ampoule brille moins). 1 point pour la relation (la loi d'Ohm, V = IR, qui relie tension, courant et résistance). Réponse modèle : La pile fixe la tension; une résistance plus grande réduit le courant qui traverse l'ampoule. <b>La loi d'Ohm, V = IR, montre que si V est constant et R augmente, I doit diminuer</b>.", {});
+  },
+  function () {
+    return textq("Un schéma montre une pile, un interrupteur ouvert et une ampoule, et un élève conclut : « Le courant est prêt à circuler, il attend dans la pile. » Corrige cette image en décrivant correctement ce qui se passe dans le circuit quand on ferme l'interrupteur : parle du trajet complet, du rôle de la pile et de ce que devient l'énergie dans l'ampoule. (3 points)",
+      ["Le courant ne circule que si le circuit forme un trajet fermé et complet."],
+      "Points de notation (3) : 1 point pour le trajet (le courant circule seulement quand l'interrupteur fermé complète une boucle continue de la pile à l'ampoule et retour). 1 point pour le rôle de la pile (elle fournit l'énergie aux charges; elle ne stocke pas un courant « en attente »). 1 point pour l'énergie dans l'ampoule (l'énergie électrique y est transformée en lumière et en chaleur; les charges elles-mêmes ne sont pas consommées). Réponse modèle : Interrupteur fermé, la boucle est complète et les charges circulent partout à la fois. <b>La pile fournit l'énergie et l'ampoule la transforme en lumière et en chaleur, sans consommer les charges</b>.", {});
+  }
+]), ["Tension en volts, courant en ampères, résistance en ohms.", "Vérifie l'énoncé avec la loi d'Ohm, V = IR, quand des nombres sont donnés."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s9f-u3-cr-statique-courant closes Unit 3 Test 1 (2 marks, Level 3); s9f-u3-cr-courant-serie closes Unit 3 Test 2 (4 marks, Level 3). SME-flagged for the
+   specialist pass. */
+E("s9f-u3-cr-statique-courant", 3, ["SC9.7.3"], 3, "var", varset([
+  function () { return textq("Un élève affirme : « L’électricité statique et le courant électrique, c’est la même chose : dans les deux cas, ce n’est que de la charge électrique. » Évalue cette affirmation : donne DEUX différences réelles entre les deux phénomènes, en reliant chacune à un exemple précis, par exemple un ballon frotté qui colle à un mur, une étincelle de poignée de porte ou une lampe alimentée par une pile. (2 points)", ["différence 1 : la charge statique est accumulée au repos sur un objet, comme le ballon frotté chargé et immobile; le courant est une charge qui circule sans arrêt dans un circuit fermé, comme dans la lampe alimentée par une pile", "différence 2 : la statique se décharge en une fraction de seconde, comme l’étincelle de la poignée de porte; le courant dure tant que la source fournit de l’énergie, et la lampe peut briller pendant des heures"], "<b>Réponse modèle :</b> L’affirmation contient un grain de vérité : les deux phénomènes mettent en jeu des charges électriques, surtout des électrons. Elle est pourtant fausse comme équivalence. Première différence : en électricité statique, la charge est accumulée et immobile à la surface d’un objet, comme le ballon frotté qui reste chargé sans que rien ne circule; dans un courant, les charges circulent continûment dans un circuit fermé, comme dans les fils de la lampe alimentée par une pile. Deuxième différence : la charge statique se libère en une décharge unique et brève, comme l’étincelle reçue en touchant une poignée de porte; le courant, lui, est un flux soutenu qu’une source entretient, et la lampe peut briller pendant des heures. L’élève confond donc la matière du phénomène, la charge, avec son régime : repos et décharge brève d’un côté, circulation continue de l’autre.<br><br><b>Points d’attribution :</b> 1 point pour chaque différence correcte et reliée à un exemple approprié (maximum 2 points).", {}); },
+  function () { return textq("Un élève affirme : « L’électricité statique et le courant électrique, c’est la même chose : dans les deux cas, ce n’est que de la charge électrique. » Évalue cette affirmation : donne DEUX différences réelles entre les deux phénomènes, en reliant chacune à un exemple précis, par exemple la foudre pendant un orage ou un sèche-cheveux branché qui fonctionne pendant dix minutes. (2 points)", ["différence 1 : la foudre est une décharge statique immense mais instantanée, produite par des charges accumulées dans le nuage; le courant du sèche-cheveux est un flux continu de charges qui circulent dans un circuit tant que l’appareil est en marche", "différence 2 : la statique ne peut pas alimenter un appareil de façon continue, car sa charge s’épuise dès la décharge; le courant fourni par une source alimente les appareils aussi longtemps que le circuit reste fermé"], "<b>Réponse modèle :</b> Les deux phénomènes mettent bien en jeu la même matière, des charges électriques, mais ils ne sont pas la même chose. Première différence : la foudre est la décharge soudaine de charges qui s’étaient accumulées, au repos, dans un nuage d’orage; le sèche-cheveux, lui, fonctionne grâce à des charges qui circulent continûment dans un circuit fermé, du branchement jusqu’à l’arrêt de l’appareil. Deuxième différence : la décharge statique dure une fraction de seconde et épuise la charge accumulée, donc elle ne peut alimenter aucun appareil de façon continue; le courant d’une prise ou d’une pile est entretenu par la source et peut alimenter un appareil pendant des minutes ou des heures. Dire que « ce n’est que de la charge » revient à confondre un réservoir qui se vide d’un coup avec un robinet qui coule tant qu’on l’alimente.<br><br><b>Points d’attribution :</b> 1 point pour chaque différence correcte et reliée à un exemple approprié (maximum 2 points).", {}); },
+  function () { return textq("Après avoir marché en chaussettes sur un tapis, Léa reçoit une petite décharge en touchant une poignée métallique. Le soir même, elle allume une lampe de poche qui éclaire sa tente pendant des heures. Un camarade conclut : « Tu vois, c’est la même chose, de la charge électrique dans les deux cas. » Évalue cette conclusion : donne DEUX différences réelles entre les deux phénomènes, en reliant chacune à l’un des deux événements décrits. (2 points)", ["différence 1 : la décharge de la poignée est la libération instantanée d’une charge accumulée au repos sur le corps de Léa; la lampe de poche repose sur des charges qui circulent dans un circuit fermé", "différence 2 : la décharge dure une fraction de seconde et ne peut rien alimenter; le courant de la pile entretient l’éclairage de la lampe pendant des heures"], "<b>Réponse modèle :</b> La conclusion du camarade est à rejeter, même si les deux événements mettent en jeu des charges électriques. Première différence : en marchant sur le tapis, Léa a accumulé une charge au repos sur son corps; la toucher de la poignée l’a libérée d’un seul coup, sans aucun circuit. Dans la lampe de poche, au contraire, les charges circulent dans un circuit fermé complet, de la pile à l’ampoule et retour, tant que l’interrupteur est fermé. Deuxième différence : la décharge du tapis est unique et dure une fraction de seconde, incapable d’alimenter quoi que ce soit; le courant de la pile est un flux soutenu qui entretient la lumière pendant des heures. Même matière, donc, mais deux régimes opposés : accumulation et décharge brève contre circulation continue alimentée par une source.<br><br><b>Points d’attribution :</b> 1 point pour chaque différence correcte et reliée à l’un des deux événements décrits (maximum 2 points).", {}); },
+  function () { return textq("Un élève affirme : « Un éclair et le courant d’une prise murale, c’est la même chose : ce n’est que de la charge électrique. » Évalue cette affirmation : donne DEUX différences réelles entre l’électricité statique de l’éclair et le courant de la prise, en reliant chacune à un exemple précis tiré de ces deux situations ou d’une situation équivalente. (2 points)", ["différence 1 : l’éclair est une décharge unique entre des charges accumulées dans le nuage et le sol; le courant de la prise est une circulation continue de charges dans un circuit, entretenue par la centrale", "différence 2 : l’éclair libère son énergie en une fraction de seconde, sans continuité exploitable; le courant de la prise alimente les appareils de façon soutenue, aussi longtemps que le circuit reste fermé"], "<b>Réponse modèle :</b> L’affirmation réduit deux phénomènes différents à leur matière commune, la charge électrique. Première différence : l’éclair naît de charges accumulées au repos dans un nuage, qui se déchargent d’un seul coup vers le sol; le courant d’une prise est une circulation continue de charges dans un circuit, entretenue sans interruption par la centrale qui alimente le réseau. Deuxième différence : l’éclair libère toute son énergie en une fraction de seconde et ne peut être exploité de façon continue ni contrôlée; le courant de la prise, lui, alimente un appareil de façon soutenue et réglable, par exemple une lampe qu’on laisse allumée toute la soirée. Ce n’est donc pas « la même chose » : décharge brève d’une charge au repos d’un côté, flux continu entretenu par une source de l’autre.<br><br><b>Points d’attribution :</b> 1 point pour chaque différence correcte et reliée à un exemple approprié (maximum 2 points).", {}); }
+]), ["Accorde à l’affirmation ce qu’elle a de vrai, puis attaque le mot « même » : cherche des différences de régime, pas de matière.", "Chaque différence doit finir sur un exemple nommé : sans exemple, le point est incomplet."]);
+E("s9f-u3-cr-courant-serie", 3, ["SC9.7.4"], 3, "var", varset([
+  function () { return textq("Un circuit en série comprend une pile de 6 V et deux lampes branchées l’une à la suite de l’autre dans une seule boucle. (a) Un ampèremètre placé juste avant la première lampe et un autre placé entre les deux lampes donneraient-ils la même lecture? Explique pourquoi, en parlant du trajet des charges (2 points). (b) Explique ce que signifie la tension de 6 V de la pile, en termes d’énergie donnée à chaque unité de charge, et dis où cette énergie est cédée dans le circuit (2 points). (4 points)", ["(a) oui, même lecture : le circuit en série n’a qu’un seul trajet, et les charges ne sont ni créées, ni consommées, ni accumulées; le débit est donc le même partout", "(b) 6 V signifie que la pile donne 6 joules d’énergie à chaque coulomb de charge qui la traverse; cette énergie est cédée dans les deux lampes, qui se la partagent, et y est transformée en lumière et en chaleur"], "<b>Réponse modèle :</b> (a) Les deux ampèremètres donneraient la même lecture. Un circuit en série forme une seule boucle : les charges qui passent en un point doivent toutes passer par chaque autre point, car elles ne peuvent ni s’accumuler en route, ni disparaître, ni être consommées par les lampes. Le débit de charges, c’est-à-dire le courant, est donc identique partout dans la boucle. (b) Une tension de 6 V signifie que la pile donne 6 joules d’énergie à chaque unité de charge, chaque coulomb, qui la traverse. En parcourant la boucle, chaque charge cède cette énergie dans les deux lampes, qui se la partagent : l’énergie y est transformée en lumière et en chaleur, puis la charge retourne à la pile pour en recevoir à nouveau.<br><br><b>Points d’attribution :</b> 1 point pour la même lecture affirmée aux deux points. 1 point pour la raison : trajet unique, et charges ni créées, ni consommées, ni accumulées. 1 point pour les 6 V interprétés comme 6 joules par coulomb fournis par la pile. 1 point pour l’énergie cédée dans les lampes et transformée en lumière et en chaleur.", {}); },
+  function () { return textq("Un circuit en série comprend une pile de 9 V et trois lampes branchées l’une à la suite de l’autre dans une seule boucle. (a) Un ampèremètre placé juste à la sortie de la pile et un autre placé dans le fil de retour, juste avant la pile, donneraient-ils la même lecture? Explique pourquoi, en parlant du trajet des charges (2 points). (b) Explique ce que signifie la tension de 9 V de la pile, en termes d’énergie donnée à chaque unité de charge, et dis où cette énergie est cédée dans le circuit (2 points). (4 points)", ["(a) oui, même lecture : une seule boucle, donc le même débit de charges passe à la sortie de la pile et dans le fil de retour", "(b) 9 V signifie 9 joules donnés à chaque coulomb qui traverse la pile; l’énergie est cédée dans les trois lampes, qui se la partagent, en lumière et en chaleur"], "<b>Réponse modèle :</b> (a) Les deux ampèremètres donneraient la même lecture. La boucle en série n’offre qu’un seul trajet : chaque charge qui quitte la pile traverse successivement les trois lampes puis revient par le fil de retour. Les charges ne s’accumulent nulle part et les lampes ne les consomment pas; le débit mesuré à la sortie de la pile est donc exactement celui du fil de retour. (b) Une tension de 9 V signifie que la pile donne 9 joules d’énergie à chaque unité de charge, chaque coulomb, qui la traverse. Sur un tour de boucle, cette énergie est cédée dans les trois lampes, qui se la partagent : elle y est transformée en lumière et en chaleur, et la charge repart vers la pile sans énergie à céder, prête à en recevoir de nouveau.<br><br><b>Points d’attribution :</b> 1 point pour la même lecture affirmée aux deux points. 1 point pour la raison : trajet unique, et charges ni créées, ni consommées, ni accumulées. 1 point pour les 9 V interprétés comme 9 joules par coulomb fournis par la pile. 1 point pour l’énergie cédée dans les lampes et transformée en lumière et en chaleur.", {}); },
+  function () { return textq("Un circuit en série comprend une pile de 12 V et deux lampes branchées l’une à la suite de l’autre dans une seule boucle. (a) Un ampèremètre placé entre les deux lampes et un autre placé juste avant la première lampe donneraient-ils la même lecture? Explique pourquoi, en parlant du trajet des charges (2 points). (b) Explique ce que signifie la tension de 12 V de la pile, en termes d’énergie donnée à chaque unité de charge, et dis où cette énergie est cédée dans le circuit (2 points). (4 points)", ["(a) oui, même lecture : en série, le courant est le même en tout point de l’unique boucle, car les charges circulent en file sans s’accumuler ni disparaître", "(b) 12 V signifie 12 joules donnés à chaque coulomb qui traverse la pile; l’énergie est cédée dans les deux lampes, qui se la partagent, en lumière et en chaleur"], "<b>Réponse modèle :</b> (a) Les deux ampèremètres donneraient la même lecture. Dans une boucle unique, les charges circulent en file : tout ce qui traverse le point situé entre les deux lampes a déjà traversé, ou traversera, le point situé avant la première lampe. Aucune charge ne peut s’accumuler entre les deux instruments, et les lampes transforment de l’énergie, pas des charges; le courant est donc le même aux deux points. (b) Une tension de 12 V signifie que la pile donne 12 joules d’énergie à chaque unité de charge, chaque coulomb, qui la traverse. Cette énergie est cédée au fil du parcours, dans les deux lampes qui se la partagent : elle y devient lumière et chaleur. Le fil de retour ramène les charges à la pile, où le cycle recommence.<br><br><b>Points d’attribution :</b> 1 point pour la même lecture affirmée aux deux points. 1 point pour la raison : trajet unique, et charges ni créées, ni consommées, ni accumulées. 1 point pour les 12 V interprétés comme 12 joules par coulomb fournis par la pile. 1 point pour l’énergie cédée dans les lampes et transformée en lumière et en chaleur.", {}); },
+  function () { return textq("Un circuit en série comprend une pile de 9 V et trois lampes dans une seule boucle. Un ampèremètre placé avant la première lampe lit 0,3 A. (a) Indique la lecture qu’afficherait un ampèremètre placé entre la deuxième et la troisième lampe, et explique pourquoi les lampes ne réduisent pas le courant en le « consommant » (2 points). (b) Explique ce que signifie la tension de 9 V de la pile, en termes d’énergie donnée à chaque unité de charge, et dis où cette énergie est cédée dans le circuit (2 points). (4 points)", ["(a) 0,3 A aussi : un seul trajet, et les lampes consomment de l’énergie, pas des charges; le débit de charges est donc le même partout", "(b) 9 V signifie 9 joules donnés à chaque coulomb qui traverse la pile; l’énergie est cédée dans les trois lampes, qui se la partagent, en lumière et en chaleur"], "<b>Réponse modèle :</b> (a) Le deuxième ampèremètre afficherait aussi 0,3 A. Le circuit en série n’a qu’un seul trajet : le débit de charges est le même en tout point de la boucle. Les lampes ne « consomment » pas le courant, car les charges ne disparaissent pas en les traversant : elles en ressortent en même nombre, simplement délestées d’une partie de leur énergie. Ce qui diminue le long du parcours, c’est l’énergie des charges, pas leur débit. (b) Une tension de 9 V signifie que la pile donne 9 joules d’énergie à chaque unité de charge, chaque coulomb, qui la traverse. Cette énergie est cédée dans les trois lampes, qui se la partagent au cours d’un tour de boucle, et elle y est transformée en lumière et en chaleur.<br><br><b>Points d’attribution :</b> 1 point pour la lecture de 0,3 A affirmée au deuxième point. 1 point pour la raison : trajet unique, et les lampes consomment l’énergie des charges, pas les charges elles-mêmes. 1 point pour les 9 V interprétés comme 9 joules par coulomb fournis par la pile. 1 point pour l’énergie cédée dans les lampes et transformée en lumière et en chaleur.", {}); }
+]), ["En série, il n’existe qu’un seul trajet : suis une charge sur un tour complet de la boucle.", "La tension se lit en joules par coulomb : l’énergie est reçue à la pile et cédée dans les lampes."]);
+
+/* ---------- Ajout du 21 novembre 2026 : plan de tests (decisions 9, 10, 11) ---------- */
+E("s9f-u3-statique-courant", 3, ["SC9.7.3"], 2, "var", varset([
+  function () { return mcq("En sortant de la sécheuse, des chaussettes restent collées les unes aux autres, puis se séparent avec de petits crépitements. Au même moment, un chargeur alimente un téléphone de façon régulière pendant une heure. Quel classement de ces deux situations est correct?", "Les chaussettes relèvent de l'électricité statique, avec des charges accumulées au repos; le chargeur relève du courant, avec des charges en circulation continue", ["Les chaussettes relèvent du courant électrique, avec des charges accumulées au repos; le chargeur relève de la statique, avec des charges en circulation continue", "Les chaussettes relèvent de l'électricité statique, avec des charges en circulation continue; le chargeur relève du courant, avec des charges accumulées au repos", "Les chaussettes relèvent du magnétisme permanent, avec des charges accumulées au repos; le chargeur relève du courant, avec des charges en circulation continue"], "Le frottement dans la sécheuse accumule des charges sur les tissus : elles restent au repos, puis se déchargent en petits crépitements, c'est l'électricité statique. Le chargeur, lui, fait circuler des charges sans arrêt dans un circuit fermé pendant toute la charge : c'est un courant électrique.", {}); },
+  function () { return mcq("Un peigne passé dans des cheveux secs attire ensuite de petits bouts de papier posés sur une table. Pendant ce temps, un ventilateur branché tourne sans arrêt depuis le matin. Quelle comparaison des deux phénomènes est exacte?", "Le peigne porte une charge accumulée qui agit sans circuler; le ventilateur reçoit un flot continu de charges qui le fait fonctionner durablement chaque jour", ["Le peigne porte un flot continu de charges qui agit sans circuler; le ventilateur reçoit une charge accumulée qui le fait fonctionner durablement chaque jour", "Le peigne porte une charge accumulée qui agit sans circuler; le ventilateur reçoit une charge accumulée qui le fait fonctionner durablement chaque jour aussi", "Le peigne porte une charge accumulée qui circule dans un circuit; le ventilateur reçoit un flot continu de charges qui le fait fonctionner durablement"], "Le peigne frotté accumule une charge au repos : elle attire les papiers sans aucun circuit ni circulation, c'est la statique. Le ventilateur branché fonctionne grâce à un courant, un flot continu de charges dans un circuit fermé, qui peut durer des heures.", {}); },
+  function () { return mcq("Pendant un orage, un éclair illumine le ciel pendant une fraction de seconde. Dans la maison, une veilleuse reste allumée toute la nuit. Quelle différence essentielle sépare ces deux manifestations de l'électricité?", "L'éclair est une décharge unique d'une charge accumulée dans le nuage; la veilleuse est alimentée par un courant continu qui circule dans un circuit fermé stable", ["L'éclair est un courant continu qui circule dans un circuit fermé; la veilleuse est alimentée par une décharge unique d'une charge accumulée dans la prise murale", "L'éclair est une décharge unique d'une charge accumulée dans le nuage; la veilleuse est alimentée par une décharge unique d'une charge accumulée dans son filament", "L'éclair est une décharge unique produite par un aimant dans le nuage; la veilleuse est alimentée par un courant continu qui circule dans un circuit fermé stable"], "L'éclair libère d'un seul coup l'énorme charge statique accumulée entre le nuage et le sol : bref et sans circuit. La veilleuse fonctionne tant que le circuit reste fermé et que le courant y circule de façon soutenue, toute la nuit.", {}); },
+  function () { return mcq("Une élève frotte une règle, l'approche d'un filet d'eau mince au robinet et voit le filet se courber vers la règle. Son camarade branche ensuite une pompe qui fait circuler l'eau d'un aquarium sans arrêt. Quel énoncé distingue correctement les deux montages?", "La règle agit par une charge statique accumulée à sa surface, sans aucun flot de charges; la pompe fonctionne par un courant, flot soutenu de charges dans son circuit", ["La règle agit par un courant continu accumulé à sa surface, sans aucun flot de charges; la pompe fonctionne par une charge statique, charge soutenue dans son circuit", "La règle agit par une charge statique accumulée à sa surface, sans aucun flot de charges; la pompe fonctionne par une charge statique accumulée dans son circuit fermé", "La règle agit par la gravité accumulée à sa surface, sans aucun flot de charges; la pompe fonctionne par un courant, flot soutenu de charges dans son circuit fermé"], "La règle chargée par frottement porte une charge au repos qui attire et déplace légèrement les charges du filet d'eau : aucun courant ne circule. La pompe, au contraire, exige un courant soutenu dans un circuit fermé pour fonctionner sans arrêt.", {}); },
+  function () { return mcq("Un ballon frotté reste collé au plafond pendant quelques minutes, puis tombe. Une guirlande branchée, elle, reste allumée aussi longtemps qu'on la laisse sous tension. Quelle explication compare correctement les deux cas?", "Le ballon tient par une charge accumulée qui finit par s'échapper; la guirlande tient par un courant que la source entretient tant que le circuit reste fermé et complet", ["Le ballon tient par un courant accumulé qui finit par s'échapper; la guirlande tient par une charge que la source entretient tant que le circuit reste fermé et complet", "Le ballon tient par une charge accumulée qui finit par s'échapper; la guirlande tient par une charge accumulée que la source entretient dans son circuit fermé", "Le ballon tient par une colle accumulée qui finit par s'échapper; la guirlande tient par un courant que la source entretient tant que le circuit reste fermé et complet"], "Le ballon est chargé par frottement : sa charge statique attire le plafond, mais elle s'échappe peu à peu et le ballon tombe. La guirlande reçoit un courant entretenu par la source : tant que le circuit est fermé, le flot de charges continue et la lumière dure.", {}); }
+]), ["Statique : charge accumulée, effet bref. Courant : flot continu, effet durable.", "Demande-toi s'il existe un circuit fermé dans la situation décrite."]);
+E("s9f-u3-statique-courant-appli", 3, ["SC9.7.3"], 3, "var", varset([
+  function () { return mcq("Un bâtiment scolaire est frappé par la foudre : la décharge passe par le paratonnerre et s'écoule au sol, sans dommage. Pourquoi serait-il faux de décrire cet événement comme un courant électrique ordinaire du bâtiment?", "Parce que la foudre est une décharge statique immense et instantanée, sans circuit fermé ni flot soutenu : le paratonnerre ne fait que lui offrir un chemin sûr vers le sol", ["Parce que la foudre est un courant ordinaire immense et instantané, sans circuit fermé ni flot soutenu : le paratonnerre ne fait que lui offrir un chemin sûr vers le sol", "Parce que la foudre est une décharge statique immense et continue, avec un circuit fermé et un flot soutenu : le paratonnerre ne fait que lui offrir un chemin sûr au sol", "Parce que la foudre est une décharge magnétique immense et instantanée, sans circuit fermé ni flot soutenu : le paratonnerre ne fait que lui offrir un chemin sûr au sol"], "La foudre est l'électricité statique à très grande échelle : une charge accumulée entre le nuage et le sol se libère en une fraction de seconde. Aucune source n'entretient un flot dans un circuit fermé, contrairement au courant des circuits du bâtiment. Le rôle du paratonnerre est de canaliser cette décharge unique vers le sol.", {}); },
+  function () { return mcq("Dans un photocopieur de l'école, l'image se forme parce qu'une surface chargée attire la poudre d'encre aux bons endroits, tandis qu'un moteur alimenté en continu fait avancer le papier. Quelle évaluation de ces deux rôles est correcte?", "La formation de l'image exploite la statique, car une charge au repos peut attirer la poudre avec précision; l'avance du papier exige un courant, car seul un flot soutenu fait tourner un moteur", ["La formation de l'image exploite un courant, car une charge au repos peut attirer la poudre avec précision; l'avance du papier exige la statique, car seul un flot soutenu fait tourner un moteur", "La formation de l'image exploite la statique, car une charge au repos peut attirer la poudre avec précision; l'avance du papier exige la statique, car seule une décharge fait tourner un moteur", "La formation de l'image exploite la chaleur, car une charge au repos peut attirer la poudre avec précision; l'avance du papier exige un courant, car seul un flot soutenu fait tourner un moteur"], "Le photocopieur combine les deux formes d'électricité, chacune à sa place. La statique convient à l'image : une charge immobile attire la poudre d'encre exactement où il faut, sans rien faire circuler. Le moteur, lui, a besoin d'un travail soutenu, donc d'un courant continu dans un circuit.", {}); },
+  function () { return mcq("Une enseignante demande pourquoi les lumières d'une salle de classe ne peuvent pas fonctionner à l'électricité statique, même si une décharge statique produit parfois une étincelle brillante. Quelle réponse évalue correctement la situation?", "Une décharge statique libère sa charge en un instant, sans réservoir ni circuit pour la renouveler; l'éclairage exige un courant soutenu, renouvelé sans arrêt par la source du circuit", ["Une décharge statique libère sa charge en un instant, sans réservoir ni circuit pour la renouveler; l'éclairage exige une charge accumulée, renouvelée sans arrêt par la source du circuit", "Un courant libère sa charge en un instant, sans réservoir ni circuit pour le renouveler; l'éclairage exige un courant soutenu, renouvelé sans arrêt par la source du circuit fermé", "Une décharge statique libère sa charge lentement, sans réservoir ni circuit pour la renouveler; l'éclairage exige un courant soutenu, renouvelé sans arrêt par la source du circuit"], "L'étincelle statique est spectaculaire mais épuisée en une fraction de seconde : la charge accumulée part d'un coup et rien ne la remplace. Éclairer une salle demande l'inverse, un apport d'énergie continu, que seul un courant dans un circuit fermé, alimenté par une source, peut fournir heure après heure.", {}); },
+  function () { return mcq("En hiver, une élève reçoit une petite décharge désagréable chaque fois qu'elle touche la poignée métallique de la porte de l'école, mais jamais en touchant le cadre de bois. Quelle analyse de cette situation est la plus complète?", "En marchant, ses vêtements accumulent une charge statique; la poignée métallique, conductrice, laisse cette charge s'écouler d'un coup, tandis que le bois, isolant, ne lui offre pas de chemin rapide", ["En marchant, ses vêtements accumulent un courant continu; la poignée métallique, conductrice, laisse cette charge s'écouler d'un coup, tandis que le bois, isolant, ne lui offre pas de chemin", "En marchant, ses vêtements accumulent une charge statique; la poignée de bois, conductrice, laisse cette charge s'écouler d'un coup, tandis que le métal, isolant, ne lui offre pas de chemin", "En marchant, ses vêtements accumulent une charge magnétique; la poignée métallique, conductrice, laisse cette charge s'écouler d'un coup, tandis que le bois ne lui offre pas de chemin rapide"], "Le frottement des vêtements et des semelles charge le corps de l'élève en électricité statique. Le métal de la poignée est conducteur : au contact, la charge accumulée s'écoule brusquement par ce chemin, d'où la décharge. Le bois est isolant : la charge ne trouve pas de sortie rapide et aucune décharge nette ne se produit.", {}); },
+  function () { return mcq("Dans une usine, la peinture est pulvérisée en fines gouttelettes chargées vers une portière de voiture reliée à la masse : la peinture couvre uniformément même les recoins. Pourquoi ce procédé repose-t-il sur la statique plutôt que sur un courant?", "Parce que le travail utile est l'attraction de gouttelettes par une charge au repos sur la pièce; un courant dans un circuit fermé ne dirigerait pas la peinture vers les surfaces à couvrir", ["Parce que le travail utile est la circulation de gouttelettes par un courant continu dans la pièce; une charge au repos sur la pièce ne dirigerait pas la peinture vers les surfaces visées", "Parce que le travail utile est l'attraction de gouttelettes par une charge au repos sur la pièce; un courant dans un circuit fermé dirigerait aussi bien la peinture vers les surfaces à couvrir", "Parce que le travail utile est l'attraction de gouttelettes par la chaleur dégagée sur la pièce; un courant dans un circuit fermé ne dirigerait pas la peinture vers les surfaces à couvrir"], "La peinture électrostatique utilise l'attraction entre charges : les gouttelettes chargées sont attirées par la pièce de charge contraire, même dans les recoins. Aucune circulation soutenue de charges n'est nécessaire ni utile pour ce guidage; un courant servirait à alimenter l'équipement, pas à diriger la peinture.", {}); }
+]), ["Pour chaque cas, décide d'abord : charge au repos qui se décharge, ou flot soutenu dans un circuit?", "La conséquence pratique dépend de la forme : précision d'une attraction, ou travail soutenu d'un moteur."]);
