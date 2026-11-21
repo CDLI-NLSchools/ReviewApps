@@ -1,3 +1,4 @@
+// CRMARKS: s8-u4-cr-needs-investigation=3
 // CRMARKS: s8-u4-cr-living=3
 // CRMARKS: s8-u4-cr-cell-division=3
 // CRMARKS: s8-u4-cr-levels=3
@@ -12,6 +13,127 @@
 // CRMARKS: s8-u4-cr-microscope=3
 // CRMARKS: s8-u4-cr-model-eval=3
 // CRMARKS: s8-u4-cr-design-rates=4
+// CRMARKS: s8-u4-cr-cell-compare=2
+// CRMARKS: s8-u4-cr-levels-apply=4
+// CRMARKS: s8-u4-cr-systems-response=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s8-u4-living-chars=2
+// CRMARKS: s8-u4-differences=2
+// CRMARKS: s8-u4-cell-figure=2
+// CRMARKS: s8-u4-vacuole-compare=3
+// CRMARKS: s8-u4-regular-shape=2
+// CRMARKS: s8-u4-identical=2
+// CRMARKS: s8-u4-division-count=3
+// CRMARKS: s8-u4-growth-example=3
+// CRMARKS: s8-u4-order=2
+// CRMARKS: s8-u4-example-level=2
+// CRMARKS: s8-u4-analogy=2
+// CRMARKS: s8-u4-needs=2
+// CRMARKS: s8-u4-needs-apply=3
+// CRMARKS: s8-u4-needs-system=4
+// CRMARKS: s8-u4-factor-positive=2
+// CRMARKS: s8-u4-factor-effect=3
+// CRMARKS: s8-u4-sedentary=4
+// CRMARKS: s8-u4-pair-circ-resp=2
+// CRMARKS: s8-u4-pair-dig-circ=2
+// CRMARKS: s8-u4-pair-nerv-musc=3
+// CRMARKS: s8-u4-interdependence-why=4
+// CRMARKS: s8-u4-early-modern=3
+// CRMARKS: s8-u4-dynamic=4
+// CRMARKS: s8-u4-micro-development=2
+// CRMARKS: s8-u4-micro-parts=2
+// CRMARKS: s8-u4-organelle-figure=3
+// CRMARKS: s8-u4-organelle-function=2
+// CRMARKS: s8-u4-organelle-match=2
+// CRMARKS: s8-u4-organelle-plant=2
+// CRMARKS: s8-u4-organelle-term=3
+// CRMARKS: s8-u4-tech-examples=2
+// CRMARKS: s8-u4-tech-match=2
+// CRMARKS: s8-u4-community-need=3
+// CRMARKS: s8-u4-decision-sr=3
+// CRMARKS: s8-u4-personal-decision=3
+// CRMARKS: s8-u4-careers=2
+// CRMARKS: s8-u4-careers-match=2
+// CRMARKS: s8-u4-focus-sequence=2
+// CRMARKS: s8-u4-parts-action=2
+// CRMARKS: s8-u4-care=2
+// CRMARKS: s8-u4-care-error=3
+// CRMARKS: s8-u4-estimate-gen=3
+// CRMARKS: s8-u4-estimate-compare=2
+// CRMARKS: s8-u4-estimate-scenario=3
+// CRMARKS: s8-u4-model-accuracy=3
+// CRMARKS: s8-u4-variables=3
+// CRMARKS: s8-u4-protocol=2
+// CRMARKS: s8-u4-hypothesis=3
+// CRMARKS: s8-u4-hypothesis-basis=2
+// CRMARKS: s8-u4-control=3
+// CRMARKS: s8-u4-control-error=4
+// CRMARKS: s8-u4-graph-choice=3
+// CRMARKS: s8-u4-rates-figure=2
+// CRMARKS: s8-u4-recovery-figure=4
+// CRMARKS: s8-u4-organize=2
+// CRMARKS: s8-u4-organize-avg=3
+// CRMARKS: s8-u4-levels-identify=2
+// CRMARKS: s8-u4-needs-applied=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s8-u4-living-chars=a
+// BIMODAL: s8-u4-differences=a
+// BIMODAL: s8-u4-cell-figure=a
+// BIMODAL: s8-u4-vacuole-compare=b
+// BIMODAL: s8-u4-regular-shape=a
+// BIMODAL: s8-u4-identical=a
+// BIMODAL: s8-u4-division-count=a
+// BIMODAL: s8-u4-growth-example=b
+// BIMODAL: s8-u4-order=a
+// BIMODAL: s8-u4-example-level=a
+// BIMODAL: s8-u4-analogy=a
+// BIMODAL: s8-u4-needs=a
+// BIMODAL: s8-u4-needs-apply=b
+// BIMODAL: s8-u4-needs-system=b
+// BIMODAL: s8-u4-factor-positive=a
+// BIMODAL: s8-u4-factor-effect=b
+// BIMODAL: s8-u4-sedentary=b
+// BIMODAL: s8-u4-pair-circ-resp=b
+// BIMODAL: s8-u4-pair-dig-circ=a
+// BIMODAL: s8-u4-pair-nerv-musc=b
+// BIMODAL: s8-u4-interdependence-why=b
+// BIMODAL: s8-u4-early-modern=b
+// BIMODAL: s8-u4-dynamic=b
+// BIMODAL: s8-u4-micro-development=b
+// BIMODAL: s8-u4-micro-parts=a
+// BIMODAL: s8-u4-organelle-figure=a
+// BIMODAL: s8-u4-organelle-function=a
+// BIMODAL: s8-u4-organelle-match=a
+// BIMODAL: s8-u4-organelle-plant=a
+// BIMODAL: s8-u4-organelle-term=b
+// BIMODAL: s8-u4-tech-examples=b
+// BIMODAL: s8-u4-tech-match=b
+// BIMODAL: s8-u4-community-need=b
+// BIMODAL: s8-u4-decision-sr=b
+// BIMODAL: s8-u4-personal-decision=b
+// BIMODAL: s8-u4-careers=a
+// BIMODAL: s8-u4-careers-match=a
+// BIMODAL: s8-u4-focus-sequence=b
+// BIMODAL: s8-u4-parts-action=b
+// BIMODAL: s8-u4-care=b
+// BIMODAL: s8-u4-care-error=b
+// BIMODAL: s8-u4-estimate-gen=a
+// BIMODAL: s8-u4-estimate-compare=b
+// BIMODAL: s8-u4-estimate-scenario=a
+// BIMODAL: s8-u4-model-accuracy=b
+// BIMODAL: s8-u4-variables=b
+// BIMODAL: s8-u4-protocol=b
+// BIMODAL: s8-u4-hypothesis=b
+// BIMODAL: s8-u4-hypothesis-basis=a
+// BIMODAL: s8-u4-control=b
+// BIMODAL: s8-u4-control-error=b
+// BIMODAL: s8-u4-graph-choice=a
+// BIMODAL: s8-u4-rates-figure=a
+// BIMODAL: s8-u4-recovery-figure=a
+// BIMODAL: s8-u4-organize=b
+// BIMODAL: s8-u4-organize-avg=b
+// BIMODAL: s8-u4-levels-identify=b
+// BIMODAL: s8-u4-needs-applied=b
 // Science 8 Unit 4 bank: Cells, Tissues, Organs and Systems
 // (SC8.10.1 to SC8.12.12), built Nov 15, 2026 to the Cells
 // authoring spec. All entries are original and were written
@@ -708,3 +830,348 @@ var NO_COMPOSE_U4 = {
   "s8-u4-cr-design-rates": true
 };
 BANK.forEach(function (e) { if (NO_COMPOSE_U4[e.id]) { e.noCompose = true; } });
+
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7:
+   SR on SC8.10.1, SC8.10.4, SC8.10.5, and one 3-mark Level 2 CR entry
+   closing Unit 4 Test 2's CR gap. SME-flagged. */
+
+E("s8-u4-cell-theory-judge", 4, ["SC8.10.1"], 1, "var", varset([
+  function () {
+    return mcq("Which statement is one of the three main ideas of the cell theory?",
+      "All living things are made of one or more cells",
+      ["All cells are the same size and shape in every organism", "Cells can only be seen with the naked eye in large organisms", "New cells form by themselves out of non-living material"],
+      "The cell theory states that all living things are made of cells, the cell is the basic unit of life, and all cells come from pre-existing cells. <b>All living things are made of one or more cells</b>.", {});
+  },
+  function () {
+    return mcq("A scientist watches an amoeba divide into two amoebas under a microscope. Which idea of the cell theory does this directly show?",
+      "All cells come from pre-existing cells",
+      ["All living things are made of one or more cells", "The cell is the smallest unit that can carry on life", "Every cell contains a nucleus with genetic material"],
+      "Division of an existing cell to make new cells is the third idea of the cell theory in action. <b>All cells come from pre-existing cells</b>.", {});
+  },
+  function () {
+    return mcq("Which of these is a characteristic shared by ALL living things?",
+      "They are made of cells and carry out the processes of life",
+      ["They can move from place to place entirely under their own power whenever they need food or shelter", "They make their own food from sunlight and air", "They grow to at least a centimetre in size"],
+      "Movement, photosynthesis and size are not universal; being cellular and carrying out life processes is. <b>They are made of cells and carry out the processes of life</b>.", {});
+  },
+  function () {
+    return mcq("A virus can reproduce only inside a living cell and is not itself made of cells. Why do scientists generally not classify viruses as living?",
+      "They are not made of cells, so they fail a basic requirement of living things",
+      ["They are far too small to be seen, and anything that is truly living must be visible to the naked eye", "They do not contain any chemicals that living things contain", "They can survive outside a host, and living things cannot do that"],
+      "Cell theory sets the standard: living things are cellular. Viruses are not made of cells and cannot carry on life processes alone. <b>They are not made of cells, so they fail a basic requirement of living things</b>.", {});
+  },
+  function () {
+    return mcq("In the 1600s, some scientists believed maggots appeared by themselves in rotting meat. Which idea of the cell theory did later experiments support against this belief?",
+      "Living cells (and organisms) come only from pre-existing living cells",
+      ["All living things are made of exactly one cell each", "Cells are the largest unit of structure and function that exists anywhere inside a living organism", "Meat is made of cells that can turn into maggots"],
+      "Experiments showed life comes from life: maggots came from eggs laid by flies, not from the meat itself. <b>Living cells (and organisms) come only from pre-existing living cells</b>.", {});
+  }
+]), ["Recall the three statements of cell theory before judging each option.", "Anything about cells appearing from non-living matter contradicts it."]);
+
+E("s8-u4-levels-identify", 4, ["SC8.10.4"], 1, "var", varset([
+  function () {
+    return mcq("A single heart muscle fibre, on its own, is an example of which level of organization?",
+      "A cell: it is a single living unit with its own structures",
+      ["A tissue: it is made of many similar fibres all working together as one coordinated group in the heart", "An organ: several tissues combined into one structure", "A system: several organs working toward one function"],
+      "Levels run cell, tissue, organ, system, organism. One fibre is one cell. <b>A cell: it is a single living unit with its own structures</b>.", {});
+  },
+  function () {
+    return mcq("The layer of muscle in the wall of the stomach, made of many similar muscle cells working together, is an example of which level?",
+      "A tissue: a group of similar cells carrying out one job together",
+      ["An organ: it combines several different tissues into a structure", "A cell: it is made of cells, so it must be at the cell level", "A system: it works with other parts to digest food for the body"],
+      "Similar cells working together form a tissue, one level above the cell. <b>A tissue: a group of similar cells carrying out one job together</b>.", {});
+  },
+  function () {
+    return mcq("The stomach itself, made of muscle tissue, nerve tissue and lining tissue working together to churn and digest food, is which level?",
+      "An organ: different tissues combined into one structure with a job",
+      ["A tissue: it is mostly muscle, so it stays at the tissue level", "A system: it is the whole digestive process in a single part", "An organism: it can carry out digestion all on its own"],
+      "An organ combines several tissues into one structure performing a function. <b>An organ: different tissues combined into one structure with a job</b>.", {});
+  },
+  function () {
+    return mcq("The mouth, esophagus, stomach, liver and intestines working together to digest food form which level of organization?",
+      "A system (the digestive system): several organs working toward one overall function",
+      ["An organ: all of the separate parts touch each other somewhere inside the body cavity of the animal", "A tissue: all of the parts are involved in the same single process", "An organism: together they can survive apart from the rest of the body"],
+      "Several organs cooperating on one function form a system. <b>A system (the digestive system): several organs working toward one overall function</b>.", {});
+  },
+  function () {
+    return mcq("Which list puts the levels of organization in the correct order, from simplest to most complex?",
+      "Cell, tissue, organ, system, organism",
+      ["Tissue, cell, organ, organism, system", "Cell, organ, tissue, system, organism", "Organism, system, organ, tissue, cell"],
+      "Each level is built from the one before it: cells make tissues, tissues make organs, organs make systems, systems make the organism. <b>Cell, tissue, organ, system, organism</b>.", {});
+  }
+]), ["Count the organization: one cell, similar cells together, several tissues, several organs.", "Cell, then tissue, then organ, then system, then organism."]);
+
+E("s8-u4-needs-applied", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return mcq("A potted plant is kept in a dark closet with plenty of water and air. After two weeks it is pale and weak. Which basic need is it missing?",
+      "Energy from light: without it the plant cannot make food, no matter how much water it has",
+      ["Water: a plant in a closet cannot absorb water through its roots at all", "Space to grow: a plant cannot grow at all unless its roots are free to spread widely through open soil", "Warmth: a closet is always too cold for any plant to stay alive in"],
+      "Plants make their food by photosynthesis, which needs light; water and air alone are not enough. <b>Energy from light: without it the plant cannot make food, no matter how much water it has</b>.", {});
+  },
+  function () {
+    return mcq("Fish in a sealed aquarium die even though the water is full of food flakes. The filter and air pump had stopped working. Which need went unmet?",
+      "Oxygen (gas exchange): the fish used up the dissolved oxygen and none was replaced",
+      ["Food: all of the flakes sank to the bottom, and aquarium fish cannot eat any food that rests on the bottom", "Light: fish need sunlight on their scales to stay alive in a tank", "Space: the fish grew too large for the aquarium in a few days"],
+      "Fish take dissolved oxygen from the water; without the pump replacing it, the oxygen runs out. <b>Oxygen (gas exchange): the fish used up the dissolved oxygen and none was replaced</b>.", {});
+  },
+  function () {
+    return mcq("A Venus flytrap grows in bog soil that is very poor in nitrogen, so it catches and digests insects. Which basic need does this behaviour supply?",
+      "Nutrients: the insects provide nitrogen compounds its roots cannot get from the bog soil",
+      ["Water: the insects carry water into the plant from the surface of the bog", "Energy: the insects it catches replace sunlight entirely as the plant's main source of energy for growing", "Waste removal: the insects carry the plant's wastes away from its leaves"],
+      "The plant still photosynthesizes for energy; the insects supply the nutrients (especially nitrogen) the poor soil lacks. <b>Nutrients: the insects provide nitrogen compounds its roots cannot get from the bog soil</b>.", {});
+  },
+  function () {
+    return mcq("During a winter drought, the grass on a field turns brown and stops growing, but its roots stay alive underground. Which need is in shortest supply?",
+      "Water: without enough of it the grass cannot carry out its life processes or grow in its parts above ground",
+      ["Sunlight: winter days are so short that no plant can photosynthesize at all", "Carbon dioxide: the winter air over the field contains none for the grass", "Soil: the roots have used up all of the soil in the field over the summer"],
+      "The roots survive on stored food while water is scarce; growth stops because water is the missing need. <b>Water: without it the grass cannot carry out its life processes above ground</b>.", {});
+  },
+  function () {
+    return mcq("A germinating seed is kept moist and warm but sealed in a jar with no air exchange. It sprouts, then dies. Which need explains the death?",
+      "Gas exchange: the seedling used the oxygen in the jar for respiration and could not replace it",
+      ["Light: a young seedling dies within a few hours if it does not receive direct bright sunlight on its leaves", "Gravity: a seedling in a sealed jar cannot tell which way to grow its roots", "Soil minerals: a seed contains no food store, so it starves without soil at once"],
+      "Seeds respire using their food store and need oxygen; a sealed jar's oxygen runs out. <b>Gas exchange: the seedling used the oxygen in the jar for respiration and could not replace it</b>.", {});
+  }
+]), ["Test each need against the story: what ran out, or what built up?", "The need whose supply changed is the one that explains the result."]);
+
+E("s8-u4-cr-needs-investigation", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return textq("Investigating a cell's needs (3 marks)\nA student keeps two identical jars of pond water with the same number of a single-celled organism, paramecium. Jar A is left open on a sunny windowsill. Jar B is sealed with an airtight lid and kept in the same light. After three days, the paramecia in Jar B are mostly dead, while Jar A's are thriving. (a) Name the basic need that ran out in Jar B. (1) (b) Explain, at the level of the cell, why running out of that need kills the organisms. (1) (c) The student says Jar B proves the organisms also need light. Explain why the experiment does not show that. (1)",
+      ["(a) Oxygen for respiration (gas exchange): the sealed lid stopped fresh air from reaching the water."],
+      "Marking points (3): (a) 1 mark for oxygen/gas exchange. (b) 1 mark for the cell-level explanation: cells respire to release energy from food for their life processes; without oxygen the cells cannot release enough energy and die. (c) 1 mark for the design reasoning: both jars received the same light, so light was not the variable that differed; only the seal (air supply) differed. Model answer: Jar B ran out of oxygen, and without respiration the cells could not release energy, because <b>a cell's life processes stop when it cannot exchange gases</b>.", {});
+  },
+  function () {
+    return textq("Investigating a cell's needs (3 marks)\nTwo trays of fast-growing duckweed (a small floating plant) are grown for a week. Tray A gets pond water changed daily. Tray B gets the same pond water, never changed, and a clear cover keeps evaporation equal. Tray B's plants yellow and stop multiplying, while Tray A's spread. (a) Name the basic need that ran short in Tray B. (1) (b) Explain why a plant cell needs that supply renewed. (1) (c) State one variable the student kept the same between the trays, and why keeping it the same matters. (1)",
+      ["(a) Nutrients (mineral nutrients such as nitrates): the duckweed used up the nutrients dissolved in Tray B's unchanged water."],
+      "Marking points (3): (a) 1 mark for nutrients/minerals. (b) 1 mark for the cell-level need: cells need nutrients as raw materials to build new cell parts and proteins when they grow and divide. (c) 1 mark for a controlled variable with a fairness reason (same light, same starting number of plants, same water source, evaporation matched). Model answer: Tray B's plants starved for nutrients, because <b>growing cells need a continuing supply of raw materials to build new cells</b>.", {});
+  },
+  function () {
+    return textq("Investigating a cell's needs (3 marks)\nA student places equal numbers of yeast cells in two flasks of sugar solution. Flask A is left open with a loose cotton plug. Flask B is filled to the brim and sealed so no air space remains. Both are kept at the same warm temperature. After a day, Flask A is frothing with new yeast; Flask B shows little growth. (a) Name the basic need that limited Flask B. (1) (b) Explain what the yeast cells use that need for. (1) (c) Explain why keeping both flasks at the same temperature was necessary for a fair test. (1)",
+      ["(a) Oxygen (gas exchange): the sealed, brim-full flask had only the oxygen dissolved at the start."],
+      "Marking points (3): (a) 1 mark for oxygen. (b) 1 mark for respiration: yeast cells use oxygen to release energy from the sugar for growth and reproduction (accept: without oxygen they can ferment, but release far less energy, so growth is much slower). (c) 1 mark for fairness: temperature affects how fast cells grow, so if it differed, the result could be due to temperature instead of air supply. Model answer: Flask B was limited by oxygen, because <b>cells need gas exchange to release the energy their life processes require</b>.", {});
+  }
+]), ["Compare the setups pairwise: which single condition differs?", "The condition that matches the outcome difference is the one the experiment tests."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s8-u4-cr-cell-compare closes Unit 4 Test
+   1 (2 marks, Level 3). s8-u4-cr-levels-apply closes Unit 4 Test
+   2 (4 marks, Level 3). s8-u4-cr-systems-response closes Unit 4 Test
+   3 (4 marks, Level 2). SME-flagged for the
+   specialist pass. */
+
+E("s8-u4-cr-cell-compare", 4, ["SC8.10.2"], 3, "var", varset([
+  function () {
+    return textq("A student claims that a leaf cell and a cheek cell are 'the same because both are cells.' Evaluate the claim. (a) Name two structural differences between a leaf cell and a cheek cell. (1 mark) (b) For each difference, explain the job it does for the organism. (1 mark) (2 marks)",
+      ["a leaf cell has a cell wall and chloroplasts, which a cheek cell lacks (a large central vacuole in the leaf cell is also correct)", "the wall supports and protects the plant cell and holds its shape, and the chloroplasts carry out photosynthesis to make food for the plant"],
+      "<b>Model answer:</b> The claim is only partly right: both cells share a cell membrane, cytoplasm and a nucleus, but they are built differently for different jobs. First, a leaf cell has a rigid cell wall outside its membrane, which a cheek cell lacks; the wall supports and protects the cell and holds the plant in a regular shape. Second, a leaf cell has chloroplasts, which a cheek cell lacks; the chloroplasts carry out photosynthesis, making food for the whole plant. (A large central vacuole in the leaf cell, storing water and keeping the cell firm, is also a correct difference.)<br><br><b>Marking points:</b> 1 mark for two correct structural differences (cell wall, chloroplasts, or large central vacuole in the leaf cell and absent or small in the cheek cell; both differences needed). 1 mark for tying each difference to its job (wall for support, protection and shape; chloroplasts for photosynthesis and food making; vacuole for storage and firmness; both ties needed).", {});
+  },
+  function () {
+    return textq("A student claims that a root cell and a muscle cell are 'the same because both are cells.' Evaluate the claim. (a) Name two structural differences between a root cell and a muscle cell. (1 mark) (b) For each difference, explain the job it does for the organism. (1 mark) (2 marks)",
+      ["a root cell has a cell wall and a large vacuole, which a muscle cell lacks", "the wall supports and protects the root cell as the root pushes through soil, and the large vacuole stores water taken up from the soil and keeps the cell firm"],
+      "<b>Model answer:</b> The claim is only partly right: both cells share a cell membrane, cytoplasm and a nucleus, but they are built differently for different jobs. First, a root cell has a rigid cell wall outside its membrane, which a muscle cell lacks; the wall supports and protects the cell as the root grows through the soil. Second, a root cell has a large vacuole, while a muscle cell has only small ones; the large vacuole stores water absorbed from the soil and keeps the cell firm. Note that the root cell has no chloroplasts even though it is a plant cell: it grows underground in the dark, so it cannot photosynthesize, which shows that not all plant cells make food.<br><br><b>Marking points:</b> 1 mark for two correct structural differences (cell wall, or large vacuole, in the root cell and absent or small in the muscle cell; both differences needed). 1 mark for tying each difference to its job (wall for support and protection in the soil; vacuole for water storage and firmness; both ties needed).", {});
+  },
+  function () {
+    return textq("A student claims that an onion epidermal cell and a blood cell are 'the same because both are cells.' Evaluate the claim. (a) Name two structural differences between an onion epidermal cell and a blood cell. (1 mark) (b) For each difference, explain the job it does for the organism. (1 mark) (2 marks)",
+      ["an onion epidermal cell has a cell wall and a large vacuole, which a blood cell lacks", "the wall holds the onion cells in a regular shape and protects the bulb layers, and the large vacuole stores water and food in the bulb"],
+      "<b>Model answer:</b> The claim is only partly right: both cells share a cell membrane, cytoplasm and a nucleus, but they are built differently for different jobs. First, an onion epidermal cell has a rigid cell wall outside its membrane, which a blood cell lacks; the wall holds the onion cells in a regular, brick like shape and protects the layers of the bulb, while the blood cell, with no wall, stays flexible enough to move through narrow blood vessels. Second, the onion cell has a large vacuole, while a blood cell has no large vacuole; the vacuole stores the water and food that the bulb keeps for the growing plant. Note that the onion cell has no chloroplasts: the bulb grows underground, away from light, so these plant cells do not photosynthesize.<br><br><b>Marking points:</b> 1 mark for two correct structural differences (cell wall, or large vacuole, in the onion cell and absent in the blood cell; both differences needed). 1 mark for tying each difference to its job (wall for regular shape, support and protection; vacuole for storing water and food; both ties needed).", {});
+  }
+]), ["Use the guide's organelle set: the wall, chloroplasts and vacuole size are where plant and animal cells differ.", "A difference earns the second mark only when you say what job it does for the organism."]);
+
+E("s8-u4-cr-levels-apply", 4, ["SC8.10.4", "SC8.10.5"], 3, "var", varset([
+  function () {
+    return textq("Five structures of a human are listed out of order: heart, cardiac tissue, circulatory system, a human, heart muscle cell. (a) Arrange the five structures in order from the cell level to the whole organism, naming the level each structure belongs to. (2 marks) (b) A heart muscle cell needs oxygen to keep working. Explain how this need is met through the cooperation of two levels above the cell level, naming each level and what it contributes. (2 marks) (4 marks)",
+      ["heart muscle cell (cell), cardiac tissue (tissue), heart (organ), circulatory system (organ system), a human (organism)", "at the organ level the heart pumps oxygen rich blood into the vessels, and at the organ system level the circulatory system transports that oxygen to every cell, including the heart muscle cells"],
+      "<b>Model answer:</b> (a) In order: heart muscle cell (cell level), cardiac tissue (tissue level), heart (organ level), circulatory system (organ system level), a human (organism level). (b) At the organ level, the heart acts as a pump, pushing oxygen rich blood out into the blood vessels with every beat. At the organ system level, the circulatory system, the heart and vessels working together, transports that oxygen through the body and delivers it to cells everywhere, including the heart muscle cells themselves, so the cell's need for oxygen is met by levels above it working together.<br><br><b>Marking points:</b> 1 mark for the five structures in the correct order from cell to organism. 1 mark for all five level names correctly matched to their structures. 1 mark for one level above the cell correctly named with its contribution (for example, the heart at the organ level pumping the blood). 1 mark for a second level above the cell correctly named with its contribution (for example, the circulatory system at the organ system level transporting the oxygen to the cell).", {});
+  },
+  function () {
+    return textq("Five structures of a plant are listed out of order: shoot system, a plant, leaf, photosynthetic tissue, leaf cell. (a) Arrange the five structures in order from the cell level to the whole organism, naming the level each structure belongs to. (2 marks) (b) A leaf cell needs water to carry out photosynthesis. Explain how this need is met through the cooperation of two levels above the cell level, naming each level and what it contributes. (2 marks) (4 marks)",
+      ["leaf cell (cell), photosynthetic tissue (tissue), leaf (organ), shoot system (organ system), a plant (organism)", "at the organ system level the shoot system transports water from the roots up through the stem to the leaves, and at the organ level the veins of the leaf deliver that water to the leaf cells"],
+      "<b>Model answer:</b> (a) In order: leaf cell (cell level), photosynthetic tissue (tissue level), leaf (organ level), shoot system (organ system level), a plant (organism level). (b) At the organ system level, the shoot system transports water absorbed by the roots up through the stem and out to every leaf. At the organ level, the leaf's veins branch through the leaf and deliver that water to the photosynthetic tissue, where it reaches each leaf cell. Neither level meets the need alone: the system moves the water over distance, and the organ delivers it to the cells that use it.<br><br><b>Marking points:</b> 1 mark for the five structures in the correct order from cell to organism. 1 mark for all five level names correctly matched to their structures. 1 mark for one level above the cell correctly named with its contribution (for example, the shoot system at the organ system level transporting the water upward). 1 mark for a second level above the cell correctly named with its contribution (for example, the leaf at the organ level delivering the water through its veins to the cells).", {});
+  },
+  function () {
+    return textq("Five structures of a human are listed out of order: brain, nervous system, nerve cell, a human, nervous tissue. (a) Arrange the five structures in order from the cell level to the whole organism, naming the level each structure belongs to. (2 marks) (b) A nerve cell in the brain needs oxygen to keep working. Explain how this need is met through the cooperation of two levels above the cell level, naming each level and what it contributes. (2 marks) (4 marks)",
+      ["nerve cell (cell), nervous tissue (tissue), brain (organ), nervous system (organ system), a human (organism)", "at the organ level the heart pumps oxygen rich blood into the vessels, and at the organ system level the circulatory system transports that oxygen to the brain and delivers it to the nerve cells"],
+      "<b>Model answer:</b> (a) In order: nerve cell (cell level), nervous tissue (tissue level), brain (organ level), nervous system (organ system level), a human (organism level). (b) At the organ level, the heart pumps oxygen rich blood out into the blood vessels with every beat. At the organ system level, the circulatory system, the heart and vessels working together, transports that oxygen around the body and delivers it to the brain, where it reaches the nerve cells. The nerve cell's need is met by an organ and a system above it cooperating, not by the cell itself.<br><br><b>Marking points:</b> 1 mark for the five structures in the correct order from cell to organism. 1 mark for all five level names correctly matched to their structures. 1 mark for one level above the cell correctly named with its contribution (for example, the heart at the organ level pumping the blood). 1 mark for a second level above the cell correctly named with its contribution (for example, the circulatory system at the organ system level transporting the oxygen to the brain cells).", {});
+  },
+  function () {
+    return textq("Five structures of a plant are listed out of order: root system, root hair cell, a plant, root, root tissue. (a) Arrange the five structures in order from the cell level to the whole organism, naming the level each structure belongs to. (2 marks) (b) A root hair cell needs glucose (food) to keep working, but it cannot make food itself. Explain how this need is met through the cooperation of two levels above the cell level, naming each level and what it contributes. (2 marks) (4 marks)",
+      ["root hair cell (cell), root tissue (tissue), root (organ), root system (organ system), a plant (organism)", "at the organ level the leaf makes glucose by photosynthesis, and at the organ system level the shoot system transports that food down through the stem to the roots and their cells"],
+      "<b>Model answer:</b> (a) In order: root hair cell (cell level), root tissue (tissue level), root (organ level), root system (organ system level), a plant (organism level). (b) At the organ level, the leaf makes glucose by photosynthesis in its cells, food the root hair cell cannot make for itself underground. At the organ system level, the shoot system transports that food from the leaves down through the stem to the roots, where it reaches the root hair cells. The cell's need is met because an organ above it makes the food and a system above it delivers the food.<br><br><b>Marking points:</b> 1 mark for the five structures in the correct order from cell to organism. 1 mark for all five level names correctly matched to their structures. 1 mark for one level above the cell correctly named with its contribution (for example, the leaf at the organ level making the glucose). 1 mark for a second level above the cell correctly named with its contribution (for example, the shoot system at the organ system level transporting the food to the roots).", {});
+  }
+]), ["Build upward: similar cells make a tissue, tissues make an organ, organs work together in a system, and the systems make the organism.", "For part (b), pick two levels above the cell and give each level its own job in meeting the need."]);
+
+E("s8-u4-cr-systems-response", 4, ["SC8.10.6", "SC8.10.7"], 2, "var", varset([
+  function () {
+    return textq("Right after lunch, a student runs up three flights of stairs to class. Explain the coordinated role of each of these three systems in the episode: the muscular system, the respiratory system and the circulatory system. (3 marks) Then state what would go wrong if the circulatory system failed to respond. (1 mark) (4 marks)",
+      ["muscles contract to lift the body and need extra oxygen and glucose", "breathing becomes faster and deeper, taking in oxygen and removing carbon dioxide", "the heart beats faster and pumps blood carrying oxygen and glucose to the muscles", "if circulation failed to respond, the muscles would be starved of oxygen and glucose and would tire and fail"],
+      "<b>Model answer:</b> The muscular system does the climbing: the leg muscles contract repeatedly to lift the body up each step, and hard working muscles need extra oxygen and glucose and produce extra carbon dioxide. The respiratory system responds by breathing faster and deeper, taking in more oxygen and removing the extra carbon dioxide. The circulatory system responds by beating faster and stronger, pumping blood that carries the oxygen and the glucose from the digested lunch to the working muscles and carries carbon dioxide back to the lungs. If the circulatory system failed to respond, the extra oxygen and glucose would never reach the muscles and wastes would build up, so the muscles would tire rapidly and the student could not keep climbing.<br><br><b>Marking points:</b> 1 mark for the muscular system's role (contracting to do the work, with its increased need stated). 1 mark for the respiratory system's role (faster, deeper breathing supplying oxygen and removing carbon dioxide). 1 mark for the circulatory system's role (faster pumping transporting oxygen and glucose to the muscles and wastes away). 1 mark for a correct failure consequence (the muscles are starved of oxygen and glucose, tire quickly, and the activity cannot continue).", {});
+  },
+  function () {
+    return textq("A student touches a hot pan and pulls their hand away at once. Explain the coordinated role of each of these three systems in the episode: the nervous system, the muscular system and the circulatory system. (3 marks) Then state what would go wrong if the nervous system failed to respond. (1 mark) (4 marks)",
+      ["the nervous system detects the heat and sends signals to the arm muscles", "the muscular system contracts to pull the hand away", "the circulatory system carries oxygen, nutrients and repair materials to the burned skin", "if the nervous system failed to respond, the hand would stay on the pan and the burn would become much worse"],
+      "<b>Model answer:</b> The nervous system detects the heat through sense receptors in the skin and sends signals along nerves to the muscles of the arm, coordinating the withdrawal before the student has time to think about it. The muscular system carries out the response: the arm muscles contract and pull the hand off the pan, limiting the burn. The circulatory system then supports the repair: blood carries oxygen, nutrients and other materials the damaged skin cells need to the injured area and carries wastes away. If the nervous system failed to respond, no signal would reach the muscles, the hand would stay on the hot pan, and the burn would become far more severe.<br><br><b>Marking points:</b> 1 mark for the nervous system's role (detecting the heat and signalling the muscles). 1 mark for the muscular system's role (contracting to pull the hand away). 1 mark for the circulatory system's role (delivering oxygen, nutrients and repair materials to the damaged skin, and removing wastes). 1 mark for a correct failure consequence (no signal, no withdrawal, and a much worse burn).", {});
+  },
+  function () {
+    return textq("A student plays a full soccer match on a hot day, running hard for most of the game and sweating heavily. Explain the coordinated role of each of these three systems in the episode: the muscular system, the respiratory system and the circulatory system. (3 marks) Then state what would go wrong if the circulatory system failed to respond. (1 mark) (4 marks)",
+      ["muscles work hard for the whole match and need extra oxygen and glucose", "breathing becomes faster and deeper, taking in oxygen and removing carbon dioxide", "the heart pumps blood to the muscles and to the skin, where sweating and blood flow release heat", "if circulation failed to respond, heat and wastes would build up and the muscles would be starved, causing exhaustion and dangerous overheating"],
+      "<b>Model answer:</b> The muscular system does the running, kicking and turning for the whole match, and hard working muscles need extra oxygen and glucose and release extra heat and carbon dioxide. The respiratory system responds by breathing faster and deeper, taking in more oxygen and removing the extra carbon dioxide. The circulatory system responds in two directions at once: the heart beats faster to carry oxygen and glucose to the muscles, and blood is also sent to the skin, where heat escapes and sweat evaporates to cool the body. If the circulatory system failed to respond, oxygen and glucose would not reach the muscles and heat could not be carried to the skin, so the student would overheat and collapse from exhaustion.<br><br><b>Marking points:</b> 1 mark for the muscular system's role (doing the sustained work, with its increased needs stated). 1 mark for the respiratory system's role (faster, deeper breathing supplying oxygen and removing carbon dioxide). 1 mark for the circulatory system's role (transporting oxygen and glucose to the muscles and carrying heat to the skin for cooling by sweating). 1 mark for a correct failure consequence (overheating and exhaustion because delivery and cooling both fail).", {});
+  },
+  function () {
+    return textq("A student is recovering from a stomach illness. For two days they could keep almost nothing down, and now they are slowly eating and drinking again. Explain the coordinated role of each of these three systems in the recovery: the digestive system, the circulatory system and the nervous system. (3 marks) Then state what would go wrong if the digestive system failed to respond. (1 mark) (4 marks)",
+      ["the digestive system breaks down food and absorbs water and nutrients again as the stomach settles", "the circulatory system carries the absorbed water and nutrients to all the body's cells and carries wastes away", "the nervous system senses the state of the stomach and coordinates the responses, including the vomiting that expelled harmful material and the return of appetite", "if the digestive system failed to respond, water and nutrients could not be replaced and dehydration and weakness would continue"],
+      "<b>Model answer:</b> The digestive system leads the recovery: as the stomach settles it breaks down food again and absorbs the water and nutrients the body lost during the illness. The circulatory system distributes what is absorbed: blood carries the water and nutrients to every cell, restoring what the cells need, and carries wastes away to be removed. The nervous system coordinates the episode: it sensed the disturbance in the stomach, triggered vomiting during the illness to expel harmful material, and now restores appetite so the student eats and drinks again. If the digestive system failed to respond, the water and nutrients taken in could not be absorbed or replaced, so dehydration and weakness would continue even though the student was eating.<br><br><b>Marking points:</b> 1 mark for the digestive system's role (breaking down food and absorbing water and nutrients during recovery). 1 mark for the circulatory system's role (transporting the absorbed water and nutrients to the cells and removing wastes). 1 mark for the nervous system's role (sensing the stomach's state and coordinating responses such as vomiting and the return of appetite). 1 mark for a correct failure consequence (water and nutrients cannot be replaced, so dehydration and weakness continue).", {});
+  }
+]), ["Give each named system its own sentence and its own job; do not merge them.", "For the failure mark, follow the chain: if that system stops responding, what do the other systems lose?"]);
+
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+/* ---------- SC8.10.5 and SC8.10.6 Cells and body systems (test plan build) ---------- */
+
+E("s8-u4-cell-needs", 4, ["SC8.10.5"], 2, "var", varset([
+  function () {
+    return mcq("A baker mixes yeast with warm water and sugar, and the yeast cells multiply quickly in the dough. In plain warm water with no sugar, they barely grow at all. Which basic need does the sugar mainly supply?",
+      "Nutrients and energy: the sugar is food the yeast cells use to live, grow and divide in the dough",
+      ["Water for the cells: the sugar draws extra water into each yeast cell from the warm water around it",
+       "Oxygen for the cells: the sugar releases oxygen gas that the yeast cells take in as they sit in dough",
+       "Waste removal: the sugar carries wastes out of each yeast cell into the warm water around the dough"],
+      "Yeast cells are living cells, so they have the same basic needs as any cell: nutrients, water, gas exchange, waste removal and a source of energy. The warm water already supplies the water in both mixes; what the sugar adds is food, the nutrients and energy the cells use to grow and divide, which is why the sugared mix multiplies and the plain one stalls.",
+      {});
+  },
+  function () {
+    return mcq("After days of heavy rain, garden soil stays waterlogged, with water filling the spaces between the soil grains, and many root cells of a tomato plant die. Which basic need was cut off, and why?",
+      "Gas exchange: water filling the soil's air spaces stops oxygen from reaching the root cells at all",
+      ["Sunlight: water covering the soil stops all of the light from reaching the root cells below ground",
+       "Nutrients: water washing through the soil removes every nutrient before the root cells absorb any",
+       "Space to divide: water pressing on the soil stops the root cells from having room to grow at all"],
+      "Root cells are underground, so sunlight was never part of their supply. What waterlogging removes is the air in the soil: with the spaces between grains full of water instead of air, oxygen cannot reach the root cells, their gas exchange fails, and without oxygen the cells cannot release the energy they need to live.",
+      {});
+  },
+  function () {
+    return mcq("Single-celled paramecia in a jar of pond water thrive for days, then slow down and die even though food is still present in the water. Tests show the cells' own wastes have built up in the jar. Which basic need has failed?",
+      "Waste removal: the wastes the cells produce were not carried away, so they poisoned the cells' water",
+      ["Nutrient supply: the food the cells were given changed into a form the cells could no longer use at all",
+       "Gas exchange: the wastes the cells produced filled the jar and pushed every trace of oxygen out of it",
+       "Water supply: the wastes the cells produced soaked up all of the water in the jar until the cells dried"],
+      "A cell's needs include getting rid of what it produces. In the closed jar there is nowhere for the paramecia's wastes to go, so the wastes accumulate in the water around the cells until the water itself becomes harmful. Food, water and air are still present; it is the failed removal of wastes that ends the culture.",
+      {});
+  },
+  function () {
+    return mcq("Cheek cells scraped onto a microscope slide are alive in the drop of water placed on them, but they die quickly once the slide dries out, even though the slide sits in bright light and open air. Which need ran out first?",
+      "Water: the cells' life processes take place in water, and drying stops them from working properly",
+      ["Nutrients: the cells use up all of their stored food within minutes once they are spread on a slide",
+       "Oxygen: the cells cannot take in any oxygen at all once the thin film of water around them has dried",
+       "Waste removal: the cells' wastes cannot be carried away once they are spread thinly on a dry slide"],
+      "Cells are mostly water, and their life processes happen in that watery interior and depend on water moving substances in and out. On the drying slide the cells lose their water, and their processes stop. Light and air are still available, and the cells carry stored food for far longer than the few minutes the slide takes to dry.",
+      {});
+  },
+  function () {
+    return mcq("Mould spreads quickly across a slice of bread kept in a warm, damp cupboard, its cells digesting the bread as they grow. Which basic need does the bread itself supply to the mould's cells?",
+      "Nutrients and energy, from the food material in the bread that the mould's cells break down to live",
+      ["Water and moisture, from the food material in the bread that the mould's cells break down to live in",
+       "Oxygen and fresh air, from the food material in the bread that the mould's cells break down to live",
+       "Waste removal service, from the food material in the bread that the mould's cells break down to use"],
+      "The cupboard supplies the warmth and the dampness, but the bread is the mould's food source. The mould's cells digest the bread's material and use it as nutrients and as the energy source for growth, which is why the mould spreads across the bread and not across the dry shelf beside it. Every cell needs food taken in, in one form or another.",
+      {});
+  }
+]), ["Test each need against the story: what was added, removed, or left to build up?", "Cells need nutrients, water, gas exchange, waste removal and energy."]);
+
+E("s8-u4-system-factors", 4, ["SC8.10.6"], 2, "var", varset([
+  function () {
+    return mcq("After eight weeks of regular running training, a student's resting heart rate is noticeably lower than it was before the training began. What does this change show about the student's circulatory system?",
+      "It has become more efficient: the stronger heart pumps more blood with each beat, so it beats less often at rest",
+      ["It has become less efficient: the weaker heart pumps less blood with each beat, so it beats less often at rest now",
+       "It has become more efficient: the stronger heart pumps more blood with each beat, so it beats more often at rest",
+       "It is unchanged by the training: the heart pumps the same blood with each beat, so its resting rate cannot change"],
+      "Exercise is the guide's positive factor for the circulatory system. Training strengthens the heart muscle, so each beat moves more blood; at rest the body needs the same amount of blood delivered, so a stronger heart can deliver it with fewer beats. A lower resting heart rate after training is a sign of greater efficiency, not weakness.",
+      {});
+  },
+  function () {
+    return mcq("A student who is usually fit has a bad chest cold, with swollen airways full of mucus, and finds that climbing one flight of stairs leaves her unusually breathless. How has the illness affected her respiratory system?",
+      "The narrowed, mucus-filled airways let less air move, so gas exchange falls and less oxygen reaches her blood",
+      ["The narrowed, mucus-filled airways let more air move, so gas exchange rises and less oxygen reaches her blood",
+       "The cold has strengthened her breathing muscles for a few days, so her lungs move air faster than they should",
+       "The cold has removed her need for gas exchange for a few days, so her blood carries carbon dioxide instead now"],
+      "Illness is one of the factors that can reduce a system's function. Swollen, mucus-filled airways are narrower airways: less air moves with each breath and the exchange of oxygen and carbon dioxide in the lungs falls. Stair climbing raises the body's oxygen demand at exactly the moment the respiratory system can supply less, which is why she is breathless.",
+      {});
+  },
+  function () {
+    return mcq("A gallstone blocks the tube that carries bile from the liver to the small intestine, and the person's digestion of fatty foods becomes poor. Which body system is affected, and how?",
+      "The digestive system: without bile reaching the intestine, fats are broken down less effectively there",
+      ["The respiratory system: without bile reaching the intestine, fats are broken down less effectively there",
+       "The digestive system: without bile reaching the intestine, fats are absorbed whole into the blood there",
+       "The excretory system: without bile reaching the intestine, fats are filtered from the blood less quickly"],
+      "A blockage is a mechanical factor acting on one system. Bile is a digestive fluid, made to help break down fats in the small intestine; if the tube carrying it is blocked, the digestive system cannot do that part of its job and fatty foods are digested poorly. The respiratory and excretory systems are not part of this pathway.",
+      {});
+  },
+  function () {
+    return mcq("On a very hot day, an athlete's heart beats faster than usual even between efforts, and the blood vessels in her skin widen while she sweats. What is her circulatory system doing in response to the temperature?",
+      "It is carrying more blood to the skin so heat can escape, helping to keep her body temperature steady",
+      ["It is carrying less blood to the skin so heat stays trapped, helping to keep her body temperature steady",
+       "It is carrying more blood to the muscles of the gut so food can digest, helping to keep her temperature up",
+       "It is carrying wastes out to the skin so they can be stored there, helping to keep her temperature steady"],
+      "Temperature is a factor the body systems must answer. Widened skin vessels bring more warm blood to the surface, where its heat can escape, and the faster heartbeat keeps that extra circulation moving. The response protects the body's steady internal temperature; carrying less blood to the skin would trap heat and make the problem worse.",
+      {});
+  },
+  function () {
+    return mcq("Before a big race, a student's heart pounds and her breathing quickens while she is still standing at the start line, before any running begins. Which factor is affecting her body systems, and how?",
+      "Stress: signals from the nervous system speed up the heart and the breathing to prepare the body for action",
+      ["Illness: signals from the nervous system speed up the heart and the breathing to prepare the body for action",
+       "Blockage: signals from the nervous system speed up the heart and the breathing to prepare the body for action",
+       "Exercise: signals from the nervous system slow down the heart and the breathing to prepare the body for rest"],
+      "The change happens before any exercise starts, so exercise cannot be its cause, and nothing is ill or blocked. Stress is the factor: the nervous system, anticipating the effort, signals the heart to beat faster and the breathing to quicken, preparing the circulatory and respiratory systems to deliver oxygen the moment the race begins.",
+      {});
+  }
+]), ["Name the factor, name the system, then say whether its function rises or falls.", "Exercise, illness, blockage, temperature and stress are the factor types in these cases."]);
+
+E("s8-u4-system-factors-apply", 4, ["SC8.10.6"], 3, "var", varset([
+  function () {
+    return mcq("After surgery, a person's small intestine is much shorter than normal, so far fewer nutrients are absorbed from the food passing through it. What is the most likely effect on the whole body over the months that follow?",
+      "Cells throughout the body receive fewer nutrients and less energy, so growth, repair and activity all suffer",
+      ["Cells throughout the body receive the same nutrients as before, because the stomach absorbs most nutrients itself",
+       "Only the digestive system is affected, because the nutrients absorbed there are used only by the intestine's cells",
+       "Cells throughout the body receive more nutrients and more energy, because the shorter intestine works much faster"],
+      "Body systems serve the whole body, so a reduced system starves more than itself. The digestive system's absorbed nutrients are loaded into the blood for every cell; absorb far fewer of them and cells everywhere get less material and less energy, so the whole body loses ground on growth, repair and activity, not just the intestine.",
+      {});
+  },
+  function () {
+    return mcq("A weakened heart pumps much less blood with each beat than a healthy heart does. Which whole-body effect is the most likely result for this person?",
+      "Muscles and organs receive oxygen and nutrients more slowly, so the person tires quickly and organs work less well",
+      ["Muscles and organs receive oxygen and nutrients more quickly, so the person tires quickly and organs work less well",
+       "Only the chest itself is affected, because the blood the heart pumps is used only by the heart and the lungs beside it",
+       "Muscles and organs receive oxygen and nutrients more slowly, so the person gains energy and organs work much better"],
+      "The circulatory system is the body's delivery network, so when its pump weakens, every destination is under-supplied. Oxygen and nutrients arrive slowly at muscles and organs throughout the body, energy release there falls behind demand, and the person tires quickly with organs working below their normal level. The effect cannot stay inside the chest.",
+      {});
+  },
+  function () {
+    return mcq("Scar tissue inside a person's lungs reduces the surface area available for gas exchange there. Which chain of effects on the whole body is the most likely?",
+      "Less oxygen enters the blood, so cells release less energy, so muscles fatigue sooner and thinking becomes harder",
+      ["Less oxygen enters the blood, so cells release more energy, so muscles fatigue sooner and thinking becomes harder",
+       "More oxygen enters the blood, so cells release less energy, so muscles fatigue sooner and thinking becomes harder",
+       "Oxygen entry stays unchanged, because the blood makes its own oxygen in the lungs, so no whole-body effect follows"],
+      "Follow the chain out of the lungs. A smaller exchange surface loads less oxygen into the blood; blood delivers that smaller supply to every cell; cells release energy more slowly with less oxygen to work with. Muscles, which spend energy quickly, fatigue sooner, and the brain, a heavy oxygen user, works less clearly. One system's reduced function becomes a whole-body effect.",
+      {});
+  },
+  function () {
+    return mcq("A person's kidneys gradually stop filtering the blood properly, removing far less waste than healthy kidneys do. What is the most likely effect on the rest of the body?",
+      "Wastes build up in the blood and are carried to every tissue, poisoning cells throughout the whole body over time",
+      ["Wastes build up only inside the kidneys themselves, and the blood carried to the other tissues stays clean and safe",
+       "Wastes are removed even faster by the blood itself, and are carried to every tissue, strengthening cells throughout it",
+       "Wastes build up in the blood and are carried to every tissue, feeding cells throughout the whole body over time now"],
+      "The excretory system's failure cannot stay local, because its workplace is the blood, and the blood goes everywhere. Wastes the kidneys leave behind stay in circulation and are delivered to tissues throughout the body, where they interfere with cells' work. This is why kidney failure is a whole-body emergency and why dialysis, which does the filtering, sustains the whole person.",
+      {});
+  },
+  function () {
+    return mcq("A spinal cord injury prevents signals from a person's brain from reaching the muscles of the legs, though the leg muscles and bones are uninjured. Which whole-body effects are the most likely?",
+      "The leg muscles cannot be told to contract, so walking is lost, even though the muscles and bones themselves are unhurt",
+      ["The leg muscles cannot be told to contract, so walking is lost, because the muscles and the bones themselves are destroyed",
+       "The leg muscles contract on their own without any signals, so walking improves, even though the spinal cord is badly hurt",
+       "Only feeling in the skin of the legs is lost, because signals from the brain are used only for sensing, never for movement"],
+      "The nervous system coordinates the others, so its failure disables systems that are themselves healthy. The leg muscles can still contract and the bones can still bear weight, but the signals ordering contraction travel through the injured cord and never arrive. Movement is lost through a communication failure, which shows that a system's function depends on the systems connected to it.",
+      {});
+  }
+]), ["Follow the chain past the named system: what do the other systems and cells then receive, or fail to receive?", "A reduced system under-supplies the whole body, not just itself."]);

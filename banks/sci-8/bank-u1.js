@@ -1,3 +1,5 @@
+// CRMARKS: s8-u1-cr-spheres-interact=2
+// CRMARKS: s8-u1-cr-distribution-shift=3
 // CRMARKS: s8-u1-cr-cycle-role=3
 // CRMARKS: s8-u1-cr-glacier=3
 // CRMARKS: s8-u1-cr-abiotic=3
@@ -12,6 +14,116 @@
 // CRMARKS: s8-u1-cr-results-summary=3
 // CRMARKS: s8-u1-cr-pond-data=3
 // CRMARKS: s8-u1-cr-population=3
+// CRMARKS: s8-u1-cr-watershed=4
+// CRMARKS: s8-u1-cr-range-shift=4
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// CRMARKS: s8-u1-cycle-process=2
+// CRMARKS: s8-u1-distribution=2
+// CRMARKS: s8-u1-fresh-sources=2
+// CRMARKS: s8-u1-cycle-sequence=2
+// CRMARKS: s8-u1-ice-age=2
+// CRMARKS: s8-u1-glacier-retreat=3
+// CRMARKS: s8-u1-fresh-env=2
+// CRMARKS: s8-u1-species-category=2
+// CRMARKS: s8-u1-zones=2
+// CRMARKS: s8-u1-estuary=2
+// CRMARKS: s8-u1-productivity=4
+// CRMARKS: s8-u1-upwelling=2
+// CRMARKS: s8-u1-abiotic=3
+// CRMARKS: s8-u1-temp-oxygen=4
+// CRMARKS: s8-u1-profile-figure=2
+// CRMARKS: s8-u1-basin-process=4
+// CRMARKS: s8-u1-glaciation-role=3
+// CRMARKS: s8-u1-profile-order=2
+// CRMARKS: s8-u1-currents=2
+// CRMARKS: s8-u1-fog=3
+// CRMARKS: s8-u1-nino-nina=3
+// CRMARKS: s8-u1-heat-storage=3
+// CRMARKS: s8-u1-iceberg=4
+// CRMARKS: s8-u1-wave-energy=2
+// CRMARKS: s8-u1-tides=2
+// CRMARKS: s8-u1-tidal-range=3
+// CRMARKS: s8-u1-wave-size=4
+// CRMARKS: s8-u1-headland-energy=3
+// CRMARKS: s8-u1-rock-resistance=2
+// CRMARKS: s8-u1-landform-figure=2
+// CRMARKS: s8-u1-landform-formation=3
+// CRMARKS: s8-u1-erosion-deposition=2
+// CRMARKS: s8-u1-institutions=2
+// CRMARKS: s8-u1-tech=2
+// CRMARKS: s8-u1-sonar=2
+// CRMARKS: s8-u1-tech-change=3
+// CRMARKS: s8-u1-tech-improve=2
+// CRMARKS: s8-u1-protection=2
+// CRMARKS: s8-u1-protection-choice=4
+// CRMARKS: s8-u1-invasive=3
+// CRMARKS: s8-u1-aquaculture=3
+// CRMARKS: s8-u1-sustain-aspects=2
+// CRMARKS: s8-u1-lab-procedure=2
+// CRMARKS: s8-u1-lab-extension=3
+// CRMARKS: s8-u1-safe-practice=2
+// CRMARKS: s8-u1-health-figure=3
+// CRMARKS: s8-u1-tool-choice=2
+// CRMARKS: s8-u1-method-choice=3
+// CRMARKS: s8-u1-pop-interpolate=3
+// CRMARKS: s8-u1-pop-extrapolate=3
+// CRMARKS: s8-u1-tech-strength=3
+// CRMARKS: s8-u1-glacier-formation=2
+// CRMARKS: s8-u1-distribution-abiotic=3
+// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
+// BIMODAL: s8-u1-cycle-process=a
+// BIMODAL: s8-u1-distribution=a
+// BIMODAL: s8-u1-fresh-sources=a
+// BIMODAL: s8-u1-cycle-sequence=a
+// BIMODAL: s8-u1-ice-age=b
+// BIMODAL: s8-u1-glacier-retreat=b
+// BIMODAL: s8-u1-fresh-env=a
+// BIMODAL: s8-u1-species-category=b
+// BIMODAL: s8-u1-zones=a
+// BIMODAL: s8-u1-estuary=a
+// BIMODAL: s8-u1-productivity=b
+// BIMODAL: s8-u1-upwelling=b
+// BIMODAL: s8-u1-abiotic=b
+// BIMODAL: s8-u1-temp-oxygen=b
+// BIMODAL: s8-u1-profile-figure=a
+// BIMODAL: s8-u1-basin-process=b
+// BIMODAL: s8-u1-glaciation-role=b
+// BIMODAL: s8-u1-profile-order=a
+// BIMODAL: s8-u1-currents=a
+// BIMODAL: s8-u1-fog=b
+// BIMODAL: s8-u1-nino-nina=a
+// BIMODAL: s8-u1-heat-storage=b
+// BIMODAL: s8-u1-iceberg=b
+// BIMODAL: s8-u1-wave-energy=b
+// BIMODAL: s8-u1-tides=b
+// BIMODAL: s8-u1-tidal-range=a
+// BIMODAL: s8-u1-wave-size=b
+// BIMODAL: s8-u1-headland-energy=b
+// BIMODAL: s8-u1-rock-resistance=b
+// BIMODAL: s8-u1-landform-figure=a
+// BIMODAL: s8-u1-landform-formation=b
+// BIMODAL: s8-u1-erosion-deposition=a
+// BIMODAL: s8-u1-institutions=a
+// BIMODAL: s8-u1-tech=a
+// BIMODAL: s8-u1-sonar=b
+// BIMODAL: s8-u1-tech-change=b
+// BIMODAL: s8-u1-tech-improve=b
+// BIMODAL: s8-u1-protection=a
+// BIMODAL: s8-u1-protection-choice=b
+// BIMODAL: s8-u1-invasive=b
+// BIMODAL: s8-u1-aquaculture=b
+// BIMODAL: s8-u1-sustain-aspects=a
+// BIMODAL: s8-u1-lab-procedure=b
+// BIMODAL: s8-u1-lab-extension=b
+// BIMODAL: s8-u1-safe-practice=b
+// BIMODAL: s8-u1-health-figure=a
+// BIMODAL: s8-u1-tool-choice=b
+// BIMODAL: s8-u1-method-choice=b
+// BIMODAL: s8-u1-pop-interpolate=a
+// BIMODAL: s8-u1-pop-extrapolate=a
+// BIMODAL: s8-u1-tech-strength=b
+// BIMODAL: s8-u1-glacier-formation=b
+// BIMODAL: s8-u1-distribution-abiotic=b
 // Science 8 Unit 1 bank: Water Systems on Earth's Surface
 // (SC8.1.1 to SC8.3.10), built Nov 15, 2026 to the Water Systems
 // authoring spec. All entries are original and were written new
@@ -1128,3 +1240,194 @@ var NO_COMPOSE = {
   "s8-u1-cr-design-salinity": true
 };
 BANK.forEach(function (e) { if (NO_COMPOSE[e.id]) { e.noCompose = true; } });
+
+
+
+
+/* Lengthening tranche additions (Nov 20, 2026): depth priced in
+   Science-Test-Lengthening-Feasibility-2026-11-20.md, Sections 6-7:
+   SR on SC8.1.2 x2 and SC8.1.4, and one 3-mark Level 2 CR entry
+   closing Unit 1 Test 3's CR gap. SME-flagged. */
+
+E("s8-u1-climate-glacier-effects", 1, ["SC8.1.2"], 2, "var", varset([
+  function () {
+    return mcq("Northern glaciers and ice sheets are melting faster than they did a century ago. Which is a direct environmental effect of this change?",
+      "Sea level rises as meltwater reaches the oceans, flooding low coastal land",
+      ["Ocean temperatures fall worldwide as the cold meltwater spreads through them and cools every current it meets", "Mountain valleys become drier as the glaciers store more water than before", "Coastal erosion stops completely once the extra water covers the shorelines"],
+      "Melting land ice adds water to the oceans, so sea level rises and low coastal areas flood more often. <b>Sea level rises as meltwater reaches the oceans, flooding low coastal land</b>.", {});
+  },
+  function () {
+    return mcq("During the last ice age, much of Canada lay under ice sheets kilometres thick. Which evidence of that time can still be seen today?",
+      "Scratched and polished bedrock, and boulders dropped far from where their rock type formed",
+      ["Tropical fossils in every northern lake bed, showing that the climate of the ice age was warmer than today", "Deep ocean trenches along the coast, cut by the weight of the moving ice sheets", "Volcanic ash layers in every soil, left behind when the ice sheets finally melted"],
+      "Moving ice scoured the land, leaving scratches and polish on bedrock and dropping carried boulders (erratics) as it melted. <b>Scratched and polished bedrock, and boulders dropped far from where their rock type formed</b>.", {});
+  },
+  function () {
+    return mcq("A coastal town in Newfoundland and Labrador notices its wharves flooding at high tide more often than 30 years ago. Which explanation best fits a warming climate?",
+      "Melting land ice and warming, expanding seawater have raised sea level along the coast",
+      ["The Moon's gravity has grown steadily stronger over the 30 years, pulling higher and higher tides into the harbour", "The town's land has risen quickly, pushing the wharves down toward the water", "Local rainfall alone has filled the harbour higher than it was a generation ago"],
+      "Thermal expansion of warming seawater plus meltwater from land ice raises sea level, so high tides reach further. <b>Melting land ice and warming, expanding seawater have raised sea level along the coast</b>.", {});
+  },
+  function () {
+    return mcq("Shrinking sea ice in the Arctic is a problem for polar bears mainly because",
+      "the bears hunt seals from the ice, so less ice means a shorter hunting season and less food",
+      ["the bears need the ice to drink from, and no other water source exists in the Arctic", "the open water is too cold for the bears to swim in once the ice has melted away", "the seals the bears eat live only under ice that is more than a season old"],
+      "Polar bears hunt from sea ice; a shorter ice season means less hunting time and poorer feeding. <b>The bears hunt seals from the ice, so less ice means a shorter hunting season and less food</b>.", {});
+  },
+  function () {
+    return mcq("Which human activity is the largest driver of the current warming of Earth's climate?",
+      "Burning fossil fuels, which adds carbon dioxide and other greenhouse gases to the air",
+      ["Cutting forests for farmland, which removes the shade that cools the ground below", "Building cities and highways, whose dark pavement absorbs extra heat from the sun all summer long", "Flying aircraft, whose trails reflect sunlight back into the upper atmosphere"],
+      "Fossil fuel burning is the largest source of added greenhouse gases, which trap heat and warm the climate. <b>Burning fossil fuels, which adds carbon dioxide and other greenhouse gases to the air</b>.", {});
+  }
+]), ["A glacier's budget: snow added versus ice melted. Which side wins here?", "A winning accumulation side makes it advance; a winning melt side makes it retreat."]);
+
+E("s8-u1-glacier-formation", 1, ["SC8.1.2"], 1, "var", varset([
+  function () {
+    return mcq("A glacier forms in a mountain valley when",
+      "more snow falls each winter than melts each summer, and the buried snow is compressed into ice",
+      ["a river freezes solid from its surface all the way to its bed during one very cold winter season in the mountains", "rain falls on cold rock and freezes instantly into a thick sheet during a storm", "the valley fills with sea water that freezes during a long polar night in winter"],
+      "Glaciers grow where snowfall accumulates year after year and compresses into ice faster than melting removes it. <b>More snow falls each winter than melts each summer, and the buried snow is compressed into ice</b>.", {});
+  },
+  function () {
+    return mcq("A glacier is best described as",
+      "a large mass of ice, formed from compacted snow, that moves slowly under its own weight",
+      ["any ice that forms on the surface of a lake or river during the winter months", "a frozen waterfall on a cliff face that stays solid through the whole of the following summer and autumn", "a block of sea ice that has broken away from an ice shelf into the ocean"],
+      "A glacier is land ice built from snow over many years, thick enough to flow slowly downhill. <b>A large mass of ice, formed from compacted snow, that moves slowly under its own weight</b>.", {});
+  },
+  function () {
+    return mcq("As a glacier moves down a valley, it changes the valley's shape mainly by",
+      "scraping and plucking rock from the valley floor and sides, widening it into a U shape",
+      ["melting steadily as it goes and washing the valley walls away with the streams of meltwater running beneath it", "pushing loose soil ahead of it and piling the soil into hills across the valley", "freezing the valley walls solid so that no further weathering can change them"],
+      "Glacial ice carrying embedded rock grinds the valley, turning a V-shaped river valley into a U-shaped one. <b>Scraping and plucking rock from the valley floor and sides, widening it into a U shape</b>.", {});
+  },
+  function () {
+    return mcq("When a glacier retreats (melts back), the ridge of rock and debris it leaves across the valley is called",
+      "a moraine",
+      ["an esker, which is a ridge of sand left by a river under the ice", "a drumlin, which is a smooth hill shaped by ice moving over it", "a cirque, which is a bowl carved where the glacier first formed"],
+      "Debris carried at the glacier's edge is dumped as a ridge, a moraine, when the ice melts back. <b>A moraine</b>.", {});
+  }
+]), ["Glaciers are built over many years, not in a single cold snap.", "Snow that survives the summer gets buried and compressed into ice."]);
+
+E("s8-u1-distribution-abiotic", 1, ["SC8.1.4"], 2, "var", varset([
+  function () {
+    return mcq("Cod are found in cold North Atlantic water but not in warm tropical seas. Which factor best explains this distribution?",
+      "Water temperature: cod are adapted to cold water and cannot tolerate warm water for long",
+      ["Water colour: cod avoid clear blue water and gather only where the water looks green and cloudy to them", "Moonlight: cod follow the phases of the Moon and avoid bright tropical nights", "Wave height: cod need the large waves that only cold northern storms produce"],
+      "Species live where the abiotic conditions suit their adaptations; for cod that condition is cold water. <b>Water temperature: cod are adapted to cold water and cannot tolerate warm water for long</b>.", {});
+  },
+  function () {
+    return mcq("Moose are common across Newfoundland's forests but absent from treeless Arctic tundra far to the north. Which abiotic factor most limits them there?",
+      "The short, cold growing season, which cannot produce enough browse (shrubs and trees) to feed them",
+      ["The low oxygen level of the tundra air at that latitude, which is too thin for a large heavy animal to breathe", "The absence of fresh water, because the tundra has no lakes or ponds at all in summer", "The bright summer daylight, which lasts too long for moose to get enough sleep"],
+      "Distribution follows the conditions a species needs; moose need abundant browse, which the tundra's climate cannot grow. <b>The short, cold growing season, which cannot produce enough browse (shrubs and trees) to feed them</b>.", {});
+  },
+  function () {
+    return mcq("Kelp forests grow only in shallow coastal water, never in the deep open ocean. Which abiotic factor sets this limit?",
+      "Light: kelp must photosynthesize, and light fades with depth, so it can live only where light reaches",
+      ["Salt: the deep ocean water is far too salty for kelp, which needs the fresher and calmer water found near shore", "Pressure: the weight of deep water crushes kelp before it can grow to the surface", "Temperature: deep ocean water is too warm for kelp, which needs cold shallow water"],
+      "Kelp is a photosynthetic alga anchored in place; it is limited to the sunlit shallow zone. <b>Light: kelp must photosynthesize, and light fades with depth, so it can live only where light reaches</b>.", {});
+  },
+  function () {
+    return mcq("After a dry summer, a farmer notices earthworms have vanished from the top layer of soil but are still found deeper down. Which abiotic factor drove them deeper?",
+      "Soil moisture: earthworms must keep their skin moist, so they move down to where the soil is still damp",
+      ["Soil colour: earthworms avoid the pale dry topsoil in summer and prefer the darker, richer soil in the layers below it", "Gravity: earthworms slowly sink through loose soil as the summer goes on each year", "Sunlight: earthworms migrate downward each day to follow the warmth of the sun"],
+      "Earthworms breathe through moist skin and die if they dry out, so moisture controls where in the soil they can live. <b>Soil moisture: earthworms must keep their skin moist, so they move down to where the soil is still damp</b>.", {});
+  },
+  function () {
+    return mcq("Salmon fry (young fish) survive in a river only where the water is cool and well oxygenated. A hot, dry August lowers the river and warms it. What is the most likely result?",
+      "Fry die off in the warm, low-oxygen stretches, so the species' distribution in the river shrinks",
+      ["Fry grow much faster in the warm water and spread quickly into every part of the river system that summer", "Fry move onto the riverbanks, where the air holds more oxygen than the water does", "Fry stop needing oxygen until the river cools again in the autumn rains"],
+      "Warm water holds less dissolved oxygen, so an abiotic change (temperature and oxygen) contracts where the fry can survive. <b>Fry die off in the warm, low-oxygen stretches, so the species' distribution in the river shrinks</b>.", {});
+  }
+]), ["Look for the non-living factor that differs between the two places.", "The organism's distribution follows the factor it needs or tolerates."]);
+
+E("s8-u1-cr-distribution-shift", 1, ["SC8.1.4"], 2, "var", varset([
+  function () {
+    return textq("Explaining a distribution shift (3 marks)\nFor many years, a small fish species lived only in the southern half of a lake, where the water is shallow and warm. After ten years of warming summers, the fish are now found throughout the lake, including the deep northern end. Explain this change in the species' distribution. Your answer must name the abiotic factor that changed, explain why it limited the fish before, and explain why the limit no longer holds. (3)",
+      ["The abiotic factor is water temperature: the northern end of the lake used to stay too cold for the fish."],
+      "Marking points (3): 1 mark for naming water temperature as the abiotic factor. 1 mark for explaining the earlier limit (the deep northern water stayed below the temperature the species can tolerate or reproduce in). 1 mark for explaining the change (warming summers raised the northern water into the species' tolerance range, so it could spread). Model answer: The fish were limited by cold water in the deep north end. As summers warmed, <b>the whole lake entered the temperature range the species can live in, so its distribution expanded</b>.", {});
+  },
+  function () {
+    return textq("Explaining a distribution shift (3 marks)\nA wildflower that once grew only on the south-facing slope of a valley is now also found on the north-facing slope, after a series of warmer springs. Explain this change in the plant's distribution. Your answer must name the abiotic factor that changed, explain why it limited the plant before, and explain why the limit no longer holds. (3)",
+      ["The abiotic factor is temperature (with sunlight): the north-facing slope used to be too cold and shaded for the plant."],
+      "Marking points (3): 1 mark for naming temperature/sunlight exposure as the abiotic factor. 1 mark for explaining the earlier limit (the north-facing slope received less sun, so its soil stayed too cold for the plant to germinate or complete its growth). 1 mark for explaining the change (warmer springs raised slope temperatures into the plant's range). Model answer: The north-facing slope was too cold and shaded for the wildflower. Warmer springs have lifted its temperature enough that <b>the plant can now complete its life cycle on both slopes</b>.", {});
+  },
+  function () {
+    return textq("Explaining a distribution shift (3 marks)\nOysters used to live only near the mouth of an estuary, where the water is saltiest. After years of heavier rainfall, oysters are found much further up the estuary, in water that used to be too fresh for them... A student says the oysters moved because the upper estuary got saltier. Correct the student's reasoning and explain the real change. Your answer must name the abiotic factor, state which way it changed, and explain the effect on the oysters. (3)",
+      ["The abiotic factor is salinity, and heavier rainfall would lower it, not raise it, so the student's direction is wrong."],
+      "Marking points (3): 1 mark for naming salinity. 1 mark for correcting the direction (more rainfall dilutes the estuary, lowering salinity upstream, so salinity alone cannot explain oysters spreading into fresher water; accept a reasoned alternative such as warming water temperatures extending the oysters' range, with the salinity change noted as working against it). 1 mark for tying the explanation to the oysters' tolerance limits. Model answer: Rainfall lowers salinity, so that change cannot be the cause; the spread is explained by a different abiotic change, such as warmer water, because <b>a species spreads only where every abiotic factor is inside its tolerance range</b>.", {});
+  }
+]), ["Name the abiotic factor first, then trace the cause and effect.", "Finish with a prediction that follows from the same factor changing further."]);
+
+/* CR denomination tranche additions (Nov 20, 2026): written
+   entries closing the exact CR denomination gaps named in
+   CR-Denomination-Gap-2026-11-20.md: s8-u1-cr-watershed closes Unit 1 Test
+   1 (4 marks, Level 3). s8-u1-cr-range-shift closes Unit 1 Test
+   3 (4 marks, Level 3). SME-flagged for the
+   specialist pass. */
+
+E("s8-u1-cr-watershed", 1, ["SC8.1.1", "SC8.1.2"], 3, "var", varset([
+  function () {
+    return textq("A town takes its drinking water from a reservoir in a valley. The reservoir is filled by streams flowing down from snow covered mountains. (a) Trace the path of water through the water cycle from the ocean to the reservoir, naming each process in order. (2 marks) (b) Winters in the region are becoming warmer, so more winter precipitation falls as rain instead of snow and the mountain snowpack is shrinking. Predict the effect of this change on the town's water supply and justify your prediction. (2 marks) (4 marks)",
+      ["evaporation, condensation, precipitation as snow, storage in the snowpack, then meltwater run-off through streams into the reservoir", "less snow stored means less meltwater released in spring and summer, so the reservoir runs lower and the supply is less reliable"],
+      "<b>Model answer:</b> (a) Energy from the Sun evaporates water from the ocean surface. The vapour cools and condenses into clouds, and the water falls as precipitation, in winter as snow on the mountains. The snow is stored in the snowpack, then melts in spring, and the meltwater runs off in streams that flow down into the reservoir. (b) With more rain and less snow, less water is stored on the mountains over winter. Rain runs off quickly in winter, when the reservoir may already be full, instead of being released slowly as meltwater through spring and summer. The reservoir therefore receives less inflow in the dry season, its level falls, and the town's supply becomes less reliable.<br><br><b>Marking points:</b> 1 mark for the processes named in a workable order (evaporation, then condensation, then precipitation). 1 mark for completing the path (precipitation stored as snowpack, then meltwater run-off through streams into the reservoir). 1 mark for the prediction (a lower or less reliable supply, especially in spring and summer). 1 mark for the justification (less water stored as snow, so less meltwater is released in the dry season).", {});
+  },
+  function () {
+    return textq("A town takes its drinking water from a reservoir on a river. High above the town, a glacier feeds the river with meltwater all summer. (a) Trace the path of water through the water cycle from the ocean to the reservoir, naming each process in order. (2 marks) (b) The glacier has been retreating for many years and is now much smaller than it was. Predict the effect of this change on the town's water supply and justify your prediction. (2 marks) (4 marks)",
+      ["evaporation, condensation, precipitation as snow, storage as glacier ice, then meltwater run-off through the river into the reservoir", "a smaller glacier stores less ice, so late summer meltwater flow falls and the reservoir supply becomes less reliable"],
+      "<b>Model answer:</b> (a) Energy from the Sun evaporates water from the ocean surface. The vapour cools and condenses into clouds, and the water falls as precipitation, as snow on the high ground. The snow compacts into ice and is stored in the glacier, then melts in summer, and the meltwater runs off into the river and down to the reservoir. (b) A glacier is a store of fresh water that releases meltwater through the summer, when other inflows are low. As the glacier shrinks, the store of ice gets smaller, so by late summer there is less meltwater to release. The river's flow falls just when demand is highest, the reservoir is not refilled, and the town's supply becomes less reliable.<br><br><b>Marking points:</b> 1 mark for the processes named in a workable order (evaporation, then condensation, then precipitation). 1 mark for completing the path (precipitation stored as glacier ice, then meltwater run-off through the river into the reservoir). 1 mark for the prediction (reduced late summer inflow and a less reliable supply). 1 mark for the justification (the shrinking ice store has less meltwater left to release).", {});
+  },
+  function () {
+    return textq("A town takes its drinking water from wells drilled into ground water beneath the town. (a) Trace the path of water through the water cycle from the ocean to the ground water the wells draw on, naming each process in order. (2 marks) (b) The region has had a long drought, followed by a season of short, intense storms. Predict the effect of this pattern on the town's water supply and justify your prediction. (2 marks) (4 marks)",
+      ["evaporation, condensation, precipitation on land, then infiltration down through the soil to collect as ground water", "drought cuts recharge so the water table falls, and intense storm rain mostly runs off instead of soaking in, so the supply stays low"],
+      "<b>Model answer:</b> (a) Energy from the Sun evaporates water from the ocean surface. The vapour cools and condenses into clouds, and the water falls as precipitation on the land. Some of that water soaks into the soil (infiltration) and collects below ground as ground water, which the wells draw up. (b) During the long drought there is little precipitation, so little water infiltrates and the ground water level (the water table) falls, and the wells yield less. The intense storms do not repair this: their rain falls faster than the soil can absorb it, so most of it becomes surface run-off, and can cause flooding, instead of soaking in to recharge the ground water. The town's supply therefore stays low even after the storms.<br><br><b>Marking points:</b> 1 mark for the processes named in a workable order (evaporation, then condensation, then precipitation). 1 mark for completing the path (precipitation infiltrating to collect as ground water that the wells draw on). 1 mark for the prediction (the supply falls during the drought and stays low after the storms). 1 mark for the justification (storm rain runs off faster than it can infiltrate, so ground water is barely recharged).", {});
+  },
+  function () {
+    return textq("A town takes its drinking water from a reservoir. The hills above the reservoir are covered in forest, and streams from those hills fill the reservoir. (a) Trace the path of water through the water cycle from the ocean to the reservoir, naming each process in order. (2 marks) (b) The forest above the reservoir is cleared for development. Predict the effect of this change on the town's water supply and justify your prediction. (2 marks) (4 marks)",
+      ["evaporation, condensation, precipitation on the hills, then a mix of infiltration to ground water and run-off in streams into the reservoir", "cleared land gives faster run-off, less infiltration and eroded soil in the streams, so inflows become flashier, the water murkier and the supply less steady"],
+      "<b>Model answer:</b> (a) Energy from the Sun evaporates water from the ocean surface. The vapour cools and condenses into clouds, and the water falls as precipitation on the forested hills. Some water infiltrates and feeds ground water and springs, and the rest runs off in streams that flow down into the reservoir. (b) Tree roots and forest litter slow run-off and let water soak in. Once the forest is cleared, rain hits bare ground and runs off quickly, so stream inflows arrive in sudden surges instead of steadily, and less water infiltrates. The fast water also erodes soil into the streams, making the reservoir water murky and building up sediment that takes up storage space. The town's supply becomes less steady and poorer in quality.<br><br><b>Marking points:</b> 1 mark for the processes named in a workable order (evaporation, then condensation, then precipitation). 1 mark for completing the path (precipitation reaching the reservoir by infiltration and springs and by run-off in streams). 1 mark for the prediction (a less steady supply, with murkier water or lost storage to sediment). 1 mark for the justification (faster run-off and less infiltration once the forest cover and roots are gone, with erosion carried into the streams).", {});
+  }
+]), ["Follow one drop: ocean, air, hills or mountains, then the town's store.", "For part (b), ask what the change does to how much water is stored, and to when it arrives."]);
+
+E("s8-u1-cr-range-shift", 1, ["SC8.1.3", "SC8.1.4"], 3, "var", varset([
+  function () {
+    return textq("A fish species in a lake used to feed in the shallow water near the surface. As summers have warmed, the fish are now caught mostly in deep water, and few remain near the surface in midsummer. (a) Identify the abiotic factor that changed and the limit it sets for the fish. (1 mark) (b) Explain why the fish have shifted into deeper water. (2 marks) (c) Predict one knock-on effect of this shift on another species in the lake. (1 mark) (4 marks)",
+      ["water temperature sets an upper limit the fish can tolerate", "the surface water has warmed past that limit while deep water stays within the range, and the small animals the fish now eat in deep water decline under the extra feeding"],
+      "<b>Model answer:</b> (a) The abiotic factor is water temperature. The fish can survive and feed only within a certain temperature range, so temperature sets an upper limit on where it can live. (b) The shallow surface water now warms in summer beyond the top of that range, so fish that stay there cannot survive the season. The deep water stays cool and within the fish's tolerance range all summer, so the population has shifted down into the deep water. (c) The fish now feed heavily on the small invertebrates living in the deep water, so those invertebrates decline (accept any plausible effect tied to the move, such as increased competition with a deep water species, or surface prey increasing once the fish leave).<br><br><b>Marking points:</b> 1 mark for naming water temperature and the limit it sets (an upper temperature the fish cannot tolerate). 1 mark for explaining that the surface water now exceeds that limit in summer. 1 mark for explaining that the deep water remains within the tolerance range, so the distribution shifts downward. 1 mark for a plausible knock-on effect on another species, tied to the shift.", {});
+  },
+  function () {
+    return textq("Low shrubs used to grow only at the sheltered edge of the tundra. As the growing season has become longer and warmer, shrubs are now spreading across open tundra where only mosses and lichens grew before. (a) Identify the abiotic factor that changed and the limit it set for the shrubs. (1 mark) (b) Explain why the shrubs are now able to spread. (2 marks) (c) Predict one knock-on effect of this change on another species. (1 mark) (4 marks)",
+      ["temperature, through the length of the growing season, limited the shrubs because the season was too short and cold to complete their growth", "a longer, warmer season lets shrubs grow and set seed on the open tundra, and their shade then suppresses the lichens that caribou depend on"],
+      "<b>Model answer:</b> (a) The abiotic factor is temperature, acting through the length of the growing season. A shrub needs a long enough, warm enough season to grow and produce seed, and the tundra season was too short and cold, which set the limit. (b) The season is now longer and warmer, so shrubs on the open tundra can complete their growth and reproduce before winter. Seeds spread and new shrubs establish where the old season would have killed them, so the shrubs' distribution expands across the tundra. (c) The taller shrubs shade the low lichens, so lichens decline, and caribou that feed on lichens in winter find less food (accept any plausible effect tied to the spread, such as new shelter or food for tundra insects and birds).<br><br><b>Marking points:</b> 1 mark for naming temperature or growing season length and the limit it set (too short and cold to complete growth and reproduction). 1 mark for explaining that the longer, warmer season now lets shrubs complete their growth and set seed. 1 mark for explaining that this removes the old limit, so shrubs establish across the tundra. 1 mark for a plausible knock-on effect on another species, tied to the spread.", {});
+  },
+  function () {
+    return textq("A shellfish bed used to thrive on a flat near the mouth of a river, inside a bay. After years of heavier rainfall and greater river flow, the water over the old flat has become fresher, the old bed has died out, and a new bed has established closer to the open sea. (a) Identify the abiotic factor that changed and the limit it sets for the shellfish. (1 mark) (b) Explain why the bed has shifted toward the sea. (2 marks) (c) Predict one knock-on effect of this shift on another species. (1 mark) (4 marks)",
+      ["salinity sets a lower limit, since the shellfish need water salty enough to live in", "greater river flow lowered the salinity at the old flat below that limit, while the water nearer the sea stayed salty enough, so the bed shifted seaward into competition with species already living there"],
+      "<b>Model answer:</b> (a) The abiotic factor is salinity. The shellfish can live only in water at or above a certain saltiness, so salinity sets a lower limit for them. (b) The greater river flow dilutes the bay water, so the salinity over the old flat has fallen below that limit and the shellfish there died out. Closer to the open sea the water is less diluted and stays salty enough, inside the tolerance range, so larvae settle and a new bed establishes there: the whole bed has shifted seaward, following the water salty enough for it. (c) At the new site the shellfish compete for space and food with the species already living there, so some of those species decline (accept any plausible effect tied to the move, such as predators gaining a new food source at the new site).<br><br><b>Marking points:</b> 1 mark for naming salinity and the limit it sets (a lower saltiness the shellfish cannot live below). 1 mark for explaining that greater river flow lowered the salinity at the old flat below that limit. 1 mark for explaining that water nearer the sea stayed within the tolerance range, so the bed shifted toward it. 1 mark for a plausible knock-on effect on another species, tied to the shift.", {});
+  },
+  function () {
+    return textq("An insect pest that damages spruce trees used to be found only in the southern part of the province, because hard winter cold killed it each year further north. After a run of mild winters, the pest is now surviving the winter and damaging trees well to the north of its old range. (a) Identify the abiotic factor that changed and the limit it set for the pest. (1 mark) (b) Explain why the pest is now found further north. (2 marks) (c) Predict one knock-on effect of this change on another species or on productivity. (1 mark) (4 marks)",
+      ["winter temperature set the limit, because cold winters killed the pest in the north", "milder winters no longer kill it, so it survives and breeds further north, and the damaged spruce trees grow more slowly, lowering the forest's productivity"],
+      "<b>Model answer:</b> (a) The abiotic factor is winter temperature. Severe cold was the limit: winters in the north dropped to temperatures the pest could not survive. (b) Winters are now milder and no longer reach the killing temperature, so the pest survives the winter in northern areas, breeds there in spring, and its distribution expands northward year by year. (c) The pest feeds on spruce trees that have few defences or predators in the new area, so the trees are damaged and grow more slowly, and the productivity of the northern forest falls (accept any plausible effect tied to the expansion, such as harm to birds that nest in the damaged trees).<br><br><b>Marking points:</b> 1 mark for naming winter temperature and the limit it set (cold severe enough to kill the pest). 1 mark for explaining that milder winters no longer reach that killing temperature, so the pest survives. 1 mark for explaining that surviving pests breed in place, so the range expands north. 1 mark for a plausible knock-on effect on another species or on productivity, tied to the expansion.", {});
+  }
+]), ["Name the non-living factor first; every later step follows from it.", "Structure: factor and its limit, why the old home no longer suits, why the new home does, then who else is affected."]);
+
+/* ---------- Added November 21, 2026: test plan build (Rulings 9, 10, 11) ---------- */
+
+/* ---------- SC8.1.1 Interactions among the spheres (test plan build) ---------- */
+
+E("s8-u1-cr-spheres-interact", 1, ["SC8.1.1"], 2, "var", varset([
+  function () {
+    return textq("Along the coast of Newfoundland and Labrador, waves pound the base of a sea cliff through the winter, and blocks of rock regularly fall from the cliff face onto the shore below. Describe this as a chain of interaction among Earth's spheres. Name the spheres involved, and give the steps of the chain in order. (2 marks)",
+      ["the hydrosphere (ocean waves) acts on the lithosphere (the cliff rock)", "wave erosion undercuts the cliff until rock breaks and falls, changing the shape of the land"],
+      "<b>Model answer:</b> The ocean is part of the hydrosphere and the cliff is part of the lithosphere. Wave action from the hydrosphere strikes the base of the cliff again and again, eroding and undercutting the rock of the lithosphere. Unsupported rock above the undercut then cracks and falls to the shore, so the cliff slowly retreats and the coastline changes shape: water has reshaped solid land, step by step.<br><br><b>Marking points:</b> 1 mark for the spheres correctly named and matched to the example (hydrosphere: the ocean water; lithosphere: the cliff rock). 1 mark for the chain described in steps (repeated wave impact erodes and undercuts the cliff, rock falls, and the coastline is reshaped).",
+      {});
+  },
+  function () {
+    return textq("In Newfoundland and Labrador, rain falls on exposed rock through the autumn, then freezes in cracks in the rock during cold nights, and pieces of the rock surface break away by spring. Describe this as a chain of interaction among Earth's spheres. Name the spheres involved, and give the steps of the chain in order. (2 marks)",
+      ["the atmosphere supplies the rain and the freezing temperatures, and water from the hydrosphere fills cracks in the lithosphere", "the water freezes and expands, widening the cracks until the rock breaks apart"],
+      "<b>Model answer:</b> Rain, part of the hydrosphere, delivered under weather conditions from the atmosphere, seeps into cracks in the rock of the lithosphere. On cold nights the trapped water freezes and expands, forcing the cracks wider. After many freeze and thaw cycles the pressure splits pieces off the rock surface, wearing the rock down: water and weather have broken apart solid land, step by step.<br><br><b>Marking points:</b> 1 mark for the spheres correctly named and matched to the example (atmosphere: the rain and freezing weather; hydrosphere: the water in the cracks; lithosphere: the rock; any two correctly named and matched earn the mark if the chain uses them). 1 mark for the chain described in steps (water fills cracks, freezes and expands, cracks widen, and rock breaks away).",
+      {});
+  }
+]), ["Name each sphere where it enters the chain: the water, the rock, the weather.", "Give the steps in order, so one step causes the next."]);
