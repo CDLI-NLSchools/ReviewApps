@@ -8412,7 +8412,7 @@ E("u6-better-buy",6,["6.17"],2,"gen",function(){
     [(winner==="The first option"?"The second option":"The first option")+" - a bigger package is always cheaper per item in every case","They are the same value - the prices scale exactly for both packs","Whichever costs less overall, regardless of quantity, is always the better buy here"],
     "Unit rates: Option 1: \\("+fmt(A.p)+" \\div "+A.q+" = \\$"+fmt(A.p/A.q)+"\\); Option 2: \\("+fmt(B.p)+" \\div "+B.q+" = \\$"+fmt(B.p/B.q)+"\\). Compare unit rates, not sticker prices — "+winner.toLowerCase()+" wins.",{A:A,B:B});
 });
-E("u6-rate-solve",6,["6.1"],1,"gen",function(){
+E("u6-rate-solve",6,["6.23"],1,"gen",function(){
   var ctxs=[
     function(R,T){return "A tap delivers "+R+" litres of water per minute. How many minutes does it take to fill a "+T+" L tank?";},
     function(R,T){return "A cyclist rides at a steady "+R+" km/h. How many hours does a "+T+" km ride take?";},
@@ -9421,7 +9421,7 @@ E("u8-alternate-algebra",8,["5.8"],2,"gen",function(){
   q.figure = transversalSVG("TR", "("+a+"x + "+b+")°", "BL", val+"°");
   return q;
 });
-E("u8-polygon-sum",8,["5.2"],1,"gen",function(){
+E("u8-polygon-sum",8,["5.5"],1,"gen",function(){
   var n=ri(3,30);var s=(n-2)*180;
   var frame=pick([
     "What is the sum of the interior angles of a polygon with "+n+" sides, in degrees?",
@@ -9479,7 +9479,7 @@ E("u8-parallel-check",8,["5.9"],1,"var",varset([
     ["The lines are not parallel - alternate angles must add to \\(180^\\circ\\) rather than match each other","Nothing - angles outside the lines give no information about whether the two lines are parallel or not","The lines are perpendicular - matching outside angles show the lines meet at right angles"],
     "Equal corresponding angles, equal alternate angles, or supplementary co-interior angles each certify parallel lines. Here the alternate exterior pair matches at \\(74^\\circ\\).",{});}
 ]));
-E("u8-polygon-ratio",8,["5.2"],2,"gen",function(){
+E("u8-polygon-ratio",8,["5.5"],2,"gen",function(){
   var r=pick([1,2,3,4,5,7,8,9,11,14,15,17,19,23,29,35]);var ext=180/(r+1);var n=360/ext;var interior=r*ext;
   var frame=pick([
     "In a regular polygon, each interior angle is "+r+" times as large as each exterior angle. How many sides does the polygon have?",
@@ -10636,8 +10636,8 @@ E("u4-multiply-mixed",4,["1.6"],2,"gen",function(){
     {a:a,b:b,c:c,d:d});
 });
 E("u4-equation-restriction",4,["1.8"],1,"gen",function(){
-  var p=pick([1,2,3,4]),m=ri(-6,8),r=ri(2,9),tries=0;
-  while(m===0&&tries<20){m=ri(-6,8);tries++;}
+  var p=pick([1,2,3,4]),m=ri(-6,8),r=ri(2,9);
+  while(m===0){m=ri(-6,8);}
   var q=-p*m;
   var inside=(p===1?"x":(""+p+"x"))+(q>0?" + "+q:" - "+(-q));
   return mcq("State the restriction on x in the radical equation \\(\\sqrt{"+inside+"} = "+r+"\\).",
