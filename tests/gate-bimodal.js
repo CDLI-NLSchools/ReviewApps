@@ -93,11 +93,15 @@ function ok(c, m) { if (c) pass++; else { fail++; if (fails.length < 40) fails.p
    Mathematics 2201 expectation grows by the build's 11 new
    dual-form registrations (7 class a, 4 class b), from
    [113, 94] to [120, 98]. */
+/* Amendment, November 22, 2026 (Class B build): the Mathematics
+   2201 expectation grows by the build's 16 new dual-form
+   registrations (1 class a, 15 class b), from [120, 98] to
+   [121, 113]. */
 const EXPECT_BIMODAL = { /* course: [class a count, class b count] */
   "math-9": [126, 39], "math-9-fr": [69, 40], "math-1201": [69, 60], "math-1202": [115, 43],
   "math-8": [136, 19], "math-8-fr": [64, 34],
   "math-7": [250, 23], "math-7-fr": [100, 27],
-  "math-2200": [54, 63], "math-2201": [120, 98], "math-3200": [46, 61],
+  "math-2200": [54, 63], "math-2201": [121, 113], "math-3200": [46, 61],
   "math-3201": [38, 48], "math-3208": [42, 67], "chem-3202": [84, 69],
   "bio-2201": [268, 79], "bio-3201": [209, 52],
   "sci-7": [55, 146], "sci-8": [67, 147], "sci-8-fr": [78, 142],

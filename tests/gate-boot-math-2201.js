@@ -60,9 +60,9 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   ok(r.dom.window.document.title === "Math 2201 Review: Practice Question Bank", "course: page title, saw " + r.dom.window.document.title);
   ok(d.querySelector("#app h1").textContent === "Math 2201 Review", "course: header, saw " + d.querySelector("#app h1").textContent);
   ok(ev(r.dom, "window.__NOCOURSE === true") === false, "course: picker flag off (an unlisted course still boots by direct link)");
-  ok(ev(r.dom, "BANK.length") === 550, "course: bank loaded via the loader (550 since the Class A completion build, Nov 22, 2026; 520 since the bimodal build, Nov 20, 2026; 513 since the Unit 5 threshold tranche, Nov 19, 2026; 510 since the Unit 5 external drafting redraft tranche, Nov 18, 2026; 505 since the Unit 5 external drafting tranche, Nov 18, 2026; 492 since the Unit 4 external drafting tranche, Nov 18, 2026; 471 since the Unit 3 expansion, Nov 18, 2026; 455 since the Unit 2 expansion, Nov 18, 2026; 395 since sequence-rebuild batch D, Nov 17, 2026; 385 since the strip-audit entry, Nov 17, 2026; 384 since the Unit 1 enrichment, Nov 17, 2026; 295 since the PK tranche, Nov 15, 2026; 236 before it), BANK.length = " + ev(r.dom, "BANK.length"));
+  ok(ev(r.dom, "BANK.length") === 580, "course: bank loaded via the loader (580 since the Class B build, Nov 22, 2026; 550 since the Class A completion build, Nov 22, 2026; 520 since the bimodal build, Nov 20, 2026; 513 since the Unit 5 threshold tranche, Nov 19, 2026; 510 since the Unit 5 external drafting redraft tranche, Nov 18, 2026; 505 since the Unit 5 external drafting tranche, Nov 18, 2026; 492 since the Unit 4 external drafting tranche, Nov 18, 2026; 471 since the Unit 3 expansion, Nov 18, 2026; 455 since the Unit 2 expansion, Nov 18, 2026; 395 since sequence-rebuild batch D, Nov 17, 2026; 385 since the strip-audit entry, Nov 17, 2026; 384 since the Unit 1 enrichment, Nov 17, 2026; 295 since the PK tranche, Nov 15, 2026; 236 before it), BANK.length = " + ev(r.dom, "BANK.length"));
 /* Pin update, November 20, 2026 (reverse bimodal registration, Level 2): census pins updated to the bank after the registration of the 173 strippable entries (96 class a, 77 class b, 364 marks) per Bimodal-Classification-SR-Pools-Math-2026-11-20.md (Mathematics 2201: CR manifest 435 entries); values verified from the assembled bank the same day. No bank content was changed to fit this gate. */
-  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 462, "course: CR_MARKS wired from the bank module (462 since the Class A completion build, Nov 22, 2026; 435 since the reverse bimodal registration, Nov 20, 2026; 265 since the Unit 5 external drafting tranche, Nov 18, 2026; 259 since the Unit 4 external drafting tranche, Nov 18, 2026; 253 since the Unit 3 expansion, Nov 18, 2026; 244 since the Unit 2 expansion, Nov 18, 2026; 224 since sequence-rebuild batch D, Nov 17, 2026; 218 before it)");
+  ok(ev(r.dom, "Object.keys(CR_MARKS).length") === 492, "course: CR_MARKS wired from the bank module (492 since the Class B build, Nov 22, 2026; 462 since the Class A completion build, Nov 22, 2026; 435 since the reverse bimodal registration, Nov 20, 2026; 265 since the Unit 5 external drafting tranche, Nov 18, 2026; 259 since the Unit 4 external drafting tranche, Nov 18, 2026; 253 since the Unit 3 expansion, Nov 18, 2026; 244 since the Unit 2 expansion, Nov 18, 2026; 224 since sequence-rebuild batch D, Nov 17, 2026; 218 before it)");
   const labels = Array.prototype.slice.call(d.querySelectorAll("#unitGrid label")).map(l => l.textContent);
   ok(labels.length === 8, "course: eight unit checkboxes, saw " + labels.length);
   ["Acute Triangle Trigonometry", "Quadratic Functions", "Quadratic Equations",
@@ -94,7 +94,12 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
   // tranche: 3 entries added to Unit 5, none of them prior
   // knowledge. The All figure rises to 401 and the Final figure to
   // 136; with the switch on they are 511 and 172.
-  ok((d.getElementById("poolInfo").textContent || "").includes("438 question templates"), "course: pool after All preset is the whole bank with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  // Pool figures amended again Nov 22, 2026 for the Class B build:
+  // 30 entries added (18 in Unit 6, 6 in Unit 7, 6 in Unit 8),
+  // none of them prior knowledge or enrichment. The All figure
+  // rises to 468 and the Final figure to 203; with the switch on
+  // they are 578 and 239.
+  ok((d.getElementById("poolInfo").textContent || "").includes("468 question templates"), "course: pool after All preset is the whole bank with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().midCap") === false, "course: All preset leaves the mid-course cap off");
 
   // mid preset: cap on, capped pool, the note, preset serialization
@@ -109,7 +114,7 @@ const MID_NOTE = "Mid-course scope: Unit 4 stops at Section 4.3, so the Radical 
 
   // final preset
   ev(r.dom, "document.getElementById('presetFinal').click()");
-  ok((d.getElementById("poolInfo").textContent || "").includes("173 question templates"), "course: pool after Final preset is Units 5 to 8 with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
+  ok((d.getElementById("poolInfo").textContent || "").includes("203 question templates"), "course: pool after Final preset is Units 5 to 8 with the PK switch off, saw: " + d.getElementById("poolInfo").textContent.slice(0, 90));
   ok(ev(r.dom, "settings().midCap") === false, "course: Final preset leaves the cap off");
   ok(!(d.getElementById("poolInfo").textContent || "").includes(MID_NOTE), "course: the held-out note is gone once the cap is off");
   ev(r.dom, "refreshFace()");
