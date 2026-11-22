@@ -4034,12 +4034,16 @@ window.COURSES = {
     "4.9": "Determine, using the quadratic formula, the roots of a quadratic equation",
     "1.1": "Express a mixed radical as an entire radical",
     "1.2": "Express an entire radical as a mixed radical",
+    "1.3": "Express an entire radical with a variable radicand as a mixed radical",
     "1.4": "Compare and order radical expressions",
     "1.5": "Identify values for which a radical expression is defined",
     "1.6": "Simplify radical expressions using operations",
     "1.7": "Rationalize the monomial denominator of a radical expression",
+    "1.8": "Determine any restrictions on values for the variable in a radical equation",
     "1.9": "Determine the roots of a radical equation algebraically",
+    "1.10": "Verify, by substitution, that the values determined in solving a radical equation are roots of the equation",
     "1.11": "Explain why some roots of a radical equation are extraneous",
+    "1.12": "Solve problems by modelling a situation with a radical equation and solving the equation",
     "PK.1": "Prior knowledge: measures of central tendency (Unit 5, Section 1 — uncoded in the guide)",
     "PK.2": "Prior knowledge: factoring quadratic expressions (Unit 3 — a 1201 skill supporting 4.8)",
     "8.6": "Use dispersion to describe the differences between two sets of data",
@@ -4076,6 +4080,7 @@ window.COURSES = {
     "2.8": "Identify errors in a given proof",
     "5.1": "Generalize relationships between angle pairs formed by transversals and parallel lines",
     "5.3": "Prove angle properties, including the sum of the angles in a triangle",
+    "5.4": "Identify and correct errors in a given proof of a property that involves angles",
     "5.5": "Generalize a rule for the sum of the interior angles of a polygon",
     "5.6": "Prove, using deductive reasoning, that two triangles are congruent",
     "5.8": "Determine measures of angles in a diagram with parallel lines, angles and triangles",
@@ -4090,11 +4095,11 @@ window.COURSES = {
     "1": ["7.1", "7.2", "7.3"],
     "2": ["4.1", "4.2", "4.4", "4.5", "4.10", "4.11", "4.12", "4.13", "4.14", "4.15", "4.16"],
     "3": ["PK.2", "4.3", "4.6", "4.7", "4.8", "4.9"],
-    "4": ["1.1", "1.2", "1.4", "1.5", "1.6", "1.7", "1.9", "1.11"],
+    "4": ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "1.10", "1.11", "1.12"],
     "5": ["PK.1", "8.6", "8.7", "8.8", "8.9", "8.10", "8.11", "8.12", "8.13", "8.14", "8.15", "8.16", "8.17", "8.18", "8.19", "8.20", "8.21", "8.22"],
     "6": ["6.2", "6.5", "6.9", "6.10", "6.14", "6.16", "6.17", "6.19", "6.23"],
     "7": ["2.1", "2.2", "2.3", "2.4", "2.7", "2.8"],
-    "8": ["5.1", "5.3", "5.5", "5.6", "5.8", "5.9", "5.11"]
+    "8": ["5.1", "5.3", "5.4", "5.5", "5.6", "5.8", "5.9", "5.11"]
   },
 
   /* The two presets, labels and unit scopes verbatim from the
@@ -4118,6 +4123,77 @@ window.COURSES = {
      (refreshFace, lines 4129 to 4130), which is plainer than the
      button labels: the mid button spells out the Section 4.3
      scope note, the final button uses an en dash range. */
+  /* Topic map, 2026-11-22 (Topic-Map-Math-2201-DRAFT-2026-11-22.md).
+     Sources: the Mathematics 2201 Curriculum Guide (units, indicators),
+     the CDLI development shell (unit structure), and Principles of
+     Mathematics 11 (topic structure within units). A bank question's
+     topic derives from its indicator, so no bank entry needs retagging.
+     Many-to-many is allowed: 7.2 and 1.6 each sit in three topics.
+     The map carries 73 codes, including 1.3, 1.8, 1.10, 1.12 and 5.4,
+     registered Nov 22, 2026. Inert data only: nothing in the shell
+     reads topicMap yet. */
+  topicMap: {
+    "1": [
+      { title: "Prior knowledge review: primary trigonometric ratios in right triangles", indicators: [], pk: true, note: "Optional review. The guide's Focus for Learning for 7.1 recommends reviewing the primary trigonometric ratios before introducing the sine law. No registry code." },
+      { title: "Setting up a sine law or cosine law problem", indicators: ["7.1"] },
+      { title: "Proving and applying the sine law", indicators: ["7.2"] },
+      { title: "Proving and applying the cosine law", indicators: ["7.2"] },
+      { title: "Solving problems using acute triangles, including problems with more than one triangle", indicators: ["7.2", "7.3"] }
+    ],
+    "2": [
+      { title: "Exploring quadratic relations", indicators: ["4.10"] },
+      { title: "Properties of graphs of quadratic functions", indicators: ["4.1", "4.4", "4.11", "4.12", "4.13", "4.14"] },
+      { title: "Factored form of a quadratic function", indicators: ["4.5"] },
+      { title: "Vertex form of a quadratic function", indicators: ["4.15", "4.16"] },
+      { title: "Solving problems using quadratic function models", indicators: ["4.2"] }
+    ],
+    "3": [
+      { title: "Prior knowledge: factoring quadratic expressions", indicators: ["PK.2"] },
+      { title: "Solving quadratic equations by graphing: roots, zeros and x-intercepts", indicators: ["4.6", "4.7"] },
+      { title: "Solving quadratic equations by factoring", indicators: ["4.8"] },
+      { title: "Solving quadratic equations using the quadratic formula", indicators: ["4.9"] },
+      { title: "Solving problems using quadratic equations", indicators: ["4.3"] }
+    ],
+    "4": [
+      { title: "Mixed and entire radicals", indicators: ["1.1", "1.2", "1.3"] },
+      { title: "Adding and subtracting radicals", indicators: ["1.6"] },
+      { title: "Multiplying and dividing radicals, including rationalizing a monomial denominator", indicators: ["1.6", "1.7"] },
+      { title: "Simplifying algebraic expressions involving radicals", indicators: ["1.4", "1.5", "1.6"] },
+      { title: "Radical equations, including extraneous roots", indicators: ["1.8", "1.9", "1.10", "1.11", "1.12"] }
+    ],
+    "5": [
+      { title: "Prior knowledge: exploring data and measures of central tendency", indicators: ["PK.1"] },
+      { title: "Frequency tables, histograms and frequency polygons", indicators: ["8.7"] },
+      { title: "Standard deviation and dispersion, including using standard deviation to make decisions", indicators: ["8.6", "8.8", "8.9", "8.10", "8.16"] },
+      { title: "The normal distribution", indicators: ["8.11", "8.12", "8.13", "8.14"] },
+      { title: "Z-scores", indicators: ["8.15"] },
+      { title: "Confidence intervals, margin of error and confidence level; making inferences from sample data", indicators: ["8.17", "8.18", "8.19"] },
+      { title: "Confidence intervals and statistics in the media", indicators: ["8.20", "8.21", "8.22"] }
+    ],
+    "6": [
+      { title: "Comparing and interpreting rates; unit rates", indicators: ["6.16"] },
+      { title: "Solving problems that involve rates, including making and justifying decisions", indicators: ["6.17", "6.23"] },
+      { title: "Slope as a rate", indicators: ["6.19"] },
+      { title: "Scale diagrams: unknown dimensions of 2-D shapes", indicators: ["6.2"] },
+      { title: "Scale factors and areas of 2-D shapes", indicators: ["6.5"] },
+      { title: "Similar objects: scale models and scale diagrams of 3-D objects", indicators: ["6.9"] },
+      { title: "Scale factor, surface area and volume", indicators: ["6.10", "6.14"] }
+    ],
+    "7": [
+      { title: "Inductive reasoning, conjectures and counterexamples", indicators: ["2.1", "2.2", "2.4"] },
+      { title: "Proving conjectures: deductive reasoning and valid arguments", indicators: ["2.3"] },
+      { title: "Proofs that are not valid: identifying errors in a proof", indicators: ["2.8"] },
+      { title: "Inductive and deductive reasoning compared", indicators: ["2.7"] }
+    ],
+    "8": [
+      { title: "Parallel lines and transversals: angle pairs", indicators: ["5.1"] },
+      { title: "Finding angle measures in diagrams; deciding whether lines are parallel", indicators: ["5.8", "5.9"] },
+      { title: "Proving angle properties, including the angle sum in a triangle", indicators: ["5.3", "5.4"] },
+      { title: "Angle properties in polygons: the sum of the interior angles", indicators: ["5.5"] },
+      { title: "Proving that two triangles are congruent", indicators: ["5.6"] },
+      { title: "Contextual problems involving angles and triangles", indicators: ["5.11"] }
+    ]
+  },
   presets: {
     mid:   { units: [1, 2, 3, 4], cap: true, label: "Mid-course review (Units 1\u20134, Radicals to 4.3)", faceLabel: "Mid-course review (Units 1 to 4)" },
     final: { units: [5, 6, 7, 8], label: "Final review (Units 5\u20138)", faceLabel: "Final review (Units 5 to 8)" }
