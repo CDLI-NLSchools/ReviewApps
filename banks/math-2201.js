@@ -144,6 +144,40 @@ function parPanelsSVG(panels){
   });
   return out+'</svg>';
 }
+/* Class B build (November 22, 2026): comparison panels for rate
+   graphs, first-quadrant straight or curved lines in a row, in the
+   parPanelsSVG style. Each panel is {caption, xLab, yLab, xMax,
+   yMax, pts} and draws the polyline through pts on axes running
+   from 0 to xMax and 0 to yMax, with the two axis titles and the
+   two maximum values labelled. Bank-local to Math 2201. */
+function ratePanelsSVG(panels){
+  var n=panels.length,pw=168,gap=10,W=n*pw+(n-1)*gap,ph=168,H=ph+24;
+  var out='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rate graphs compared side by side">';
+  panels.forEach(function(p,idx){
+    var ox=idx*(pw+gap),mL=30,mR=8,mT=10,iw=pw-mL-mR,ih=ph-mT-30;
+    var axisY=mT+ih;
+    function X(x){return ox+mL+(x/p.xMax)*iw;}
+    function Y(y){return mT+ih-(y/p.yMax)*ih;}
+    out+='<rect x="'+ox+'" y="0" width="'+pw+'" height="'+ph+'" fill="none" stroke="#c9d4cd"/>';
+    out+='<line x1="'+(ox+mL)+'" y1="'+mT+'" x2="'+(ox+mL)+'" y2="'+axisY+'" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+    out+='<line x1="'+(ox+mL)+'" y1="'+axisY+'" x2="'+(ox+mL+iw)+'" y2="'+axisY+'" stroke="'+FIG_INK+'" stroke-width="1.4"/>';
+    out+='<polygon points="'+(ox+mL+iw)+','+axisY+' '+(ox+mL+iw-7)+','+(axisY-3)+' '+(ox+mL+iw-7)+','+(axisY+3)+'" fill="'+FIG_INK+'"/>';
+    out+='<polygon points="'+(ox+mL)+','+mT+' '+(ox+mL-3)+','+(mT+7)+' '+(ox+mL+3)+','+(mT+7)+'" fill="'+FIG_INK+'"/>';
+    out+=_txt(ox+mL-4,mT+4,""+p.yMax,9.5,false,"end");
+    out+=_txt(ox+mL+iw,axisY+11,""+p.xMax,9.5,false,"end");
+    out+='<text x="'+(ox+11)+'" y="'+fmt(mT+ih/2,1)+'" font-size="9.5" fill="'+FIG_INK+'" text-anchor="middle" dominant-baseline="central" transform="rotate(-90 '+(ox+11)+' '+fmt(mT+ih/2,1)+')">'+p.yLab+'</text>';
+    out+=_txt(ox+mL+iw/2,axisY+22,p.xLab,9.5,false,"middle");
+    var d="",i;
+    for(i=0;i<p.pts.length;i++){
+      d+=(i?"L":"M")+fmt(X(p.pts[i][0]),1)+" "+fmt(Y(p.pts[i][1]),1);
+    }
+    out+='<path d="'+d+'" fill="none" stroke="'+FIG_INK+'" stroke-width="2"/>';
+    var lp=p.pts[p.pts.length-1];
+    out+='<circle cx="'+fmt(X(lp[0]),1)+'" cy="'+fmt(Y(lp[1]),1)+'" r="3" fill="'+FIG_ACC+'" stroke="#ffffff" stroke-width="1.1"/>';
+    out+=_txt(ox+pw/2,ph+14,p.caption,11,true);
+  });
+  return out+'</svg>';
+}
 /* Wrap a fixed varset arm so its question carries a figure drawn by
    figFn (called on every draw; the arms wrapped this way have fixed
    coefficients, so the figure always matches the arm). */
@@ -8392,6 +8426,37 @@ BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // BIMODAL: u6-formula-mc=a
 // BIMODAL: u6-rate-context-mc=a
 // BIMODAL: u6-interpret-var=b
+// Class B build, November 22, 2026: written-form and dual-form
+// registration for the new 6.1, 6.4, 6.7, 6.18, 6.20 and 6.21
+// entries in the Class B section of this file.
+// CRMARKS: u6-model2d-explain=2
+// CRMARKS: u6-model2d-pick=2
+// CRMARKS: u6-model2d-gen=2
+// CRMARKS: u6-draw-dims=2
+// CRMARKS: u6-draw-pick=2
+// CRMARKS: u6-draw-enlarge=1
+// CRMARKS: u6-model3d-explain=2
+// CRMARKS: u6-model3d-pick=2
+// CRMARKS: u6-model3d-gen=2
+// CRMARKS: u6-rate-graph-write=2
+// CRMARKS: u6-rate-graph-pick=2
+// CRMARKS: u6-rate-graph-sketch=2
+// CRMARKS: u6-rate-context-write=2
+// CRMARKS: u6-rate-context-pick=2
+// CRMARKS: u6-rate-context-match=2
+// CRMARKS: u6-rate-factors-pick=2
+// CRMARKS: u6-rate-factors-explain=3
+// CRMARKS: u6-rate-factors-why=2
+// BIMODAL: u6-model2d-pick=b
+// BIMODAL: u6-model2d-gen=b
+// BIMODAL: u6-draw-pick=a
+// BIMODAL: u6-model3d-pick=b
+// BIMODAL: u6-model3d-gen=b
+// BIMODAL: u6-rate-graph-pick=b
+// BIMODAL: u6-rate-context-pick=b
+// BIMODAL: u6-rate-context-match=b
+// BIMODAL: u6-rate-factors-pick=b
+// BIMODAL: u6-rate-factors-why=b
 E("u6-scale-factor",6,["6.9"],1,"gen",function(){
   var k=pick([8,9,10,12,15,18,20,24,25,30,40,50,60]);var model=pick([3,4,5,6,7,8,9,10,12,14]);var real=model*k;
   var frame=pick([
@@ -9096,7 +9161,7 @@ E("u6-model-sa",6,["6.11"],3,"gen",function(){
     var SA=2*3.14*R*(R+H),V=3.14*R*R*H;
     return numq("A scale model of a cylindrical water tank is built to a scale of \\(1 : "+k+"\\). The model has radius \\("+mr+"\\text{ cm}\\) and height \\("+mh+"\\text{ cm}\\). Use \\(3.14\\) for \\(\\pi\\). (a) Find the volume of the actual tank, in cubic metres. (b) Find its surface area, in square metres. (Type the surface area.)",
       Math.round(SA*100)/100,0.011,
-      "Scale each dimension first: \\[ \\begin{aligned} \\text{actual radius} &= "+mr+" \\times "+k+" = "+(mr*k)+"\\text{ cm} = "+fmt(R,1)+"\\text{ m} \\\\ \\text{actual height} &= "+mh+" \\times "+k+" = "+(mh*k)+"\\text{ cm} = "+fmt(H,1)+"\\text{ m} \\\\ \\text{(a) volume} &= 3.14 \\times "+fmt(R,1)+"^2 \\times "+fmt(H,1)+" \\\\ &= "+fmt(V,2)+"\\text{ m}^3 \\\\ \\text{(b) surface area} &= 2 \\times 3.14 \\times "+fmt(R,1)+" \\times ("+fmt(R,1)+" + "+fmt(H,1)+") \\\\ &= "+fmt(SA,2)+"\\text{ m}^2 \\end{aligned} \\] This is reasonable: surface areas grow by the square of the scale factor, \\("+k+"^2\\), while volumes grow by its cube, so the surface area should be far smaller than the volume figure here. The surface area of the actual tank is <b>"+fmt(SA,2)+" square metres</b> (and its volume is "+fmt(V,2)+" cubic metres).",
+      "Scale each dimension first: \\[ \\begin{aligned} \\text{actual radius} &= "+mr+" \\times "+k+" = "+(mr*k)+"\\text{ cm} = "+fmt(R,1)+"\\text{ m} \\\\ \\text{actual height} &= "+mh+" \\times "+k+" = "+(mh*k)+"\\text{ cm} = "+fmt(H,1)+"\\text{ m} \\\\ \\text{(a) volume} &= 3.14 \\times "+fmt(R,1)+"^2 \\times "+fmt(H,1)+" \\\\ &= "+fmt(V,2)+"\\text{ m}^3 \\\\ \\text{(b) surface area} &= 2 \\times 3.14 \\times "+fmt(R,1)+" \\times ("+fmt(R,1)+" + "+fmt(H,1)+") \\\\ &= "+fmt(SA,2)+"\\text{ m}^2 \\end{aligned} \\] This is reasonable: surface areas grow by the square of the scale factor, \\("+k+"^2\\), so the actual surface area is far larger than the model's surface area of \\("+fmt(2*3.14*mr*(mr+mh),2)+"\\text{ cm}^2\\). The surface area of the actual tank is <b>"+fmt(SA,2)+" square metres</b> (and its volume is "+fmt(V,2)+" cubic metres).",
       {mode:mode,k:k,SA:SA,V:V});
   }
   var combos2=[[12,10,8,25],[10,8,6,50],[20,12,10,20],[15,10,8,20],[10,10,6,40],[16,10,5,25],[18,12,9,20],[22,14,10,20],[13,8,7,50],[17,12,6,25],[19,10,9,20],[21,15,10,20]];
@@ -9396,6 +9461,417 @@ E("u6-rate-travel",6,["6.22"],3,"gen",function(){
     "Find the fuel used, then its cost: \\[ \\begin{aligned} \\text{fuel used} &= \\frac{"+D+"}{100} \\times "+c+" \\\\ &= "+fmt(litres,1)+"\\text{ L} \\\\ \\text{cost} &= "+fmt(litres,1)+" \\times "+fmtF(p,2)+" \\\\ &= "+fmtF(cost,2)+" \\end{aligned} \\] The fuel cost is <b>$"+fmtF(cost,2)+"</b>.",
     {mode:mode,c:c,D:D,p:p,litres:litres,cost:cost});
 });
+/* ============ Class B build (November 22, 2026) ============
+   New entries for indicators 6.1, 6.4, 6.7, 6.18, 6.20 and
+   6.21, authored CR-first on Jason's Class B ruling: the written
+   form carries the production (explain, compute the drawing,
+   describe the graph or the context), and the recognition form
+   rides as the bimodal companion. Manifest lines for these
+   entries are at the top of this file with the other manifests. */
+
+/* --- 6.1: explain, using examples, how scale diagrams are used
+   to model a 2-D shape. Primary entry: a native written
+   explanation, self-checked against the model answer. --- */
+E("u6-model2d-explain",6,["6.1"],2,"var",varset([
+  function(){return textq("A floor plan of a classroom is drawn with a scale of \\(1 : 50\\). On the plan, the room measures \\(12\\text{ cm}\\) by \\(9\\text{ cm}\\). Explain, using this example, how the scale diagram models the real room. In your answer, say what the scale does to the lengths, what happens to the angles, and what happens to the area.",
+    ["Every length on the plan stands for a length 50 times as long in the room: 12 cm represents 6 m and 9 cm represents 4.5 m. The angles and the shape stay exactly the same, because every length is multiplied by the same factor. Areas are multiplied by 50 squared, 2500, so the plan models the room as a smaller, exactly proportional copy"],
+    "<b>Model answer:</b> The scale \\(1 : 50\\) means every length on the plan stands for a length \\(50\\) times as long in the room: the \\(12\\text{ cm}\\) side represents \\(12 \\times 50 = 600\\text{ cm} = 6\\text{ m}\\), and the \\(9\\text{ cm}\\) side represents \\(450\\text{ cm} = 4.5\\text{ m}\\). Because every length is multiplied by the same factor, the diagram keeps the room's shape exactly: the angles on the plan equal the angles in the room, and the proportions are unchanged. Areas grow faster: they are multiplied by \\(50^2 = 2500\\), so the plan's \\(108\\text{ cm}^2\\) represents \\(27\\text{ m}^2\\). The diagram models the room as a smaller, exactly proportional copy of it.<br><br><b>Marking points:</b> 1 mark for applying the scale to the lengths in the example (\\(12\\text{ cm}\\) to \\(6\\text{ m}\\) and \\(9\\text{ cm}\\) to \\(4.5\\text{ m}\\)). 1 mark for explaining the modelling: the same factor on every length keeps the shape and the angles unchanged, while areas scale by the square of the factor.",
+    {});},
+  function(){return textq("A trail map uses a scale of \\(1 : 25\\,000\\). On the map, a section of trail measures \\(8\\text{ cm}\\). Explain, using this example, how the scale diagram models the real trail. In your answer, say what the scale does to the lengths, and what stays the same between the map and the ground.",
+    ["Every length on the map stands for a length 25 000 times as long on the ground: the 8 cm section represents 200 000 cm, which is 2 km of trail. Directions, angles and the shape of the route stay the same, because every length is multiplied by the same factor, so the map is a reduced copy of the ground"],
+    "<b>Model answer:</b> The scale \\(1 : 25\\,000\\) means every length on the map stands for a length \\(25\\,000\\) times as long on the ground: the \\(8\\text{ cm}\\) section represents \\(8 \\times 25\\,000 = 200\\,000\\text{ cm} = 2\\text{ km}\\) of trail. Because every length is multiplied by the same factor, the map preserves the trail's shape: bends, junctions and directions appear on the map exactly as they lie on the ground, and angles between paths are unchanged. The map models the ground as a greatly reduced, exactly proportional copy, small enough to hold in one hand.<br><br><b>Marking points:</b> 1 mark for applying the scale to the length in the example (\\(8\\text{ cm}\\) represents \\(2\\text{ km}\\)). 1 mark for explaining the modelling: the same factor on every length keeps the shape, the directions and the angles unchanged.",
+    {});},
+  function(){return textq("A photograph \\(10\\text{ cm}\\) wide and \\(15\\text{ cm}\\) high is enlarged into a poster \\(40\\text{ cm}\\) wide. Explain, using this example, how the enlarged poster models the photograph. In your answer, say what happens to the lengths, what happens to the angles, and what happens to the area.",
+    ["The poster is an enlargement with scale factor 4: every length is multiplied by 4, so the height becomes 60 cm. The angles and the shape stay exactly the same, because every length grows by the same factor. The area is multiplied by 4 squared, 16, so the poster covers 16 times the area of the photograph"],
+    "<b>Model answer:</b> The width grows from \\(10\\text{ cm}\\) to \\(40\\text{ cm}\\), so the enlargement has scale factor \\(4\\): every length in the photograph is multiplied by \\(4\\), and the height becomes \\(15 \\times 4 = 60\\text{ cm}\\). Because every length grows by the same factor, the poster's shape matches the photograph exactly and every angle is unchanged: nothing is stretched more in one direction than the other. Areas grow by the square of the factor, \\(4^2 = 16\\), so the poster covers \\(16\\) times the area of the photograph. The poster models the photograph as a larger, exactly proportional copy.<br><br><b>Marking points:</b> 1 mark for finding the scale factor (\\(4\\)) and applying it to a length (the height becomes \\(60\\text{ cm}\\)). 1 mark for explaining the modelling: the same factor on every length keeps the shape and the angles unchanged, while areas scale by the square of the factor.",
+    {});}
+]));
+/* --- 6.1 recognition companions: choose the correct explanation
+   of how a scale diagram models a 2-D shape. --- */
+E("u6-model2d-pick",6,["6.1"],2,"var",varset([
+  function(){return mcq("Which statement correctly explains how a scale diagram models a 2-D shape?",
+    "Every length of the shape is multiplied by the same scale factor, so the diagram keeps the shape and the angles of the original and changes only its size",
+    ["The diagram stretches the shape in one direction only, until it fits the page, and the angles adjust themselves to match the new stretched outline","The angles of the shape are multiplied by the scale factor while the side lengths keep their original ratios to one another in the diagram","The area of the shape is multiplied by the scale factor, and each side length of the diagram is then worked out from that new area"],
+    "A scale diagram is a proportional copy: one factor applied to every length. That is why the shape and its angles survive unchanged while the size changes. Stretching one direction, scaling the angles, or scaling the area by the factor itself would each produce a different (and wrong) figure. The correct explanation is the one with <b>every length multiplied by the same scale factor</b>.",
+    {});},
+  function(){return mcq("A map uses a scale of \\(1 : 100\\,000\\). Which statement correctly explains what the map does?",
+    "Each centimetre on the map represents \\(100\\,000\\text{ cm}\\) (\\(1\\text{ km}\\)) on the ground, and the map preserves every distance ratio, direction and angle in miniature",
+    ["Each centimetre on the ground represents \\(100\\,000\\text{ cm}\\) on the map, so the map is an enlargement that shows the ground far bigger than it really is","The map shows the lengths of roads and paths, but angles and directions cannot be carried from the ground onto a flat map in any reliable way","Each square centimetre on the map represents \\(100\\,000\\text{ cm}^2\\) on the ground, because the scale factor applies to areas first and lengths follow"],
+    "The scale \\(1 : 100\\,000\\) is a length ratio: \\(1\\text{ cm}\\) on the map stands for \\(100\\,000\\text{ cm} = 1\\text{ km}\\) on the ground. Applying that one ratio to every length keeps the whole layout proportional, so directions and angles are preserved too. Areas scale by the square of the factor, not by the factor itself. The correct explanation is the one with <b>each centimetre representing \\(1\\text{ km}\\), with directions and angles preserved</b>.",
+    {});},
+  function(){return mcq("A scale diagram of a garden is drawn at \\(1 : 200\\). Which statement about the diagram is correct?",
+    "The diagram has the same shape as the garden: every real length is divided by \\(200\\), the angles are unchanged, and the diagram's area is the real area divided by \\(200^2\\)",
+    ["The diagram has the same shape as the garden: every real length is divided by \\(200\\), the angles are unchanged, and the diagram's area is the real area divided by \\(200\\)","The diagram has the same shape as the garden: every real length is divided by \\(200\\), and each angle is divided by \\(200\\) so the corners match the smaller size","The diagram has the same shape as the garden: every real length is multiplied by \\(200\\) to fit the page, and the angles are unchanged at the corners"],
+    "Lengths scale by the factor, areas by its square, and angles not at all. Dividing the area by \\(200\\) instead of \\(200^2\\) is the classic slip; angles are never scaled; and a \\(1 : 200\\) diagram shrinks lengths, it does not multiply them. The correct statement is the one with <b>the area divided by \\(200^2\\) and the angles unchanged</b>.",
+    {});},
+  function(){return mcq("A diagram of a beetle is drawn at a scale of \\(5 : 1\\). Which statement correctly explains the diagram?",
+    "The drawing is an enlargement: every length of the beetle is multiplied by \\(5\\), so fine details can be seen, while the shape and the angles stay exactly the same",
+    ["The drawing is a reduction: every length of the beetle is divided by \\(5\\), so the whole insect fits on the page, while the shape and the angles stay the same","Only the beetle's length is multiplied by \\(5\\); its width stays at the actual size, so the drawing shows the true proportions of the insect's body","Every area on the beetle is multiplied by \\(5\\) in the drawing, and the lengths are then adjusted so the areas come out right in the picture"],
+    "A scale of \\(5 : 1\\) (drawing : actual) enlarges: each actual length is multiplied by \\(5\\), in every direction, which is what keeps the proportions and angles true while making details visible. Dividing would shrink the beetle, and scaling only one direction would distort it. The correct explanation is the one with <b>every length multiplied by \\(5\\)</b>.",
+    {});}
+]));
+E("u6-model2d-gen",6,["6.1"],2,"gen",function(){
+  var ctx=pick([
+    {o:"a hockey rink",w:"length"},{o:"a classroom",w:"width"},
+    {o:"a garden plot",w:"length"},{o:"a mural wall",w:"height"},
+    {o:"a community hall",w:"length"},{o:"a soccer field",w:"width"}]);
+  var k=pick([20,25,40,50,80,100,125,200,250,400]);
+  var d=ri(6,48),cm=d*k;
+  var real=(cm%100===0)?(cm/100)+" m":(cm>=100?(cm/100)+" m":cm+" cm");
+  return mcq("A scale diagram of "+ctx.o+" uses a scale of \\(1 : "+k+"\\). The "+ctx.w+" measures \\("+d+"\\text{ cm}\\) on the diagram. Which statement correctly describes how the diagram models the "+ctx.o+"?",
+    "Every length is shrunk by the same factor of \\("+k+"): the \\("+d+"\\text{ cm}\\) on the diagram represents \\("+real+"\\) in real life, and the shape and angles of the "+ctx.o+" are unchanged",
+    ["Every length is stretched by the same factor of \\("+k+"): the \\("+d+"\\text{ cm}\\) on the diagram represents \\("+d+" \\div "+k+"\\text{ cm}\\) in real life, and the shape and angles are unchanged",
+     "Every length is shrunk by the same factor of \\("+k+"), and the area of the "+ctx.o+" is \\("+k+"\\) times the area measured on the diagram, with the angles unchanged",
+     "Every length is shrunk by the same factor of \\("+k+"): the \\("+d+"\\text{ cm}\\) represents \\("+real+"\\) in real life, and each angle is divided by \\("+k+"\\) to fit the smaller size"],
+    "The diagram is a proportional copy. The real "+ctx.w+" is \\("+d+" \\times "+k+"\\text{ cm}\\), which is \\("+real+"\\). Areas scale by \\("+k+"^2\\), not by \\("+k+"\\), and angles are not scaled at all. The correct statement is the one with <b>the \\("+d+"\\text{ cm}\\) representing \\("+real+"\\), with shape and angles unchanged</b>.",
+    {k:k,d:d});
+});
+/* --- 6.4: draw a scale diagram of a given 2-D shape, according
+   to a specified scale factor. Written-first: the typed answer
+   carries the dimensions the drawing needs, with both dimensions
+   worked in the solution. --- */
+E("u6-draw-dims",6,["6.4"],2,"gen",function(){
+  var mode=ri(0,2);
+  if(mode===0){
+    var c=pick([
+      {o:"a rectangular garden",L:12,W:8,s:2},{o:"a rectangular garden",L:15,W:10,s:2.5},
+      {o:"a rectangular classroom floor",L:10,W:6,s:1},{o:"a rectangular classroom floor",L:14,W:9,s:2},
+      {o:"a rectangular hall",L:20,W:12,s:4},{o:"a rectangular patio",L:9,W:6,s:1.5},
+      {o:"a rectangular playing field",L:40,W:25,s:5},{o:"a rectangular garden",L:18,W:12,s:3},
+      {o:"a rectangular patio",L:16,W:11,s:2},{o:"a rectangular hall",L:24,W:15,s:3},
+      {o:"a rectangular garden",L:21,W:14,s:3.5},{o:"a rectangular playing field",L:36,W:24,s:4}]);
+    var dl=c.L/c.s,dw=c.W/c.s,askL=Math.random()<0.5;
+    return numq("Draw a scale diagram of "+c.o+" that is \\("+c.L+"\\text{ m}\\) long and \\("+c.W+"\\text{ m}\\) wide, using a scale of \\(1\\text{ cm}\\) represents \\("+fmt(c.s)+"\\text{ m}\\). What is the "+(askL?"length":"width")+" of the drawing, in centimetres?",
+      askL?dl:dw,0.011,
+      "Apply the scale to both dimensions, so the drawing keeps the shape of the "+c.o+": \\[ \\begin{aligned} \\text{drawing length} &= "+c.L+" \\div "+fmt(c.s)+" \\\\ &= "+fmt(dl,1)+"\\text{ cm} \\\\ \\text{drawing width} &= "+c.W+" \\div "+fmt(c.s)+" \\\\ &= "+fmt(dw,1)+"\\text{ cm} \\end{aligned} \\] The drawing is \\("+fmt(dl,1)+"\\text{ cm}\\) by \\("+fmt(dw,1)+"\\text{ cm}\\). The "+(askL?"length":"width")+" of the drawing is <b>"+fmt(askL?dl:dw,1)+" centimetres</b>.",
+      {mode:mode,L:c.L,W:c.W,s:c.s,askL:askL});
+  }
+  if(mode===1){
+    var c2=pick([
+      {o:"a triangular sail",B:6,H:4,k:50},{o:"a triangular sail",B:8,H:5,k:100},
+      {o:"a triangular flag",B:3,H:2,k:25},{o:"a triangular garden bed",B:10,H:6,k:100},
+      {o:"a triangular section of a roof",B:12,H:5,k:100},{o:"a triangular flag",B:4.5,H:3,k:50},
+      {o:"a triangular sail",B:7,H:4.2,k:100},{o:"a triangular flag",B:5,H:3,k:50},
+      {o:"a triangular garden bed",B:9,H:4.5,k:50}]);
+    var db=c2.B*100/c2.k,dh=c2.H*100/c2.k,askB=Math.random()<0.5;
+    return numq("Draw a scale diagram of "+c2.o+" with a base of \\("+fmt(c2.B,1)+"\\text{ m}\\) and a height of \\("+fmt(c2.H,1)+"\\text{ m}\\), using a scale of \\(1 : "+c2.k+"\\). What is the "+(askB?"base":"height")+" of the drawing, in centimetres?",
+      askB?db:dh,0.011,
+      "Convert each actual length to centimetres, then apply the scale of \\(1 : "+c2.k+"\\): \\[ \\begin{aligned} \\text{drawing base} &= "+fmt(c2.B,1)+"\\text{ m} \\div "+c2.k+" \\\\ &= "+fmt(db,1)+"\\text{ cm} \\\\ \\text{drawing height} &= "+fmt(c2.H,1)+"\\text{ m} \\div "+c2.k+" \\\\ &= "+fmt(dh,1)+"\\text{ cm} \\end{aligned} \\] The drawing has base \\("+fmt(db,1)+"\\text{ cm}\\) and height \\("+fmt(dh,1)+"\\text{ cm}\\). The "+(askB?"base":"height")+" of the drawing is <b>"+fmt(askB?db:dh,1)+" centimetres</b>.",
+      {mode:mode,B:c2.B,H:c2.H,k:c2.k,askB:askB});
+  }
+  var c3=pick([
+    {o:"a bedroom",L:4.8,W:3.6,k:40},{o:"a bedroom",L:5,W:4,k:50},
+    {o:"a kitchen",L:6,W:4.5,k:50},{o:"a study",L:3.6,W:3,k:30},
+    {o:"a living room",L:7.2,W:5.4,k:60},{o:"a kitchen",L:5.5,W:4.4,k:50},
+    {o:"a bedroom",L:4.4,W:3.2,k:40},{o:"a living room",L:6.4,W:4.8,k:40},
+    {o:"a kitchen",L:4.9,W:3.5,k:35}]);
+  var dl3=c3.L*100/c3.k,dw3=c3.W*100/c3.k,askL3=Math.random()<0.5;
+  return numq("A floor plan of "+c3.o+" is drawn with a scale of \\(1 : "+c3.k+"\\). The room is \\("+fmt(c3.L,1)+"\\text{ m}\\) long and \\("+fmt(c3.W,1)+"\\text{ m}\\) wide. What is the "+(askL3?"length":"width")+" of the room on the plan, in centimetres?",
+    askL3?dl3:dw3,0.011,
+    "Convert each actual length to centimetres, then divide by the scale factor \\("+c3.k+"\\): \\[ \\begin{aligned} \\text{plan length} &= "+fmt(c3.L*100)+" \\div "+c3.k+" \\\\ &= "+fmt(dl3,1)+"\\text{ cm} \\\\ \\text{plan width} &= "+fmt(c3.W*100)+" \\div "+c3.k+" \\\\ &= "+fmt(dw3,1)+"\\text{ cm} \\end{aligned} \\] On the plan the room is \\("+fmt(dl3,1)+"\\text{ cm}\\) by \\("+fmt(dw3,1)+"\\text{ cm}\\). The "+(askL3?"length":"width")+" on the plan is <b>"+fmt(askL3?dl3:dw3,1)+" centimetres</b>.",
+    {mode:mode,L:c3.L,W:c3.W,k:c3.k,askL:askL3});
+});
+E("u6-draw-pick",6,["6.4"],2,"gen",function(){
+  var objs=["a rectangular garden","a rectangular hall","a rectangular patio","a rectangular classroom","a rectangular rink","a rectangular parking lot"];
+  var o,s,L,W,dl,dw,tries=0;
+  do{
+    o=pick(objs); s=pick([0.5,1,2,2.5,4,5]);
+    L=ri(8,40); W=ri(5,30);
+    dl=L/s; dw=W/s; tries++;
+  }while(tries<80 && (W>=L || dl<2 || dw<1.5 ||
+    Math.abs(dl-Math.round(dl*10)/10)>1e-9 || Math.abs(dw-Math.round(dw*10)/10)>1e-9 ||
+    new Set([dl+","+dw, L+","+W, dl+","+W, (L*s)+","+(W*s)]).size<4));
+  function pair(x,y){return fmt(x,1)+" cm by "+fmt(y,1)+" cm";}
+  return mcq("A scale diagram of "+o+" is drawn using a scale of \\(1\\text{ cm}\\) represents \\("+fmt(s)+"\\text{ m}\\). The "+o.replace("a rectangular ","")+" is \\("+L+"\\text{ m}\\) long and \\("+W+"\\text{ m}\\) wide. What are the dimensions of the drawing?",
+    pair(dl,dw),
+    [pair(L,W),pair(dl,W),pair(L*s,W*s)],
+    "Apply the scale to every dimension: length \\("+L+" \\div "+fmt(s)+" = "+fmt(dl,1)+"\\text{ cm}\\), width \\("+W+" \\div "+fmt(s)+" = "+fmt(dw,1)+"\\text{ cm}\\). Using the metre values as centimetres leaves the drawing unscaled, scaling only one side distorts the shape, and multiplying by the scale draws it bigger instead of smaller. The dimensions of the drawing are <b>"+pair(dl,dw)+"</b>.",
+    {L:L,W:W,s:s});
+});
+E("u6-draw-enlarge",6,["6.4"],2,"gen",function(){
+  var mode=ri(0,1);
+  if(mode===0){
+    var c=pick([
+      {o:"a beetle",a:18,u:"mm"},{o:"an ant",a:12,u:"mm"},{o:"a moth",a:24,u:"mm"},
+      {o:"a coin",a:26,u:"mm"},{o:"a leaf",a:7,u:"cm"},{o:"a seashell",a:5,u:"cm"}]);
+    var k=pick([2,3,4,5,6,8,10]);
+    var ans=c.a*k;
+    return numq("A diagram of "+c.o+" is drawn at a scale of \\("+k+" : 1\\) (drawing : actual). The "+c.o.replace("a ","").replace("an ","")+" is \\("+c.a+"\\text{ "+c.u+"}\\) long. What is the length of the drawing, in "+(c.u==="mm"?"millimetres":"centimetres")+"?",
+      ans,0.011,
+      "The scale \\("+k+" : 1\\) is an enlargement: every actual length is multiplied by \\("+k+"\\). \\[ \\begin{aligned} \\text{drawing length} &= "+c.a+" \\times "+k+" \\\\ &= "+ans+"\\text{ "+c.u+"} \\end{aligned} \\] The length of the drawing is <b>"+ans+" "+(c.u==="mm"?"millimetres":"centimetres")+"</b>.",
+      {mode:mode,a:c.a,k:k,ans:ans});
+  }
+  var base2=pick([
+    {o:"a beetle",a:15,u:"mm"},{o:"an ant",a:9,u:"mm"},{o:"a moth",a:16,u:"mm"},
+    {o:"a coin",a:26,u:"mm"},{o:"a leaf",a:7,u:"cm"},{o:"a seashell",a:6,u:"cm"}]);
+  var c2={o:base2.o,u:base2.u,k:pick([2,3,4,5,6,8,10])};
+  c2.d=base2.a*c2.k;
+  var a2=c2.d/c2.k;
+  return numq("A diagram of "+c2.o+" is drawn at a scale of \\("+c2.k+" : 1\\) (drawing : actual). The drawing is \\("+c2.d+"\\text{ "+c2.u+"}\\) long. What is the actual length, in "+(c2.u==="mm"?"millimetres":"centimetres")+"?",
+    a2,0.011,
+    "The drawing is an enlargement by a factor of \\("+c2.k+"\\), so divide the drawing length by \\("+c2.k+"\\) to undo it: \\[ \\begin{aligned} \\text{actual length} &= "+c2.d+" \\div "+c2.k+" \\\\ &= "+fmt(a2,1)+"\\text{ "+c2.u+"} \\end{aligned} \\] The actual length is <b>"+fmt(a2,1)+" "+(c2.u==="mm"?"millimetres":"centimetres")+"</b>.",
+    {mode:mode,d:c2.d,k:c2.k,ans:a2});
+});
+
+/* --- 6.7: explain, using examples, how scale diagrams are used
+   to model a 3-D object. Same shape as 6.1, for 3-D objects. --- */
+E("u6-model3d-explain",6,["6.7"],2,"var",varset([
+  function(){return textq("A model car is built to a scale of \\(1 : 24\\). The model is \\(18\\text{ cm}\\) long. Explain, using this example, how the model represents the real car. In your answer, say what the scale does to the lengths, and what happens to surface areas and volumes.",
+    ["Every length of the real car is divided by 24 in the model: the real car is 18 x 24 = 432 cm, or 4.32 m, long. The shape is preserved because every length is scaled by the same factor. Surface areas are divided by 24 squared, and volumes by 24 cubed, so the model is an exactly proportional miniature of the car"],
+    "<b>Model answer:</b> The scale \\(1 : 24\\) means every length of the real car is divided by \\(24\\) to get the model: the car's length is \\(18 \\times 24 = 432\\text{ cm} = 4.32\\text{ m}\\). Because the same factor is applied to every length (height, width, wheel diameter, and all the rest), the model's shape matches the car's shape exactly, and its angles are unchanged. Areas and volumes shrink much faster: surface areas are divided by \\(24^2 = 576\\), and volumes by \\(24^3 = 13\\,824\\). The model is an exactly proportional miniature of the car, small enough to hold, that still shows how every part of the car fits together.<br><br><b>Marking points:</b> 1 mark for applying the scale to the length in the example (the real car is \\(4.32\\text{ m}\\) long) and noting that the same factor on every length preserves the shape. 1 mark for the area and volume effects: surface areas scale by \\(24^2\\) and volumes by \\(24^3\\).",
+    {});},
+  function(){return textq("A builder uses a scale model of a house built to a scale of \\(1 : 50\\). The model is \\(24\\text{ cm}\\) high. Explain, using this example, how the model represents the real house. In your answer, say what the scale does to the lengths, and what happens to surface areas and volumes.",
+    ["Every length of the real house is divided by 50 in the model: the real house is 24 x 50 = 1200 cm, or 12 m, high. The shape is preserved because every length is scaled by the same factor. Surface areas are divided by 50 squared, and volumes by 50 cubed, so the model is an exactly proportional miniature of the house"],
+    "<b>Model answer:</b> The scale \\(1 : 50\\) means every length of the real house is divided by \\(50\\) to get the model: the house's height is \\(24 \\times 50 = 1200\\text{ cm} = 12\\text{ m}\\). The same factor is applied to every length, so the model's proportions match the house exactly: wall heights, roof slopes and window sizes all shrink together, and angles such as the roof pitch are unchanged. Surface areas are divided by \\(50^2 = 2500\\) and volumes by \\(50^3 = 125\\,000\\). The model lets the builder see the whole house at once, in exact proportion, before anything is built.<br><br><b>Marking points:</b> 1 mark for applying the scale to the length in the example (the real house is \\(12\\text{ m}\\) high) and noting that the same factor on every length preserves the shape and angles. 1 mark for the area and volume effects: surface areas scale by \\(50^2\\) and volumes by \\(50^3\\).",
+    {});},
+  function(){return textq("A museum model of a whale is built to a scale of \\(1 : 40\\). The model is \\(45\\text{ cm}\\) long. Explain, using this example, how the model represents the real whale. In your answer, say what the scale does to the lengths, and what happens to surface areas and volumes.",
+    ["Every length of the real whale is divided by 40 in the model: the real whale is 45 x 40 = 1800 cm, or 18 m, long. The shape is preserved because every length is scaled by the same factor. Surface areas are divided by 40 squared, and volumes by 40 cubed, so the model is an exactly proportional miniature of the whale"],
+    "<b>Model answer:</b> The scale \\(1 : 40\\) means every length of the real whale is divided by \\(40\\) to get the model: the whale's length is \\(45 \\times 40 = 1800\\text{ cm} = 18\\text{ m}\\). The same factor shrinks the whale's height, its flippers and its tail in proportion, so the model's shape is the whale's shape and its angles are unchanged. Surface areas are divided by \\(40^2 = 1600\\) and volumes by \\(40^3 = 64\\,000\\), which is why the model can be carried by one person while the real whale could not. The model represents the whale as an exactly proportional miniature.<br><br><b>Marking points:</b> 1 mark for applying the scale to the length in the example (the real whale is \\(18\\text{ m}\\) long) and noting that the same factor on every length preserves the shape. 1 mark for the area and volume effects: surface areas scale by \\(40^2\\) and volumes by \\(40^3\\).",
+    {});}
+]));
+E("u6-model3d-pick",6,["6.7"],2,"var",varset([
+  function(){return mcq("Which statement correctly explains how a scale model represents a 3-D object?",
+    "Every length of the object is multiplied by the same scale factor, so the model keeps the object's shape; surface areas scale by the square of the factor and volumes by its cube",
+    ["Every length of the object is multiplied by the same scale factor, so the model keeps the object's shape; surface areas scale by the cube of the factor and volumes by its square","Only the longest length of the object is multiplied by the scale factor; the other lengths are then estimated so the model looks about right on the shelf","Every length of the object is multiplied by the scale factor, and the angles of the object are multiplied by the same factor so the corners open out"],
+    "A scale model is a proportional copy in three dimensions: one factor on every length, the square of the factor on surface areas, and the cube on volumes. Angles are never scaled, and estimating the other lengths would break the proportions the model exists to preserve. The correct explanation is the one with <b>surface areas by the square and volumes by the cube</b>.",
+    {});},
+  function(){return mcq("A model ship is built to a scale of \\(1 : 100\\). Which statement about the model is correct?",
+    "The model's lengths are the ship's lengths divided by \\(100\\), its surface areas are the ship's divided by \\(100^2\\), and its volume is the ship's divided by \\(100^3\\)",
+    ["The model's lengths are the ship's lengths divided by \\(100\\), its surface areas are the ship's divided by \\(100\\), and its volume is the ship's divided by \\(100\\) as well","The model's lengths are the ship's lengths divided by \\(100\\), its surface areas are the ship's divided by \\(100^3\\), and its volume is the ship's divided by \\(100^2\\)","The model's lengths are the ship's lengths multiplied by \\(100\\), its surface areas are the ship's multiplied by \\(100^2\\), and its volume is the ship's multiplied by \\(100^3\\)"],
+    "Lengths scale by the factor itself, surface areas by its square, and volumes by its cube: at \\(1 : 100\\) those are \\(100\\), \\(100^2 = 10\\,000\\) and \\(100^3 = 1\\,000\\,000\\). A \\(1 : 100\\) model is smaller than the ship, so every measure is divided, not multiplied. The correct statement is the one with <b>lengths by \\(100\\), surface areas by \\(100^2\\), volume by \\(100^3\\)</b>.",
+    {});},
+  function(){return mcq("A model of a water tank is built to a scale of \\(1 : 20\\). The real tank holds \\(160\\,000\\) litres. A student says the model holds \\(160\\,000 \\div 20 = 8\\,000\\) litres. Which statement is correct?",
+    "The student is wrong: volume scales by the cube of the factor, so the model holds \\(160\\,000 \\div 20^3 = 20\\) litres",
+    ["The student is right: the model holds \\(8\\,000\\) litres, because volume is a length-like measure and divides by the scale factor","The student is wrong: volume scales by the square of the factor, so the model holds \\(160\\,000 \\div 20^2 = 400\\) litres","The student is wrong: the model holds \\(160\\,000 \\div 20 = 8\\,000\\) litres only if the tank is a cube, and this tank is not one"],
+    "Capacity is a volume, and volumes scale by the cube of the scale factor: \\(20^3 = 8\\,000\\), so the model holds \\(160\\,000 \\div 8\\,000 = 20\\) litres. Dividing by \\(20\\) treats volume like a length, and dividing by \\(20^2\\) treats it like an area. The correct statement is the one giving the model a capacity of <b>\\(20\\) litres</b>.",
+    {});},
+  function(){return mcq("Which statement correctly explains why a scale model of a bridge is useful to its engineers?",
+    "The model applies one scale factor to every length, so spans, heights and clearances keep their true relationships, and the engineers can judge the whole structure at once",
+    ["The model applies one scale factor to every length, so the model's angles are larger and easier to measure than the angles on the real bridge would be","The model stretches the longest span by the scale factor and leaves the heights at full size, so the engineers can walk through the design at eye level","The model keeps every area of the bridge deck the same as the real deck, so the engineers can test the actual traffic load on the model first"],
+    "A model's value is its exact proportionality: with one factor on every length, the relationships among spans, heights and clearances on the model are the same relationships the real bridge will have. Angles stay the same size (they are not scaled), heights shrink with everything else, and areas scale by the square of the factor, so no load test at full size is possible. The correct explanation is the one with <b>true relationships kept by one factor on every length</b>.",
+    {});}
+]));
+E("u6-model3d-gen",6,["6.7"],2,"gen",function(){
+  var ctx=pick([
+    {o:"a model airplane",w:"wingspan"},{o:"a model lighthouse",w:"height"},
+    {o:"a model ferry",w:"length"},{o:"a model office tower",w:"height"},
+    {o:"a model grain elevator",w:"height"},{o:"a model train",w:"length"}]);
+  var k=pick([24,40,48,50,60,100,150,200,250,500]);
+  var d=ri(8,60),cm=d*k;
+  var real=(cm%100===0)?(cm/100)+" m":(cm>=100?(cm/100)+" m":cm+" cm");
+  return mcq(ctx.o.charAt(0).toUpperCase()+ctx.o.slice(1)+" is built to a scale of \\(1 : "+k+"\\). The "+ctx.w+" of the model is \\("+d+"\\text{ cm}\\). Which statement correctly describes how the model represents the real object?",
+    "Every length is shrunk by the same factor of \\("+k+"): the model's \\("+d+"\\text{ cm}\\) represents \\("+real+"\\) on the real object, the shape is unchanged, and volumes scale by \\("+k+"^3\\)",
+    ["Every length is shrunk by the same factor of \\("+k+"): the model's \\("+d+"\\text{ cm}\\) represents \\("+real+"\\) on the real object, the shape is unchanged, and volumes scale by \\("+k+"\\)",
+     "Every length is stretched by the same factor of \\("+k+"): the model's \\("+d+"\\text{ cm}\\) represents \\("+d+" \\div "+k+"\\text{ cm}\\) on the real object, and the shape is unchanged",
+     "Every length is shrunk by the same factor of \\("+k+"), the shape is unchanged, and the angles of the real object are divided by \\("+k+"\\) in the model to fit its size"],
+    "The model is a proportional miniature. The real "+ctx.w+" is \\("+d+" \\times "+k+"\\text{ cm}\\), which is \\("+real+"\\). Volumes scale by the cube of the factor, \\("+k+"^3\\), not by the factor itself, and angles are not scaled. The correct statement is the one with <b>the model's \\("+d+"\\text{ cm}\\) representing \\("+real+"\\), and volumes by \\("+k+"^3\\)</b>.",
+    {k:k,d:d});
+});
+/* --- 6.18: draw a graph to represent a rate. Written-first: the
+   student describes the graph against stated features (axes,
+   linearity, steepness). Recognition companion: choose the graph,
+   using the bank's panel-letter figure convention. --- */
+E("u6-rate-graph-write",6,["6.18"],2,"var",varset([
+  function(){return textq("A hose fills a swimming pool at a steady rate of \\(25\\) litres per minute. The pool starts empty. Describe the graph of volume against time that represents this rate. In your answer, state the axis labels, where the graph starts, its shape, one point it passes through, and what the steepness of the graph means.",
+    ["Time (min) goes on the horizontal axis and volume (L) on the vertical axis. The graph is a straight line starting at the origin, because the pool starts empty and the rate is steady. It passes through (10, 250), since 10 minutes at 25 L/min gives 250 L. The steepness of the line is the rate itself, 25 L/min"],
+    "<b>Model answer:</b> Time (in minutes) goes on the horizontal axis and volume (in litres) on the vertical axis. Because the pool starts empty, the graph starts at the origin, \\((0, 0)\\). Because the rate is steady, the graph is a straight line: the volume grows by the same \\(25\\text{ L}\\) every minute. The line passes through \\((10, 250)\\), since \\(10\\) minutes at \\(25\\text{ L/min}\\) gives \\(250\\text{ L}\\) (and through \\((20, 500)\\), and so on). The steepness of the line is the rate itself, \\(25\\text{ L/min}\\): a faster filling rate would give a steeper line.<br><br><b>Marking points:</b> 1 mark for the axes (time horizontal, volume vertical), a straight line, and the start at the origin. 1 mark for a correct point such as \\((10, 250)\\) or for identifying the steepness (slope) as the rate, \\(25\\text{ L/min}\\).",
+    {});},
+  function(){return textq("A bus leaves the depot and travels at a steady speed of \\(60\\) kilometres per hour. Describe the graph of distance from the depot against time that represents this rate. In your answer, state the axis labels, where the graph starts, its shape, one point it passes through, and what the steepness of the graph means.",
+    ["Time (h) goes on the horizontal axis and distance from the depot (km) on the vertical axis. The graph is a straight line starting at the origin, because the bus starts at the depot and the speed is steady. It passes through (2, 120), since 2 hours at 60 km/h gives 120 km. The steepness of the line is the speed itself, 60 km/h"],
+    "<b>Model answer:</b> Time (in hours) goes on the horizontal axis and distance from the depot (in kilometres) on the vertical axis. The graph starts at the origin, \\((0, 0)\\), because the bus starts at the depot. Because the speed is steady, the graph is a straight line: the distance grows by the same \\(60\\text{ km}\\) every hour. The line passes through \\((2, 120)\\), since \\(2\\) hours at \\(60\\text{ km/h}\\) gives \\(120\\text{ km}\\). The steepness of the line is the rate itself, the speed of \\(60\\text{ km/h}\\): a faster bus would give a steeper line.<br><br><b>Marking points:</b> 1 mark for the axes (time horizontal, distance vertical), a straight line, and the start at the origin. 1 mark for a correct point such as \\((2, 120)\\) or for identifying the steepness (slope) as the rate, \\(60\\text{ km/h}\\).",
+    {});},
+  function(){return textq("A plumber charges \\(\\$45\\) per hour of work, with no call-out fee. Describe the graph of total cost against time worked that represents this rate. In your answer, state the axis labels, where the graph starts, its shape, one point it passes through, and what the steepness of the graph means.",
+    ["Time worked (h) goes on the horizontal axis and total cost (dollars) on the vertical axis. The graph is a straight line starting at the origin, because there is no call-out fee and the hourly rate is steady. It passes through (4, 180), since 4 hours at $45 per hour costs $180. The steepness of the line is the rate itself, $45 per hour"],
+    "<b>Model answer:</b> Time worked (in hours) goes on the horizontal axis and total cost (in dollars) on the vertical axis. Because there is no call-out fee, the graph starts at the origin, \\((0, 0)\\): no work, no cost. Because the rate is steady, the graph is a straight line: the cost grows by the same \\(\\$45\\) every hour. The line passes through \\((4, 180)\\), since \\(4\\) hours at \\(\\$45\\) per hour costs \\(\\$180\\). The steepness of the line is the rate itself, \\(\\$45\\) per hour: a plumber with a higher hourly rate would give a steeper line.<br><br><b>Marking points:</b> 1 mark for the axes (time horizontal, cost vertical), a straight line, and the start at the origin (tied to there being no call-out fee). 1 mark for a correct point such as \\((4, 180)\\) or for identifying the steepness (slope) as the rate, \\(\\$45\\) per hour.",
+    {});}
+]));
+E("u6-rate-graph-pick",6,["6.18"],2,"gen",function(){
+  var kind=ri(0,3),sc;
+  if(kind===0){
+    var r=pick([5,10,15,20,25,30,35,40,45,50]),T=pick([8,10,12,15,20]),V=r*T;
+    sc={stem:"A tank is being filled from empty at a steady rate of \\("+r+"\\) litres per minute. Which graph shows the volume of water in the tank against time, over the first \\("+T+"\\) minutes?",
+     xLab:"Time (min)",yLab:"Volume (L)",xMax:T,yMax:V,
+     good:[[0,0],[T,V]],
+     bad:[[[0,0],[T,V/2]],[[0,V/4],[T,V]],[[0,0],[0.4*T,0.55*V],[0.7*T,0.8*V],[T,0.925*V]]],
+     why:"The tank starts empty, so the graph starts at the origin. The rate is steady, so the graph is a straight line, and its slope is the rate: after \\("+T+"\\) minutes the volume is \\("+r+" \\times "+T+" = "+V+"\\text{ L}\\). The shallower line fills at only half the rate, the line starting at \\("+fmt(V/4,2)+"\\text{ L}\\) has the tank part full at the start, and the curve bends because its rate is dropping."};
+  } else if(kind===1){
+    var r2=pick([10,12,15,16,20,24,25,30,32,40]),T2=pick([2,3,4,5]),D=r2*T2;
+    sc={stem:"A cyclist leaves home and rides at a steady speed of \\("+r2+"\\) kilometres per hour. Which graph shows the distance from home against time, over the first \\("+T2+"\\) hours?",
+     xLab:"Time (h)",yLab:"Distance (km)",xMax:T2,yMax:D,
+     good:[[0,0],[T2,D]],
+     bad:[[[0,0],[T2,D/2]],[[0,r2],[T2,D]],[[0,D],[T2,0]]],
+     why:"The cyclist starts at home, so the graph starts at the origin. The speed is steady, so the graph is a straight line, and its slope is the speed: after \\("+T2+"\\) hours the distance is \\("+r2+" \\times "+T2+" = "+D+"\\text{ km}\\). The shallower line travels at only half the speed, the line starting at \\("+r2+"\\text{ km}\\) starts away from home, and the falling line comes back toward home instead of leaving it."};
+  } else if(kind===2){
+    var p=pick([2,2.5,3,3.5,4,4.5,5,6]),M=pick([4,5,6,8,10]),C=p*M;
+    var pStr=(p%1)?p.toFixed(2):String(p);
+    sc={stem:"Apples are priced at \\(\\$"+pStr+"\\) per kilogram. Which graph shows the cost of the apples against their mass, for masses up to \\("+M+"\\text{ kg}\\)?",
+     xLab:"Mass (kg)",yLab:"Cost ($)",xMax:M,yMax:C+p,
+     good:[[0,0],[M,C]],
+     bad:[[[0,0],[M,C/2]],[[0,p],[M,C]],[[0,0],[M,C+p]]],
+     why:"There is no fixed charge, so the graph starts at the origin, and the steady price makes it a straight line whose slope is the rate: \\("+M+"\\text{ kg}\\) at \\(\\$"+pStr+"\\) per kilogram costs \\(\\$"+(C%1?C.toFixed(2):String(C))+"\\). The shallower line prices the apples at half the rate, the line starting at \\(\\$"+pStr+"\\) adds a fixed charge, and the steeper line prices them above \\(\\$"+pStr+"\\) per kilogram."};
+  } else {
+    var pr=pick([{V:80,r:8},{V:80,r:10},{V:80,r:20},{V:100,r:10},{V:100,r:20},{V:100,r:25},{V:120,r:10},{V:120,r:12},{V:120,r:15},{V:120,r:20},{V:150,r:10},{V:150,r:15},{V:150,r:25},{V:200,r:10},{V:200,r:20},{V:200,r:25}]);
+    var T4=pr.V/pr.r;
+    sc={stem:"A full \\("+pr.V+"\\) litre tank drains at a steady rate of \\("+pr.r+"\\) litres per minute. Which graph shows the volume of water left in the tank against time?",
+     xLab:"Time (min)",yLab:"Volume (L)",xMax:T4,yMax:pr.V,
+     good:[[0,pr.V],[T4,0]],
+     bad:[[[0,0],[T4,pr.V]],[[0,pr.V],[T4,pr.V]],[[0,pr.V],[T4,0.4*pr.V]]],
+     why:"The tank starts full, so the graph starts at \\((0, "+pr.V+")\\), and draining at a steady rate gives a straight line falling to \\(("+T4+", 0)\\): after \\("+T4+"\\) minutes at \\("+pr.r+"\\text{ L/min}\\), the tank is empty. The rising line fills the tank instead, the horizontal line never drains, and the last line drains too slowly and still holds \\("+fmt(0.4*pr.V)+"\\text{ L}\\) at \\("+T4+"\\) minutes."};
+  }
+  var specs=[{pts:sc.good}].concat(sc.bad.map(function(p){return {pts:p};}));
+  var order=shuffle([0,1,2,3]),letters=["A","B","C","D"];
+  var panels=order.map(function(si,idx){var s=specs[si];return {caption:letters[idx],xLab:sc.xLab,yLab:sc.yLab,xMax:sc.xMax,yMax:sc.yMax,pts:s.pts};});
+  var keyLetter=letters[order.indexOf(0)];
+  var q=mcq(sc.stem,
+    keyLetter,letters.filter(function(L){return L!==keyLetter;}),
+    sc.why+" Only one panel does all of this: panel <b>"+keyLetter+"</b>.",
+    {keyLetter:keyLetter});
+  q.figure=ratePanelsSVG(panels);
+  return q;
+});
+E("u6-rate-graph-sketch",6,["6.18"],2,"gen",function(){
+  var base=pick([
+    {pre:"A tap fills a barrel at a steady rate of ",u:"litres per minute",x:"time (min)",y:"volume (L)",rMin:6,rMax:30,rStep:1,tMin:5,tMax:30},
+    {pre:"A cyclist rides at a steady rate of ",u:"kilometres per hour",x:"time (h)",y:"distance (km)",rMin:10,rMax:32,rStep:1,tMin:2,tMax:6},
+    {pre:"A printer prints at a steady rate of ",u:"pages per minute",x:"time (min)",y:"pages printed",rMin:10,rMax:40,rStep:1,tMin:3,tMax:10},
+    {pre:"A hose fills a tank at a steady rate of ",u:"litres per minute",x:"time (min)",y:"volume (L)",rMin:5,rMax:25,rStep:1,tMin:10,tMax:30},
+    {pre:"A bus travels at a steady rate of ",u:"kilometres per hour",x:"time (h)",y:"distance (km)",rMin:35,rMax:90,rStep:5,tMin:2,tMax:6},
+    {pre:"A machine fills bottles at a steady rate of ",u:"bottles per minute",x:"time (min)",y:"bottles filled",rMin:15,rMax:60,rStep:5,tMin:3,tMax:10}]);
+  var ctx={pre:base.pre,u:base.u,x:base.x,y:base.y,
+    r:base.rMin+base.rStep*ri(0,Math.floor((base.rMax-base.rMin)/base.rStep)),
+    t:ri(base.tMin,base.tMax)};
+  var prod=ctx.r*ctx.t;
+  var model="Put "+ctx.x+" on the horizontal axis and "+ctx.y+" on the vertical axis. The graph is a straight line starting at the origin (0, 0), because nothing has accumulated at time 0 and the rate is steady. After "+ctx.t+" units of time the graph reaches ("+ctx.t+", "+prod+"), since "+ctx.r+" x "+ctx.t+" = "+prod+". The steepness of the line is the rate itself.";
+  return textq(ctx.pre+"\\("+ctx.r+"\\) "+ctx.u+". Describe the graph that represents this rate: give the axis labels, the starting point, the shape of the graph, and the coordinates of the point the graph reaches after \\("+ctx.t+"\\) units of time on the horizontal axis.",
+    [model],
+    "<b>Model answer:</b> "+model+"<br><br><b>Marking points:</b> 1 mark for the axes ("+ctx.x+" horizontal, "+ctx.y+" vertical), a straight line, and the start at the origin. 1 mark for the point \\(("+ctx.t+", "+prod+")\\), from multiplying the rate \\("+ctx.r+"\\) by \\("+ctx.t+"\\).",
+    {r:ctx.r,t:ctx.t,prod:prod});
+});
+
+/* --- 6.20: describe a context for a given rate or unit rate.
+   Primary entry: a native written context, self-checked. --- */
+E("u6-rate-context-write",6,["6.20"],2,"var",varset([
+  function(){return textq("Write a real-world context for the rate \\(15\\text{ km/h}\\). Your context must name what is being measured, what it is measured per unit of, and describe a situation in which the rate makes sense.",
+    ["A cyclist rides 15 km every hour along the trail. The distance travelled is measured in kilometres, per hour of riding time, so the cyclist's speed is 15 km/h"],
+    "<b>Model answer:</b> A cyclist rides \\(15\\text{ km}\\) every hour along the trail. The rate compares a distance, measured in kilometres, to a time, measured in hours: it is the cyclist's speed, \\(15\\text{ km/h}\\).<br><br><b>Marking points:</b> 1 mark for a situation that genuinely involves the two quantities in the rate (a distance and a time). 1 mark for the context matching the value and units: something that advances \\(15\\text{ km}\\) in each hour.",
+    {});},
+  function(){return textq("Write a real-world context for the rate \\(\\$4.50\\) per \\(100\\text{ g}\\). Your context must name what is being measured, what it is measured per unit of, and describe a situation in which the rate makes sense.",
+    ["A deli sells sliced turkey for $4.50 for every 100 g. The price is measured in dollars, per 100 g of turkey, so a 300 g purchase costs 3 x $4.50 = $13.50"],
+    "<b>Model answer:</b> A deli sells sliced turkey for \\(\\$4.50\\) for every \\(100\\text{ g}\\). The rate compares a price, measured in dollars, to a mass, measured in units of \\(100\\text{ g}\\): a \\(300\\text{ g}\\) purchase costs \\(3 \\times \\$4.50 = \\$13.50\\).<br><br><b>Marking points:</b> 1 mark for a situation that genuinely involves the two quantities in the rate (a price and a mass). 1 mark for the context matching the value and units: \\(\\$4.50\\) charged for each \\(100\\text{ g}\\).",
+    {});},
+  function(){return textq("Write a real-world context for the rate \\(3.5\\text{ L/min}\\). Your context must name what is being measured, what it is measured per unit of, and describe a situation in which the rate makes sense.",
+    ["A garden hose delivers 3.5 L of water every minute into a watering can. The volume of water is measured in litres, per minute of flow, so the hose's flow rate is 3.5 L/min"],
+    "<b>Model answer:</b> A garden hose delivers \\(3.5\\text{ L}\\) of water every minute. The rate compares a volume, measured in litres, to a time, measured in minutes: it is the hose's flow rate, \\(3.5\\text{ L/min}\\), so \\(10\\) minutes of watering delivers \\(35\\text{ L}\\).<br><br><b>Marking points:</b> 1 mark for a situation that genuinely involves the two quantities in the rate (a volume and a time). 1 mark for the context matching the value and units: \\(3.5\\text{ L}\\) delivered in each minute.",
+    {});},
+  function(){return textq("Write a real-world context for the rate \\(\\$85\\) per night. Your context must name what is being measured, what it is measured per unit of, and describe a situation in which the rate makes sense.",
+    ["A cabin rents for $85 for each night of a stay. The cost is measured in dollars, per night stayed, so a four-night stay costs 4 x $85 = $340"],
+    "<b>Model answer:</b> A cabin rents for \\(\\$85\\) for each night of a stay. The rate compares a cost, measured in dollars, to a stay, measured in nights: a four-night stay costs \\(4 \\times \\$85 = \\$340\\).<br><br><b>Marking points:</b> 1 mark for a situation that genuinely involves the two quantities in the rate (a cost and a number of nights). 1 mark for the context matching the value and units: \\(\\$85\\) charged for each night.",
+    {});}
+]));
+E("u6-rate-context-pick",6,["6.20"],2,"gen",function(){
+  function money(x){return x%1?x.toFixed(2):String(x);}
+  var kind=ri(0,3),ctx;
+  if(kind===0){
+    var R=pick([8,10,12,15,16,20,24,25,30,40]),t=pick([2,3,4,5]),D=R*t,veh=pick(["cyclist","delivery van","ferry"]);
+    var who=veh==="cyclist"?"A cyclist who covers":(veh==="delivery van"?"A delivery van that covers":"A ferry that covers");
+    ctx={rate:"\\("+R+"\\text{ km/h}\\)",good:who+" \\("+D+"\\text{ km}\\) in \\("+t+"\\) hours of travel",
+     bad:[who+" \\("+D+"\\text{ km}\\) in \\("+(t+2)+"\\) hours of travel",who+" \\("+R+"\\text{ km}\\) in \\(2\\) hours of travel",who+" \\("+(2*D)+"\\text{ km}\\) in \\("+t+"\\) hours of travel"],
+     why:"Divide distance by time in each context. The key context gives \\("+D+" \\div "+t+" = "+R+"\\text{ km/h}\\). The others give \\("+fmt(D/(t+2),1)+"\\text{ km/h}\\), \\("+fmt(R/2,1)+"\\text{ km/h}\\) and \\("+(2*R)+"\\text{ km/h}\\)."};
+  } else if(kind===1){
+    var P=pick([1.5,2,2.5,3,3.5,4,4.5,5,6]),m=pick([2,3,4,5]),tot=P*m,item=pick(["Cheese","Grapes","Flour","Coffee beans"]);
+    ctx={rate:"\\(\\$"+money(P)+"\\) per kilogram",good:item+" priced so that \\("+m+"\\text{ kg}\\) costs \\(\\$"+money(tot)+"\\) at the counter",
+     bad:[item+" priced so that \\("+m+"\\text{ kg}\\) costs \\(\\$"+money(P)+"\\) at the counter",item+" priced so that \\(1\\text{ kg}\\) costs \\(\\$"+money(tot)+"\\) at the counter",item+" priced so that \\("+(m+1)+"\\text{ kg}\\) costs \\(\\$"+money(tot)+"\\) at the counter"],
+     why:"Divide cost by mass in each context. The key context gives \\("+money(tot)+" \\div "+m+" = \\$"+money(P)+"\\) per kilogram. The others give \\(\\$"+money(P/m)+"\\) (the unit price charged for the whole mass), \\(\\$"+money(tot)+"\\) (the total charged per kilogram) and \\(\\$"+money(tot/(m+1))+"\\) per kilogram."};
+  } else if(kind===2){
+    var F=pick([4,5,6,8,10,12,15,20]),t2=pick([2,3,4,5,6,8,10]),vol=F*t2;
+    ctx={rate:"\\("+F+"\\text{ L/min}\\)",good:"A pump that moves \\("+vol+"\\text{ L}\\) of water in \\("+t2+"\\) minutes of running",
+     bad:["A pump that moves \\("+vol+"\\text{ L}\\) of water in \\("+(t2+3)+"\\) minutes of running","A pump that moves \\("+F+"\\text{ L}\\) of water in \\(2\\) minutes of running","A pump that moves \\("+(2*vol)+"\\text{ L}\\) of water in \\("+t2+"\\) minutes of running"],
+     why:"Divide volume by time in each context. The key context gives \\("+vol+" \\div "+t2+" = "+F+"\\text{ L/min}\\). The others give \\("+fmt(vol/(t2+3),1)+"\\text{ L/min}\\), \\("+fmt(F/2,1)+"\\text{ L/min}\\) and \\("+(2*F)+"\\text{ L/min}\\)."};
+  } else {
+    var P2=pick([15,20,25,30,40,50,60]),t3=pick([2,3,4,5,6]),pages=P2*t3;
+    ctx={rate:"\\("+P2+"\\) pages per hour",good:"A reader who finishes \\("+pages+"\\) pages of a novel in \\("+t3+"\\) hours of reading",
+     bad:["A reader who finishes \\("+pages+"\\) pages of a novel in \\("+(t3+1)+"\\) hours of reading","A reader who finishes \\("+P2+"\\) pages of a novel in \\(2\\) hours of reading","A reader who finishes \\("+pages+"\\) pages of a novel in \\(1\\) hour of reading"],
+     why:"Divide pages by time in each context. The key context gives \\("+pages+" \\div "+t3+" = "+P2+"\\) pages per hour. The others give \\("+fmt(pages/(t3+1),1)+"\\), \\("+fmt(P2/2,1)+"\\) and \\("+pages+"\\) pages per hour."};
+  }
+  return mcq("Which context matches the rate "+ctx.rate+"?",
+    ctx.good,ctx.bad,
+    ctx.why+" The context that matches the rate is the one where <b>"+ctx.good.charAt(0).toLowerCase()+ctx.good.slice(1)+"</b>.",
+    {rate:ctx.rate});
+});
+E("u6-rate-context-match",6,["6.20"],2,"var",varset([
+  function(){return mcq("A ferry crosses a harbour, travelling \\(18\\text{ km}\\) in \\(45\\) minutes. Which rate describes the ferry's crossing?",
+    "The ferry travels at \\(24\\text{ km/h}\\), covering \\(18\\text{ km}\\) in three quarters of an hour",
+    ["The ferry travels at \\(18\\text{ km/h}\\), covering \\(18\\text{ km}\\) in three quarters of an hour","The ferry travels at \\(40\\text{ km/h}\\), covering \\(18\\text{ km}\\) in three quarters of an hour","The ferry travels at \\(13.5\\text{ km/h}\\), covering \\(18\\text{ km}\\) in three quarters of an hour"],
+    "\\(45\\) minutes is \\(0.75\\) of an hour, so the speed is \\(18 \\div 0.75 = 24\\text{ km/h}\\). Using \\(18\\) itself as the speed ignores the time; \\(40\\text{ km/h}\\) comes from dividing by \\(0.45\\) instead of \\(0.75\\); and \\(13.5\\text{ km/h}\\) comes from multiplying instead of dividing. The matching rate is <b>\\(24\\text{ km/h}\\)</b>.",
+    {});},
+  function(){return mcq("Coffee beans are priced at \\(\\$0.85\\) per \\(100\\text{ g}\\). Which rate is the same price, stated per kilogram?",
+    "The beans cost \\(\\$8.50\\) per kilogram, because a kilogram holds ten units of \\(100\\text{ g}\\)",
+    ["The beans cost \\(\\$0.85\\) per kilogram, because a kilogram holds ten units of \\(100\\text{ g}\\)","The beans cost \\(\\$85.00\\) per kilogram, because a kilogram holds ten units of \\(100\\text{ g}\\)","The beans cost \\(\\$8.50\\) per kilogram, because a kilogram holds one hundred units of \\(100\\text{ g}\\)"],
+    "A kilogram is \\(1000\\text{ g}\\), which is ten units of \\(100\\text{ g}\\), so the price per kilogram is \\(10 \\times \\$0.85 = \\$8.50\\). Keeping \\(\\$0.85\\) ignores the change of unit, \\(\\$85.00\\) multiplies by \\(100\\) instead of \\(10\\), and the last option reaches \\(\\$8.50\\) with a wrong count of units. The equivalent rate is <b>\\(\\$8.50\\) per kilogram</b>.",
+    {});},
+  function(){return mcq("A \\(2.5\\text{ kg}\\) bag of flour costs \\(\\$7.50\\). Which rate describes the price of the flour?",
+    "The flour costs \\(\\$3.00\\) per kilogram: \\(\\$7.50\\) buys \\(2.5\\text{ kg}\\), so each kilogram costs \\(\\$3.00\\)",
+    ["The flour costs \\(\\$7.50\\) per kilogram: \\(\\$7.50\\) buys \\(2.5\\text{ kg}\\), so each kilogram costs \\(\\$7.50\\)","The flour costs \\(\\$18.75\\) per kilogram: \\(\\$7.50\\) buys \\(2.5\\text{ kg}\\), so each kilogram costs \\(\\$18.75\\)","The flour costs \\(\\$3.00\\) per kilogram: \\(\\$7.50\\) buys \\(2.5\\text{ kg}\\), so each kilogram costs \\(\\$2.50\\)"],
+    "A unit rate divides the total by the quantity: \\(7.50 \\div 2.5 = \\$3.00\\) per kilogram. Quoting the bag price as the per-kilogram price skips the division, \\(\\$18.75\\) multiplies instead of dividing, and the last option pairs the right headline with a wrong per-kilogram value. The matching rate is <b>\\(\\$3.00\\) per kilogram</b>.",
+    {});}
+]));
+/* --- 6.21: identify and explain factors that influence a rate
+   in a given context. The identify half is SR native; the explain
+   half is the written self-check entry. --- */
+E("u6-rate-factors-pick",6,["6.21"],2,"var",varset([
+  function(){return mcq("A car's fuel consumption rate is measured in litres per \\(100\\text{ km}\\). Which factor influences this rate?",
+    "The speed the car is driven at, since driving faster makes the engine work harder and burn more fuel per \\(100\\text{ km}\\) travelled",
+    ["The colour the car is painted, since a darker finish absorbs more sunlight and warms the fuel tank during a long drive","The day of the week the trip is taken on, since fuel is priced differently on weekends than it is on weekdays","The number of letters in the car's model name, since longer names are printed on heavier badges at the back"],
+    "Fuel consumption is a rate of fuel used per distance travelled, and it changes when the driving conditions change how hard the engine works: speed is such a factor. Paint colour, the calendar and the model name do not change how much fuel the engine burns per kilometre. The influencing factor is <b>the speed the car is driven at</b>.",
+    {});},
+  function(){return mcq("A runner's heart rate is measured in beats per minute. Which factor influences this rate?",
+    "How hard the runner is exercising, since harder exercise makes the heart pump faster to deliver more oxygen to the working muscles",
+    ["The colour of the runner's shirt, since brighter colours reflect more light onto the chest strap that counts the beats","The brand of the watch the runner is wearing, since a newer watch model displays the number in a slightly larger font","The day of the month the run happens on, since the calendar changes the length of a minute at certain times of year"],
+    "Heart rate is a rate of beats per minute of time, and it changes with the body's demand for oxygen: harder exercise raises it. Shirt colour, the watch brand and the calendar do not change how fast the heart beats. The influencing factor is <b>how hard the runner is exercising</b>.",
+    {});},
+  function(){return mcq("A garden tap's flow rate is measured in litres per minute. Which factor influences this rate?",
+    "How far the tap is opened, since a tap opened wider lets more water pass through it in each minute of flow",
+    ["The colour of the hose attached to the tap, since a green hose absorbs more light along its length","The length of the garden the hose is used in, since a longer garden makes the water arrive later","The day the watering is done, since the water in the pipes is older later in the week"],
+    "Flow rate is a rate of volume per minute, and it changes when the opening the water passes through changes: opening the tap wider raises it. Hose colour and the calendar do not change the flow, and the garden's length changes how long the water takes to arrive, not the rate at the tap. The influencing factor is <b>how far the tap is opened</b>.",
+    {});},
+  function(){return mcq("A tomato plant's growth rate is measured in centimetres per week. Which factor influences this rate?",
+    "How much sunlight the plant receives each day, since more light lets the plant produce more food and grow faster each week",
+    ["The colour of the pot the plant is growing in, since a red pot reflects more light onto the label tied to the stem","The name given to the plant by its owner, since a longer name takes more time to say during the weekly measuring","The shape of the ruler used for measuring, since a flat ruler lies closer to the stem than a round one does"],
+    "Growth rate is a rate of height gained per week, and it changes when the plant's growing conditions change: sunlight is such a factor, because light drives the plant's food production. Pot colour, the plant's name and the ruler's shape do not change how fast the plant grows. The influencing factor is <b>how much sunlight the plant receives each day</b>.",
+    {});}
+]));
+E("u6-rate-factors-explain",6,["6.21"],3,"var",varset([
+  function(){return textq("On a long highway drive, a car uses fuel at a rate of \\(7\\) litres per \\(100\\text{ km}\\). On a later trip through city traffic, the same car uses fuel at a rate of \\(9.5\\) litres per \\(100\\text{ km}\\). Identify two factors that could explain why the rate changed, and explain how each factor affects the rate.",
+    ["Factor 1: stop-and-go driving. In city traffic the car brakes and accelerates often, and accelerating burns extra fuel, so the rate rises. Factor 2: lower average speed with more idling. Time spent stopped at lights with the engine running uses fuel without adding distance, so more fuel is used per 100 km"],
+    "<b>Model answer:</b> Two factors explain the change. First, the driving pattern: city driving means repeated braking and accelerating, and each acceleration makes the engine burn extra fuel, so more fuel is used for each \\(100\\text{ km}\\) travelled. Second, idling: in traffic the car spends time stopped with the engine running, burning fuel while covering no distance at all, which pushes the litres per \\(100\\text{ km}\\) up. Either factor alone raises the rate; together they explain the change from \\(7\\) to \\(9.5\\) litres per \\(100\\text{ km}\\). (Other acceptable factors include a headwind, heavy cargo, low tire pressure, or using the air conditioning.)<br><br><b>Marking points:</b> 1 mark for each factor correctly identified (for example stop-and-go driving, idling, headwind, cargo weight, tire pressure), to a maximum of 2. 1 mark for a correct explanation of how at least one factor changes the fuel used per \\(100\\text{ km}\\).",
+    {});},
+  function(){return textq("During an easy jog, a runner's heart rate is \\(95\\) beats per minute. During a sprint finish, the same runner's heart rate is \\(150\\) beats per minute. Identify two factors that could explain why the rate changed, and explain how each factor affects the rate.",
+    ["Factor 1: exercise intensity. Sprinting makes the muscles demand far more oxygen than jogging, so the heart beats faster to deliver it, and the rate rises. Factor 2: fitness and recovery state. A tired or less fit runner's heart must beat faster at the same effort, so fatigue raises the rate further"],
+    "<b>Model answer:</b> Two factors explain the change. First, exercise intensity: sprinting makes the working muscles demand much more oxygen than an easy jog, and the heart beats faster to deliver it, so the beats per minute rise from \\(95\\) toward \\(150\\). Second, the runner's state: fatigue, heat, or dehydration make the heart work harder at the same effort, raising the rate further (a fitter runner would show a lower rate at the same speed). The rate changed because the demand placed on the heart changed.<br><br><b>Marking points:</b> 1 mark for each factor correctly identified (for example exercise intensity, fatigue, heat, dehydration, fitness level), to a maximum of 2. 1 mark for a correct explanation of how at least one factor changes the demand on the heart and so the beats per minute.",
+    {});},
+  function(){return textq("A hose fills a \\(40\\) litre barrel in \\(8\\) minutes on Monday. On Wednesday, the same hose fills the same barrel in \\(5\\) minutes. Identify two factors that could explain why the flow rate changed, and explain how each factor affects the rate.",
+    ["Factor 1: how far the tap is opened. A tap opened wider lets more water through each minute, so the flow rate rises and the barrel fills sooner. Factor 2: water pressure. Higher pressure in the supply pushes water through the hose faster, raising the litres per minute delivered"],
+    "<b>Model answer:</b> The flow rate rose from \\(40 \\div 8 = 5\\text{ L/min}\\) to \\(40 \\div 5 = 8\\text{ L/min}\\). Two factors explain the change. First, the tap opening: on Wednesday the tap may have been opened wider, letting more water pass in each minute, which raises the flow rate. Second, the water pressure: higher pressure in the supply line pushes water through the hose faster, so more litres arrive per minute. Either factor raises the volume delivered per minute, and the barrel fills in less time.<br><br><b>Marking points:</b> 1 mark for each factor correctly identified (for example tap opening, water pressure, a kink or blockage in the hose), to a maximum of 2. 1 mark for a correct explanation of how at least one factor changes the volume delivered per minute.",
+    {});}
+]));
+E("u6-rate-factors-why",6,["6.21"],2,"var",varset([
+  function(){return mcq("A cyclist rides the same route on two days. On the calm day her speed is \\(24\\text{ km/h}\\); riding into a strong headwind, her speed is \\(16\\text{ km/h}\\). Which statement correctly identifies the factor and explains its effect?",
+    "The headwind is the factor: it pushes against the cyclist, so she covers less distance in each hour and her speed (distance per hour) falls",
+    ["The headwind is the factor: it pushes against the cyclist, so she covers more distance in each hour and her speed (distance per hour) rises","The route is the factor: it is longer on the windy day, so she covers less distance in each hour and her speed (distance per hour) falls","The bicycle is the factor: it weighs more on the windy day, so she covers less distance in each hour and her speed (distance per hour) falls"],
+    "The route and the bicycle are the same on both days; what changed is the wind. A headwind resists the cyclist's motion, so in each hour she covers less distance, and the rate (distance per hour) drops from \\(24\\) to \\(16\\text{ km/h}\\). The correct statement is the one with <b>the headwind lowering the distance covered per hour</b>.",
+    {});},
+  function(){return mcq("A pump fills a tank at \\(50\\) litres per minute when the water pressure is high. When the pressure drops, the same pump fills the tank at \\(30\\) litres per minute. Which statement correctly identifies the factor and explains its effect?",
+    "The water pressure is the factor: lower pressure pushes water through the pump more slowly, so fewer litres are delivered in each minute",
+    ["The water pressure is the factor: lower pressure pushes water through the pump more quickly, so more litres are delivered in each minute","The tank is the factor: it holds more water when the pressure drops, so fewer litres are delivered in each minute of pumping","The pump is the factor: it runs for more minutes when the pressure drops, so fewer litres are delivered in each minute"],
+    "The tank and the pump are unchanged; what changed is the pressure. Lower pressure moves water more slowly, so the volume delivered per minute falls from \\(50\\) to \\(30\\) litres. The correct statement is the one with <b>lower pressure delivering fewer litres per minute</b>.",
+    {});},
+  function(){return mcq("A bottling line fills \\(120\\) bottles per hour. When a second identical line is added, the plant fills \\(240\\) bottles per hour. Which statement correctly identifies the factor and explains its effect?",
+    "The number of lines is the factor: two lines fill bottles at the same time, so twice as many bottles are completed in each hour",
+    ["The number of lines is the factor: two lines fill bottles at the same time, so half as many bottles are completed in each hour","The bottles are the factor: they are larger when two lines run, so twice as many bottles are completed in each hour of work","The hour is the factor: it contains more minutes when two lines run, so twice as many bottles are completed in each hour"],
+    "What changed is the number of lines working in parallel. Each line keeps its own pace, but together they complete two bottles in the time one line completes one, so the rate doubles from \\(120\\) to \\(240\\) bottles per hour. The correct statement is the one with <b>two lines completing twice as many bottles per hour</b>.",
+    {});}
+]));
+
 /* PK tranche pass for Unit 6. pkFor is Cluster 6's dependent
    indicator list from the prior knowledge map. */
 var PKT_U6_FOR=["6.2","6.5","6.9","6.10","6.14","6.16","6.17","6.19","6.23"];
@@ -9443,6 +9919,18 @@ BANK.forEach(function(e){var t=PKT_U6[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u7-tables-guests=2
 // CRMARKS: u7-logic-var=3
 // BIMODAL: u7-logic-var=b
+// Class B build, November 22, 2026: written-form and dual-form
+// registration for the new 2.5 and 2.6 entries in this file.
+// CRMARKS: u7-proof-write=3
+// CRMARKS: u7-proof-valid=3
+// CRMARKS: u7-proof-order=2
+// CRMARKS: u7-trick-proof=3
+// CRMARKS: u7-trick-valid=2
+// CRMARKS: u7-trick-step=2
+// BIMODAL: u7-proof-valid=b
+// BIMODAL: u7-proof-order=b
+// BIMODAL: u7-trick-valid=b
+// BIMODAL: u7-trick-step=b
 E("u7-pattern-next",7,["2.1"],2,"gen",function(){
   var a=ri(2,6),b=ri(1,9);var terms=[1,2,3,4].map(function(n){return a*n+b;});
   var askN=pick([8,10,12]);var ans=a*askN+b;
@@ -9974,6 +10462,139 @@ E("u7-cycle-mc",7,["2.9"],2,"gen",function(){
     sol,{mode:mode,gi:gi,round:round,st:st});
 });
 
+/* ============ Class B build (November 22, 2026) ============
+   New entries for indicators 2.5 and 2.6, authored CR-first on
+   Jason's Class B ruling: the written form carries the production
+   (write the proof), and the recognition form rides as the
+   bimodal companion. Manifest lines for these entries are at the
+   top of this file with the other manifests. */
+
+/* --- 2.5: prove a conjecture, using deductive reasoning. The
+   primary entry is a native written item: the student writes the
+   proof and self-checks against the model proof and the marking
+   points. --- */
+E("u7-proof-write",7,["2.5"],3,"var",varset([
+  function(){return textq("Conjecture: the sum of three consecutive whole numbers is always divisible by \\(3\\). Write a deductive proof of this conjecture. Use a variable for the first number so the proof covers every case.",
+    ["Let the numbers be n, n + 1 and n + 2. Their sum is 3n + 3 = 3(n + 1), a multiple of 3, so the sum is divisible by 3"],
+    "<b>Model answer:</b> Let the three consecutive whole numbers be \\(n\\), \\(n + 1\\) and \\(n + 2\\). Their sum is \\(n + (n + 1) + (n + 2) = 3n + 3\\). Factoring, \\(3n + 3 = 3(n + 1)\\), which is \\(3\\) times a whole number. So the sum is a multiple of \\(3\\), and therefore divisible by \\(3\\), for every starting number.<br><br><b>Marking points:</b> 1 mark for representing the three numbers as \\(n\\), \\(n + 1\\) and \\(n + 2\\). 1 mark for simplifying the sum to \\(3n + 3\\). 1 mark for factoring as \\(3(n + 1)\\) and concluding that the sum is divisible by \\(3\\) in every case.",
+    {});},
+  function(){return textq("Conjecture: the product of two consecutive whole numbers is always even. Write a deductive proof of this conjecture. Use a variable for the first number so the proof covers every case.",
+    ["One of two consecutive whole numbers is even. If n is even the product n(n + 1) has the even factor n; if n is odd then n + 1 is even and the product has the even factor n + 1. Either way the product is a multiple of 2, so it is even"],
+    "<b>Model answer:</b> Let the two consecutive whole numbers be \\(n\\) and \\(n + 1\\). Of two consecutive numbers, one is always even. If \\(n\\) is even, the product \\(n(n + 1)\\) has the even number \\(n\\) as a factor, so the product is a multiple of \\(2\\). If \\(n\\) is odd, then \\(n + 1\\) is even, and the product again has an even factor, so it is a multiple of \\(2\\). Either way, the product is even, for every starting number.<br><br><b>Marking points:</b> 1 mark for representing the numbers as \\(n\\) and \\(n + 1\\) and noting that one of them must be even. 1 mark for covering both cases (\\(n\\) even, and \\(n\\) odd so \\(n + 1\\) is even). 1 mark for concluding that the product always has an even factor, so it is a multiple of \\(2\\) and is even.",
+    {});},
+  function(){return textq("Conjecture: the sum of two consecutive odd numbers is always divisible by \\(4\\). Write a deductive proof of this conjecture. Use a variable so the proof covers every case.",
+    ["Consecutive odd numbers can be written as 2a + 1 and 2a + 3. Their sum is 4a + 4 = 4(a + 1), a multiple of 4, so the sum is divisible by 4"],
+    "<b>Model answer:</b> Write the two consecutive odd numbers as \\(2a + 1\\) and \\(2a + 3\\). Their sum is \\((2a + 1) + (2a + 3) = 4a + 4\\). Factoring, \\(4a + 4 = 4(a + 1)\\), which is \\(4\\) times a whole number. So the sum is a multiple of \\(4\\), and therefore divisible by \\(4\\), for every pair of consecutive odd numbers.<br><br><b>Marking points:</b> 1 mark for writing consecutive odd numbers as \\(2a + 1\\) and \\(2a + 3\\). 1 mark for simplifying the sum to \\(4a + 4\\). 1 mark for factoring as \\(4(a + 1)\\) and concluding divisibility by \\(4\\) in every case.",
+    {});},
+  function(){return textq("Conjecture: the square of an odd number is always odd. Write a deductive proof of this conjecture. Use a variable so the proof covers every case.",
+    ["An odd number can be written as 2k + 1. Its square is 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1, one more than a multiple of 2, so the square is odd"],
+    "<b>Model answer:</b> Write the odd number as \\(2k + 1\\). Squaring gives \\((2k + 1)^2 = 4k^2 + 4k + 1\\). The first two terms factor as \\(2(2k^2 + 2k)\\), a multiple of \\(2\\), so the square is \\(2(2k^2 + 2k) + 1\\): one more than a multiple of \\(2\\). A number one more than a multiple of \\(2\\) is odd, so the square of an odd number is always odd.<br><br><b>Marking points:</b> 1 mark for writing the odd number as \\(2k + 1\\). 1 mark for expanding the square to \\(4k^2 + 4k + 1\\). 1 mark for rewriting it as \\(2(2k^2 + 2k) + 1\\) and concluding that it is odd.",
+    {});}
+]));
+/* --- 2.5 recognition companion: choose the valid proof. The
+   written form of this bimodal entry is the same task answered
+   in writing and self-checked against the worked solution. --- */
+E("u7-proof-valid",7,["2.5"],3,"var",varset([
+  function(){return mcq("Conjecture: the sum of five consecutive whole numbers is always divisible by \\(5\\). Which option is a valid deductive proof of this conjecture?",
+    "Let the numbers be \\(n\\), \\(n + 1\\), \\(n + 2\\), \\(n + 3\\) and \\(n + 4\\). Their sum is \\(5n + 10 = 5(n + 2)\\), a multiple of \\(5\\), so the sum is divisible by \\(5\\) for every starting number",
+    ["\\(1 + 2 + 3 + 4 + 5 = 15\\), \\(2 + 3 + 4 + 5 + 6 = 20\\), \\(3 + 4 + 5 + 6 + 7 = 25\\) and \\(10 + 11 + 12 + 13 + 14 = 60\\) - every sum tried is divisible by \\(5\\), so the claim holds for all cases",
+     "Let the numbers be \\(n\\), \\(n + 1\\), \\(n + 2\\), \\(n + 3\\) and \\(n + 4\\). Their sum is \\(5n + 10 = 5n + 2\\), and since \\(5n\\) is a multiple of \\(5\\), the sum is divisible by \\(5\\) for every starting number",
+     "A spreadsheet added five consecutive whole numbers for every starting number from \\(1\\) to \\(500\\), small runs and large runs alike, and every one of the \\(500\\) sums came out divisible by \\(5\\), with no exception found"],
+    "Only the first option proves the claim for all cases at once: the variable \\(n\\) stands for every possible starting number, and the sum factors as \\(5(n + 2)\\). The two checking options are inductive, and the remaining option has an algebra error: \\(5n + 10\\) factors as \\(5(n + 2)\\), not \\(5n + 2\\). The valid proof is the one that ends with the sum written as <b>\\(5(n + 2)\\)</b>.",
+    {});},
+  function(){return mcq("Conjecture: the sum of an even number and an odd number is always odd. Which option is a valid deductive proof of this conjecture?",
+    "Write the even number as \\(2a\\) and the odd number as \\(2b + 1\\). Their sum is \\(2a + 2b + 1 = 2(a + b) + 1\\), one more than a multiple of \\(2\\), so the sum is odd for every such pair",
+    ["\\(2 + 3 = 5\\), \\(4 + 7 = 11\\), \\(10 + 15 = 25\\), \\(22 + 9 = 31\\) and \\(100 + 57 = 157\\) - in every case tried, an even number plus an odd number gives an odd number, so the claim holds in general",
+     "Write the even number as \\(2a\\) and the odd number as \\(2b + 1\\). Their sum is \\(2ab + 1\\), and since \\(2ab\\) is a multiple of \\(2\\), adding \\(1\\) gives an odd number for every pair of values of \\(a\\) and \\(b\\)",
+     "The claim sits in a standard family of results: odd plus odd is even, even plus even is even, so even plus odd must be odd to complete the pattern, and the pattern itself is the proof of the claim"],
+    "The valid proof writes both numbers in general form and factors the sum as \\(2(a + b) + 1\\): one more than a multiple of \\(2\\), which is exactly what odd means. Adding examples, even many of them, is induction and cannot prove the claim. The option with \\(2ab + 1\\) has an algebra error: \\(2a + (2b + 1)\\) is \\(2a + 2b + 1\\), not \\(2ab + 1\\). The valid proof is the one giving the sum as <b>\\(2(a + b) + 1\\)</b>.",
+    {});},
+  function(){return mcq("Conjecture: the difference between two consecutive square numbers is always odd. Which option is a valid deductive proof of this conjecture?",
+    "The consecutive squares are \\(n^2\\) and \\((n + 1)^2\\). Their difference is \\((n + 1)^2 - n^2 = n^2 + 2n + 1 - n^2 = 2n + 1\\), one more than a multiple of \\(2\\), so the difference is odd for every value of \\(n\\)",
+    ["\\(1, 4, 9, 16, 25\\): the differences are \\(3, 5, 7\\) and \\(9\\), and going further, \\(36 - 25 = 11\\) and \\(49 - 36 = 13\\) - every difference computed is odd, so the difference is odd in every case",
+     "The consecutive squares are \\(n^2\\) and \\((n + 1)^2\\). Expanding, \\((n + 1)^2 = n^2 + 1\\), so the difference is \\(1\\), and since \\(1\\) is odd, the difference is odd for every value of \\(n\\) that can be chosen",
+     "A calculator squared the whole numbers from \\(1\\) to \\(1{,}000\\) and subtracted each square from the next one, and every one of the differences it produced was odd, with no even difference appearing anywhere in the list"],
+    "The valid proof expands \\((n + 1)^2\\) correctly as \\(n^2 + 2n + 1\\), so the difference simplifies to \\(2n + 1\\), one more than a multiple of \\(2\\). The option claiming \\((n + 1)^2 = n^2 + 1\\) drops the middle term, so its conclusion, although it lands on an odd number, is not proved. Lists and calculator sweeps are induction: they can support the conjecture but never settle it. The valid proof is the one ending with the difference as <b>\\(2n + 1\\)</b>.",
+    {});}
+]));
+/* --- 2.5 recognition companion: order the steps of a proof, or
+   complete its missing step. --- */
+E("u7-proof-order",7,["2.5"],2,"var",varset([
+  function(){return mcq("A proof shows that the sum of four consecutive whole numbers is always even. The four steps are shown here out of order.<br>Step W: Factor out \\(2\\): the sum is \\(2(2n + 3)\\).<br>Step X: Write the numbers as \\(n\\), \\(n + 1\\), \\(n + 2\\) and \\(n + 3\\).<br>Step Y: The sum is a multiple of \\(2\\), so it is even.<br>Step Z: Add the numbers: the sum is \\(4n + 6\\).<br>In which order do the steps make a valid proof?",
+    "X, Z, W, Y",
+    ["X, W, Z, Y","Z, X, W, Y","X, Z, Y, W"],
+    "A proof has to build in order: first represent the numbers (X), then add them (Z), then factor (W), and only then conclude (Y). Factoring before adding, or concluding before factoring, breaks the chain: each step must follow from the ones before it. The valid order is <b>X, Z, W, Y</b>.",
+    {});},
+  function(){return mcq("A proof shows that the square of an even number is always divisible by \\(4\\).<br>Step 1: Write the even number as \\(2k\\).<br>Step 2: Square it: \\((2k)^2 = 4k^2\\).<br>Step 3: MISSING.<br>Step 4: So the square is divisible by \\(4\\), for every even number.<br>Which statement correctly completes Step 3?",
+    "\\(4k^2 = 4(k^2)\\), and \\(k^2\\) is a whole number, so the square is \\(4\\) times a whole number",
+    ["\\(4k^2\\) is even, and every even number is divisible by \\(4\\), so the square is divisible by \\(4\\) as required","\\(4k^2 = (4k)^2\\), and a square number is always divisible by \\(4\\) when its root is an even number","Step 3 is not needed: \\(4k^2\\) already shows the factor \\(4\\) at the front, so the proof can end at Step 2"],
+    "Step 3 has to connect \\(4k^2\\) to the conclusion: writing it as \\(4(k^2)\\) shows the square is \\(4\\) times the whole number \\(k^2\\), which is what divisible by \\(4\\) means. The claim that every even number is divisible by \\(4\\) is false (\\(6\\) is even but not divisible by \\(4\\)) and \\((4k)^2\\) is \\(16k^2\\), not \\(4k^2\\). The completing step is <b>\\(4k^2 = 4(k^2)\\)</b>.",
+    {});},
+  function(){return mcq("A proof shows that the product of an even number and an odd number is always even. The four steps are shown here out of order.<br>Step W: Factor out \\(2\\): the product is \\(2(2ab + a)\\).<br>Step X: The product is a multiple of \\(2\\), so it is even.<br>Step Y: Write the even number as \\(2a\\) and the odd number as \\(2b + 1\\).<br>Step Z: Multiply: \\(2a(2b + 1) = 4ab + 2a\\).<br>In which order do the steps make a valid proof?",
+    "Y, Z, W, X",
+    ["Y, W, Z, X","Z, Y, W, X","Y, Z, X, W"],
+    "The proof must first set up the general forms (Y), then multiply them (Z), then factor out the \\(2\\) (W), and only then conclude the product is even (X). Any order that factors before multiplying, or concludes before factoring, uses a result that has not been established yet. The valid order is <b>Y, Z, W, X</b>.",
+    {});}
+]));
+/* --- 2.6: prove algebraic and number relationships. Primary
+   entry: write the proof (number tricks, divisibility). --- */
+E("u7-trick-proof",7,["2.6"],3,"var",varset([
+  function(){return textq("Number trick: pick a number, double it, add \\(10\\), divide by \\(2\\), then subtract your starting number. The result is always \\(5\\). Write a proof that the trick always works, using \\(n\\) for the starting number.",
+    ["Start with n. Doubling gives 2n, adding 10 gives 2n + 10, dividing by 2 gives n + 5, and subtracting the starting number gives 5. The n cancels, so the result is 5 for every starting number"],
+    "<b>Model answer:</b> Start with \\(n\\). Double it: \\(2n\\). Add \\(10\\): \\(2n + 10\\). Divide by \\(2\\): \\(n + 5\\). Subtract the starting number: \\((n + 5) - n = 5\\). The starting number cancels completely, so the result is \\(5\\) no matter which number was picked.<br><br><b>Marking points:</b> 1 mark for using \\(n\\) and tracking it correctly through the doubling and the addition (\\(2n\\), then \\(2n + 10\\)). 1 mark for dividing by \\(2\\) to get \\(n + 5\\). 1 mark for subtracting \\(n\\) and concluding that the result is always \\(5\\), because the starting number cancels.",
+    {});},
+  function(){return textq("A two-digit number has tens digit \\(a\\) and units digit \\(b\\). Write a proof that the number plus the number with its digits reversed is always divisible by \\(11\\).",
+    ["The number is 10a + b and the reversed number is 10b + a. Their sum is 11a + 11b = 11(a + b), a multiple of 11, so the sum is divisible by 11"],
+    "<b>Model answer:</b> The number is \\(10a + b\\), and the number with its digits reversed is \\(10b + a\\). Adding them: \\((10a + b) + (10b + a) = 11a + 11b = 11(a + b)\\). The sum is \\(11\\) times the whole number \\(a + b\\), so it is a multiple of \\(11\\), and therefore divisible by \\(11\\), for every two-digit number.<br><br><b>Marking points:</b> 1 mark for writing the number as \\(10a + b\\) and its reverse as \\(10b + a\\). 1 mark for adding to get \\(11a + 11b\\). 1 mark for factoring as \\(11(a + b)\\) and concluding divisibility by \\(11\\).",
+    {});},
+  function(){return textq("Write a proof that a two-digit number is divisible by \\(3\\) exactly when the sum of its digits is divisible by \\(3\\). Use \\(a\\) for the tens digit and \\(b\\) for the units digit.",
+    ["The number is 10a + b = 9a + (a + b). Since 9a is divisible by 3, the number is divisible by 3 exactly when a + b is divisible by 3"],
+    "<b>Model answer:</b> The number is \\(10a + b\\). Rewrite \\(10a\\) as \\(9a + a\\): the number is \\(9a + (a + b)\\). The term \\(9a\\) is a multiple of \\(3\\), so it never affects divisibility by \\(3\\): the number is divisible by \\(3\\) exactly when the remaining part, \\(a + b\\), is divisible by \\(3\\). That is, a two-digit number is divisible by \\(3\\) exactly when the sum of its digits is.<br><br><b>Marking points:</b> 1 mark for writing the number as \\(10a + b\\). 1 mark for rewriting it as \\(9a + (a + b)\\). 1 mark for concluding, from \\(9a\\) being a multiple of \\(3\\), that divisibility rests on \\(a + b\\) alone, in both directions.",
+    {});},
+  function(){return textq("Number trick: pick a number, add \\(3\\), double the result, subtract \\(6\\), then divide by \\(2\\). The result is always your starting number. Write a proof that the trick always works, using \\(n\\) for the starting number.",
+    ["Start with n. Adding 3 gives n + 3, doubling gives 2n + 6, subtracting 6 gives 2n, and dividing by 2 gives n, the starting number"],
+    "<b>Model answer:</b> Start with \\(n\\). Add \\(3\\): \\(n + 3\\). Double it: \\(2n + 6\\). Subtract \\(6\\): \\(2n\\). Divide by \\(2\\): \\(n\\). The calculation returns \\(n\\) itself, so the result is the starting number, whichever number was picked.<br><br><b>Marking points:</b> 1 mark for using \\(n\\) and tracking it through the addition and the doubling (\\(n + 3\\), then \\(2n + 6\\)). 1 mark for subtracting \\(6\\) to reach \\(2n\\). 1 mark for dividing by \\(2\\) and concluding that the result is always the starting number.",
+    {});}
+]));
+/* --- 2.6 recognition companion: choose the valid proof of a
+   number relationship. --- */
+E("u7-trick-valid",7,["2.6"],2,"var",varset([
+  function(){return mcq("Claim: every whole number that is divisible by \\(6\\) is also divisible by \\(3\\). Which option is a valid proof of this claim?",
+    "A number divisible by \\(6\\) can be written as \\(6k\\). Since \\(6k = 3(2k)\\), the number is \\(3\\) times a whole number, so it is divisible by \\(3\\)",
+    ["\\(6\\), \\(12\\), \\(18\\), \\(24\\), \\(30\\) and \\(36\\) are all divisible by \\(6\\), and each of them is also divisible by \\(3\\), so every multiple of \\(6\\) behaves this way","A number divisible by \\(6\\) must end in an even digit, and numbers divisible by \\(3\\) also end in even digits very often, so divisibility by \\(6\\) brings divisibility by \\(3\\) along with it","Divisibility by \\(3\\) is tested by adding the digits: \\(12\\) is divisible by \\(6\\) and its digits add to \\(3\\), and this check on a typical multiple of \\(6\\) settles the claim for all of them"],
+    "The valid proof uses the general form: a multiple of \\(6\\) is \\(6k\\), and \\(6k = 3(2k)\\) shows it is also a multiple of \\(3\\). Listing multiples is induction, the digit-sum option tests one number only, and the last digit of a number says nothing about divisibility by \\(3\\) (\\(14\\) ends in an even digit and is not divisible by \\(3\\)). The valid proof is the one writing the number as <b>\\(6k = 3(2k)\\)</b>.",
+    {});},
+  function(){return mcq("Claim: the sum of three consecutive odd numbers is always odd. Which option is a valid proof of this claim?",
+    "Write the numbers as \\(2a + 1\\), \\(2a + 3\\) and \\(2a + 5\\). Their sum is \\(6a + 9 = 2(3a + 4) + 1\\), one more than a multiple of \\(2\\), so the sum is odd for every starting point",
+    ["\\(1 + 3 + 5 = 9\\), \\(3 + 5 + 7 = 15\\), \\(7 + 9 + 11 = 27\\) and \\(21 + 23 + 25 = 69\\) - every sum of three consecutive odd numbers that was tried came out odd, so the sum is always odd","Write the numbers as \\(2a + 1\\), \\(2a + 3\\) and \\(2a + 5\\). Their sum is \\(6a + 9 = 6(a + 9)\\), and a multiple of \\(6\\) reached this way is odd whenever \\(a\\) itself is odd","A spreadsheet added three consecutive odd numbers for every odd starting number up to \\(999\\), and every sum in the list was odd, with no even sum appearing anywhere in the results"],
+    "The valid proof simplifies the sum to \\(2(3a + 4) + 1\\): one more than a multiple of \\(2\\), which is what odd means, for every \\(a\\). The factoring option is wrong twice over: \\(6a + 9\\) is not \\(6(a + 9)\\), and multiples of \\(6\\) are even, not odd. Trying cases, by hand or by spreadsheet, is induction and cannot prove the claim. The valid proof is the one ending with the sum as <b>\\(2(3a + 4) + 1\\)</b>.",
+    {});},
+  function(){return mcq("A mental mathematics strategy says: to multiply a number by \\(5\\), multiply it by \\(10\\) and then halve the result. Which option proves that this strategy always works?",
+    "Multiplying by \\(10\\) and then halving gives \\(\\frac{10n}{2} = 5n\\), which is exactly the number multiplied by \\(5\\), so the strategy gives the same result as multiplying by \\(5\\) directly",
+    ["\\(7 \\times 5\\): doubling method, \\(7 \\times 10 = 70\\) and half of \\(70\\) is \\(35\\). \\(12 \\times 5\\): \\(12 \\times 10 = 120\\) and half of \\(120\\) is \\(60\\). Both match the direct answers, so the strategy works","Since \\(10\\) is twice \\(5\\), multiplying by \\(10\\) gives twice the wanted answer, and halving a doubled answer returns the wanted answer only when the starting number is an even number","The strategy works because \\(5\\) is half of \\(10\\), and any strategy built by pairing an operation with its inverse operation in this way is guaranteed to give the right result"],
+    "The valid proof is pure algebra: \\(\\frac{10n}{2} = 5n\\) for every \\(n\\), with no restriction on the starting number. The halving step works for odd starting numbers too (\\(7 \\times 10 = 70\\), half is \\(35\\)), so the even-number restriction is false. Worked examples illustrate the strategy but do not prove it, and the inverse-operation claim is a slogan, not an argument. The valid proof is the one giving <b>\\(\\frac{10n}{2} = 5n\\)</b>.",
+    {});}
+]));
+/* --- 2.6 recognition companion: complete the missing step of a
+   proof of a number relationship. --- */
+E("u7-trick-step",7,["2.6"],2,"var",varset([
+  function(){return mcq("A proof shows that the difference between a two-digit number and the number with its digits reversed is always divisible by \\(9\\).<br>Step 1: With digits \\(a\\) and \\(b\\), the number is \\(10a + b\\) and its reverse is \\(10b + a\\).<br>Step 2: Subtract: \\((10a + b) - (10b + a) = 9a - 9b\\).<br>Step 3: MISSING.<br>Step 4: So the difference is divisible by \\(9\\).<br>Which statement correctly completes Step 3?",
+    "\\(9a - 9b = 9(a - b)\\), which is \\(9\\) times a whole number",
+    ["\\(9a - 9b = 9ab\\), which is \\(9\\) times a whole number","\\(9a - 9b\\) is a difference of multiples of \\(9\\) only when \\(a\\) is the larger digit","\\(9a - 9b = (a - b)^9\\), which is a power of \\(9\\)"],
+    "Step 3 must factor out the \\(9\\): \\(9a - 9b = 9(a - b)\\), and \\(a - b\\) is a whole number (it can be negative or zero, and the difference is still a multiple of \\(9\\)). The product \\(9ab\\) is a different expression, and \\((a - b)^9\\) is not equal to \\(9a - 9b\\) either. No condition on the digits is needed. The completing step is <b>\\(9a - 9b = 9(a - b)\\)</b>.",
+    {});},
+  function(){return mcq("A proof shows that a number trick always ends at \\(2\\): pick a number, multiply it by \\(3\\), add \\(6\\), divide by \\(3\\), then subtract your starting number.<br>Step 1: Start with \\(n\\). Multiply by \\(3\\): \\(3n\\).<br>Step 2: Add \\(6\\): \\(3n + 6\\).<br>Step 3: MISSING.<br>Step 4: Subtract \\(n\\): the result is \\(2\\).<br>Which statement correctly completes Step 3?",
+    "Divide by \\(3\\): \\(\\frac{3n + 6}{3} = n + 2\\)",
+    ["Divide by \\(3\\): \\(\\frac{3n + 6}{3} = 3n + 2\\)","Divide by \\(3\\): \\(\\frac{3n + 6}{3} = n + 6\\)","Divide by \\(3\\): \\(\\frac{3n + 6}{3} = 9n + 18\\)"],
+    "Dividing by \\(3\\) divides every term: \\(3n \\div 3 = n\\) and \\(6 \\div 3 = 2\\), giving \\(n + 2\\), and Step 4 then leaves \\(2\\) as the trick promises. Dividing only one term is the classic error in the two middle options, and the last option multiplies instead of dividing. The completing step is <b>\\(\\frac{3n + 6}{3} = n + 2\\)</b>.",
+    {});},
+  function(){return mcq("A proof shows that a two-digit number is divisible by \\(9\\) exactly when the sum of its digits is divisible by \\(9\\).<br>Step 1: With digits \\(a\\) and \\(b\\), the number is \\(10a + b\\).<br>Step 2: Rewrite: \\(10a + b = 9a + (a + b)\\).<br>Step 3: MISSING.<br>Step 4: So divisibility by \\(9\\) rests on the digit sum \\(a + b\\) alone.<br>Which statement correctly completes Step 3?",
+    "\\(9a\\) is a multiple of \\(9\\), so it never affects divisibility by \\(9\\), and the whole expression is divisible by \\(9\\) exactly when \\(a + b\\) is",
+    ["\\(9a\\) is a multiple of \\(9\\), so the number is divisible by \\(9\\) whatever digits are chosen, and the digit sum is not needed","\\(a + b\\) is smaller than the number itself, so it cannot affect whether the number is divisible by \\(9\\) in either direction","\\(9a + (a + b)\\) rearranges to \\(10(a + b)\\), so the number is \\(10\\) times the digit sum and the test follows from that"],
+    "Step 3 is the hinge of the proof: one part of the expression, \\(9a\\), is always a multiple of \\(9\\), so the divisibility of the whole number is decided by the other part, \\(a + b\\). The first distractor overclaims (the number \\(10\\), with digit sum \\(1\\), is not divisible by \\(9\\)), and \\(9a + (a + b)\\) is \\(10a + b\\), not \\(10(a + b)\\). The completing step is the one stating that <b>\\(9a\\) never affects divisibility by \\(9\\)</b>.",
+    {});}
+]));
+
 /* PK tranche pass for Unit 7. pkFor is Cluster 7's dependent
    indicator list from the prior knowledge map. */
 var PKT_U7_FOR=["2.1","2.2","2.3","2.4","2.7","2.8"];
@@ -10042,6 +10663,21 @@ BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // CRMARKS: u8-error-num=1
 // BIMODAL: u8-error-var=b
 // BIMODAL: u8-error-gen=b
+// Class B build, November 22, 2026: written-form and dual-form
+// registration for the new 5.2 entries in this file.
+// CRMARKS: u8-nonpar-num=2
+// CRMARKS: u8-nonpar-pick=2
+// CRMARKS: u8-nonpar-explain=2
+// BIMODAL: u8-nonpar-pick=b
+// 5.7, folded into this build by Jason's reclassification,
+// November 22, 2026: written-response construction items with
+// replicability explanations, assessed like the Class B proof
+// items. The app never sees the drawing online; the self-check
+// model solution carries the steps.
+// CRMARKS: u8-construct-compass=3
+// CRMARKS: u8-construct-protractor=3
+// CRMARKS: u8-construct-order=2
+// BIMODAL: u8-construct-order=b
 E("u8-triangle-sum",8,["5.3"],1,"gen",function(){
   var a=ri(35,75),b=ri(35,75);while(a+b>160){b=ri(30,60);}
   var c=180-a-b;
@@ -10819,6 +11455,136 @@ E("u8-error-num",8,["5.10"],2,"gen",function(){
     "The student's calculation finds the third interior angle, not the exterior angle. An exterior angle of a triangle equals the sum of the two non-adjacent interior angles: \\[ \\begin{aligned} \\text{exterior angle} &= "+a4+" + "+b4+" \\\\ &= "+correct4+"^\\circ \\end{aligned} \\] The correct measure is <b>"+correct4+" degrees</b>.",
     {mode:mode,a:a4,b:b4,correct:correct4,w:wrong});
 });
+
+/* ============ Class B build (November 22, 2026) ============
+   New entries for indicator 5.2: verifying, with examples, that
+   if lines are not parallel, the angle properties do not apply.
+   Authored CR-first: the written forms do the calculation that
+   shows a named property failing. Manifest lines for these
+   entries are at the top of this file with the other manifests. */
+E("u8-nonpar-num",8,["5.2"],2,"gen",function(){
+  var mode=ri(0,2);
+  if(mode===0){
+    var A=ri(95,160),off=ri(6,30)*(Math.random()<0.5?-1:1),B=A+off,tries=0;
+    while((B<40||B>175)&&tries<40){off=ri(6,30)*(Math.random()<0.5?-1:1);B=A+off;tries++;}
+    var diff=Math.abs(A-B);
+    return numq("Two lines are cut by a transversal. The lines are not parallel. A pair of corresponding angles measures \\("+A+"^\\circ\\) and \\("+B+"^\\circ\\). If the lines were parallel, corresponding angles would be equal. By how many degrees do the two measures differ?",
+      diff,0.011,
+      "Corresponding angles are equal only when the lines are parallel. Here the measures are \\("+A+"^\\circ\\) and \\("+B+"^\\circ\\): \\[ \\begin{aligned} "+Math.max(A,B)+" - "+Math.min(A,B)+" &= "+diff+" \\end{aligned} \\] The measures are not equal, so the property fails for these lines. The two measures differ by <b>"+diff+" degrees</b>.",
+      {mode:mode,A:A,B:B,diff:diff});
+  }
+  if(mode===1){
+    var A2=ri(60,150),B2=ri(60,150),tries2=0;
+    while((A2+B2===180||A2+B2<140||A2+B2>220)&&tries2<60){B2=ri(60,150);tries2++;}
+    var S=A2+B2,miss=Math.abs(S-180);
+    return numq("Two lines are cut by a transversal. The lines are not parallel. A pair of co-interior angles measures \\("+A2+"^\\circ\\) and \\("+B2+"^\\circ\\). If the lines were parallel, co-interior angles would be supplementary. By how many degrees does the sum of the two measures miss \\(180^\\circ\\)?",
+      miss,0.011,
+      "Co-interior angles are supplementary only when the lines are parallel. Add the two measures and compare with \\(180^\\circ\\): \\[ \\begin{aligned} "+A2+" + "+B2+" &= "+S+" \\\\ |"+S+" - 180| &= "+miss+" \\end{aligned} \\] The sum is not \\(180^\\circ\\), so the property fails for these lines. The sum misses \\(180^\\circ\\) by <b>"+miss+" degrees</b>.",
+      {mode:mode,A:A2,B:B2,S:S,miss:miss});
+  }
+  var A3=ri(45,140),off3=ri(6,30)*(Math.random()<0.5?-1:1),B3=A3+off3,tries3=0;
+  while((B3<30||B3>170)&&tries3<40){off3=ri(6,30)*(Math.random()<0.5?-1:1);B3=A3+off3;tries3++;}
+  var diff3=Math.abs(A3-B3);
+  return numq("Two lines are cut by a transversal. The lines are not parallel. A pair of alternate interior angles measures \\("+A3+"^\\circ\\) and \\("+B3+"^\\circ\\). If the lines were parallel, alternate interior angles would be equal. By how many degrees do the two measures differ?",
+    diff3,0.011,
+    "Alternate interior angles are equal only when the lines are parallel. Here the measures are \\("+A3+"^\\circ\\) and \\("+B3+"^\\circ\\): \\[ \\begin{aligned} "+Math.max(A3,B3)+" - "+Math.min(A3,B3)+" &= "+diff3+" \\end{aligned} \\] The measures are not equal, so the property fails for these lines. The two measures differ by <b>"+diff3+" degrees</b>.",
+    {mode:mode,A:A3,B:B3,diff:diff3});
+});
+E("u8-nonpar-pick",8,["5.2"],2,"var",varset([
+  function(){return mcq("Which example shows that the angle properties of parallel lines do not apply when the lines are not parallel?",
+    "Two non-parallel lines are cut by a transversal, and a pair of corresponding angles measures \\(118^\\circ\\) and \\(104^\\circ\\): corresponding angles are equal only for parallel lines, and here they are not equal",
+    ["Two parallel lines are cut by a transversal, and a pair of corresponding angles measures \\(118^\\circ\\) and \\(118^\\circ\\), exactly the matching pair the property describes for parallel lines",
+     "Two non-parallel lines are cut by a transversal, and a pair of vertically opposite angles measures \\(104^\\circ\\) and \\(104^\\circ\\), which are equal to each other at the crossing",
+     "Two parallel lines are cut by a transversal, and a pair of co-interior angles measures \\(105^\\circ\\) and \\(75^\\circ\\), which add to \\(180^\\circ\\) as the property requires"],
+    "The demonstrating example needs non-parallel lines and a property failing: corresponding angles of \\(118^\\circ\\) and \\(104^\\circ\\) are not equal, so the parallel-line property does not hold. Vertically opposite angles are equal for any two lines, parallel or not, so that example shows nothing about parallel lines. The other two examples have parallel lines, where the properties are supposed to hold. The demonstrating example is the one with corresponding angles of <b>\\(118^\\circ\\) and \\(104^\\circ\\)</b>.",
+    {});},
+  function(){return mcq("Which example shows that the angle properties of parallel lines do not apply when the lines are not parallel?",
+    "Two non-parallel lines are cut by a transversal, and a pair of co-interior angles measures \\(96^\\circ\\) and \\(71^\\circ\\): co-interior angles are supplementary only for parallel lines, and \\(96 + 71 = 167\\), not \\(180\\)",
+    ["Two parallel lines are cut by a transversal, and a pair of alternate interior angles measures \\(83^\\circ\\) and \\(83^\\circ\\), a matching pair, exactly as the property states for parallel lines",
+     "Two non-parallel lines are cut by a transversal, and a pair of vertically opposite angles measures \\(71^\\circ\\) and \\(71^\\circ\\), which are equal to each other at the crossing",
+     "In a triangle drawn beside the lines, the three interior angles measure \\(55^\\circ\\), \\(65^\\circ\\) and \\(60^\\circ\\), and they add to \\(180^\\circ\\) in the usual way for triangles"],
+    "Co-interior angles between parallel lines must add to \\(180^\\circ\\). Here they add to \\(167^\\circ\\), so the property fails, and it fails because the lines are not parallel. The triangle angle sum is a different property that holds for every triangle, and vertically opposite angles are equal for any lines at all. The demonstrating example is the one with co-interior angles of <b>\\(96^\\circ\\) and \\(71^\\circ\\)</b>.",
+    {});},
+  function(){return mcq("Which example shows that the angle properties of parallel lines do not apply when the lines are not parallel?",
+    "Two non-parallel lines are cut by a transversal, and a pair of alternate interior angles measures \\(64^\\circ\\) and \\(81^\\circ\\): alternate interior angles are equal only for parallel lines, and here they are not equal",
+    ["Two parallel lines are cut by a transversal, and a pair of alternate interior angles measures \\(64^\\circ\\) and \\(64^\\circ\\), a matching pair, exactly as the property states for parallel lines",
+     "Two non-parallel lines are cut by a transversal, and one angle of \\(81^\\circ\\) sits beside an angle of \\(99^\\circ\\) on a straight line, and the two add to \\(180^\\circ\\) along the line",
+     "Two parallel lines are cut by a transversal, and a pair of corresponding angles measures \\(81^\\circ\\) and \\(81^\\circ\\), exactly the matching pair the property describes for parallel lines"],
+    "Alternate interior angles are equal only when the lines are parallel; \\(64^\\circ\\) and \\(81^\\circ\\) are not equal, so the property fails for these non-parallel lines. Angles on a straight line add to \\(180^\\circ\\) for any lines, so that example demonstrates nothing about parallel lines. The demonstrating example is the one with alternate interior angles of <b>\\(64^\\circ\\) and \\(81^\\circ\\)</b>.",
+    {});},
+  function(){return mcq("A student looks at a diagram of two lines cut by a transversal and says the lines must be parallel because the corresponding angles look equal. Which measurement would show that the student is wrong?",
+    "Measuring the corresponding angles as \\(121^\\circ\\) and \\(119^\\circ\\): the measures are close, but they are not equal, so the lines are not parallel and the property cannot be assumed",
+    ["Measuring the corresponding angles as \\(121^\\circ\\) and \\(121^\\circ\\): equal corresponding angles are a test for parallel lines, and this measurement would confirm the lines are parallel",
+     "Measuring a pair of co-interior angles as \\(121^\\circ\\) and \\(59^\\circ\\): the measures add to \\(180^\\circ\\), which is the supplementary test, and it would confirm the lines are parallel",
+     "Measuring one angle as \\(121^\\circ\\) and the angle beside it on a straight line as \\(59^\\circ\\): the pair adds to \\(180^\\circ\\) along any straight line, whatever the two lines do"],
+    "Looks are not a test. Corresponding angles of \\(121^\\circ\\) and \\(119^\\circ\\) differ by \\(2^\\circ\\), so they are not equal, the lines are not parallel, and the property the student wanted to use does not apply. The first two measurements would each confirm the lines are parallel, and angles on a straight line are supplementary for any diagram. The measurement that shows the student wrong is <b>\\(121^\\circ\\) and \\(119^\\circ\\)</b>.",
+    {});}
+]));
+E("u8-nonpar-explain",8,["5.2"],2,"var",varset([
+  function(){return textq("Two lines are cut by a transversal. The lines are not parallel. A pair of corresponding angles measures \\(132^\\circ\\) and \\(117^\\circ\\). A student claims the two angles must be equal because corresponding angles are equal. Use the measures to show that the claim fails, and state what would have to be true for the property to apply.",
+    ["The measures are 132 degrees and 117 degrees, which differ by 15 degrees, so the angles are not equal. Corresponding angles are equal only when the lines are parallel; for the property to apply, the lines would have to be parallel and the measures exactly equal"],
+    "<b>Model answer:</b> The two measures are \\(132^\\circ\\) and \\(117^\\circ\\). They are not equal: \\(132 - 117 = 15\\), so the angles differ by \\(15^\\circ\\), and the claim that they must be equal fails on these measures. Corresponding angles are equal only when the two lines are parallel. For the property to apply here, the lines would have to be parallel, and then the two corresponding measures would be exactly equal.<br><br><b>Marking points:</b> 1 mark for comparing the measures and showing they are not equal (a difference of \\(15^\\circ\\)). 1 mark for stating the condition: the property holds only for parallel lines, where the measures would be exactly equal.",
+    {});},
+  function(){return textq("Two lines are cut by a transversal. The lines are not parallel. A pair of co-interior angles measures \\(88^\\circ\\) and \\(79^\\circ\\). A student claims the two angles must add to \\(180^\\circ\\) because co-interior angles are supplementary. Use the measures to show that the claim fails, and state what would have to be true for the property to apply.",
+    ["The measures add to 88 + 79 = 167 degrees, not 180 degrees, so they are not supplementary. Co-interior angles are supplementary only when the lines are parallel; for the property to apply, the lines would have to be parallel and the measures would add to exactly 180 degrees"],
+    "<b>Model answer:</b> Add the measures: \\(88 + 79 = 167\\). The sum is \\(167^\\circ\\), not \\(180^\\circ\\), so the angles are not supplementary, and the claim fails on these measures. Co-interior angles are supplementary only when the two lines are parallel. For the property to apply here, the lines would have to be parallel, and then the two co-interior measures would add to exactly \\(180^\\circ\\).<br><br><b>Marking points:</b> 1 mark for adding the measures and showing the sum is \\(167^\\circ\\), not \\(180^\\circ\\). 1 mark for stating the condition: the property holds only for parallel lines, where the measures would add to exactly \\(180^\\circ\\).",
+    {});},
+  function(){return textq("Two lines are cut by a transversal. The lines are not parallel. A pair of alternate interior angles measures \\(64^\\circ\\) and \\(81^\\circ\\). A student claims the two angles must be equal because alternate interior angles are equal. Use the measures to show that the claim fails, and state what would have to be true for the property to apply.",
+    ["The measures are 64 degrees and 81 degrees, which differ by 17 degrees, so the angles are not equal. Alternate interior angles are equal only when the lines are parallel; for the property to apply, the lines would have to be parallel and the measures exactly equal"],
+    "<b>Model answer:</b> The two measures are \\(64^\\circ\\) and \\(81^\\circ\\). They are not equal: \\(81 - 64 = 17\\), so the angles differ by \\(17^\\circ\\), and the claim that they must be equal fails on these measures. Alternate interior angles are equal only when the two lines are parallel. For the property to apply here, the lines would have to be parallel, and then the two measures would be exactly equal.<br><br><b>Marking points:</b> 1 mark for comparing the measures and showing they are not equal (a difference of \\(17^\\circ\\)). 1 mark for stating the condition: the property holds only for parallel lines, where the measures would be exactly equal.",
+    {});}
+]));
+
+/* --- 5.7: construct parallel lines, given a compass or a
+   protractor, and explain the strategy used. Folded into this
+   build by Jason's reclassification (November 22, 2026): written
+   construction items whose model solutions carry the full step
+   sequence, so another student could replicate the line. --- */
+E("u8-construct-compass",8,["5.7"],2,"var",varset([
+  function(){return textq("A line \\(l\\) and a point \\(P\\) not on the line are given. Using a compass and a straightedge, construct the line through \\(P\\) parallel to \\(l\\), by copying a corresponding angle. Explain the steps of your construction in order, so that another student could replicate the line exactly, and say why the construction works.",
+    ["Step 1: Draw a transversal through P that crosses line l at a point Q. Step 2: With the compass centred at Q, draw an arc that crosses the transversal and line l, marking the corresponding angle at Q. Step 3: Keeping the same compass width, centre the compass at P and draw the same arc, crossing the transversal. Step 4: Set the compass to the width of the first arc, the distance between its two crossing points, and mark that width on the arc at P. Step 5: Draw the line through P and the marked point. The line is parallel to l because the corresponding angles are equal"],
+    "<b>Model answer:</b> Step 1: Draw a transversal through \\(P\\) that crosses line \\(l\\) at a point \\(Q\\). Step 2: With the compass centred at \\(Q\\), draw an arc that crosses the transversal and line \\(l\\); this arc marks the corresponding angle at \\(Q\\). Step 3: Keeping the same compass width, centre the compass at \\(P\\) and draw the same arc, crossing the transversal on the same side. Step 4: Set the compass to the width of the first arc, the distance between the two points where it crosses the transversal and line \\(l\\), and mark that width on the arc at \\(P\\). Step 5: Use the straightedge to draw the line through \\(P\\) and the marked point. The construction works because the angle at \\(P\\) is an exact copy of the angle at \\(Q\\): the corresponding angles are equal, so the line through \\(P\\) is parallel to \\(l\\).<br><br><b>Marking points:</b> 1 mark for drawing a transversal through \\(P\\) and marking the angle at \\(Q\\) with a compass arc. 1 mark for copying the angle at \\(P\\): same radius first, then the arc width transferred with the compass. 1 mark for drawing the line through \\(P\\) and the marked point, with the reason: equal corresponding angles make the lines parallel.",
+    {});},
+  function(){return textq("A line \\(m\\) and a point \\(A\\) not on the line are given. Using a compass and a straightedge, construct the line through \\(A\\) parallel to \\(m\\), by copying an alternate interior angle. Explain the steps of your construction in order, so that another student could replicate the line exactly, and say why the construction works.",
+    ["Step 1: Draw a transversal through A that crosses line m at a point B. Step 2: With the compass centred at B, draw an arc marking the interior angle on one side of the transversal. Step 3: Keeping the same compass width, centre the compass at A and draw the same arc on the opposite side of the transversal, inside the pair of lines. Step 4: Set the compass to the width of the first arc and mark that width on the arc at A. Step 5: Draw the line through A and the marked point. The line is parallel to m because the alternate interior angles are equal"],
+    "<b>Model answer:</b> Step 1: Draw a transversal through \\(A\\) that crosses line \\(m\\) at a point \\(B\\). Step 2: With the compass centred at \\(B\\), draw an arc that crosses the transversal and line \\(m\\), marking the interior angle on one side of the transversal. Step 3: Keeping the same compass width, centre the compass at \\(A\\) and draw the same arc on the opposite side of the transversal, so the two marked angles sit in alternate interior positions. Step 4: Set the compass to the width of the first arc, the distance between its two crossing points, and mark that width on the arc at \\(A\\). Step 5: Use the straightedge to draw the line through \\(A\\) and the marked point. The construction works because the angle at \\(A\\) is an exact copy of the angle at \\(B\\): the alternate interior angles are equal, so the line through \\(A\\) is parallel to \\(m\\).<br><br><b>Marking points:</b> 1 mark for drawing a transversal through \\(A\\) and marking the interior angle at \\(B\\) with a compass arc. 1 mark for copying the angle at \\(A\\) in the alternate (opposite side) position: same radius first, then the arc width transferred. 1 mark for drawing the line through \\(A\\) and the marked point, with the reason: equal alternate interior angles make the lines parallel.",
+    {});},
+  function(){return textq("On a workshop drawing, line \\(s\\) shows the front edge of a workbench, and point \\(T\\) marks where a guide rail must pass. Using a compass and a straightedge, construct the line through \\(T\\) parallel to \\(s\\), so the rail will run parallel to the edge. Explain the steps of your construction in order, so that another student could replicate the line exactly, and say why the construction works.",
+    ["Step 1: Draw a transversal through T that crosses line s at a point U. Step 2: With the compass centred at U, draw an arc that crosses the transversal and line s, marking the corresponding angle at U. Step 3: Keeping the same compass width, centre the compass at T and draw the same arc, crossing the transversal. Step 4: Set the compass to the width of the first arc and mark that width on the arc at T. Step 5: Draw the line through T and the marked point. The rail line is parallel to the edge because the corresponding angles are equal"],
+    "<b>Model answer:</b> Step 1: Draw a transversal through \\(T\\) that crosses line \\(s\\) at a point \\(U\\). Step 2: With the compass centred at \\(U\\), draw an arc that crosses the transversal and line \\(s\\); this arc marks the corresponding angle at \\(U\\). Step 3: Keeping the same compass width, centre the compass at \\(T\\) and draw the same arc, crossing the transversal on the same side. Step 4: Set the compass to the width of the first arc, the distance between the two points where it crosses the transversal and line \\(s\\), and mark that width on the arc at \\(T\\). Step 5: Use the straightedge to draw the line through \\(T\\) and the marked point; this is the line of the guide rail. The construction works because the angle at \\(T\\) is an exact copy of the angle at \\(U\\): the corresponding angles are equal, so the rail line is parallel to the bench edge.<br><br><b>Marking points:</b> 1 mark for drawing a transversal through \\(T\\) and marking the angle at \\(U\\) with a compass arc. 1 mark for copying the angle at \\(T\\): same radius first, then the arc width transferred with the compass. 1 mark for drawing the line through \\(T\\) and the marked point, with the reason: equal corresponding angles make the lines parallel.",
+    {});}
+]));
+E("u8-construct-protractor",8,["5.7"],2,"var",varset([
+  function(){return textq("A line \\(l\\) and a point \\(P\\) not on the line are given. Using a protractor and a straightedge, construct the line through \\(P\\) parallel to \\(l\\), by reproducing a corresponding angle. Explain the steps of your construction in order, so that another student could replicate the line exactly, and say why the construction works.",
+    ["Step 1: Draw a transversal through P that crosses line l at a point Q. Step 2: Use the protractor to measure the angle the transversal makes with line l at Q. Step 3: At P, use the protractor to draw an angle of the same measure in the corresponding position, on the same side of the transversal. Step 4: Draw the line through P along the new arm of the angle. The line is parallel to l because the corresponding angles are equal"],
+    "<b>Model answer:</b> Step 1: Draw a transversal through \\(P\\) that crosses line \\(l\\) at a point \\(Q\\). Step 2: Place the protractor at \\(Q\\) and measure the angle the transversal makes with line \\(l\\). Step 3: Place the protractor at \\(P\\) and draw an angle of exactly the same measure, in the corresponding position on the same side of the transversal, marking the point the new arm passes through. Step 4: Use the straightedge to draw the line through \\(P\\) and the marked point. The construction works because the angle at \\(P\\) matches the angle at \\(Q\\): the corresponding angles are equal, so the line through \\(P\\) is parallel to \\(l\\).<br><br><b>Marking points:</b> 1 mark for drawing a transversal through \\(P\\) and measuring the angle it makes with line \\(l\\) at \\(Q\\). 1 mark for reproducing the same angle at \\(P\\) in the corresponding position with the protractor. 1 mark for drawing the line through \\(P\\) along the new arm, with the reason: equal corresponding angles make the lines parallel.",
+    {});},
+  function(){return textq("A line \\(m\\) and a point \\(A\\) not on the line are given. Using a protractor and a straightedge, construct the line through \\(A\\) parallel to \\(m\\), using a pair of co-interior angles. Explain the steps of your construction in order, so that another student could replicate the line exactly, and say why the construction works.",
+    ["Step 1: Draw a transversal through A that crosses line m at a point B. Step 2: Use the protractor to measure the interior angle on one side of the transversal at B. Step 3: At A, on the same side of the transversal, use the protractor to draw the angle supplementary to the measured one, 180 degrees minus the measure at B. Step 4: Draw the line through A along the new arm. The line is parallel to m because the co-interior angles are supplementary"],
+    "<b>Model answer:</b> Step 1: Draw a transversal through \\(A\\) that crosses line \\(m\\) at a point \\(B\\). Step 2: Place the protractor at \\(B\\) and measure the interior angle on one side of the transversal. Step 3: Work out the supplement, \\(180^\\circ\\) minus the measured angle. At \\(A\\), on the same side of the transversal, use the protractor to draw an angle with that supplementary measure, marking the point the new arm passes through. Step 4: Use the straightedge to draw the line through \\(A\\) and the marked point. The construction works because the two co-interior angles add to \\(180^\\circ\\): co-interior angles are supplementary only for parallel lines, so the line through \\(A\\) is parallel to \\(m\\).<br><br><b>Marking points:</b> 1 mark for drawing a transversal through \\(A\\) and measuring the interior angle at \\(B\\). 1 mark for computing the supplement and drawing that angle at \\(A\\) on the same side of the transversal. 1 mark for drawing the line through \\(A\\) along the new arm, with the reason: supplementary co-interior angles make the lines parallel.",
+    {});},
+  function(){return textq("A gardener has marked one edge of a rectangular plot with a string line \\(g\\), and a stake at point \\(R\\) off the line shows where the opposite edge must pass. Using a protractor and a straightedge, construct the line through \\(R\\) parallel to \\(g\\), so the two edges of the plot are parallel. Explain the steps of your construction in order, so that another student could replicate the line exactly, and say why the construction works.",
+    ["Step 1: Draw a transversal through R that crosses line g at a point S. Step 2: Use the protractor to measure the angle the transversal makes with line g at S. Step 3: At R, use the protractor to draw an angle of the same measure in the corresponding position, on the same side of the transversal. Step 4: Draw the line through R along the new arm. The line is parallel to g because the corresponding angles are equal"],
+    "<b>Model answer:</b> Step 1: Draw a transversal through \\(R\\) that crosses the string line \\(g\\) at a point \\(S\\). Step 2: Place the protractor at \\(S\\) and measure the angle the transversal makes with line \\(g\\). Step 3: Place the protractor at \\(R\\) and draw an angle of exactly the same measure, in the corresponding position on the same side of the transversal, marking the point the new arm passes through. Step 4: Use the straightedge to draw the line through \\(R\\) and the marked point; this line is the opposite edge of the plot. The construction works because the angle at \\(R\\) matches the angle at \\(S\\): the corresponding angles are equal, so the opposite edge is parallel to the string line.<br><br><b>Marking points:</b> 1 mark for drawing a transversal through \\(R\\) and measuring the angle it makes with line \\(g\\) at \\(S\\). 1 mark for reproducing the same angle at \\(R\\) in the corresponding position with the protractor. 1 mark for drawing the line through \\(R\\) along the new arm, with the reason: equal corresponding angles make the lines parallel.",
+    {});}
+]));
+E("u8-construct-order",8,["5.7"],2,"var",varset([
+  function(){return mcq("A student constructs, with a compass and a straightedge, the line through point \\(P\\) parallel to line \\(l\\). The steps, not in order, are:<br><b>W.</b> Set the compass to the width of the first arc and mark that width on the arc at \\(P\\)<br><b>X.</b> Draw a transversal through \\(P\\) crossing line \\(l\\) at \\(Q\\)<br><b>Y.</b> Draw the line through \\(P\\) and the marked point<br><b>Z.</b> With the compass centred at \\(Q\\), then at \\(P\\) with the same width, draw matching arcs<br>What is the correct order of the steps?",
+    "X, Z, W, Y",
+    ["Z, X, W, Y","X, W, Z, Y","X, Z, Y, W"],
+    "The transversal (X) must exist before any angle can be marked on it. The matching arcs (Z) copy the angle at \\(Q\\) up to \\(P\\), the arc width (W) then fixes the exact direction, and only then can the line (Y) be drawn through \\(P\\) and the marked point. The correct order is <b>X, Z, W, Y</b>.",
+    {});},
+  function(){return mcq("A student constructs, with a protractor and a straightedge, the line through point \\(P\\) parallel to line \\(l\\). The steps, not in order, are:<br><b>W.</b> Draw the line through \\(P\\) along the new arm of the angle<br><b>X.</b> At \\(P\\), draw an angle of the same measure in the corresponding position<br><b>Y.</b> Draw a transversal through \\(P\\) crossing line \\(l\\) at \\(Q\\)<br><b>Z.</b> Measure, with the protractor, the angle the transversal makes with line \\(l\\) at \\(Q\\)<br>What is the correct order of the steps?",
+    "Y, Z, X, W",
+    ["Z, Y, X, W","Y, X, Z, W","Y, Z, W, X"],
+    "The transversal (Y) comes first, since both angles are measured against it. The angle at \\(Q\\) is measured (Z) before it can be reproduced, the matching angle is drawn at \\(P\\) (X), and the line (W) is drawn last, along the new arm. The correct order is <b>Y, Z, X, W</b>.",
+    {});},
+  function(){return mcq("A student is copying an angle with a compass, as part of constructing a line parallel to a given line. She has drawn the transversal, drawn the arc at the lower vertex, and drawn the same-radius arc at the upper vertex. What is the next step?",
+    "Set the compass to the width of the first arc and mark that width on the arc at the upper vertex",
+    ["Draw the parallel line at once, through the upper vertex and any point on its arc","Widen the compass to a larger radius and draw a second, bigger arc at the upper vertex","Erase the arc at the lower vertex, since the angle has now been copied to the top one"],
+    "Drawing the same-radius arc only places the new angle somewhere on a circle; its exact direction is fixed by transferring the width of the first arc, the distance between its two crossing points. The line cannot be drawn until that width has been marked, and changing the radius or erasing the first arc would destroy the copy. The next step is to <b>set the compass to the width of the first arc and mark that width on the arc at the upper vertex</b>.",
+    {});}
+]));
 
 /* PK tranche pass for Unit 8. pkFor is Cluster 8's dependent
    indicator list from the prior knowledge map. */
@@ -12770,10 +13536,10 @@ BANK.forEach(function(e){if(e.id==="u4-radical-equation"||e.id==="u4-extraneous"
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-ambiguous-design":3,"u1-angle-between-paths":4,"u1-angle-placement":2,"u1-bisector-post":3,"u1-corner-check":2,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-angle-mc":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-cosine-side-mc":2,"u1-crane-spread":2,"u1-crossing-distance":2,"u1-diagram-ambiguous-fit":2,"u1-diagram-both-laws":3,"u1-diagram-chain-setup":3,"u1-diagram-complete-plan":3,"u1-diagram-first-step":2,"u1-diagram-flaw-hunt":3,"u1-diagram-givens":2,"u1-diagram-law-pair":2,"u1-diagram-match":2,"u1-diagram-missing-mark":2,"u1-diagram-read-value":2,"u1-diagram-supplement":2,"u1-diagram-two-unknowns":2,"u1-diagram-unknown":2,"u1-double-plot":2,"u1-drone-split":3,"u1-farm-lanes":2,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-gate-diagonal":2,"u1-guy-wire":3,"u1-harbour-chain":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-kite-spar":2,"u1-law-choice":2,"u1-law-choice-context":2,"u1-law-diagram-choice":2,"u1-law-formula":2,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-mislabeled-diagram":2,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-pairing-diagram":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-pk-hypotenuse-pick":2,"u1-pk-label-sides":2,"u1-pk-opposite-read":2,"u1-pk-other-angle-ratio":2,"u1-pk-pythagoras":2,"u1-pk-ratio-decimal":2,"u1-pk-ratio-def":2,"u1-pk-ratio-equation":2,"u1-pk-ratio-from-figure":2,"u1-pk-ratio-letters":2,"u1-pk-ratio-unreduced":2,"u1-pk-right-check":2,"u1-pk-role-from-diagram":2,"u1-pk-role-value":2,"u1-pk-role-words":2,"u1-pk-solve-scene":2,"u1-pk-two-angles-roles":2,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-angle-mc":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-side-mc":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-sketch-values":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-graph":2,"u2-axis-from-intercepts":1,"u2-axis-from-vertex-form":2,"u2-axis-standard-mc":2,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-concavity":2,"u2-count-intercepts":1,"u2-domain-context":2,"u2-domain-range":2,"u2-dr-from-graph":2,"u2-dr-standard-form":2,"u2-dr-vertex-form":2,"u2-effect-of-a":2,"u2-effect-of-c":2,"u2-eq-from-characteristics":2,"u2-eq-from-table":3,"u2-eq-from-vertex":2,"u2-eq-intercepts-standard":2,"u2-equation-from-graph":2,"u2-evaluate-f":1,"u2-expand-vertex-form":2,"u2-factored-coeffs":2,"u2-factored-double-root":2,"u2-factored-from-graph":2,"u2-factored-max-height":2,"u2-factored-with-a":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-function-from-vertex-point":3,"u2-graph-description":2,"u2-graph-features":2,"u2-intercepts-read-graph":2,"u2-intercepts-set":2,"u2-match-graph-standard":2,"u2-match-graph-vertex-form":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-params-characteristics":2,"u2-perimeter-max-area":2,"u2-pk-dr-linear":2,"u2-pk-dr-segment-graph":2,"u2-pk-graph-data":2,"u2-pk-graph-form":2,"u2-pk-line-equation-from-graph":2,"u2-point-on-graph":2,"u2-profit-max":2,"u2-range-context-mc":2,"u2-revenue-build":3,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-signs-from-graph":2,"u2-sketch-points":2,"u2-standard-from-factored":2,"u2-standard-to-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-form-from-graph":2,"u2-vertex-form-params":2,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-table":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-graph-mc":2,"u2-vertex-interpret":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-which-quadratic":2,"u2-widest-graph":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u2-y-intercept-point":2,"u2-zeros-from-factored":2,"u3-border":3,"u3-context-area":3,"u3-discriminant":2,"u3-discriminant-nature":2,"u3-discriminant-parameter":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-formula-repair":3,"u3-formula-substitution":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-pk-binom-tri-expand":2,"u3-pk-expand-square":2,"u3-pk-gcf":2,"u3-pk-gcf-binomial":2,"u3-pk-radical-coefficient":2,"u3-pk-radical-mixed":2,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-roots-zeros":2,"u3-setup-equation":1,"u3-solve-fraction-roots":2,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-vertex-intercepts":2,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-closest-integer":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-equation-shifted":2,"u4-cube-mixed":2,"u4-defined-boundary":1,"u4-defined-count":3,"u4-defined-two-radicals":2,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-both-sides":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-extraneous-valid-root":2,"u4-mixed-to-entire":1,"u4-mixed-to-entire-fraction":2,"u4-model-equation":2,"u4-model-equation-two-step":2,"u4-model-evaluate":1,"u4-model-solve-variable":2,"u4-multiply":2,"u4-multiply-mixed":2,"u4-no-solution-equation":3,"u4-order":2,"u4-order-mixed-index":2,"u4-pk-laws-integral":2,"u4-pk-laws-rational":2,"u4-pk-radical-entire":2,"u4-pk-radical-mixed":2,"u4-pk-which-is-solution":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-binomial":2,"u4-rationalize-coefficient":2,"u4-rationalize-cube-root":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restriction-boundary":1,"u4-restrictions":1,"u4-simplify-add":2,"u4-simplify-fraction-radicand":2,"u4-triangle-perimeter":2,"u4-variable-cube":2,"u4-variable-entire":2,"u4-variable-evaluate":1,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-mean-missing":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-infer-mean":2,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-samplesize":2,"u5-ci-shrink":2,"u5-ci-significance":2,"u5-compare-normal-shift":2,"u5-empirical":2,"u5-empirical-tail":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-isnormal":2,"u5-isnormal-data":2,"u5-media":4,"u5-media-position":3,"u5-media-ratio-claim":3,"u5-midpoint":1,"u5-normal-centre-facts":2,"u5-normal-count":2,"u5-normal-count-between":2,"u5-pk-freq-mean":2,"u5-polygon-point":1,"u5-position-argument":3,"u5-range":1,"u5-range-missing":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-calc-small":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-sd-interpret":2,"u5-sd-interpret-context":2,"u5-sd-match-set":2,"u5-sd-meaning":2,"u5-sd-transform":2,"u5-variance-from-sd":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-add-area-effect":2,"u6-add-model-height":2,"u6-add-photo-dimension":2,"u6-add-slope-rate":2,"u6-area-scale":2,"u6-area2d-mc":2,"u6-area2d-num":2,"u6-area2d-tri":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-diagram-cost":3,"u6-formula-mc":2,"u6-formula-sa":3,"u6-formula-vol":2,"u6-interpret-var":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-map-trail":2,"u6-model-sa":3,"u6-model-sa-mc":2,"u6-model-vol":3,"u6-pack-cost":2,"u6-plan-room-mc":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-context-mc":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-rate-solve-context":2,"u6-rate-travel":3,"u6-sail-scale-mc":3,"u6-scale-factor":1,"u6-sf2d-mc":2,"u6-sf2d-num":1,"u6-sf2d-rep":1,"u6-sf3d-mc":2,"u6-sf3d-num":1,"u6-sf3d-rep":1,"u6-similar-dimension":1,"u6-slope-rate":2,"u6-tile-cost":3,"u6-unit-price-mc":2,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-wcr-better-buy-savings":4,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-converse-contrapositive":2,"u7-converse-truth":2,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-deductive-chain":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-logic-var":3,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-pk-conjecture":2,"u7-pk-counterexample":2,"u7-pk-pattern-figure":2,"u7-pk-table-equation":2,"u7-pk-valid-chain":2,"u7-proof-error":3,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-tables-guests":2,"u7-triangular-total":3,"u7-valid-argument":2,"u7-valid-chains":2,"u8-add-gable-angle":2,"u8-add-parallel-decision":2,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent":2,"u8-congruent-perimeter":1,"u8-correspondence":3,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-error-gen":2,"u8-error-num":1,"u8-error-var":2,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-check":2,"u8-parallel-x-value":3,"u8-pk-angle-measure":2,"u8-pk-parallel-decision":2,"u8-pk-transversal-pairs":2,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-proof-reason":2,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
+window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-ambiguous-design":3,"u1-angle-between-paths":4,"u1-angle-placement":2,"u1-bisector-post":3,"u1-corner-check":2,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-angle-mc":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-cosine-side-mc":2,"u1-crane-spread":2,"u1-crossing-distance":2,"u1-diagram-ambiguous-fit":2,"u1-diagram-both-laws":3,"u1-diagram-chain-setup":3,"u1-diagram-complete-plan":3,"u1-diagram-first-step":2,"u1-diagram-flaw-hunt":3,"u1-diagram-givens":2,"u1-diagram-law-pair":2,"u1-diagram-match":2,"u1-diagram-missing-mark":2,"u1-diagram-read-value":2,"u1-diagram-supplement":2,"u1-diagram-two-unknowns":2,"u1-diagram-unknown":2,"u1-double-plot":2,"u1-drone-split":3,"u1-farm-lanes":2,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-gate-diagonal":2,"u1-guy-wire":3,"u1-harbour-chain":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-kite-spar":2,"u1-law-choice":2,"u1-law-choice-context":2,"u1-law-diagram-choice":2,"u1-law-formula":2,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-mislabeled-diagram":2,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-pairing-diagram":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-pk-hypotenuse-pick":2,"u1-pk-label-sides":2,"u1-pk-opposite-read":2,"u1-pk-other-angle-ratio":2,"u1-pk-pythagoras":2,"u1-pk-ratio-decimal":2,"u1-pk-ratio-def":2,"u1-pk-ratio-equation":2,"u1-pk-ratio-from-figure":2,"u1-pk-ratio-letters":2,"u1-pk-ratio-unreduced":2,"u1-pk-right-check":2,"u1-pk-role-from-diagram":2,"u1-pk-role-value":2,"u1-pk-role-words":2,"u1-pk-solve-scene":2,"u1-pk-two-angles-roles":2,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-angle-mc":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-side-mc":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-sketch-values":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-graph":2,"u2-axis-from-intercepts":1,"u2-axis-from-vertex-form":2,"u2-axis-standard-mc":2,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-concavity":2,"u2-count-intercepts":1,"u2-domain-context":2,"u2-domain-range":2,"u2-dr-from-graph":2,"u2-dr-standard-form":2,"u2-dr-vertex-form":2,"u2-effect-of-a":2,"u2-effect-of-c":2,"u2-eq-from-characteristics":2,"u2-eq-from-table":3,"u2-eq-from-vertex":2,"u2-eq-intercepts-standard":2,"u2-equation-from-graph":2,"u2-evaluate-f":1,"u2-expand-vertex-form":2,"u2-factored-coeffs":2,"u2-factored-double-root":2,"u2-factored-from-graph":2,"u2-factored-max-height":2,"u2-factored-with-a":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-function-from-vertex-point":3,"u2-graph-description":2,"u2-graph-features":2,"u2-intercepts-read-graph":2,"u2-intercepts-set":2,"u2-match-graph-standard":2,"u2-match-graph-vertex-form":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-params-characteristics":2,"u2-perimeter-max-area":2,"u2-pk-dr-linear":2,"u2-pk-dr-segment-graph":2,"u2-pk-graph-data":2,"u2-pk-graph-form":2,"u2-pk-line-equation-from-graph":2,"u2-point-on-graph":2,"u2-profit-max":2,"u2-range-context-mc":2,"u2-revenue-build":3,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-signs-from-graph":2,"u2-sketch-points":2,"u2-standard-from-factored":2,"u2-standard-to-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-form-from-graph":2,"u2-vertex-form-params":2,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-table":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-graph-mc":2,"u2-vertex-interpret":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-which-quadratic":2,"u2-widest-graph":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u2-y-intercept-point":2,"u2-zeros-from-factored":2,"u3-border":3,"u3-context-area":3,"u3-discriminant":2,"u3-discriminant-nature":2,"u3-discriminant-parameter":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-formula-repair":3,"u3-formula-substitution":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-pk-binom-tri-expand":2,"u3-pk-expand-square":2,"u3-pk-gcf":2,"u3-pk-gcf-binomial":2,"u3-pk-radical-coefficient":2,"u3-pk-radical-mixed":2,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-roots-zeros":2,"u3-setup-equation":1,"u3-solve-fraction-roots":2,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-vertex-intercepts":2,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-closest-integer":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-equation-shifted":2,"u4-cube-mixed":2,"u4-defined-boundary":1,"u4-defined-count":3,"u4-defined-two-radicals":2,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-both-sides":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-extraneous-valid-root":2,"u4-mixed-to-entire":1,"u4-mixed-to-entire-fraction":2,"u4-model-equation":2,"u4-model-equation-two-step":2,"u4-model-evaluate":1,"u4-model-solve-variable":2,"u4-multiply":2,"u4-multiply-mixed":2,"u4-no-solution-equation":3,"u4-order":2,"u4-order-mixed-index":2,"u4-pk-laws-integral":2,"u4-pk-laws-rational":2,"u4-pk-radical-entire":2,"u4-pk-radical-mixed":2,"u4-pk-which-is-solution":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-binomial":2,"u4-rationalize-coefficient":2,"u4-rationalize-cube-root":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restriction-boundary":1,"u4-restrictions":1,"u4-simplify-add":2,"u4-simplify-fraction-radicand":2,"u4-triangle-perimeter":2,"u4-variable-cube":2,"u4-variable-entire":2,"u4-variable-evaluate":1,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-mean-missing":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-infer-mean":2,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-samplesize":2,"u5-ci-shrink":2,"u5-ci-significance":2,"u5-compare-normal-shift":2,"u5-empirical":2,"u5-empirical-tail":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-isnormal":2,"u5-isnormal-data":2,"u5-media":4,"u5-media-position":3,"u5-media-ratio-claim":3,"u5-midpoint":1,"u5-normal-centre-facts":2,"u5-normal-count":2,"u5-normal-count-between":2,"u5-pk-freq-mean":2,"u5-polygon-point":1,"u5-position-argument":3,"u5-range":1,"u5-range-missing":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-calc-small":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-sd-interpret":2,"u5-sd-interpret-context":2,"u5-sd-match-set":2,"u5-sd-meaning":2,"u5-sd-transform":2,"u5-variance-from-sd":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-add-area-effect":2,"u6-add-model-height":2,"u6-add-photo-dimension":2,"u6-add-slope-rate":2,"u6-area-scale":2,"u6-area2d-mc":2,"u6-area2d-num":2,"u6-area2d-tri":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-diagram-cost":3,"u6-draw-dims":2,"u6-draw-enlarge":1,"u6-draw-pick":2,"u6-formula-mc":2,"u6-formula-sa":3,"u6-formula-vol":2,"u6-interpret-var":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-map-trail":2,"u6-model-sa":3,"u6-model-sa-mc":2,"u6-model-vol":3,"u6-model2d-explain":2,"u6-model2d-gen":2,"u6-model2d-pick":2,"u6-model3d-explain":2,"u6-model3d-gen":2,"u6-model3d-pick":2,"u6-pack-cost":2,"u6-plan-room-mc":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-context-match":2,"u6-rate-context-mc":2,"u6-rate-context-pick":2,"u6-rate-context-write":2,"u6-rate-difference":2,"u6-rate-factors-explain":3,"u6-rate-factors-pick":2,"u6-rate-factors-why":2,"u6-rate-graph-pick":2,"u6-rate-graph-sketch":2,"u6-rate-graph-write":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-rate-solve-context":2,"u6-rate-travel":3,"u6-sail-scale-mc":3,"u6-scale-factor":1,"u6-sf2d-mc":2,"u6-sf2d-num":1,"u6-sf2d-rep":1,"u6-sf3d-mc":2,"u6-sf3d-num":1,"u6-sf3d-rep":1,"u6-similar-dimension":1,"u6-slope-rate":2,"u6-tile-cost":3,"u6-unit-price-mc":2,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-wcr-better-buy-savings":4,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-converse-contrapositive":2,"u7-converse-truth":2,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-deductive-chain":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-logic-var":3,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-pk-conjecture":2,"u7-pk-counterexample":2,"u7-pk-pattern-figure":2,"u7-pk-table-equation":2,"u7-pk-valid-chain":2,"u7-proof-error":3,"u7-proof-order":2,"u7-proof-repair":3,"u7-proof-valid":3,"u7-proof-write":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-tables-guests":2,"u7-triangular-total":3,"u7-trick-proof":3,"u7-trick-step":2,"u7-trick-valid":2,"u7-valid-argument":2,"u7-valid-chains":2,"u8-add-gable-angle":2,"u8-add-parallel-decision":2,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent":2,"u8-congruent-perimeter":1,"u8-construct-compass":3,"u8-construct-order":2,"u8-construct-protractor":3,"u8-correspondence":3,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-error-gen":2,"u8-error-num":1,"u8-error-var":2,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-nonpar-explain":2,"u8-nonpar-num":2,"u8-nonpar-pick":2,"u8-parallel-check":2,"u8-parallel-x-value":3,"u8-pk-angle-measure":2,"u8-pk-parallel-decision":2,"u8-pk-transversal-pairs":2,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-proof-reason":2,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-ambiguous-count":"a","u1-ambiguous-design":"b","u1-angle-placement":"b","u1-corner-check":"a","u1-cosine-angle-mc":"a","u1-cosine-side-mc":"a","u1-crane-spread":"a","u1-crossing-distance":"a","u1-diagram-ambiguous-fit":"a","u1-diagram-both-laws":"b","u1-diagram-chain-setup":"b","u1-diagram-complete-plan":"b","u1-diagram-first-step":"b","u1-diagram-flaw-hunt":"b","u1-diagram-givens":"b","u1-diagram-law-pair":"b","u1-diagram-match":"b","u1-diagram-missing-mark":"b","u1-diagram-read-value":"a","u1-diagram-supplement":"b","u1-diagram-two-unknowns":"b","u1-diagram-unknown":"b","u1-double-plot":"a","u1-farm-lanes":"a","u1-gate-diagonal":"a","u1-harbour-chain":"a","u1-kite-spar":"a","u1-law-choice":"b","u1-law-choice-context":"a","u1-law-diagram-choice":"b","u1-law-formula":"b","u1-mislabeled-diagram":"b","u1-pairing-diagram":"b","u1-pk-hypotenuse-pick":"a","u1-pk-label-sides":"a","u1-pk-opposite-read":"a","u1-pk-other-angle-ratio":"a","u1-pk-pythagoras":"a","u1-pk-ratio-decimal":"a","u1-pk-ratio-def":"a","u1-pk-ratio-equation":"a","u1-pk-ratio-from-figure":"a","u1-pk-ratio-letters":"b","u1-pk-ratio-unreduced":"a","u1-pk-right-check":"a","u1-pk-role-from-diagram":"a","u1-pk-role-value":"b","u1-pk-role-words":"a","u1-pk-solve-scene":"a","u1-pk-two-angles-roles":"a","u1-sine-angle-mc":"a","u1-sine-side-mc":"a","u1-sketch-values":"b","u2-axis-from-graph":"a","u2-axis-from-vertex-form":"a","u2-axis-standard-mc":"a","u2-concavity":"a","u2-domain-context":"a","u2-domain-range":"b","u2-dr-from-graph":"b","u2-dr-standard-form":"b","u2-dr-vertex-form":"b","u2-effect-of-a":"a","u2-effect-of-c":"b","u2-eq-from-characteristics":"a","u2-eq-from-table":"a","u2-eq-intercepts-standard":"a","u2-equation-from-graph":"a","u2-expand-vertex-form":"a","u2-factored-double-root":"a","u2-factored-from-graph":"a","u2-factored-with-a":"a","u2-function-from-vertex-point":"a","u2-graph-description":"a","u2-graph-features":"a","u2-intercepts-read-graph":"a","u2-intercepts-set":"b","u2-match-graph-standard":"b","u2-match-graph-vertex-form":"b","u2-params-characteristics":"a","u2-pk-dr-linear":"a","u2-pk-dr-segment-graph":"b","u2-pk-graph-data":"a","u2-pk-graph-form":"a","u2-pk-line-equation-from-graph":"a","u2-point-on-graph":"a","u2-range-context-mc":"a","u2-revenue-build":"b","u2-revenue-model":"b","u2-signs-from-graph":"a","u2-sketch-points":"b","u2-standard-to-factored":"a","u2-vertex-form-from-graph":"a","u2-vertex-form-params":"b","u2-vertex-from-table":"a","u2-vertex-graph-mc":"a","u2-vertex-interpret":"b","u2-which-quadratic":"a","u2-widest-graph":"a","u2-y-intercept-point":"a","u2-zeros-from-factored":"a","u3-discriminant":"b","u3-discriminant-nature":"b","u3-discriminant-parameter":"b","u3-equation-fraction-roots":"b","u3-equation-from-roots":"b","u3-exact-roots":"b","u3-factor-nonmonic":"b","u3-formula-repair":"a","u3-formula-substitution":"b","u3-model-number":"b","u3-pk-binom-tri-expand":"b","u3-pk-expand-square":"b","u3-pk-gcf":"b","u3-pk-gcf-binomial":"b","u3-pk-radical-coefficient":"a","u3-pk-radical-mixed":"a","u3-roots-zeros":"b","u3-solve-fraction-roots":"a","u3-vertex-intercepts":"a","u4-add-unlike":"a","u4-binomial-square":"b","u4-closest-integer":"a","u4-combine-multi":"a","u4-defined-two-radicals":"a","u4-diagonal-radical":"a","u4-difference-simplify":"a","u4-divide-radicals":"a","u4-equation-both-sides":"a","u4-extraneous":"b","u4-mixed-to-entire-fraction":"a","u4-model-equation-two-step":"b","u4-multiply-mixed":"a","u4-no-solution-equation":"a","u4-order":"a","u4-order-mixed-index":"b","u4-pk-laws-integral":"b","u4-pk-laws-rational":"b","u4-pk-radical-entire":"a","u4-pk-radical-mixed":"a","u4-pk-which-is-solution":"a","u4-product-simplify":"a","u4-rationalize-binomial":"b","u4-rationalize-cube-root":"a","u4-reciprocal-sum":"a","u4-simplify-add":"a","u4-simplify-fraction-radicand":"a","u4-triangle-perimeter":"a","u4-variable-cube":"b","u4-variable-entire":"a","u4-variable-mixed":"b","u4-width-radical":"a","u5-ad-claim":"b","u5-ci-infer-mean":"b","u5-ci-majority":"b","u5-ci-samplesize":"b","u5-ci-significance":"b","u5-compare-normal-shift":"b","u5-isnormal":"b","u5-isnormal-data":"b","u5-media":"b","u5-media-position":"b","u5-media-ratio-claim":"b","u5-normal-centre-facts":"a","u5-pk-freq-mean":"a","u5-position-argument":"b","u5-sd-decisions":"b","u5-sd-interpret":"b","u5-sd-interpret-context":"b","u5-sd-match-set":"a","u5-sd-meaning":"b","u5-sd-transform":"b","u5-z-compare":"b","u6-add-area-effect":"a","u6-add-model-height":"a","u6-add-photo-dimension":"a","u6-add-slope-rate":"b","u6-area2d-mc":"a","u6-better-buy":"b","u6-formula-mc":"a","u6-interpret-var":"b","u6-model-sa-mc":"a","u6-plan-room-mc":"a","u6-poster-dimensions":"b","u6-rate-context-mc":"a","u6-rate-difference":"b","u6-sail-scale-mc":"a","u6-sf2d-mc":"a","u6-sf3d-mc":"a","u6-slope-rate":"b","u6-unit-price-mc":"a","u7-converse-contrapositive":"b","u7-converse-truth":"b","u7-deductive-chain":"a","u7-logic-var":"b","u7-pattern-equation":"a","u7-pk-conjecture":"b","u7-pk-counterexample":"b","u7-pk-pattern-figure":"a","u7-pk-table-equation":"a","u7-pk-valid-chain":"a","u7-proof-error":"b","u7-race-order":"a","u7-valid-argument":"b","u7-valid-chains":"b","u8-add-gable-angle":"a","u8-add-parallel-decision":"b","u8-angle-chase":"a","u8-congruent":"b","u8-correspondence":"a","u8-error-gen":"b","u8-error-var":"b","u8-multi-angle":"a","u8-parallel-check":"b","u8-pk-angle-measure":"a","u8-pk-parallel-decision":"b","u8-pk-transversal-pairs":"a","u8-proof-reason":"b"};
+window.__BANK_BIMODAL={"u1-ambiguous-count":"a","u1-ambiguous-design":"b","u1-angle-placement":"b","u1-corner-check":"a","u1-cosine-angle-mc":"a","u1-cosine-side-mc":"a","u1-crane-spread":"a","u1-crossing-distance":"a","u1-diagram-ambiguous-fit":"a","u1-diagram-both-laws":"b","u1-diagram-chain-setup":"b","u1-diagram-complete-plan":"b","u1-diagram-first-step":"b","u1-diagram-flaw-hunt":"b","u1-diagram-givens":"b","u1-diagram-law-pair":"b","u1-diagram-match":"b","u1-diagram-missing-mark":"b","u1-diagram-read-value":"a","u1-diagram-supplement":"b","u1-diagram-two-unknowns":"b","u1-diagram-unknown":"b","u1-double-plot":"a","u1-farm-lanes":"a","u1-gate-diagonal":"a","u1-harbour-chain":"a","u1-kite-spar":"a","u1-law-choice":"b","u1-law-choice-context":"a","u1-law-diagram-choice":"b","u1-law-formula":"b","u1-mislabeled-diagram":"b","u1-pairing-diagram":"b","u1-pk-hypotenuse-pick":"a","u1-pk-label-sides":"a","u1-pk-opposite-read":"a","u1-pk-other-angle-ratio":"a","u1-pk-pythagoras":"a","u1-pk-ratio-decimal":"a","u1-pk-ratio-def":"a","u1-pk-ratio-equation":"a","u1-pk-ratio-from-figure":"a","u1-pk-ratio-letters":"b","u1-pk-ratio-unreduced":"a","u1-pk-right-check":"a","u1-pk-role-from-diagram":"a","u1-pk-role-value":"b","u1-pk-role-words":"a","u1-pk-solve-scene":"a","u1-pk-two-angles-roles":"a","u1-sine-angle-mc":"a","u1-sine-side-mc":"a","u1-sketch-values":"b","u2-axis-from-graph":"a","u2-axis-from-vertex-form":"a","u2-axis-standard-mc":"a","u2-concavity":"a","u2-domain-context":"a","u2-domain-range":"b","u2-dr-from-graph":"b","u2-dr-standard-form":"b","u2-dr-vertex-form":"b","u2-effect-of-a":"a","u2-effect-of-c":"b","u2-eq-from-characteristics":"a","u2-eq-from-table":"a","u2-eq-intercepts-standard":"a","u2-equation-from-graph":"a","u2-expand-vertex-form":"a","u2-factored-double-root":"a","u2-factored-from-graph":"a","u2-factored-with-a":"a","u2-function-from-vertex-point":"a","u2-graph-description":"a","u2-graph-features":"a","u2-intercepts-read-graph":"a","u2-intercepts-set":"b","u2-match-graph-standard":"b","u2-match-graph-vertex-form":"b","u2-params-characteristics":"a","u2-pk-dr-linear":"a","u2-pk-dr-segment-graph":"b","u2-pk-graph-data":"a","u2-pk-graph-form":"a","u2-pk-line-equation-from-graph":"a","u2-point-on-graph":"a","u2-range-context-mc":"a","u2-revenue-build":"b","u2-revenue-model":"b","u2-signs-from-graph":"a","u2-sketch-points":"b","u2-standard-to-factored":"a","u2-vertex-form-from-graph":"a","u2-vertex-form-params":"b","u2-vertex-from-table":"a","u2-vertex-graph-mc":"a","u2-vertex-interpret":"b","u2-which-quadratic":"a","u2-widest-graph":"a","u2-y-intercept-point":"a","u2-zeros-from-factored":"a","u3-discriminant":"b","u3-discriminant-nature":"b","u3-discriminant-parameter":"b","u3-equation-fraction-roots":"b","u3-equation-from-roots":"b","u3-exact-roots":"b","u3-factor-nonmonic":"b","u3-formula-repair":"a","u3-formula-substitution":"b","u3-model-number":"b","u3-pk-binom-tri-expand":"b","u3-pk-expand-square":"b","u3-pk-gcf":"b","u3-pk-gcf-binomial":"b","u3-pk-radical-coefficient":"a","u3-pk-radical-mixed":"a","u3-roots-zeros":"b","u3-solve-fraction-roots":"a","u3-vertex-intercepts":"a","u4-add-unlike":"a","u4-binomial-square":"b","u4-closest-integer":"a","u4-combine-multi":"a","u4-defined-two-radicals":"a","u4-diagonal-radical":"a","u4-difference-simplify":"a","u4-divide-radicals":"a","u4-equation-both-sides":"a","u4-extraneous":"b","u4-mixed-to-entire-fraction":"a","u4-model-equation-two-step":"b","u4-multiply-mixed":"a","u4-no-solution-equation":"a","u4-order":"a","u4-order-mixed-index":"b","u4-pk-laws-integral":"b","u4-pk-laws-rational":"b","u4-pk-radical-entire":"a","u4-pk-radical-mixed":"a","u4-pk-which-is-solution":"a","u4-product-simplify":"a","u4-rationalize-binomial":"b","u4-rationalize-cube-root":"a","u4-reciprocal-sum":"a","u4-simplify-add":"a","u4-simplify-fraction-radicand":"a","u4-triangle-perimeter":"a","u4-variable-cube":"b","u4-variable-entire":"a","u4-variable-mixed":"b","u4-width-radical":"a","u5-ad-claim":"b","u5-ci-infer-mean":"b","u5-ci-majority":"b","u5-ci-samplesize":"b","u5-ci-significance":"b","u5-compare-normal-shift":"b","u5-isnormal":"b","u5-isnormal-data":"b","u5-media":"b","u5-media-position":"b","u5-media-ratio-claim":"b","u5-normal-centre-facts":"a","u5-pk-freq-mean":"a","u5-position-argument":"b","u5-sd-decisions":"b","u5-sd-interpret":"b","u5-sd-interpret-context":"b","u5-sd-match-set":"a","u5-sd-meaning":"b","u5-sd-transform":"b","u5-z-compare":"b","u6-add-area-effect":"a","u6-add-model-height":"a","u6-add-photo-dimension":"a","u6-add-slope-rate":"b","u6-area2d-mc":"a","u6-better-buy":"b","u6-draw-pick":"a","u6-formula-mc":"a","u6-interpret-var":"b","u6-model-sa-mc":"a","u6-model2d-gen":"b","u6-model2d-pick":"b","u6-model3d-gen":"b","u6-model3d-pick":"b","u6-plan-room-mc":"a","u6-poster-dimensions":"b","u6-rate-context-match":"b","u6-rate-context-mc":"a","u6-rate-context-pick":"b","u6-rate-difference":"b","u6-rate-factors-pick":"b","u6-rate-factors-why":"b","u6-rate-graph-pick":"b","u6-sail-scale-mc":"a","u6-sf2d-mc":"a","u6-sf3d-mc":"a","u6-slope-rate":"b","u6-unit-price-mc":"a","u7-converse-contrapositive":"b","u7-converse-truth":"b","u7-deductive-chain":"a","u7-logic-var":"b","u7-pattern-equation":"a","u7-pk-conjecture":"b","u7-pk-counterexample":"b","u7-pk-pattern-figure":"a","u7-pk-table-equation":"a","u7-pk-valid-chain":"a","u7-proof-error":"b","u7-proof-order":"b","u7-proof-valid":"b","u7-race-order":"a","u7-trick-step":"b","u7-trick-valid":"b","u7-valid-argument":"b","u7-valid-chains":"b","u8-add-gable-angle":"a","u8-add-parallel-decision":"b","u8-angle-chase":"a","u8-congruent":"b","u8-construct-order":"b","u8-correspondence":"a","u8-error-gen":"b","u8-error-var":"b","u8-multi-angle":"a","u8-nonpar-pick":"b","u8-parallel-check":"b","u8-pk-angle-measure":"a","u8-pk-parallel-decision":"b","u8-pk-transversal-pairs":"a","u8-proof-reason":"b"};
