@@ -4005,13 +4005,18 @@ window.COURSES = {
     "8": "Properties of Angles and Triangles"
   },
 
-  /* All 68 indicator codes, wording carried verbatim from the
-     standalone app's curriculum map (math-2201-review/
+  /* All 83 indicator codes. The original 68 carry wording verbatim
+     from the standalone app's curriculum map (math-2201-review/
      Math2201Review.html, UNITS at lines 644 to 647, INDICATORS at
      lines 648 to 717, UNIT_IND at lines 718 to 723; the map is
      headed "codes verified against the Math 2201 Curriculum
-     Guide"). The two PK codes are the course's prior-knowledge
-     codes: PK.1 (Unit 5, Section 1) and PK.2 (Unit 3). */
+     Guide"). The 15 codes added on November 22, 2026 (1.3, 1.8,
+     1.10, 1.12 and 5.4 in the activation build; 2.9, 5.10, 6.3,
+     6.6, 6.8, 6.11, 6.12, 6.13, 6.15 and 6.22 in the Class A
+     completion build) carry the guide's own wording, verified
+     against the Mathematics 2201 Curriculum Guide. The two PK
+     codes are the course's prior-knowledge codes: PK.1 (Unit 5,
+     Section 1) and PK.2 (Unit 3). */
   indicators: {
     "7.1": "Draw a diagram to represent a problem that involves the sine law or the cosine law",
     "7.2": "Solve a contextual problem using the sine law or the cosine law",
@@ -4064,13 +4069,21 @@ window.COURSES = {
     "8.21": "Interpret confidence intervals and margin of error in media examples",
     "8.22": "Support a position by analyzing statistical data presented in the media",
     "6.2": "Determine an unknown dimension of a 2-D shape using proportional reasoning",
+    "6.3": "Determine, using proportional reasoning, the scale factor, given one dimension of a 2-D shape, and its representation",
     "6.5": "Explain the effect of a change in scale factor on the area of a 2-D shape",
+    "6.6": "Determine the area of a 2-D shape, given the scale diagram, and justify the reasonableness of the result",
+    "6.8": "Determine, using proportional reasoning, the scale factor, given one dimension of a 3-D object, and its representation",
     "6.9": "Determine an unknown dimension of a 3-D object, given a scale diagram or model",
     "6.10": "Explain the effect of a change in scale factor on surface area and volume",
+    "6.11": "Determine the surface area and volume of a 3-D object, given the scale diagram, and justify the reasonableness of the result",
+    "6.12": "Solve a contextual problem that involves a scale diagram",
+    "6.13": "Solve a spatial problem that requires the manipulation of formulas",
     "6.14": "Solve a problem involving relationships among scale factors, areas and volumes",
+    "6.15": "Interpret rates in a given context, such as the arts, commerce, the environment, medicine or recreation",
     "6.16": "Determine and compare rates and unit rates",
     "6.17": "Make and justify a decision, using rates",
     "6.19": "Explain the relationship between the slope of a graph and a rate",
+    "6.22": "Solve a contextual problem that involves rates or unit rates",
     "6.23": "Solve a rate problem that requires isolating a variable",
     "2.1": "Make conjectures by observing patterns and identifying properties",
     "2.2": "Explain why inductive reasoning may lead to a false conjecture",
@@ -4078,6 +4091,7 @@ window.COURSES = {
     "2.4": "Provide a counterexample to disprove a conjecture",
     "2.7": "Compare inductive and deductive reasoning",
     "2.8": "Identify errors in a given proof",
+    "2.9": "Solve a contextual problem that involves inductive or deductive reasoning",
     "5.1": "Generalize relationships between angle pairs formed by transversals and parallel lines",
     "5.3": "Prove angle properties, including the sum of the angles in a triangle",
     "5.4": "Identify and correct errors in a given proof of a property that involves angles",
@@ -4085,6 +4099,7 @@ window.COURSES = {
     "5.6": "Prove, using deductive reasoning, that two triangles are congruent",
     "5.8": "Determine measures of angles in a diagram with parallel lines, angles and triangles",
     "5.9": "Determine if lines are parallel given angle measures at a transversal",
+    "5.10": "Identify and correct errors in a given solution to a problem that involves the measures of angles",
     "5.11": "Solve a contextual problem that involves angles or triangles"
   },
 
@@ -4097,9 +4112,9 @@ window.COURSES = {
     "3": ["PK.2", "4.3", "4.6", "4.7", "4.8", "4.9"],
     "4": ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "1.10", "1.11", "1.12"],
     "5": ["PK.1", "8.6", "8.7", "8.8", "8.9", "8.10", "8.11", "8.12", "8.13", "8.14", "8.15", "8.16", "8.17", "8.18", "8.19", "8.20", "8.21", "8.22"],
-    "6": ["6.2", "6.5", "6.9", "6.10", "6.14", "6.16", "6.17", "6.19", "6.23"],
-    "7": ["2.1", "2.2", "2.3", "2.4", "2.7", "2.8"],
-    "8": ["5.1", "5.3", "5.4", "5.5", "5.6", "5.8", "5.9", "5.11"]
+    "6": ["6.2", "6.3", "6.5", "6.6", "6.8", "6.9", "6.10", "6.11", "6.12", "6.13", "6.14", "6.15", "6.16", "6.17", "6.19", "6.22", "6.23"],
+    "7": ["2.1", "2.2", "2.3", "2.4", "2.7", "2.8", "2.9"],
+    "8": ["5.1", "5.3", "5.4", "5.5", "5.6", "5.8", "5.9", "5.10", "5.11"]
   },
 
   /* The two presets, labels and unit scopes verbatim from the
@@ -4129,8 +4144,10 @@ window.COURSES = {
      Mathematics 11 (topic structure within units). A bank question's
      topic derives from its indicator, so no bank entry needs retagging.
      Many-to-many is allowed: 7.2 and 1.6 each sit in three topics.
-     The map carries 73 codes, including 1.3, 1.8, 1.10, 1.12 and 5.4,
-     registered Nov 22, 2026. Inert data only: nothing in the shell
+     The map carries 83 codes, including 1.3, 1.8, 1.10, 1.12 and 5.4,
+     registered Nov 22, 2026, and 2.9, 5.10, 6.3, 6.6, 6.8, 6.11, 6.12,
+     6.13, 6.15 and 6.22, registered the same day in the Class A
+     completion build. Inert data only: nothing in the shell
      reads topicMap yet. */
   topicMap: {
     "1": [
@@ -4171,23 +4188,24 @@ window.COURSES = {
       { title: "Confidence intervals and statistics in the media", indicators: ["8.20", "8.21", "8.22"] }
     ],
     "6": [
-      { title: "Comparing and interpreting rates; unit rates", indicators: ["6.16"] },
-      { title: "Solving problems that involve rates, including making and justifying decisions", indicators: ["6.17", "6.23"] },
+      { title: "Comparing and interpreting rates; unit rates", indicators: ["6.15", "6.16"] },
+      { title: "Solving problems that involve rates, including making and justifying decisions", indicators: ["6.17", "6.22", "6.23"] },
       { title: "Slope as a rate", indicators: ["6.19"] },
-      { title: "Scale diagrams: unknown dimensions of 2-D shapes", indicators: ["6.2"] },
-      { title: "Scale factors and areas of 2-D shapes", indicators: ["6.5"] },
-      { title: "Similar objects: scale models and scale diagrams of 3-D objects", indicators: ["6.9"] },
-      { title: "Scale factor, surface area and volume", indicators: ["6.10", "6.14"] }
+      { title: "Scale diagrams: unknown dimensions of 2-D shapes", indicators: ["6.2", "6.3", "6.12"] },
+      { title: "Scale factors and areas of 2-D shapes", indicators: ["6.5", "6.6"] },
+      { title: "Similar objects: scale models and scale diagrams of 3-D objects", indicators: ["6.8", "6.9"] },
+      { title: "Scale factor, surface area and volume", indicators: ["6.10", "6.11", "6.13", "6.14"] }
     ],
     "7": [
       { title: "Inductive reasoning, conjectures and counterexamples", indicators: ["2.1", "2.2", "2.4"] },
       { title: "Proving conjectures: deductive reasoning and valid arguments", indicators: ["2.3"] },
       { title: "Proofs that are not valid: identifying errors in a proof", indicators: ["2.8"] },
-      { title: "Inductive and deductive reasoning compared", indicators: ["2.7"] }
+      { title: "Inductive and deductive reasoning compared", indicators: ["2.7"] },
+      { title: "Reasoning to solve problems", indicators: ["2.9"] }
     ],
     "8": [
       { title: "Parallel lines and transversals: angle pairs", indicators: ["5.1"] },
-      { title: "Finding angle measures in diagrams; deciding whether lines are parallel", indicators: ["5.8", "5.9"] },
+      { title: "Finding angle measures in diagrams; deciding whether lines are parallel", indicators: ["5.8", "5.9", "5.10"] },
       { title: "Proving angle properties, including the angle sum in a triangle", indicators: ["5.3", "5.4"] },
       { title: "Angle properties in polygons: the sum of the interior angles", indicators: ["5.5"] },
       { title: "Proving that two triangles are congruent", indicators: ["5.6"] },
