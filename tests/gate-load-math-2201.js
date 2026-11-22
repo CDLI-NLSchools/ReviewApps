@@ -59,8 +59,11 @@ ok(Object.keys(UNITS).length === 8, "UNITS has 8 units, saw " + Object.keys(UNIT
    completion build): the registry grows from 68 to 83 codes. The
    activation build registered 1.3, 1.8, 1.10, 1.12 and 5.4 (73);
    the Class A completion build registered 2.9, 5.10, 6.3, 6.6,
-   6.8, 6.11, 6.12, 6.13, 6.15 and 6.22 (83). */
-ok(Object.keys(INDICATORS).length === 83, "INDICATORS has 83 codes, saw " + Object.keys(INDICATORS).length);
+   6.8, 6.11, 6.12, 6.13, 6.15 and 6.22 (83). Amended again the
+   same day for the Class B build: 2.5, 2.6, 5.2, 5.7, 6.1, 6.4,
+   6.7, 6.18, 6.20 and 6.21 registered (93), 5.7 folded in on
+   Jason's reclassification from Class C. */
+ok(Object.keys(INDICATORS).length === 93, "INDICATORS has 93 codes, saw " + Object.keys(INDICATORS).length);
 
 var BANK = [];
 function E(id, unit, indicators, level, kind, gen) { BANK.push({ id, unit, indicators, level, kind, gen }); }
@@ -68,24 +71,30 @@ eval(fs.readFileSync(ROOT + "/banks/math-2201.js", "utf8"));
 
 /* Pin update, November 22, 2026 (Class A completion build): 30
    new entries (24 in Unit 6, 3 in Unit 7, 3 in Unit 8) take the
-   bank from 520 to 550. */
-ok(BANK.length === 550, "BANK has 550 entries, saw " + BANK.length);
+   bank from 520 to 550. Amended again the same day for the
+   Class B build: 30 new entries (18 in Unit 6, 6 in Unit 7, 6
+   in Unit 8) take the bank from 550 to 580. */
+ok(BANK.length === 580, "BANK has 580 entries, saw " + BANK.length);
 const cr = window.__BANK_CRMARKS || {};
 const crKeys = Object.keys(cr);
 /* Pin update, November 20, 2026 (reverse bimodal registration, Level 2): census pins updated to the bank after the registration of the 173 strippable entries (96 class a, 77 class b, 364 marks) per Bimodal-Classification-SR-Pools-Math-2026-11-20.md (Mathematics 2201: CR manifest 435 entries); values verified from the assembled bank the same day. No bank content was changed to fit this gate. */
 /* Pin update, November 22, 2026 (Class A completion build): the
    30 new entries add 27 CR keys (denominations 1x5, 2x16, 3x6;
    55 marks), taking the manifest to 462 keys and 936 marks;
+   values verified from the assembled bank the same day.
+   Amended again the same day for the Class B build: the 30 new
+   entries add 30 CR keys (denominations 1x1, 2x23, 3x6; 65
+   marks), taking the manifest to 492 keys and 1001 marks;
    values verified from the assembled bank the same day. */
-ok(crKeys.length === 462, "__BANK_CRMARKS has 462 keys, saw " + crKeys.length);
+ok(crKeys.length === 492, "__BANK_CRMARKS has 492 keys, saw " + crKeys.length);
 const bankIds = new Set(BANK.map(e => e.id));
 ok(crKeys.every(k => bankIds.has(k)), "every CR key is a bank entry id");
 ok(bankIds.size === BANK.length, "entry ids are unique");
 const denom = {};
 let crSum = 0;
 crKeys.forEach(k => { denom[cr[k]] = (denom[cr[k]] || 0) + 1; crSum += cr[k]; });
-ok(JSON.stringify(denom) === JSON.stringify({ 1: 78, 2: 305, 3: 68, 4: 11 }), "CR denominations (the standalone map 1x63, 2x92, 3x25, 4x6, plus the November 17, 2026 Unit 1 enrichment adding 2x11, 3x17, 4x4, plus the November 17, 2026 sequence-rebuild batch D adding 2x6, plus the November 18, 2026 Unit 2 expansion adding 1x2, 2x15, 3x3 after its level calibration pass, plus the November 18, 2026 Unit 3 expansion adding 1x2, 2x7, plus the November 18, 2026 Unit 4 external drafting tranche adding 1x3, 2x3, plus the November 18, 2026 Unit 5 external drafting tranche adding 1x3, 2x3, plus the November 19, 2026 bimodal build moving four entries out of the manifest (2x3, 3x1) and adding one written entry at 4 marks, plus the November 22, 2026 Class A completion build adding 1x5, 2x16, 3x6), saw " + JSON.stringify(denom));
-ok(crSum === 936, "CR marks sum to 936, saw " + crSum);
+ok(JSON.stringify(denom) === JSON.stringify({ 1: 79, 2: 328, 3: 74, 4: 11 }), "CR denominations (the standalone map 1x63, 2x92, 3x25, 4x6, plus the November 17, 2026 Unit 1 enrichment adding 2x11, 3x17, 4x4, plus the November 17, 2026 sequence-rebuild batch D adding 2x6, plus the November 18, 2026 Unit 2 expansion adding 1x2, 2x15, 3x3 after its level calibration pass, plus the November 18, 2026 Unit 3 expansion adding 1x2, 2x7, plus the November 18, 2026 Unit 4 external drafting tranche adding 1x3, 2x3, plus the November 18, 2026 Unit 5 external drafting tranche adding 1x3, 2x3, plus the November 19, 2026 bimodal build moving four entries out of the manifest (2x3, 3x1) and adding one written entry at 4 marks, plus the November 22, 2026 Class A completion build adding 1x5, 2x16, 3x6, plus the November 22, 2026 Class B build adding 1x1, 2x23, 3x6), saw " + JSON.stringify(denom));
+ok(crSum === 1001, "CR marks sum to 1001, saw " + crSum);
 ok(cr["u1-two-triangles"] === 4 && cr["u5-media"] === 4 && cr["u5-sd-decisions"] === 4 && cr["u4-extraneous"] === 3 && cr["u4-rationalize"] === 1 && cr["u5-centre-mean"] === 1 && cr["u3-factor-monic"] === 2 && cr["u8-regular-sides-from-angle"] === 3,
    "CR spot values match the standalone map (u1-two-triangles 4, u5-media 4, u5-sd-decisions 4, u4-extraneous 3, u4-rationalize 1, u5-centre-mean 1, u3-factor-monic 2, u8-regular-sides-from-angle 3)");
 
@@ -116,9 +125,9 @@ function extractFn(src, name) {
 eval(extractFn(html, "poolFor"));
 eval(extractFn(html, "isPK"));
 const defPool = poolFor([1, 2, 3, 4, 5, 6, 7, 8], []);
-ok(defPool.length === 548, "default practice pool has 548 entries (bank 550 minus the 2 enrichment entries), saw " + defPool.length);
+ok(defPool.length === 578, "default practice pool has 578 entries (bank 580 minus the 2 enrichment entries), saw " + defPool.length);
 ok(!defPool.some(e => e.enrich), "default practice pool holds no enrichment entry");
-ok(poolFor([7], []).length === 36, "default Unit 7 pool has 36 entries (38 in the bank minus the 2 enrichment entries), saw " + poolFor([7], []).length);
+ok(poolFor([7], []).length === 42, "default Unit 7 pool has 42 entries (44 in the bank minus the 2 enrichment entries), saw " + poolFor([7], []).length);
 /* Prior knowledge, amended November 15, 2026 for the PK tranche:
    the pin is the full isPK set (the shell's own flag-or-code
    definition), 99 entries: the 7 coded entries (PK.1 in Unit 5,
@@ -141,8 +150,8 @@ ok(JSON.stringify(pk) === JSON.stringify(["u1-pk-angle-from-legs", "u1-pk-angle-
 
 const census = {}, perUnit = {}, kinds = {};
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; kinds[e.kind] = (kinds[e.kind] || 0) + 1; e.indicators.forEach(c => { census[c] = (census[c] || 0) + 1; }); });
-const wantPerUnit = { 1: 127, 2: 99, 3: 50, 4: 63, 5: 73, 6: 59, 7: 38, 8: 41 };
-ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (the standalone's 19/31/30/34/47/22/24/27, Unit 7 at 26 after the two enrichment entries, and the November 15, 2026 PK tranche adding 8/8/4/8/5/8/9/9, and the November 17, 2026 enrichment adding 89 to Unit 1, plus one further Unit 1 generator added the same day under the StudyMate pack strip-audit ruling, plus 10 further Unit 1 entries added the same day as sequence-rebuild batch D, plus the November 18, 2026 Unit 2 expansion adding 60 to Unit 2, plus the November 18, 2026 Unit 3 expansion adding 16 to Unit 3, plus the November 18, 2026 Unit 4 external drafting tranche adding 21 to Unit 4, plus the November 18, 2026 Unit 5 external drafting tranche adding 13 to Unit 5, plus the November 18, 2026 Unit 5 external drafting redraft tranche adding 5 to Unit 5, plus the November 19, 2026 Unit 5 threshold tranche adding 3 to Unit 5, plus the November 19, 2026 bimodal build adding 5 to Unit 6 and 2 to Unit 8, plus the November 22, 2026 Class A completion build adding 24 to Unit 6, 3 to Unit 7 and 3 to Unit 8), saw " + JSON.stringify(perUnit));
+const wantPerUnit = { 1: 127, 2: 99, 3: 50, 4: 63, 5: 73, 6: 77, 7: 44, 8: 47 };
+ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (the standalone's 19/31/30/34/47/22/24/27, Unit 7 at 26 after the two enrichment entries, and the November 15, 2026 PK tranche adding 8/8/4/8/5/8/9/9, and the November 17, 2026 enrichment adding 89 to Unit 1, plus one further Unit 1 generator added the same day under the StudyMate pack strip-audit ruling, plus 10 further Unit 1 entries added the same day as sequence-rebuild batch D, plus the November 18, 2026 Unit 2 expansion adding 60 to Unit 2, plus the November 18, 2026 Unit 3 expansion adding 16 to Unit 3, plus the November 18, 2026 Unit 4 external drafting tranche adding 21 to Unit 4, plus the November 18, 2026 Unit 5 external drafting tranche adding 13 to Unit 5, plus the November 18, 2026 Unit 5 external drafting redraft tranche adding 5 to Unit 5, plus the November 19, 2026 Unit 5 threshold tranche adding 3 to Unit 5, plus the November 19, 2026 bimodal build adding 5 to Unit 6 and 2 to Unit 8, plus the November 22, 2026 Class A completion build adding 24 to Unit 6, 3 to Unit 7 and 3 to Unit 8, plus the November 22, 2026 Class B build adding 18 to Unit 6, 6 to Unit 7 and 6 to Unit 8), saw " + JSON.stringify(perUnit));
 /* Kind counts amended November 12, 2026, on Jason's ruling: six
    entries (u2-vertex-x, u2-vertex-value, u2-vertex-shift,
    u2-xintercepts, u2-xintercepts-factored, u3-discriminant) were
@@ -183,8 +192,10 @@ ok(JSON.stringify(perUnit) === JSON.stringify(wantPerUnit), "per-unit counts (th
    taking the bank to 434 gen, 86 var. Amended Nov 22, 2026
    for the Class A completion build: its 30 entries are 27
    generators and 3 variant sets, taking the bank to 461 gen,
-   89 var. */
-ok(kinds.gen === 461 && kinds.var === 89, "entry kinds (461 gen, 89 var; see the Tranche 1b, Tranche 3, enrichment and PK tranche notes above), saw " + JSON.stringify(kinds));
+   89 var. Amended Nov 22, 2026 for the Class B build: its 30
+   entries are 9 generators and 21 variant sets, taking the
+   bank to 470 gen, 110 var. */
+ok(kinds.gen === 470 && kinds.var === 110, "entry kinds (470 gen, 110 var; see the Tranche 1b, Tranche 3, enrichment and PK tranche notes above), saw " + JSON.stringify(kinds));
 const codes = Object.keys(window.__COURSE.indicators);
 const empty = codes.filter(c => (census[c] || 0) < 1);
 ok(empty.length === 0, "indicators with no entries: " + empty.join(", "));
