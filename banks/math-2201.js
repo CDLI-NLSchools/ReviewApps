@@ -8359,6 +8359,39 @@ BANK.forEach(function(e){var t=PKT_U4[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // BIMODAL: u6-add-model-height=a
 // BIMODAL: u6-add-slope-rate=b
 /* ============ Unit 6: Proportional Reasoning ============ */
+/* Class A completion build, November 22, 2026: written-form and
+   dual-form registration for the new 6.3, 6.6, 6.8, 6.11, 6.12,
+   6.13, 6.15 and 6.22 entries in the Class A section of this file. */
+// CRMARKS: u6-sf2d-num=1
+// CRMARKS: u6-sf2d-mc=2
+// CRMARKS: u6-sf2d-rep=1
+// CRMARKS: u6-area2d-num=2
+// CRMARKS: u6-area2d-mc=2
+// CRMARKS: u6-area2d-tri=2
+// CRMARKS: u6-sf3d-num=1
+// CRMARKS: u6-sf3d-mc=2
+// CRMARKS: u6-sf3d-rep=1
+// CRMARKS: u6-model-vol=3
+// CRMARKS: u6-model-sa-mc=2
+// CRMARKS: u6-model-sa=3
+// CRMARKS: u6-map-trail=2
+// CRMARKS: u6-plan-room-mc=2
+// CRMARKS: u6-diagram-cost=3
+// CRMARKS: u6-formula-vol=2
+// CRMARKS: u6-formula-sa=3
+// CRMARKS: u6-formula-mc=2
+// CRMARKS: u6-interpret-var=2
+// CRMARKS: u6-rate-solve-context=2
+// CRMARKS: u6-rate-context-mc=2
+// CRMARKS: u6-rate-travel=3
+// BIMODAL: u6-sf2d-mc=a
+// BIMODAL: u6-area2d-mc=a
+// BIMODAL: u6-sf3d-mc=a
+// BIMODAL: u6-model-sa-mc=a
+// BIMODAL: u6-plan-room-mc=a
+// BIMODAL: u6-formula-mc=a
+// BIMODAL: u6-rate-context-mc=a
+// BIMODAL: u6-interpret-var=b
 E("u6-scale-factor",6,["6.9"],1,"gen",function(){
   var k=pick([8,9,10,12,15,18,20,24,25,30,40,50,60]);var model=pick([3,4,5,6,7,8,9,10,12,14]);var real=model*k;
   var frame=pick([
@@ -8854,6 +8887,515 @@ E("u6-add-slope-rate",6,["6.19"],2,"gen",function(){
     "The slope is the rise divided by the run, and its units name the rate. \\[ \\begin{aligned} \\text{Slope} &= \\frac{"+d+"}{"+t+"} \\\\ &= "+v+" \\end{aligned} \\] The slope is <b>"+v+" "+ctx.unitLong+", the "+ctx.rate+"</b>.",
     {t:t,v:v});
 });
+/* ============ Class A completion build (November 22, 2026) ============
+   New entries for indicators 6.3, 6.6, 6.8, 6.11, 6.12, 6.13, 6.15
+   and 6.22, three per indicator, each indicator with at least one
+   entry carrying a written (CR) form. Manifest lines for these
+   entries are at the top of this file with the other manifests. */
+
+/* --- 6.3: scale factor from one dimension of a 2-D shape and its
+   representation. --- */
+E("u6-sf2d-num",6,["6.3"],2,"gen",function(){
+  var mode=ri(0,2);
+  if(mode===0){
+    var ctx=pick([
+      {o:"a classroom wall",w:"wall"},
+      {o:"a garden",w:"long side"},
+      {o:"a community hall",w:"long side"},
+      {o:"a deck",w:"long side"}]);
+    var k=pick([20,25,40,50,80,100,125,200,250,400]);
+    var d=pick([4,6,8,10,12,16,20]);
+    var A=d*k/100;
+    return numq("A scale diagram of "+ctx.o+" is drawn with a scale of \\(1 : k\\). The "+ctx.w+" measures \\("+d+"\\text{ cm}\\) on the diagram and \\("+fmt(A,1)+"\\text{ m}\\) in real life. Find the value of \\(k\\).",
+      k,0.011,
+      "Write both lengths in the same unit, then divide the actual length by the diagram length: \\[ \\begin{aligned} "+fmt(A,1)+"\\text{ m} &= "+(A*100)+"\\text{ cm} \\\\ \\text{scale factor} &= \\frac{"+(A*100)+"}{"+d+"} \\\\ &= "+k+" \\end{aligned} \\] The scale factor is <b>\\(1 : "+k+"\\)</b>.",
+      {mode:mode,k:k,d:d,A:A});
+  }
+  if(mode===1){
+    var ctx2=pick(["a poster of a flower","a diagram of a leaf","a picture of a butterfly","a drawing of a seashell"]);
+    var k2=pick([3,4,5,6,8,10,12,15]);
+    var d2=pick([2,3,4,5,6,7,8,9,10]);
+    var a2=d2*k2;
+    return numq("In "+ctx2+", the widest part measures \\("+d2+"\\text{ cm}\\) in the picture and \\("+a2+"\\text{ cm}\\) in real life. The scale factor (actual \\(\\div\\) diagram) is written \\(1 : k\\). Find the value of \\(k\\).",
+      k2,0.011,
+      "Both lengths are in centimetres, so divide the actual length by the diagram length: \\[ \\begin{aligned} \\text{scale factor} &= \\frac{"+a2+"}{"+d2+"} \\\\ &= "+k2+" \\end{aligned} \\] The scale factor is <b>\\(1 : "+k2+"\\)</b>.",
+      {mode:mode,k:k2,d:d2,A:a2});
+  }
+  var pairs=[[8,2],[10,4],[12,3],[16,4],[20,5],[8,6],[10,2],[15,6],[25,10],[20,15],[12,9],[25,5]];
+  var pr=pick(pairs);var dd=pr[0],aa=pr[1];var dec=aa/dd;
+  var thing=pick(["beetle","moth","coin","seashell","leaf"]);
+  return numq("A photograph of a "+thing+" is enlarged. The "+thing+" is \\("+aa+"\\text{ cm}\\) long in real life and \\("+dd+"\\text{ cm}\\) long in the photograph. Find the scale factor (actual \\(\\div\\) photograph) as a decimal.",
+    dec,0.011,
+    "Divide the actual length by the photograph length: \\[ \\begin{aligned} \\text{scale factor} &= \\frac{"+aa+"}{"+dd+"} \\\\ &= "+fmt(dec,2)+" \\end{aligned} \\] The scale factor is <b>\\("+fmt(dec,2)+"\\)</b>. It is less than 1 because the photograph is an enlargement.",
+    {mode:mode,k:dec,d:dd,A:aa});
+});
+E("u6-sf2d-mc",6,["6.3"],2,"gen",function(){
+  var ctx=pick([
+    {o:"a hockey rink","w":"length"},
+    {o:"a classroom","w":"width"},
+    {o:"a garden plot","w":"length"},
+    {o:"a community hall","w":"width"}]);
+  var k=pick([20,40,50,80,100,200,250,400,500]);
+  var d=pick([5,6,8,10,12,15,20,25]);
+  var A=d*k/100;
+  var sol="Convert the actual length to centimetres and divide by the diagram length: \\[ \\begin{aligned} "+fmt(A,1)+"\\text{ m} &= "+(A*100)+"\\text{ cm} \\\\ \\text{scale factor} &= \\frac{"+(A*100)+"}{"+d+"} \\\\ &= "+k+" \\end{aligned} \\] The scale is <b>\\(1 : "+k+"\\)</b>.";
+  return mcq("On a scale diagram of "+ctx.o+", the "+ctx.w+" is \\("+d+"\\text{ cm}\\) on the diagram and \\("+fmt(A,1)+"\\text{ m}\\) in real life. What is the scale of the diagram?",
+    "1 : "+k,
+    ["1 : "+(k*10),"1 : "+(k/10),"1 : "+(k*2)],
+    sol,{k:k,d:d,A:A});
+});
+E("u6-sf2d-rep",6,["6.3"],1,"gen",function(){
+  var pairs=[[1,100],[1,200],[1,500],[2,250],[2,500],[4,125],[4,250],[5,200],[5,400],[10,50],[10,100],[2,100],[5,100],[4,500],[8,125],[20,25],[20,100]];
+  var pr=pick(pairs);var a=pr[0],k=pr[1];var b=k*a/100;
+  var ctx=pick(["a floor plan of a school gym","a map of a snowmobile trail","a scale diagram of a bridge","a sewing pattern for a quilt block","a plan for a community garden"]);
+  return numq("On "+ctx+", \\("+a+"\\text{ cm}\\) represents \\("+b+"\\text{ m}\\). The scale factor (actual \\(\\div\\) diagram) is written \\(1 : k\\). Find the value of \\(k\\).",
+    k,0.011,
+    "Convert the actual length to centimetres, then compare it with the \\("+a+"\\text{ cm}\\) it represents: \\[ \\begin{aligned} "+b+"\\text{ m} &= "+(b*100)+"\\text{ cm} \\\\ \\text{scale factor} &= \\frac{"+(b*100)+"}{"+a+"} \\\\ &= "+k+" \\end{aligned} \\] The scale factor is <b>\\(1 : "+k+"\\)</b>.",
+    {a:a,k:k,b:b});
+});
+
+/* --- 6.6: area of a 2-D shape from the scale diagram, with a
+   reasonableness check in every solution. --- */
+E("u6-area2d-num",6,["6.6"],2,"gen",function(){
+  var ctx=pick([
+    {o:"a rectangular garden","w":"garden"},
+    {o:"a rectangular classroom floor","w":"floor"},
+    {o:"a rectangular patio","w":"patio"},
+    {o:"a rectangular mural wall","w":"wall"}]);
+  var combos=[[6,4,50],[8,5,50],[10,6,50],[6,6,40],[8,4,25],[12,5,40],[5,4,100],[9,6,50],[7,5,40],[11,4,50],[8,8,25],[10,10,20],[6,3,100],[12,8,25],[9,4,100],[7,6,50]];
+  var c=pick(combos);var w=c[0],h=c[1],k=c[2];
+  var L=w*k/100,W=h*k/100,A=L*W;
+  return numq("A scale diagram of "+ctx.o+" uses a scale of \\(1 : "+k+"\\). On the diagram the "+ctx.w+" is \\("+w+"\\text{ cm}\\) long and \\("+h+"\\text{ cm}\\) wide. Find the actual area of the "+ctx.w+", in square metres.",
+    A,0.011,
+    "Find the actual side lengths first, then the area: \\[ \\begin{aligned} \\text{actual length} &= "+w+" \\times "+k+" = "+(w*k)+"\\text{ cm} = "+fmt(L,1)+"\\text{ m} \\\\ \\text{actual width} &= "+h+" \\times "+k+" = "+(h*k)+"\\text{ cm} = "+fmt(W,1)+"\\text{ m} \\\\ \\text{area} &= "+fmt(L,1)+" \\times "+fmt(W,1)+" \\\\ &= "+fmt(A,2)+"\\text{ m}^2 \\end{aligned} \\] This is reasonable: the diagram area is only \\("+(w*h)+"\\text{ cm}^2\\), and areas grow by the square of the scale factor, \\("+k+"^2 = "+(k*k)+"\\), so the actual area should be far larger than the diagram area. The actual area is <b>"+fmt(A,2)+" square metres</b>.",
+    {w:w,h:h,k:k,A:A});
+});
+E("u6-area2d-mc",6,["6.6"],2,"gen",function(){
+  var combos=[[10,4,50],[6,8,40],[12,6,40],[11,6,50],[13,4,50],[8,10,25],[14,6,40],[12,10,25],[9,8,80],[10,6,80],[12,9,80],[7,6,125],[8,5,125],[9,5,200],[6,4,200],[13,6,80],[15,8,40],[16,6,25],[9,7,40],[11,8,80]];
+  var c=pick(combos);var b=c[0],h=c[1],k=c[2];
+  var B=b*k/100,H=h*k/100,A=B*H/2;
+  var d1=2*A,d2=b*h/2,d3=A*k/10;
+  var ctx=pick(["a triangular sail","a triangular garden bed","a triangular flag","a triangular section of a roof"]);
+  var sol="Scale both dimensions, then use the triangle area formula: \\[ \\begin{aligned} \\text{actual base} &= "+b+" \\times "+k+" = "+(b*k)+"\\text{ cm} = "+fmt(B,1)+"\\text{ m} \\\\ \\text{actual height} &= "+h+" \\times "+k+" = "+(h*k)+"\\text{ cm} = "+fmt(H,1)+"\\text{ m} \\\\ \\text{area} &= \\frac{"+fmt(B,1)+" \\times "+fmt(H,1)+"}{2} \\\\ &= "+fmt(A,2)+"\\text{ m}^2 \\end{aligned} \\] This is reasonable: areas grow by the square of the scale factor, so the actual area is much larger than the diagram area of \\("+fmt(b*h/2,1)+"\\text{ cm}^2\\). The area is <b>"+fmtF(A,2)+" square metres</b>.";
+  return mcq("A scale diagram of "+ctx+" uses a scale of \\(1 : "+k+"\\). On the diagram the base is \\("+b+"\\text{ cm}\\) and the height is \\("+h+"\\text{ cm}\\). What is the actual area?",
+    fmtF(A,2)+" square metres",
+    [fmtF(d1,2)+" square metres",fmtF(d2,2)+" square metres",fmtF(d3,2)+" square metres"],
+    sol,{b:b,h:h,k:k,A:A});
+});
+E("u6-area2d-tri",6,["6.6"],2,"gen",function(){
+  var mode=ri(0,1);
+  if(mode===0){
+    var pairs=[[2,25],[4,20],[5,16],[2,40],[4,30],[5,24],[10,12],[4,50],[5,40]];
+    var pr=pick(pairs);var a=pr[0],m=pr[1];
+    var combos=[[6,8],[8,6],[10,5],[12,6],[9,8],[14,5],[10,10],[12,9]];
+    var c=pick(combos);var w=c[0],h=c[1];
+    var L=w*m/a,W=h*m/a,A=L*W;
+    return numq("A scale diagram of a rectangular rink surface states that \\("+a+"\\text{ cm}\\) represents \\("+m+"\\text{ m}\\). On the diagram the surface is \\("+w+"\\text{ cm}\\) long and \\("+h+"\\text{ cm}\\) wide. Find the actual area of the surface, in square metres.",
+      A,0.011,
+      "Each diagram centimetre represents \\("+fmt(m/a,2)+"\\text{ m}\\). Find the actual side lengths, then the area: \\[ \\begin{aligned} \\text{actual length} &= "+w+" \\times "+fmt(m/a,2)+" = "+fmt(L,1)+"\\text{ m} \\\\ \\text{actual width} &= "+h+" \\times "+fmt(m/a,2)+" = "+fmt(W,1)+"\\text{ m} \\\\ \\text{area} &= "+fmt(L,1)+" \\times "+fmt(W,1)+" \\\\ &= "+fmt(A,2)+"\\text{ m}^2 \\end{aligned} \\] This is reasonable: the diagram itself is only \\("+(w*h)+"\\text{ cm}^2\\), so an actual area of this size fits a full-size surface. The actual area is <b>"+fmt(A,2)+" square metres</b>.",
+      {mode:mode,a:a,m:m,w:w,h:h,A:A});
+  }
+  var pr2=pick([[2,20],[5,20],[2,50],[4,40],[5,30],[10,15]]);
+  var a2=pr2[0],m2=pr2[1];
+  var c2=pick([[8,6],[10,6],[12,5],[9,4],[14,6],[10,8]]);
+  var b2=c2[0],h2=c2[1];
+  var B2=b2*m2/a2,H2=h2*m2/a2,A2=B2*H2/2;
+  return numq("A scale diagram of a triangular pennant states that \\("+a2+"\\text{ cm}\\) represents \\("+m2+"\\text{ cm}\\) on the real pennant. On the diagram the base is \\("+b2+"\\text{ cm}\\) and the height is \\("+h2+"\\text{ cm}\\). Find the actual area of the pennant, in square centimetres.",
+    A2,0.011,
+    "Each diagram centimetre represents \\("+fmt(m2/a2,1)+"\\text{ cm}\\). Find the actual base and height, then the area: \\[ \\begin{aligned} \\text{actual base} &= "+b2+" \\times "+fmt(m2/a2,1)+" = "+fmt(B2,1)+"\\text{ cm} \\\\ \\text{actual height} &= "+h2+" \\times "+fmt(m2/a2,1)+" = "+fmt(H2,1)+"\\text{ cm} \\\\ \\text{area} &= \\frac{"+fmt(B2,1)+" \\times "+fmt(H2,1)+"}{2} \\\\ &= "+fmt(A2,1)+"\\text{ cm}^2 \\end{aligned} \\] This is reasonable: the actual dimensions are each several times the diagram dimensions, so the actual area is larger than the diagram area by the square of that factor. The actual area is <b>"+fmt(A2,1)+" square centimetres</b>.",
+    {mode:mode,a:a2,m:m2,b:b2,h:h2,A:A2});
+});
+
+/* --- 6.8: scale factor from one dimension of a 3-D object and its
+   representation. --- */
+E("u6-sf3d-num",6,["6.8"],2,"gen",function(){
+  var ctx=pick([
+    {o:"a lighthouse","w":"height"},
+    {o:"a water tower","w":"height"},
+    {o:"a grain elevator","w":"height"},
+    {o:"a ferry","w":"length"},
+    {o:"an office tower","w":"height"}]);
+  var k=pick([40,50,80,100,125,200,250,400,500,1000]);
+  var d=pick([4,6,8,10,12,16,20,24]);
+  var A=d*k/100;
+  return numq("A scale model of "+ctx.o+" is built with a scale of \\(1 : k\\). The "+ctx.w+" of the model is \\("+d+"\\text{ cm}\\), and the "+ctx.w+" of the actual object is \\("+fmt(A,1)+"\\text{ m}\\). Find the value of \\(k\\).",
+    k,0.011,
+    "Write both lengths in the same unit, then divide the actual length by the model length: \\[ \\begin{aligned} "+fmt(A,1)+"\\text{ m} &= "+(A*100)+"\\text{ cm} \\\\ \\text{scale factor} &= \\frac{"+(A*100)+"}{"+d+"} \\\\ &= "+k+" \\end{aligned} \\] The scale factor is <b>\\(1 : "+k+"\\)</b>.",
+    {k:k,d:d,A:A});
+});
+E("u6-sf3d-mc",6,["6.8"],1,"gen",function(){
+  var scales=[12,18,24,32,43,50,64];
+  var i=ri(1,5);var k=scales[i];
+  var ctx=pick([
+    {o:"a model car","w":"length"},
+    {o:"a model fishing boat","w":"length"},
+    {o:"a model snowmobile","w":"length"},
+    {o:"a model pickup truck","w":"length"}]);
+  var d=pick([8,10,12,15,16,18,20,24,25]);
+  var A=d*k;
+  var sol="Divide the actual length by the model length: \\[ \\begin{aligned} \\text{scale factor} &= \\frac{"+A+"}{"+d+"} \\\\ &= "+k+" \\end{aligned} \\] The scale is <b>\\(1 : "+k+"\\)</b>.";
+  return mcq("A model kit builds "+ctx.o+". The model's "+ctx.w+" is \\("+d+"\\text{ cm}\\), and the actual "+ctx.w+" is \\("+A+"\\text{ cm}\\). What is the scale of the model?",
+    "1 : "+k,
+    ["1 : "+scales[i-1],"1 : "+scales[i+1],"1 : "+(k*2)],
+    sol,{k:k,d:d,A:A});
+});
+E("u6-sf3d-rep",6,["6.8"],2,"gen",function(){
+  var pairs=[[1,200],[2,250],[4,125],[5,200],[5,400],[10,100],[2,500],[4,250],[8,125],[5,100]];
+  var pr=pick(pairs);var a=pr[0],k=pr[1];var b=k*a/100;
+  var ctx=pick(["a model of a wind turbine","a model of a submarine","a model of an arena","a model of a cruise ship","a model of a water tower"]);
+  return numq("A scale model is built so that \\("+a+"\\text{ cm}\\) on "+ctx+" represents \\("+b+"\\text{ m}\\) on the actual object. The scale factor (actual \\(\\div\\) model) is written \\(1 : k\\). Find the value of \\(k\\).",
+    k,0.011,
+    "Convert the actual length to centimetres, then compare it with the \\("+a+"\\text{ cm}\\) it represents: \\[ \\begin{aligned} "+b+"\\text{ m} &= "+(b*100)+"\\text{ cm} \\\\ \\text{scale factor} &= \\frac{"+(b*100)+"}{"+a+"} \\\\ &= "+k+" \\end{aligned} \\] The scale factor is <b>\\(1 : "+k+"\\)</b>.",
+    {a:a,k:k,b:b});
+});
+
+/* --- 6.11: surface area and volume of a 3-D object from the scale
+   diagram. Each numeric entry works both quantities; the typed
+   answer is the second part. --- */
+E("u6-model-vol",6,["6.11"],3,"gen",function(){
+  var mode=ri(0,1);
+  if(mode===0){
+    var combos=[[10,8,6,50],[12,10,8,25],[10,10,5,40],[8,6,5,50],[20,10,10,20],[12,8,6,50],[15,10,6,20],[10,6,4,100],[14,10,8,25],[16,12,6,25],[9,6,6,50],[18,10,5,20],[12,12,12,25],[7,5,5,100],[24,15,10,20],[13,9,6,100]];
+    var c=pick(combos);var ml=c[0],mw=c[1],mh=c[2],k=c[3];
+    var L=ml*k/100,W=mw*k/100,H=mh*k/100;
+    var SA=2*(L*W+L*H+W*H),V=L*W*H;
+    var ctx=pick(["a water tank","a storage container","an aquarium","a cold storage room"]);
+    return numq("A scale model of "+ctx+" (a rectangular prism) is built to a scale of \\(1 : "+k+"\\). The model is \\("+ml+"\\text{ cm}\\) long, \\("+mw+"\\text{ cm}\\) wide and \\("+mh+"\\text{ cm}\\) high. (a) Find the surface area of the actual object, in square metres. (b) Find its volume, in cubic metres. (Type the volume.)",
+      V,0.011,
+      "Scale each dimension first: \\[ \\begin{aligned} \\text{actual dimensions} &= "+fmt(L,1)+"\\text{ m} \\times "+fmt(W,1)+"\\text{ m} \\times "+fmt(H,1)+"\\text{ m} \\\\ \\text{(a) surface area} &= 2("+fmt(L,1)+" \\times "+fmt(W,1)+" + "+fmt(L,1)+" \\times "+fmt(H,1)+" + "+fmt(W,1)+" \\times "+fmt(H,1)+") \\\\ &= "+fmt(SA,1)+"\\text{ m}^2 \\\\ \\text{(b) volume} &= "+fmt(L,1)+" \\times "+fmt(W,1)+" \\times "+fmt(H,1)+" \\\\ &= "+fmt(V,1)+"\\text{ m}^3 \\end{aligned} \\] This is reasonable: volumes grow by the cube of the scale factor, \\("+k+"^3\\), so the actual volume is far larger than the model's volume of \\("+(ml*mw*mh)+"\\text{ cm}^3\\). The volume of the actual object is <b>"+fmt(V,1)+" cubic metres</b> (and its surface area is "+fmt(SA,1)+" square metres).",
+      {mode:mode,k:k,SA:SA,V:V});
+  }
+  var combos2=[[4,10,25],[5,12,20],[4,8,50],[6,10,25],[5,10,40],[8,12,25]];
+  var c2=pick(combos2);var mr=c2[0],mh2=c2[1],k2=c2[2];
+  var R=mr*k2/100,H2=mh2*k2/100;
+  var SA2=2*3.14*R*(R+H2),V2=3.14*R*R*H2;
+  return numq("A scale model of a cylindrical grain silo is built to a scale of \\(1 : "+k2+"\\). The model has radius \\("+mr+"\\text{ cm}\\) and height \\("+mh2+"\\text{ cm}\\). Use \\(3.14\\) for \\(\\pi\\). (a) Find the surface area of the actual silo, in square metres. (b) Find its volume, in cubic metres. (Type the volume.)",
+    Math.round(V2*100)/100,0.011,
+    "Scale each dimension first: \\[ \\begin{aligned} \\text{actual radius} &= "+mr+" \\times "+k2+" = "+(mr*k2)+"\\text{ cm} = "+fmt(R,1)+"\\text{ m} \\\\ \\text{actual height} &= "+mh2+" \\times "+k2+" = "+(mh2*k2)+"\\text{ cm} = "+fmt(H2,1)+"\\text{ m} \\\\ \\text{(a) surface area} &= 2 \\times 3.14 \\times "+fmt(R,1)+" \\times ("+fmt(R,1)+" + "+fmt(H2,1)+") \\\\ &= "+fmt(SA2,2)+"\\text{ m}^2 \\\\ \\text{(b) volume} &= 3.14 \\times "+fmt(R,1)+"^2 \\times "+fmt(H2,1)+" \\\\ &= "+fmt(V2,2)+"\\text{ m}^3 \\end{aligned} \\] This is reasonable: volumes grow by the cube of the scale factor, \\("+k2+"^3\\), so the actual volume is far larger than the model's volume. The volume of the actual silo is <b>"+fmt(V2,2)+" cubic metres</b> (and its surface area is "+fmt(SA2,2)+" square metres).",
+    {mode:mode,k:k2,SA:SA2,V:V2});
+});
+E("u6-model-sa-mc",6,["6.11"],2,"gen",function(){
+  var combos=[[10,10,10,20],[8,8,8,25],[10,8,6,25],[12,10,8,20],[10,10,10,10],[15,10,5,20],[20,10,10,10],[9,9,9,40],[14,9,7,20],[11,11,11,20],[16,8,8,25],[18,12,6,20],[13,13,13,10],[15,15,15,20],[12,12,12,10],[9,7,5,40]];
+  var c=pick(combos);var ml=c[0],mw=c[1],mh=c[2],k=c[3];
+  var SAm=2*(ml*mw+ml*mh+mw*mh);
+  var key=2*((ml*k/100)*(mw*k/100)+(ml*k/100)*(mh*k/100)+(mw*k/100)*(mh*k/100));
+  var d1=SAm*k/10000,d2=SAm/10000,d3=SAm*k*k*k/10000;
+  var ctx=pick(["a storage shed","a greenhouse","a shipping container","a fish plant cold room"]);
+  var sol="Scale the dimensions, then find the surface area of the actual object: \\[ \\begin{aligned} \\text{model surface area} &= "+SAm+"\\text{ cm}^2 \\\\ \\text{actual surface area} &= "+SAm+" \\times "+k+"^2 \\\\ &= "+fmt(SAm*k*k,1)+"\\text{ cm}^2 \\\\ &= "+fmt(key,2)+"\\text{ m}^2 \\end{aligned} \\] Surface areas grow by the square of the scale factor, not by the scale factor itself and not by its cube. The surface area is <b>"+fmt(key,2)+" square metres</b>.";
+  return mcq("A scale model of "+ctx+" (a rectangular prism) is built to a scale of \\(1 : "+k+"\\). The model measures \\("+ml+"\\text{ cm}\\) by \\("+mw+"\\text{ cm}\\) by \\("+mh+"\\text{ cm}\\). What is the surface area of the actual object, in square metres?",
+    fmtF(key,2)+" square metres",
+    [fmtF(d1,2)+" square metres",fmtF(d2,2)+" square metres",fmtF(d3,2)+" square metres"],
+    sol,{k:k,SAm:SAm,key:key});
+});
+E("u6-model-sa",6,["6.11"],3,"gen",function(){
+  var mode=ri(0,1);
+  if(mode===0){
+    var combos=[[5,12,20],[4,10,25],[6,15,20],[5,10,40],[8,10,25],[4,12,50],[6,12,20],[8,15,20],[3,9,50],[7,14,20],[9,18,20],[10,20,10]];
+    var c=pick(combos);var mr=c[0],mh=c[1],k=c[2];
+    var R=mr*k/100,H=mh*k/100;
+    var SA=2*3.14*R*(R+H),V=3.14*R*R*H;
+    return numq("A scale model of a cylindrical water tank is built to a scale of \\(1 : "+k+"\\). The model has radius \\("+mr+"\\text{ cm}\\) and height \\("+mh+"\\text{ cm}\\). Use \\(3.14\\) for \\(\\pi\\). (a) Find the volume of the actual tank, in cubic metres. (b) Find its surface area, in square metres. (Type the surface area.)",
+      Math.round(SA*100)/100,0.011,
+      "Scale each dimension first: \\[ \\begin{aligned} \\text{actual radius} &= "+mr+" \\times "+k+" = "+(mr*k)+"\\text{ cm} = "+fmt(R,1)+"\\text{ m} \\\\ \\text{actual height} &= "+mh+" \\times "+k+" = "+(mh*k)+"\\text{ cm} = "+fmt(H,1)+"\\text{ m} \\\\ \\text{(a) volume} &= 3.14 \\times "+fmt(R,1)+"^2 \\times "+fmt(H,1)+" \\\\ &= "+fmt(V,2)+"\\text{ m}^3 \\\\ \\text{(b) surface area} &= 2 \\times 3.14 \\times "+fmt(R,1)+" \\times ("+fmt(R,1)+" + "+fmt(H,1)+") \\\\ &= "+fmt(SA,2)+"\\text{ m}^2 \\end{aligned} \\] This is reasonable: surface areas grow by the square of the scale factor, \\("+k+"^2\\), while volumes grow by its cube, so the surface area should be far smaller than the volume figure here. The surface area of the actual tank is <b>"+fmt(SA,2)+" square metres</b> (and its volume is "+fmt(V,2)+" cubic metres).",
+      {mode:mode,k:k,SA:SA,V:V});
+  }
+  var combos2=[[12,10,8,25],[10,8,6,50],[20,12,10,20],[15,10,8,20],[10,10,6,40],[16,10,5,25],[18,12,9,20],[22,14,10,20],[13,8,7,50],[17,12,6,25],[19,10,9,20],[21,15,10,20]];
+  var c2=pick(combos2);var ml=c2[0],mw=c2[1],mh2=c2[2],k2=c2[3];
+  var L=ml*k2/100,W=mw*k2/100,H2=mh2*k2/100;
+  var SA2=2*(L*W+L*H2+W*H2),V2=L*W*H2;
+  var ctx=pick(["a community greenhouse","a storage shed","a small warehouse","a small factory","a boat shed"]);
+  return numq("A scale model of "+ctx+" (a rectangular prism) is built to a scale of \\(1 : "+k2+"\\). The model is \\("+ml+"\\text{ cm}\\) long, \\("+mw+"\\text{ cm}\\) wide and \\("+mh2+"\\text{ cm}\\) high. (a) Find the volume of the actual building, in cubic metres. (b) Find its surface area, in square metres. (Type the surface area.)",
+    Math.round(SA2*100)/100,0.011,
+    "Scale each dimension first: \\[ \\begin{aligned} \\text{actual dimensions} &= "+fmt(L,1)+"\\text{ m} \\times "+fmt(W,1)+"\\text{ m} \\times "+fmt(H2,1)+"\\text{ m} \\\\ \\text{(a) volume} &= "+fmt(L,1)+" \\times "+fmt(W,1)+" \\times "+fmt(H2,1)+" \\\\ &= "+fmt(V2,1)+"\\text{ m}^3 \\\\ \\text{(b) surface area} &= 2("+fmt(L,1)+" \\times "+fmt(W,1)+" + "+fmt(L,1)+" \\times "+fmt(H2,1)+" + "+fmt(W,1)+" \\times "+fmt(H2,1)+") \\\\ &= "+fmt(SA2,1)+"\\text{ m}^2 \\end{aligned} \\] This is reasonable: surface areas grow by the square of the scale factor, \\("+k2+"^2\\), so the actual surface area is far larger than the model's surface area of \\("+(2*(ml*mw+ml*mh2+mw*mh2))+"\\text{ cm}^2\\). The surface area of the actual building is <b>"+fmt(SA2,1)+" square metres</b> (and its volume is "+fmt(V2,1)+" cubic metres).",
+    {mode:mode,k:k2,SA:SA2,V:V2});
+});
+
+/* --- 6.12: contextual problems that involve a scale diagram. --- */
+E("u6-map-trail",6,["6.12"],2,"gen",function(){
+  var mode=ri(0,1);
+  var ctx=pick([
+    {o:"a hiking trail between two lookouts","w":"trail"},
+    {o:"a snowmobile trail between two communities","w":"trail"},
+    {o:"a ferry route on a marine chart","w":"route"},
+    {o:"a cycling route between two towns","w":"route"}]);
+  if(mode===0){
+    var k=pick([2,3,4,5,6,8,10,12,15,20,25]);
+    var d=pick([3,4,5,6,7,8,9,10,11,12,13,14,15,16,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5]);
+    var ans=d*k;
+    return numq("On a map, \\(1\\text{ cm}\\) represents \\("+k+"\\text{ km}\\). The map distance for "+ctx.o+" is \\("+fmt(d,1)+"\\text{ cm}\\). What is the actual distance, in kilometres?",
+      ans,0.011,
+      "Multiply the map distance by the number of kilometres each centimetre represents: \\[ \\begin{aligned} \\text{actual distance} &= "+fmt(d,1)+" \\times "+k+" \\\\ &= "+fmt(ans,1)+"\\text{ km} \\end{aligned} \\] The actual distance is <b>"+fmt(ans,1)+" kilometres</b>.",
+      {mode:mode,k:k,d:d,ans:ans});
+  }
+  var N=pick([50000,100000,200000,250000,500000]);
+  var d2=pick([4,5,6,7,8,9,10,11,12,13,14,15,16,18,20]);
+  var ans2=d2*N/100000;
+  return numq("A map has a scale of \\(1 : "+N+"\\). On the map, "+ctx.o+" measures \\("+d2+"\\text{ cm}\\). What is the actual distance, in kilometres?",
+    ans2,0.011,
+    "Multiply the map distance by the scale factor to get the actual distance in centimetres, then convert to kilometres: \\[ \\begin{aligned} \\text{actual distance} &= "+d2+" \\times "+N+" \\\\ &= "+(d2*N)+"\\text{ cm} \\\\ &= "+fmt(ans2,1)+"\\text{ km} \\end{aligned} \\] The actual distance is <b>"+fmt(ans2,1)+" kilometres</b>.",
+    {mode:mode,N:N,d:d2,ans:ans2});
+});
+E("u6-plan-room-mc",6,["6.12"],2,"gen",function(){
+  var ctx=pick([
+    {o:"a bedroom in a house plan","w":"bedroom"},
+    {o:"a classroom in a school plan","w":"classroom"},
+    {o:"a kitchen in a house plan","w":"kitchen"},
+    {o:"a library in a school plan","w":"library"}]);
+  var k=pick([20,25,50,100,200]);
+  var p=ri(4,20),tries=0;
+  while((p*k)%100!==0&&tries<40){p=ri(4,20);tries++;}
+  if((p*k)%100!==0){k=100;p=ri(4,20);}
+  var key=p*k/100;
+  var sol="Multiply the plan length by the scale factor and convert to metres: \\[ \\begin{aligned} \\text{actual length} &= "+p+" \\times "+k+" \\\\ &= "+(p*k)+"\\text{ cm} \\\\ &= "+fmtF(key,1)+"\\text{ m} \\end{aligned} \\] The actual length is <b>"+fmtF(key,1)+" metres</b>.";
+  return mcq("A floor plan uses a scale of \\(1 : "+k+"\\). On the plan, the length of "+ctx.o+" is \\("+p+"\\text{ cm}\\). What is the actual length of the "+ctx.w+", in metres?",
+    fmtF(key,1)+" metres",
+    [fmtF(p*k/10,1)+" metres",fmtF(p*k/1000,1)+" metres",fmtF(key+p,1)+" metres"],
+    sol,{k:k,p:p,key:key});
+});
+E("u6-diagram-cost",6,["6.12"],3,"gen",function(){
+  var mode=ri(0,2);
+  if(mode===0){
+    var k=pick([20,25,40,50]);
+    var w=ri(4,14),h=ri(4,14),tries=0;
+    while(((w*k*10)%100!==0||(h*k*10)%100!==0)&&tries<60){w=ri(4,14);h=ri(4,14);tries++;}
+    if((w*k*10)%100!==0||(h*k*10)%100!==0){k=50;}
+    var per=2*(w+h)*k/100;
+    var r=pick([12,15,18,20,24,25,30]);
+    var cost=per*r;
+    return numq("A scale diagram of a rectangular garden uses a scale of \\(1 : "+k+"\\). On the diagram the garden is \\("+w+"\\text{ cm}\\) long and \\("+h+"\\text{ cm}\\) wide. Edging for the garden costs $"+r+" per metre. What is the total cost of edging all four sides of the actual garden?",
+      cost,0.011,
+      "Find the actual side lengths, then the perimeter, then the cost: \\[ \\begin{aligned} \\text{actual length} &= "+w+" \\times "+k+" = "+(w*k)+"\\text{ cm} = "+fmt(w*k/100,1)+"\\text{ m} \\\\ \\text{actual width} &= "+h+" \\times "+k+" = "+(h*k)+"\\text{ cm} = "+fmt(h*k/100,1)+"\\text{ m} \\\\ \\text{perimeter} &= 2("+fmt(w*k/100,1)+" + "+fmt(h*k/100,1)+") = "+per+"\\text{ m} \\\\ \\text{cost} &= "+per+" \\times "+r+" \\\\ &= "+cost+" \\end{aligned} \\] The total cost is <b>$"+cost+"</b>.",
+      {mode:mode,k:k,w:w,h:h,per:per,r:r,cost:cost});
+  }
+  var combos=[[6,4,50],[8,5,50],[10,6,50],[6,6,40],[8,4,25],[12,5,40],[9,6,50],[7,5,40],[8,8,25],[10,10,20],[12,8,25],[9,4,100]];
+  var c=pick(combos);var w2=c[0],h2=c[1],k2=c[2];
+  var A=(w2*k2/100)*(h2*k2/100);
+  if(mode===1){
+    var cov=pick([2,3,4,5]);
+    var bags=Math.ceil(A/cov-0.0001);
+    return numq("A scale diagram of a rectangular garden bed uses a scale of \\(1 : "+k2+"\\). On the diagram the bed is \\("+w2+"\\text{ cm}\\) long and \\("+h2+"\\text{ cm}\\) wide. One bag of mulch covers \\("+cov+"\\text{ m}^2\\). How many bags of mulch must be bought to cover the actual bed?",
+      bags,0.011,
+      "Find the actual area, then divide by the coverage of one bag: \\[ \\begin{aligned} \\text{actual length} &= "+w2+" \\times "+k2+" = "+(w2*k2)+"\\text{ cm} = "+fmt(w2*k2/100,1)+"\\text{ m} \\\\ \\text{actual width} &= "+h2+" \\times "+k2+" = "+(h2*k2)+"\\text{ cm} = "+fmt(h2*k2/100,1)+"\\text{ m} \\\\ \\text{area} &= "+fmt(w2*k2/100,1)+" \\times "+fmt(h2*k2/100,1)+" = "+fmt(A,2)+"\\text{ m}^2 \\\\ \\text{bags} &= "+fmt(A,2)+" \\div "+cov+" \\\\ &= "+fmt(A/cov,2)+" \\end{aligned} \\] Bags are sold whole, so the result must be rounded up. The number of bags to buy is <b>"+bags+"</b>.",
+      {mode:mode,k:k2,w:w2,h:h2,A:A,cov:cov,bags:bags});
+  }
+  var cov2=pick([8,10,11,12]);
+  var cans=Math.ceil(A/cov2-0.0001);
+  return numq("A scale diagram of a rectangular warehouse wall uses a scale of \\(1 : "+k2+"\\). On the diagram the wall is \\("+w2+"\\text{ cm}\\) long and \\("+h2+"\\text{ cm}\\) high. One can of paint covers \\("+cov2+"\\text{ m}^2\\). How many cans of paint must be bought to paint the actual wall?",
+    cans,0.011,
+    "Find the actual area, then divide by the coverage of one can: \\[ \\begin{aligned} \\text{actual length} &= "+w2+" \\times "+k2+" = "+(w2*k2)+"\\text{ cm} = "+fmt(w2*k2/100,1)+"\\text{ m} \\\\ \\text{actual height} &= "+h2+" \\times "+k2+" = "+(h2*k2)+"\\text{ cm} = "+fmt(h2*k2/100,1)+"\\text{ m} \\\\ \\text{area} &= "+fmt(w2*k2/100,1)+" \\times "+fmt(h2*k2/100,1)+" = "+fmt(A,2)+"\\text{ m}^2 \\\\ \\text{cans} &= "+fmt(A,2)+" \\div "+cov2+" \\\\ &= "+fmt(A/cov2,2)+" \\end{aligned} \\] Cans are sold whole, so the result must be rounded up. The number of cans to buy is <b>"+cans+"</b>.",
+    {mode:mode,k:k2,w:w2,h:h2,A:A,cov:cov2,cans:cans});
+});
+
+/* --- 6.13: spatial problems that require manipulating formulas. --- */
+E("u6-formula-vol",6,["6.13"],2,"gen",function(){
+  var mode=ri(0,1);
+  if(mode===0){
+    var ctx=pick(["storage tote","planter box","cooler","fish tank"]);
+    var l=ri(2,12),w=ri(2,12),h=ri(2,12);
+    var V=l*w*h;
+    return numq("The volume of a rectangular prism is given by \\(V = lwh\\). A "+ctx+" shaped as a rectangular prism has volume \\("+V+"\\text{ cm}^3\\), length \\("+l+"\\text{ cm}\\) and width \\("+w+"\\text{ cm}\\). Find its height, in centimetres.",
+      h,0.011,
+      "Rearrange the formula to isolate the height, then substitute: \\[ \\begin{aligned} V &= lwh \\\\ h &= \\frac{V}{lw} \\\\ &= \\frac{"+V+"}{"+l+" \\times "+w+"} \\\\ &= \\frac{"+V+"}{"+(l*w)+"} \\\\ &= "+h+"\\text{ cm} \\end{aligned} \\] The height is <b>"+h+" centimetres</b>.",
+      {mode:mode,l:l,w:w,h:h,V:V});
+  }
+  var r=pick([2,3,4,5,6,10]);
+  var h2=ri(3,15);
+  var V2=Math.round(3.14*r*r*h2*100)/100;
+  return numq("The volume of a cylinder is given by \\(V = \\pi r^2 h\\). A cylindrical can has volume \\("+fmt(V2,2)+"\\text{ cm}^3\\) and radius \\("+r+"\\text{ cm}\\). Use \\(3.14\\) for \\(\\pi\\). Find its height, in centimetres.",
+    h2,0.011,
+    "Rearrange the formula to isolate the height, then substitute: \\[ \\begin{aligned} V &= \\pi r^2 h \\\\ h &= \\frac{V}{\\pi r^2} \\\\ &= \\frac{"+fmt(V2,2)+"}{3.14 \\times "+r+"^2} \\\\ &= \\frac{"+fmt(V2,2)+"}{"+fmt(3.14*r*r,2)+"} \\\\ &= "+h2+"\\text{ cm} \\end{aligned} \\] The height is <b>"+h2+" centimetres</b>.",
+    {mode:mode,r:r,h:h2,V:V2});
+});
+E("u6-formula-sa",6,["6.13"],3,"gen",function(){
+  var mode=ri(0,1);
+  if(mode===0){
+    var l=ri(2,12),w=ri(2,12),h=ri(2,12);
+    var SA=2*(l*w+l*h+w*h);
+    return numq("The surface area of a closed rectangular prism is given by \\(SA = 2(lw + lh + wh)\\). A storage box has surface area \\("+SA+"\\text{ cm}^2\\), length \\("+l+"\\text{ cm}\\) and width \\("+w+"\\text{ cm}\\). Find its height, in centimetres.",
+      h,0.011,
+      "Substitute the known values, then rearrange to isolate the height: \\[ \\begin{aligned} SA &= 2(lw + lh + wh) \\\\ "+SA+" &= 2("+l+" \\times "+w+" + "+l+"h + "+w+"h) \\\\ "+(SA/2)+" &= "+(l*w)+" + "+(l+w)+"h \\\\ "+(l+w)+"h &= "+(SA/2)+" - "+(l*w)+" \\\\ &= "+((SA/2)-(l*w))+" \\\\ h &= \\frac{"+((SA/2)-(l*w))+"}{"+(l+w)+"} \\\\ &= "+h+"\\text{ cm} \\end{aligned} \\] The height is <b>"+h+" centimetres</b>.",
+      {mode:mode,l:l,w:w,h:h,SA:SA});
+  }
+  var s=ri(3,15);
+  var SA2=6*s*s;
+  return numq("The surface area of a cube is given by \\(SA = 6s^2\\), where \\(s\\) is the side length. A cube has surface area \\("+SA2+"\\text{ cm}^2\\). Find its side length, in centimetres.",
+    s,0.011,
+    "Rearrange the formula to isolate the side length, then substitute: \\[ \\begin{aligned} SA &= 6s^2 \\\\ s^2 &= \\frac{SA}{6} \\\\ &= \\frac{"+SA2+"}{6} \\\\ &= "+(s*s)+" \\\\ s &= \\sqrt{"+(s*s)+"} \\\\ &= "+s+"\\text{ cm} \\end{aligned} \\] The side length is <b>"+s+" centimetres</b>.",
+    {mode:mode,s:s,SA:SA2});
+});
+E("u6-formula-mc",6,["6.13"],2,"gen",function(){
+  var mode=ri(0,1);
+  if(mode===0){
+    var a=ri(3,15),b=ri(3,15),tries=0;
+    while((a===b||(a+b)%2!==0||b===3*a)&&tries<60){a=ri(3,15);b=ri(3,15);tries++;}
+    if(a===b||(a+b)%2!==0||b===3*a){a=6;b=10;}
+    var h=ri(2,10);
+    var A=(a+b)/2*h;
+    var sol="Rearrange the formula to isolate the base \\(a\\), then substitute: \\[ \\begin{aligned} A &= \\frac{(a + b)}{2} \\times h \\\\ a &= \\frac{2A}{h} - b \\\\ &= \\frac{2 \\times "+A+"}{"+h+"} - "+b+" \\\\ &= "+(a+b)+" - "+b+" \\\\ &= "+a+"\\text{ cm} \\end{aligned} \\] The length of the base is <b>"+a+" centimetres</b>.";
+    return mcq("The area of a trapezoid is given by \\(A = \\frac{(a + b)}{2} \\times h\\), where \\(a\\) and \\(b\\) are the parallel sides. A trapezoid has area \\("+A+"\\text{ cm}^2\\), height \\("+h+"\\text{ cm}\\) and one parallel side \\("+b+"\\text{ cm}\\). Find the other parallel side, in centimetres.",
+      a+" centimetres",
+      [(a+b)+" centimetres",(2*a)+" centimetres",((a+b)/2)+" centimetres"],
+      sol,{mode:mode,a:a,b:b,h:h,A:A});
+  }
+  var r=pick([3,4,5]);
+  var h2=ri(3,12),tries2=0;
+  while((h2===2*r||h2*(r-1)===2*r)&&tries2<40){h2=ri(3,12);tries2++;}
+  if(h2===2*r||h2*(r-1)===2*r)h2=5;
+  var V=Math.round(3.14*r*r*h2*100)/100;
+  var sol2="Rearrange the formula to isolate the height, then substitute: \\[ \\begin{aligned} V &= \\pi r^2 h \\\\ h &= \\frac{V}{\\pi r^2} \\\\ &= \\frac{"+fmt(V,2)+"}{3.14 \\times "+r+"^2} \\\\ &= \\frac{"+fmt(V,2)+"}{"+fmt(3.14*r*r,2)+"} \\\\ &= "+h2+"\\text{ cm} \\end{aligned} \\] The height is <b>"+h2+" centimetres</b>.";
+  return mcq("The volume of a cylinder is given by \\(V = \\pi r^2 h\\). A cylinder has volume \\("+fmt(V,2)+"\\text{ cm}^3\\) and radius \\("+r+"\\text{ cm}\\). Use \\(3.14\\) for \\(\\pi\\). Find its height, in centimetres.",
+    h2+" centimetres",
+    [(r*h2)+" centimetres",(h2+2*r)+" centimetres",(2*h2)+" centimetres"],
+    sol2,{mode:mode,r:r,h:h2,V:V});
+});
+
+/* --- 6.15: interpret rates in a context. --- */
+E("u6-interpret-var",6,["6.15"],1,"var",varset([
+  function(){return mcq("A patient's heart rate is 72 beats per minute. What does this rate compare?",
+    "The number of heartbeats in one minute",
+    ["The number of minutes for one heartbeat","The number of heartbeats in one hour","The number of minutes the heart beats in a day"],
+    "A rate of 72 beats per minute pairs a count of beats with a time of one minute. It tells how many times the heart beats in a single minute, not a time per beat and not a count over a longer period. It compares <b>the number of heartbeats in one minute</b>.",{});},
+  function(){return mcq("A grocery store sells juice at $1.60 per litre. What does the unit rate tell you?",
+    "The cost of one litre of juice",
+    ["The cost of every juice in the store","The number of litres in one dollar","The size of one juice container"],
+    "A unit rate is written for one unit of the second quantity. Here the second quantity is litres, so $1.60 per litre gives the price of a single litre. The unit rate tells you <b>the cost of one litre of juice</b>.",{});},
+  function(){return mcq("A dripping tap wastes water at a rate of 0.5 litres per hour. What does the 0.5 represent?",
+    "The litres of water wasted in one hour",
+    ["The hours needed to waste one litre","The litres wasted in one full day","The hours the tap has been dripping"],
+    "The rate is litres per hour, so its value counts litres over a single hour. The 0.5 represents <b>the litres of water wasted in one hour</b>.",{});},
+  function(){return mcq("A cyclist's computer shows a speed of 24 kilometres per hour. What does the rate mean?",
+    "The cyclist travels 24 kilometres in one hour",
+    ["The cyclist travels one kilometre in 24 hours","The cyclist travels 24 kilometres in one day","The cyclist has travelled 24 kilometres in total"],
+    "Kilometres per hour pairs a distance with one hour of travel. The rate means <b>the cyclist travels 24 kilometres in one hour</b>.",{});},
+  function(){return mcq("A mural artist charges $38 per square metre of wall. What does the rate describe?",
+    "The charge for painting one square metre",
+    ["The charge for painting the whole mural","The number of square metres painted in one hour","The total area of wall the artist has painted"],
+    "The rate is dollars per square metre, so it is the price attached to a single square metre of wall. The rate describes <b>the charge for painting one square metre</b>.",{});}
+]));
+E("u6-interpret-gen",6,["6.15"],2,"gen",function(){
+  var frames=[
+    {make:function(){var R=ri(10,30);return {stem:"During a storm, rain falls at a rate of "+R+" millimetres per hour.",q:"What does this rate tell you?",key:"In one hour, "+R+" millimetres of rain fall",d:["In one millimetre of rain, "+R+" hours pass","In one day, "+R+" millimetres of rain fall",R+" millimetres of rain fall in every storm"],sol:"The rate is millimetres per hour, so it gives the depth of rain that falls in a single hour. The rate tells you that <b>in one hour, "+R+" millimetres of rain fall</b>.",R:R};}},
+    {make:function(){var R=ri(15,25);return {stem:"Sam earns $"+R+" per hour working at a grocery store.",q:"What does this rate tell you?",key:"Sam earns "+R+" dollars for each hour worked",d:["Sam works "+R+" hours for each dollar earned","Sam earns "+R+" dollars for each week worked","Sam earns "+R+" dollars in total each pay period"],sol:"Dollars per hour pairs pay with one hour of work. The rate tells you that <b>Sam earns "+R+" dollars for each hour worked</b>.",R:R};}},
+    {make:function(){var R=ri(6,12);return {stem:"A car uses "+R+" litres of fuel per 100 kilometres.",q:"What does this rate tell you?",key:"The car uses "+R+" litres to travel 100 kilometres",d:["The car travels "+R+" kilometres on 100 litres","The car uses "+R+" litres to travel one kilometre","The car uses 100 litres to travel "+R+" kilometres"],sol:"The rate pairs litres of fuel with a distance of 100 kilometres. The rate tells you that <b>the car uses "+R+" litres to travel 100 kilometres</b>.",R:R};}},
+    {make:function(){var R=ri(12,40);return {stem:"An office printer prints "+R+" pages per minute.",q:"What does this rate tell you?",key:"The printer prints "+R+" pages in one minute",d:["The printer takes "+R+" minutes to print one page","The printer prints "+R+" pages in one hour","The printer prints "+R+" pages in total each day"],sol:"Pages per minute counts the pages printed in a single minute. The rate tells you that <b>the printer prints "+R+" pages in one minute</b>.",R:R};}},
+    {make:function(){var R=ri(120,160);return {stem:"During gym class, Mia's pulse is "+R+" beats per minute.",q:"What does this rate tell you?",key:"Mia's heart beats "+R+" times in one minute",d:["Mia's heart beats once every "+R+" minutes","Mia's heart beats "+R+" times in one hour","Mia's heart beats "+R+" times during class"],sol:"Beats per minute counts heartbeats in a single minute. The rate tells you that <b>Mia's heart beats "+R+" times in one minute</b>.",R:R};}},
+    {make:function(){var R=ri(10,30);return {stem:"A garden hose delivers "+R+" litres of water per minute.",q:"What does this rate tell you?",key:"In one minute, the hose delivers "+R+" litres of water",d:["The hose takes "+R+" minutes to deliver one litre","In one hour, the hose delivers "+R+" litres of water","The hose delivers "+R+" litres of water in total"],sol:"Litres per minute gives the volume of water delivered in a single minute. The rate tells you that <b>in one minute, the hose delivers "+R+" litres of water</b>.",R:R};}}
+  ];
+  var f=pick(frames).make();
+  return mcq(f.stem+" "+f.q,f.key,f.d,f.sol,{R:f.R});
+});
+E("u6-interpret-compare",6,["6.15"],2,"gen",function(){
+  var frames=[
+    {make:function(){var V=pick([25,30,40,50,60,70,80,90,100,110,120]);return {stem:"A road sign gives a speed of "+V+" km/h.",key:"A vehicle travels "+V+" kilometres in one hour",d:["A vehicle travels one kilometre in "+V+" hours","A vehicle travels "+V+" kilometres in one minute","A vehicle has travelled "+V+" kilometres in total"],sol:"The notation km/h means kilometres per hour: a distance matched with one hour. The rate means <b>a vehicle travels "+V+" kilometres in one hour</b>.",V:V};}},
+    {make:function(){var P=pick([0.89,1.29,1.49,1.79,1.99,2.49,2.99,3.49]);return {stem:"A grocery label gives a price of $"+fmtF(P,2)+" per 100 g.",key:"One hundred grams cost "+fmtF(P,2)+" dollars",d:["One kilogram costs exactly "+fmtF(P,2)+" dollars","One hundred grams cost one dollar and "+fmtF(P,2)+" cents","The whole package costs "+fmtF(P,2)+" dollars"],sol:"The label prices a mass of 100 grams, so the amount shown is the cost of that mass. It means <b>one hundred grams cost "+fmtF(P,2)+" dollars</b>.",V:P};}},
+    {make:function(){var D=pick([2.5,5,7.5,10,12.5,15,20]);return {stem:"A medicine label reads "+fmt(D,1)+" mL per dose.",key:"Each dose of the medicine is "+fmt(D,1)+" millilitres",d:["Each millilitre contains "+fmt(D,1)+" doses of medicine","Each dose of the medicine is "+fmt(D,1)+" litres in volume","The whole bottle holds exactly "+fmt(D,1)+" millilitres"],sol:"Millilitres per dose gives the volume in a single dose. It means <b>each dose of the medicine is "+fmt(D,1)+" millilitres</b>.",V:D};}},
+    {make:function(){var F=pick([10,15,20,25,30,35,40,45,50]);return {stem:"A pump is rated at "+F+" L/min.",key:"The pump moves "+F+" litres of water every minute",d:["The pump moves one litre of water every "+F+" minutes","The pump moves "+F+" litres of water every hour","The pump holds "+F+" litres of water in its tank"],sol:"The notation L/min means litres per minute: a volume matched with one minute. The rating means <b>the pump moves "+F+" litres of water every minute</b>.",V:F};}},
+    {make:function(){var T=pick([10,12,14,15,16,18,20,22,24,25]);return {stem:"A theatre sells tickets at $"+T+" per seat.",key:"Each seat costs "+T+" dollars for the show",d:["Each dollar buys "+T+" seats at the theatre","All the seats together cost "+T+" dollars","Each seat costs "+T+" dollars per hour of the show"],sol:"Dollars per seat attaches the price to a single seat. It means <b>each seat costs "+T+" dollars for the show</b>.",V:T};}},
+    {make:function(){var F=pick([180,200,240,250,300,320,400,450,500,600]);return {stem:"A ferry burns "+F+" litres of fuel per crossing.",key:"Each crossing uses "+F+" litres of fuel",d:["Each litre of fuel lasts "+F+" crossings","Each crossing uses "+F+" litres per hour","The ferry burns "+F+" litres of fuel in total today"],sol:"Litres per crossing gives the fuel used on a single crossing. It means <b>each crossing uses "+F+" litres of fuel</b>.",V:F};}}
+  ];
+  var f=pick(frames).make();
+  return mcq(f.stem+" Which statement correctly interprets this rate?",f.key,f.d,f.sol,{V:f.V});
+});
+
+/* --- 6.22: contextual problems involving rates or unit rates. --- */
+E("u6-rate-solve-context",6,["6.22"],2,"gen",function(){
+  var mode=ri(0,2);
+  if(mode===0){
+    var p=pick([8.50,9.00,10.50,11.00,12.50,14.00,15.50,16.00,18.50,20.00]);
+    var m=pick([0.5,1.5,2,2.5,3,4]);
+    var food=pick(["cheese","turkey","ham","roast beef"]);
+    var total=Math.round(p*m*100)/100;
+    return numq("At a deli, sliced "+food+" costs $"+fmtF(p,2)+" per kilogram. How much does "+fmt(m,1)+" kg of the "+food+" cost, in dollars?",
+      total,0.011,
+      "Multiply the unit price by the mass: \\[ \\begin{aligned} \\text{cost} &= "+fmt(m,1)+" \\times "+fmtF(p,2)+" \\\\ &= "+fmtF(total,2)+" \\end{aligned} \\] The cost is <b>$"+fmtF(total,2)+"</b>.",
+      {mode:mode,p:p,m:m,total:total});
+  }
+  if(mode===1){
+    var v=pick([40,45,50,55,60,65,70,75,80,85,90,95,100]);
+    var t=pick([1.5,2,2.5,3,3.5,4,4.5,5]);
+    var D=v*t;
+    return numq("A bus travels "+fmt(D,1)+" km at an average speed of "+v+" km/h. How long does the trip take, in hours?",
+      t,0.011,
+      "Divide the distance by the speed: \\[ \\begin{aligned} \\text{time} &= \\frac{"+fmt(D,1)+"}{"+v+"} \\\\ &= "+fmt(t,1)+"\\text{ h} \\end{aligned} \\] The trip takes <b>"+fmt(t,1)+" hours</b>.",
+      {mode:mode,v:v,t:t,D:D});
+  }
+  var dose=pick([2.5,5,7.5,10]);
+  var per=pick([2,3,4]);
+  var days=pick([5,7,10,14]);
+  var tot=dose*per*days;
+  return numq("A patient takes "+fmt(dose,1)+" mL of medicine in each dose, "+per+" doses per day, for "+days+" days. How many millilitres of medicine does the patient take in total?",
+    tot,0.011,
+    "Find the amount per day, then the total over the full course: \\[ \\begin{aligned} \\text{per day} &= "+fmt(dose,1)+" \\times "+per+" = "+fmt(dose*per,1)+"\\text{ mL} \\\\ \\text{total} &= "+fmt(dose*per,1)+" \\times "+days+" \\\\ &= "+fmt(tot,1)+"\\text{ mL} \\end{aligned} \\] The total amount is <b>"+fmt(tot,1)+" millilitres</b>.",
+    {mode:mode,dose:dose,per:per,days:days,tot:tot});
+});
+E("u6-rate-context-mc",6,["6.22"],2,"gen",function(){
+  var mode=ri(0,2);
+  if(mode===0){
+    var n1=pick([4,6,8,10,12]);
+    var u=pick([1.25,1.50,1.75,2.00,2.25,2.50]);
+    var P=n1*u;
+    var m=pick([2,3,4,5]);
+    var n2=n1*m;
+    var K=u*n2;
+    var item=pick(["juice boxes","granola bars","muffins","yogurt cups"]);
+    var sol="Find the unit rate from the pack, then multiply by the number bought: \\[ \\begin{aligned} \\text{unit rate} &= \\frac{"+fmtF(P,2)+"}{"+n1+"} = "+fmtF(u,2)+"\\text{ dollars each} \\\\ \\text{cost} &= "+n2+" \\times "+fmtF(u,2)+" \\\\ &= "+fmtF(K,2)+" \\end{aligned} \\] The cost is <b>$"+fmtF(K,2)+"</b>.";
+    return mcq("A pack of "+n1+" "+item+" costs $"+fmtF(P,2)+". At the same unit rate, what is the cost of "+n2+" "+item+"?",
+      "$"+fmtF(K,2),
+      ["$"+fmtF(P,2),"$"+fmtF(u*(n2+n1),2),"$"+fmtF(K+u,2)],
+      sol,{mode:mode,n1:n1,u:u,P:P,n2:n2,K:K});
+  }
+  if(mode===1){
+    var v=pick([40,45,50,55,60,65,70,75,80,85,90,95,100,105,110]);
+    var t=pick([1.5,2.5,3,4]);
+    var D=v*t;
+    var sol="Multiply the speed by the time: \\[ \\begin{aligned} \\text{distance} &= "+v+" \\times "+fmt(t,1)+" \\\\ &= "+fmtF(D,1)+"\\text{ km} \\end{aligned} \\] The distance travelled is <b>"+fmtF(D,1)+" kilometres</b>.";
+    return mcq("A delivery van travels at an average speed of "+v+" km/h for "+fmt(t,1)+" hours. How far does it travel?",
+      fmtF(D,1)+" kilometres",
+      [fmtF(D/2,1)+" kilometres",fmtF(D+v,1)+" kilometres",fmtF(D-v,1)+" kilometres"],
+      sol,{mode:mode,v:v,t:t,D:D});
+  }
+  var r=pick([16.50,17.25,18.00,19.50,20.00,22.50,25.00]);
+  var h=pick([4,5,6,7,8,10,12]);
+  var K2=r*h;
+  var sol="Multiply the hourly rate by the hours worked: \\[ \\begin{aligned} \\text{pay} &= "+h+" \\times "+fmtF(r,2)+" \\\\ &= "+fmtF(K2,2)+" \\end{aligned} \\] The pay is <b>$"+fmtF(K2,2)+"</b>.";
+  return mcq("A lifeguard earns $"+fmtF(r,2)+" per hour. How much does the lifeguard earn for "+h+" hours of work?",
+    "$"+fmtF(K2,2),
+    ["$"+fmtF(r*(h+2),2),"$"+fmtF(r*(h-1),2),"$"+fmtF(K2+h,2)],
+    sol,{mode:mode,r:r,h:h,K:K2});
+});
+E("u6-rate-travel",6,["6.22"],3,"gen",function(){
+  var mode=ri(0,2);
+  if(mode===0){
+    var v1=pick([50,60,70,80,90,100]),t1=pick([0.5,1,1.5,2,2.5,3]);
+    var v2=pick([40,50,60,70,80]),t2=pick([0.5,1,1.5,2,2.5,3]);
+    var d1=v1*t1,d2=v2*t2,T=t1+t2;
+    return numq("A delivery truck drives from a depot to a first stop, a distance of "+fmt(d1,1)+" km at an average speed of "+v1+" km/h, then continues "+fmt(d2,1)+" km to a second stop at an average speed of "+v2+" km/h. What is the total driving time, in hours?",
+      T,0.011,
+      "Find the time for each leg, then add: \\[ \\begin{aligned} \\text{first leg} &= \\frac{"+fmt(d1,1)+"}{"+v1+"} = "+fmt(t1,1)+"\\text{ h} \\\\ \\text{second leg} &= \\frac{"+fmt(d2,1)+"}{"+v2+"} = "+fmt(t2,1)+"\\text{ h} \\\\ \\text{total time} &= "+fmt(t1,1)+" + "+fmt(t2,1)+" \\\\ &= "+fmt(T,1)+"\\text{ h} \\end{aligned} \\] The total driving time is <b>"+fmt(T,1)+" hours</b>.",
+      {mode:mode,v1:v1,t1:t1,v2:v2,t2:t2,T:T});
+  }
+  if(mode===1){
+    var s1=pick([50,60,70,80,90,100]),u1=pick([0.5,1,1.5,2,2.5,3]);
+    var s2=pick([40,50,60,70,80]),u2=pick([0.5,1,1.5,2,2.5,3]);
+    var avg=((s1*u1)+(s2*u2))/(u1+u2),tries=0;
+    while(Math.abs(avg*10-Math.round(avg*10))>0.0001&&tries<60){s2=pick([40,50,60,70,80]);u2=pick([0.5,1,1.5,2,2.5,3]);avg=((s1*u1)+(s2*u2))/(u1+u2);tries++;}
+    if(Math.abs(avg*10-Math.round(avg*10))>0.0001){u2=u1;avg=(s1+s2)/2;}
+    var D1=s1*u1,D2=s2*u2;
+    return numq("A car travels "+fmt(D1,1)+" km in "+fmt(u1,1)+" hours, then a further "+fmt(D2,1)+" km in "+fmt(u2,1)+" hours. What is the average speed for the whole trip, in kilometres per hour?",
+      Math.round(avg*10)/10,0.011,
+      "Average speed is total distance divided by total time, not the average of the two speeds: \\[ \\begin{aligned} \\text{total distance} &= "+fmt(D1,1)+" + "+fmt(D2,1)+" = "+fmt(D1+D2,1)+"\\text{ km} \\\\ \\text{total time} &= "+fmt(u1,1)+" + "+fmt(u2,1)+" = "+fmt(u1+u2,1)+"\\text{ h} \\\\ \\text{average speed} &= \\frac{"+fmt(D1+D2,1)+"}{"+fmt(u1+u2,1)+"} \\\\ &= "+fmt(avg,1)+"\\text{ km/h} \\end{aligned} \\] The average speed is <b>"+fmt(avg,1)+" kilometres per hour</b>.",
+      {mode:mode,s1:s1,u1:u1,s2:s2,u2:u2,avg:avg});
+  }
+  var c=pick([7,8,9,10,11,12]);
+  var D=pick([150,200,250,300,350,400,450,500]);
+  var p=pick([1.45,1.52,1.58,1.64,1.71,1.79]);
+  var litres=D*c/100;
+  var cost=Math.round(litres*p*100)/100;
+  return numq("A truck uses fuel at a rate of "+c+" litres per 100 km. It makes a trip of "+D+" km. Fuel costs $"+fmtF(p,2)+" per litre. What is the fuel cost for the trip, to the nearest cent, in dollars?",
+    cost,0.011,
+    "Find the fuel used, then its cost: \\[ \\begin{aligned} \\text{fuel used} &= \\frac{"+D+"}{100} \\times "+c+" \\\\ &= "+fmt(litres,1)+"\\text{ L} \\\\ \\text{cost} &= "+fmt(litres,1)+" \\times "+fmtF(p,2)+" \\\\ &= "+fmtF(cost,2)+" \\end{aligned} \\] The fuel cost is <b>$"+fmtF(cost,2)+"</b>.",
+    {mode:mode,c:c,D:D,p:p,litres:litres,cost:cost});
+});
 /* PK tranche pass for Unit 6. pkFor is Cluster 6's dependent
    indicator list from the prior knowledge map. */
 var PKT_U6_FOR=["6.2","6.5","6.9","6.10","6.14","6.16","6.17","6.19","6.23"];
@@ -8896,6 +9438,11 @@ BANK.forEach(function(e){var t=PKT_U6[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // BIMODAL: u7-pk-valid-chain=a
 // BIMODAL: u7-pk-counterexample=b
 /* ============ Unit 7: Inductive and Deductive Reasoning ============ */
+// Class A completion build, November 22, 2026: written-form and
+// dual-form registration for the new 2.9 entries in this file.
+// CRMARKS: u7-tables-guests=2
+// CRMARKS: u7-logic-var=3
+// BIMODAL: u7-logic-var=b
 E("u7-pattern-next",7,["2.1"],2,"gen",function(){
   var a=ri(2,6),b=ri(1,9);var terms=[1,2,3,4].map(function(n){return a*n+b;});
   var askN=pick([8,10,12]);var ans=a*askN+b;
@@ -9336,6 +9883,97 @@ E("u7-pk-counterexample", 7, ["2.4"], 2, "var", varset([
       { mode: "pk-counter-quad" });
   }
 ]));
+/* ============ Class A completion build (November 22, 2026) ============
+   New entries for indicator 2.9: solving contextual problems that
+   involve inductive or deductive reasoning. Manifest lines for these
+   entries are at the top of this file with the other manifests. */
+E("u7-tables-guests",7,["2.9"],2,"gen",function(){
+  var mode=ri(0,2);
+  if(mode===0){
+    var P=pick([18,22,26,30,34,38,42,46,50,54,58]);
+    var t=(P-2)/4;
+    return numq("A rectangular banquet table seats 6 people: two along each long side and one at each end. Tables are pushed together end to end in a single row, so each added table seats 4 more people. How many tables are needed to seat "+P+" people?",
+      t,0.011,
+      "Look at the pattern: 1 table seats \\(6\\), 2 tables seat \\(10\\), 3 tables seat \\(14\\). Each added table adds \\(4\\) seats, so \\(t\\) tables seat \\(4t + 2\\) people. Set this equal to the number of people and solve: \\[ \\begin{aligned} 4t + 2 &= "+P+" \\\\ 4t &= "+(P-2)+" \\\\ t &= "+t+" \\end{aligned} \\] The number of tables needed is <b>"+t+"</b>.",
+      {mode:mode,P:P,t:t});
+  }
+  if(mode===1){
+    var a=ri(3,10),d=ri(1,4),n=ri(8,20);
+    if(n%2===1)n=n+1;
+    var S=n*(2*a+(n-1)*d)/2;
+    var last=a+(n-1)*d;
+    return numq("Alex is saving for a trip. In week 1, Alex puts $"+a+" in a jar. Each week after that, Alex puts in $"+d+" more than the week before. How much money is in the jar after "+n+" weeks, in dollars?",
+      S,0.011,
+      "The weekly amounts form a pattern: \\("+a+", "+(a+d)+", "+(a+2*d)+", \\ldots\\) In week \\("+n+"\\), the amount is \\("+a+" + "+(n-1)+" \\times "+d+" = "+last+"\\) dollars. Pair the first and last weeks, the second and second-last, and so on: each pair sums to \\("+a+" + "+last+" = "+(a+last)+"\\), and there are \\("+n+" \\div 2 = "+(n/2)+"\\) pairs. \\[ \\begin{aligned} \\text{total} &= "+(n/2)+" \\times "+(a+last)+" \\\\ &= "+S+" \\end{aligned} \\] The amount in the jar is <b>$"+S+"</b>.",
+      {mode:mode,a:a,d:d,n:n,S:S});
+  }
+  var L=pick([20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80]);
+  var posts=L/2+1;
+  return numq("A straight fence is built from sections that are each 2 m long. Each section needs one post at its end, and one extra post is placed at the very start of the fence. How many posts are needed for a fence "+L+" m long?",
+    posts,0.011,
+    "Count the sections first: \\("+L+" \\div 2 = "+(L/2)+"\\) sections. The pattern is one post per section, plus the extra post at the start: \\[ \\begin{aligned} \\text{posts} &= "+(L/2)+" + 1 \\\\ &= "+posts+" \\end{aligned} \\] The number of posts needed is <b>"+posts+"</b>.",
+    {mode:mode,L:L,posts:posts});
+});
+E("u7-logic-var",7,["2.9"],2,"var",varset([
+  function(){return mcq("Four runners, Priya, Marco, June and Theo, finish a race with no ties. Marco finished ahead of June. Theo finished last. Priya finished immediately ahead of Marco. Who finished second?",
+    "Marco finished second",
+    ["Priya finished second","June finished second","Theo finished second"],
+    "Theo is fourth. Priya finished immediately ahead of Marco, and Marco finished ahead of June, so the first three places are forced in the order Priya, Marco, June. Reading off the order, <b>Marco finished second</b>.",{});},
+  function(){return mcq("Five books stand in a row on a shelf: a novel, a dictionary, an atlas, a cookbook and a biography. The dictionary is at the far left. The biography is at the far right. The atlas is immediately to the right of the novel. The cookbook is between the novel and the biography. Which book is in the middle, in the third position?",
+    "The atlas is in the middle",
+    ["The novel is in the middle","The cookbook is in the middle","The dictionary is in the middle"],
+    "The dictionary is first and the biography is fifth. The novel and atlas sit side by side, with the atlas on the right, in either positions 2 and 3 or positions 3 and 4. If they were in positions 3 and 4, the cookbook would have to sit between the novel (position 3) and the biography (position 5), which is position 4, but the atlas is there. So the novel is second, the atlas is third and the cookbook is fourth. <b>The atlas is in the middle</b>.",{});},
+  function(){return mcq("A whole number is chosen. It is even. It is a multiple of 3. It is greater than 10 and less than 20. It is not a multiple of 4. Which number is it?",
+    "The number is 18",
+    ["The number is 12","The number is 14","The number is 16"],
+    "An even multiple of 3 is a multiple of 6. Between 10 and 20, the multiples of 6 are 12 and 18. The number 12 is a multiple of 4, so the last clue rules it out. <b>The number is 18</b>.",{});},
+  function(){return mcq("Four students, Rosa, Ken, Aya and Sam, each play a different instrument: piano, violin, drums or flute. Ken plays the drums. Sam plays the flute. Rosa does not play the piano. Which instrument does Aya play?",
+    "Aya plays the piano",
+    ["Aya plays the violin","Aya plays the drums","Aya plays the flute"],
+    "Ken has the drums and Sam has the flute, so Rosa and Aya hold the piano and the violin between them. Rosa does not play the piano, so Rosa plays the violin, which leaves the piano for Aya. <b>Aya plays the piano</b>.",{});}
+]));
+E("u7-cycle-mc",7,["2.9"],2,"gen",function(){
+  var mode=ri(0,2);
+  if(mode===0){
+    var pool=["blue","pink","gray","gold","teal","lime","navy","plum","rose","cyan"];
+    var cols=[],pool2=pool.slice();
+    for(var i=0;i<4;i++){cols.push(pool2.splice(ri(0,pool2.length-1),1)[0]);}
+    var Lp=pick([4,5]);
+    var pat=[];
+    for(var j=0;j<Lp;j++){pat.push(pick(cols));}
+    if(new Set(pat).size<3){pat[1]=cols[1];pat[2]=cols[2];}
+    var n=ri(15,60);
+    var ans=pat[(n-1)%Lp];
+    var sol="The pattern of "+Lp+" colours repeats. Divide the tile number by the pattern length: \\("+n+" = "+Math.floor((n-1)/Lp)+" \\times "+Lp+" + "+(((n-1)%Lp)+1)+"\\), so tile \\("+n+"\\) is in position \\("+(((n-1)%Lp)+1)+"\\) of the pattern, the same position as tile \\("+(((n-1)%Lp)+1)+"\\) itself. That position is "+ans+". <b>Tile "+n+" is "+ans+"</b>.";
+    return mcq("Tiles are laid in a repeating pattern of "+Lp+" colours: "+pat.join(", ")+", then the pattern starts again. What colour is tile "+n+"?",
+      "Tile "+n+" is "+ans,
+      cols.filter(function(c){return c!==ans;}).map(function(c){return "Tile "+n+" is "+c;}),
+      sol,{mode:mode,n:n,ans:ans,pat:pat});
+  }
+  if(mode===1){
+    var poolN=["Ana","Ben","Cam","Dan","Eli","Fay","Gus","Hal","Ivy","Jay","Kim","Lou","Max","Ned","Ora","Pam","Rob","Sue","Tom","Uma","Val","Wes","Zoe"];
+    var cyc=[],pool3=poolN.slice();
+    for(var i2=0;i2<4;i2++){cyc.push(pool3.splice(ri(0,pool3.length-1),1)[0]);}
+    var day=ri(10,60);
+    var who=cyc[(day-1)%4];
+    var sol="The rota repeats every 4 days, starting with "+cyc[0]+" on day 1. Divide: \\("+day+" = "+Math.floor((day-1)/4)+" \\times 4 + "+(((day-1)%4)+1)+"\\), so day \\("+day+"\\) falls in position \\("+(((day-1)%4)+1)+"\\) of the cycle, the same position as day \\("+(((day-1)%4)+1)+"\\). That is "+who+". <b>On day "+day+", "+who+" is on duty</b>.";
+    return mcq("Four lifeguards, "+cyc.join(", ")+", take turns on duty in that order, repeating the cycle. "+cyc[0]+" is on duty on day 1. Who is on duty on day "+day+"?",
+      "On day "+day+", "+who+" is on duty",
+      cyc.filter(function(c){return c!==who;}).map(function(c){return "On day "+day+", "+c+" is on duty";}),
+      sol,{mode:mode,day:day,who:who,cyc:cyc});
+  }
+  var groups=["A","B","C","D"];
+  var gi=ri(0,3);
+  var round=ri(5,30);
+  var st=((gi+(round-1))%6)+1;
+  var others=[st-1,st+1,st+2].map(function(x){return ((x+5)%6)+1;});
+  var sol="Each round, every group moves one station forward, wrapping from Station 6 back to Station 1. Group "+groups[gi]+" starts at Station "+(gi+1)+" in round 1 and moves on \\("+(round-1)+"\\) times: \\("+(gi+1)+" + "+(round-1)+" = "+(gi+round)+"\"). Counting in stations of 6, position \\("+(gi+round)+"\\) is Station "+st+" (subtract 6 each time the count passes Station 6). <b>Group "+groups[gi]+" is at Station "+st+"</b>.";
+  return mcq("In gym class, four groups rotate through six stations in order: Station 1, Station 2, Station 3, Station 4, Station 5, Station 6, then back to Station 1. In round 1, Group A is at Station 1, Group B at Station 2, Group C at Station 3 and Group D at Station 4. Each round, every group moves to the next station. At which station is Group "+groups[gi]+" in round "+round+"?",
+    "Group "+groups[gi]+" is at Station "+st,
+    others.map(function(x){return "Group "+groups[gi]+" is at Station "+x;}),
+    sol,{mode:mode,gi:gi,round:round,st:st});
+});
+
 /* PK tranche pass for Unit 7. pkFor is Cluster 7's dependent
    indicator list from the prior knowledge map. */
 var PKT_U7_FOR=["2.1","2.2","2.3","2.4","2.7","2.8"];
@@ -9397,6 +10035,13 @@ BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // BIMODAL: u8-add-gable-angle=a
 // BIMODAL: u8-add-parallel-decision=b
 /* ============ Unit 8: Properties of Angles and Triangles ============ */
+// Class A completion build, November 22, 2026: written-form and
+// dual-form registration for the new 5.10 entries in this file.
+// CRMARKS: u8-error-var=2
+// CRMARKS: u8-error-gen=2
+// CRMARKS: u8-error-num=1
+// BIMODAL: u8-error-var=b
+// BIMODAL: u8-error-gen=b
 E("u8-triangle-sum",8,["5.3"],1,"gen",function(){
   var a=ri(35,75),b=ri(35,75);while(a+b>160){b=ri(30,60);}
   var c=180-a-b;
@@ -10072,6 +10717,109 @@ E("u8-add-parallel-decision",8,["5.9"],2,"gen",function(){
   q.figure=transversalSVG("TR",x+"°","BL",y+"°");
   return q;
 });
+/* ============ Class A completion build (November 22, 2026) ============
+   New entries for indicator 5.10: identifying and correcting errors
+   in a given solution to a problem involving measures of angles.
+   Manifest lines for these entries are at the top of this file with
+   the other manifests. */
+E("u8-error-var",8,["5.10"],2,"var",varset([
+  function(){return mcq("Two parallel lines are cut by a transversal. One angle measures \\(118^\\circ\\). A student finds the co-interior angle on the same side of the transversal as follows. Step 1: Co-interior angles are equal. Step 2: So the co-interior angle is \\(118^\\circ\\). Which statement identifies the error?",
+    "Step 1 is wrong: co-interior angles are supplementary, not equal",
+    ["Step 2 is wrong: the angle should be doubled to 236 degrees","Step 1 is wrong: co-interior angles are complementary, not equal","There is no error: the co-interior angle really is 118 degrees"],
+    "Co-interior angles between parallel lines add to \\(180^\\circ\\); they are supplementary, not equal. The correct measure is \\(180 - 118 = 62^\\circ\\). So <b>Step 1 is wrong: co-interior angles are supplementary, not equal</b>.",{});},
+  function(){return mcq("A student finds the third angle of a triangle whose other angles measure \\(64^\\circ\\) and \\(57^\\circ\\). Step 1: The angles of a triangle add to \\(180^\\circ\\), so the third angle is \\(180 - 64 - 57\\). Step 2: \\(180 - 64 - 57 = 69\\). Step 3: The third angle is \\(69^\\circ\\). Which statement identifies the error?",
+    "Step 2 is wrong: 180 - 64 - 57 equals 59, not 69 degrees",
+    ["Step 1 is wrong: the angles of a triangle add to 360 degrees","Step 3 is wrong: the third angle should be doubled to 138 degrees","There is no error: the third angle really is 69 degrees"],
+    "The method in Step 1 is right, but the subtraction in Step 2 is not: \\(180 - 64 - 57 = 59\\). The third angle is \\(59^\\circ\\). So <b>Step 2 is wrong: 180 - 64 - 57 equals 59, not 69 degrees</b>.",{});},
+  function(){return mcq("Two lines are cut by a transversal. The lines are not parallel. One angle measures \\(96^\\circ\\). A student writes: the alternate interior angle is also \\(96^\\circ\\), because alternate interior angles are equal. Which statement identifies the error?",
+    "The solution assumes the lines are parallel, but they are not parallel",
+    ["The other angle should be 84 degrees, because alternate interior angles are supplementary","Alternate interior angles are never equal, even when the lines are parallel","There is no error: alternate interior angles are always equal"],
+    "Alternate interior angles are equal only when the two lines are parallel. These lines are not parallel, so the equality cannot be used and the other angle cannot be found from the given one. <b>The solution assumes the lines are parallel, but they are not parallel</b>.",{});},
+  function(){return mcq("A student finds the sum of the interior angles of a hexagon. Step 1: Use \\((n - 2) \\times 180^\\circ\\). Step 2: For a hexagon, \\(n = 6\\), so \\((6 - 2) \\times 180^\\circ = 4 \\times 180^\\circ\\). Step 3: \\(4 \\times 180^\\circ = 620^\\circ\\), so the sum is \\(620^\\circ\\). Which statement identifies the error?",
+    "Step 3 is wrong: 4 times 180 degrees equals 720 degrees, not 620 degrees",
+    ["Step 1 is wrong: the formula is n times 180 degrees, not (n - 2) times 180 degrees","Step 2 is wrong: a hexagon has 5 sides, so n should be 5","There is no error: the sum for a hexagon really is 620 degrees"],
+    "The formula and the substitution are right, but the multiplication in Step 3 is not: \\(4 \\times 180 = 720\\). The sum of the interior angles of a hexagon is \\(720^\\circ\\). So <b>Step 3 is wrong: 4 times 180 degrees equals 720 degrees, not 620 degrees</b>.",{});}
+]));
+E("u8-error-gen",8,["5.10"],2,"gen",function(){
+  var mode=ri(0,3);
+  var opts={
+    s1:"Step 1, where the relationship between the angles is stated",
+    s2:"Step 2, where the given angle is substituted into the relationship",
+    s3:"Step 3, where the arithmetic gives the final angle measure",
+    none:"There is no error; the worked solution is correct"};
+  if(mode===0){
+    var a=pick([100,105,110,115,118,120,125,130,135,140,145,150,155,160]);
+    var correct=180-a;
+    return mcq("Two parallel lines are cut by a transversal. One angle measures \\("+a+"^\\circ\\). A student finds the co-interior angle on the same side of the transversal. Step 1: Co-interior angles are equal. Step 2: The co-interior angle equals the given angle. Step 3: The co-interior angle is \\("+a+"^\\circ\\). Where is the error in the student's solution?",
+      opts.s1,[opts.s2,opts.s3,opts.none],
+      "Co-interior angles between parallel lines are supplementary: they add to \\(180^\\circ\\), they are not equal. The relationship stated at the start is the wrong one, and every later step follows from it. The correct measure is \\(180 - "+a+" = "+correct+"^\\circ\\). The error is in <b>Step 1, where the relationship between the angles is stated</b>.",
+      {mode:mode,a:a,correct:correct});
+  }
+  if(mode===1){
+    var a2=pick([100,105,110,115,118,120,125,130,135,140,145,150,155,160]);
+    var correct2=180-a2;
+    var w=correct2+(Math.random()<0.5?10:-10);
+    return mcq("Two parallel lines are cut by a transversal. One angle measures \\("+a2+"^\\circ\\). A student finds the co-interior angle on the same side of the transversal. Step 1: Co-interior angles are supplementary, so the two angles add to \\(180^\\circ\\). Step 2: The co-interior angle is \\(180 - "+a2+"\\). Step 3: \\(180 - "+a2+" = "+w+"\\), so the co-interior angle is \\("+w+"^\\circ\\). Where is the error in the student's solution?",
+      opts.s3,[opts.s1,opts.s2,opts.none],
+      "The relationship in Step 1 is correct, and Step 2 substitutes the given angle correctly. The subtraction in the last step is where it fails: \\(180 - "+a2+" = "+correct2+"\\), not \\("+w+"\\). The co-interior angle is \\("+correct2+"^\\circ\\). The error is in <b>Step 3, where the arithmetic gives the final angle measure</b>.",
+      {mode:mode,a:a2,correct:correct2,w:w});
+  }
+  if(mode===2){
+    var a3=pick([35,40,45,50,55,60,65,70,75,80]);
+    var supp=180-a3;
+    return mcq("Two parallel lines are cut by a transversal. One angle measures \\("+a3+"^\\circ\\). A student finds the alternate interior angle. Step 1: Alternate interior angles are supplementary, so the two angles add to \\(180^\\circ\\). Step 2: The alternate interior angle is \\(180 - "+a3+"\\). Step 3: \\(180 - "+a3+" = "+supp+"\\), so the alternate interior angle is \\("+supp+"^\\circ\\). Where is the error in the student's solution?",
+      opts.s1,[opts.s2,opts.s3,opts.none],
+      "Alternate interior angles between parallel lines are equal, not supplementary. The relationship stated at the start is the wrong one, so the subtraction that follows does not apply. The alternate interior angle is \\("+a3+"^\\circ\\). The error is in <b>Step 1, where the relationship between the angles is stated</b>.",
+      {mode:mode,a:a3,correct:a3});
+  }
+  var a4=pick([40,45,50,55,60,65,70,75,80,85]);
+  var supp4=180-a4;
+  return mcq("Two parallel lines are cut by a transversal. One angle measures \\("+a4+"^\\circ\\). A student finds the corresponding angle in the matching position at the other line. Step 1: Corresponding angles are equal. Step 2: So the corresponding angle is \\(180 - "+a4+"\\). Step 3: \\(180 - "+a4+" = "+supp4+"\\), so the corresponding angle is \\("+supp4+"^\\circ\\). Where is the error in the student's solution?",
+    opts.s2,[opts.s1,opts.s3,opts.none],
+    "Step 1 states the right relationship: corresponding angles between parallel lines are equal. The failure comes next, where the given angle is replaced by its supplement instead of being used directly. The corresponding angle is \\("+a4+"^\\circ\\). The error is in <b>Step 2, where the given angle is substituted into the relationship</b>.",
+    {mode:mode,a:a4,correct:a4});
+});
+E("u8-error-num",8,["5.10"],2,"gen",function(){
+  var mode=ri(0,3);
+  if(mode===0){
+    var a=ri(25,80),b=ri(25,80),tries=0;
+    while(a+b>150&&tries<40){a=ri(25,80);b=ri(25,80);tries++;}
+    if(a+b>150){a=50;b=60;}
+    var correct=180-a-b;
+    var w=correct+(Math.random()<0.5?10:-10);
+    return numq("In a triangle, two angles measure \\("+a+"^\\circ\\) and \\("+b+"^\\circ\\). A student writes: third angle \\(= 180 - "+a+" - "+b+" = "+w+"^\\circ\\). The student's answer is wrong. What is the correct measure of the third angle, in degrees?",
+      correct,0.011,
+      "The student's method is right but the arithmetic is wrong. Subtract both given angles from \\(180^\\circ\\): \\[ \\begin{aligned} \\text{third angle} &= 180 - "+a+" - "+b+" \\\\ &= "+correct+"^\\circ \\end{aligned} \\] The correct measure is <b>"+correct+" degrees</b>.",
+      {mode:mode,a:a,b:b,correct:correct,w:w});
+  }
+  if(mode===1){
+    var a2=pick([100,105,110,115,118,120,125,130,135,140,145,150,155,160]);
+    var correct2=180-a2;
+    return numq("Two parallel lines are cut by a transversal. One angle measures \\("+a2+"^\\circ\\). A student writes: the co-interior angle is also \\("+a2+"^\\circ\\), because co-interior angles are equal. The student's answer is wrong. What is the correct measure of the co-interior angle, in degrees?",
+      correct2,0.011,
+      "Co-interior angles between parallel lines are supplementary, not equal. Subtract the given angle from \\(180^\\circ\\): \\[ \\begin{aligned} \\text{co-interior angle} &= 180 - "+a2+" \\\\ &= "+correct2+"^\\circ \\end{aligned} \\] The correct measure is <b>"+correct2+" degrees</b>.",
+      {mode:mode,a:a2,correct:correct2});
+  }
+  if(mode===2){
+    var a3=ri(25,155);
+    if(a3===90)a3=95;
+    var correct3=180-a3;
+    var w3=a3<90?90-a3:a3;
+    var err=a3<90?"treating the angles as complementary":"treating the angles as vertically opposite";
+    return numq("Two angles sit on a straight line. One of them measures \\("+a3+"^\\circ\\). A student writes: the other angle is \\("+w3+"^\\circ\\), found by "+err+". The student's answer is wrong. What is the correct measure of the other angle, in degrees?",
+      correct3,0.011,
+      "Angles on a straight line are supplementary: they add to \\(180^\\circ\\). Subtract the given angle from \\(180^\\circ\\): \\[ \\begin{aligned} \\text{other angle} &= 180 - "+a3+" \\\\ &= "+correct3+"^\\circ \\end{aligned} \\] The correct measure is <b>"+correct3+" degrees</b>.",
+      {mode:mode,a:a3,correct:correct3,w:w3});
+  }
+  var a4=ri(25,75),b4=ri(25,75);
+  var wrong=180-a4-b4;
+  var correct4=a4+b4;
+  return numq("In a triangle, two interior angles measure \\("+a4+"^\\circ\\) and \\("+b4+"^\\circ\\). A student finds the exterior angle at the third vertex by writing: exterior angle \\(= 180 - "+a4+" - "+b4+" = "+wrong+"^\\circ\\). The student's answer is wrong. What is the correct measure of the exterior angle, in degrees?",
+    correct4,0.011,
+    "The student's calculation finds the third interior angle, not the exterior angle. An exterior angle of a triangle equals the sum of the two non-adjacent interior angles: \\[ \\begin{aligned} \\text{exterior angle} &= "+a4+" + "+b4+" \\\\ &= "+correct4+"^\\circ \\end{aligned} \\] The correct measure is <b>"+correct4+" degrees</b>.",
+    {mode:mode,a:a4,b:b4,correct:correct4,w:wrong});
+});
+
 /* PK tranche pass for Unit 8. pkFor is Cluster 8's dependent
    indicator list from the prior knowledge map. */
 var PKT_U8_FOR=["5.1","5.3","5.5","5.6","5.8","5.9","5.11"];
@@ -12022,10 +12770,10 @@ BANK.forEach(function(e){if(e.id==="u4-radical-equation"||e.id==="u4-extraneous"
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-ambiguous-design":3,"u1-angle-between-paths":4,"u1-angle-placement":2,"u1-bisector-post":3,"u1-corner-check":2,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-angle-mc":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-cosine-side-mc":2,"u1-crane-spread":2,"u1-crossing-distance":2,"u1-diagram-ambiguous-fit":2,"u1-diagram-both-laws":3,"u1-diagram-chain-setup":3,"u1-diagram-complete-plan":3,"u1-diagram-first-step":2,"u1-diagram-flaw-hunt":3,"u1-diagram-givens":2,"u1-diagram-law-pair":2,"u1-diagram-match":2,"u1-diagram-missing-mark":2,"u1-diagram-read-value":2,"u1-diagram-supplement":2,"u1-diagram-two-unknowns":2,"u1-diagram-unknown":2,"u1-double-plot":2,"u1-drone-split":3,"u1-farm-lanes":2,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-gate-diagonal":2,"u1-guy-wire":3,"u1-harbour-chain":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-kite-spar":2,"u1-law-choice":2,"u1-law-choice-context":2,"u1-law-diagram-choice":2,"u1-law-formula":2,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-mislabeled-diagram":2,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-pairing-diagram":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-pk-hypotenuse-pick":2,"u1-pk-label-sides":2,"u1-pk-opposite-read":2,"u1-pk-other-angle-ratio":2,"u1-pk-pythagoras":2,"u1-pk-ratio-decimal":2,"u1-pk-ratio-def":2,"u1-pk-ratio-equation":2,"u1-pk-ratio-from-figure":2,"u1-pk-ratio-letters":2,"u1-pk-ratio-unreduced":2,"u1-pk-right-check":2,"u1-pk-role-from-diagram":2,"u1-pk-role-value":2,"u1-pk-role-words":2,"u1-pk-solve-scene":2,"u1-pk-two-angles-roles":2,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-angle-mc":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-side-mc":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-sketch-values":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-graph":2,"u2-axis-from-intercepts":1,"u2-axis-from-vertex-form":2,"u2-axis-standard-mc":2,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-concavity":2,"u2-count-intercepts":1,"u2-domain-context":2,"u2-domain-range":2,"u2-dr-from-graph":2,"u2-dr-standard-form":2,"u2-dr-vertex-form":2,"u2-effect-of-a":2,"u2-effect-of-c":2,"u2-eq-from-characteristics":2,"u2-eq-from-table":3,"u2-eq-from-vertex":2,"u2-eq-intercepts-standard":2,"u2-equation-from-graph":2,"u2-evaluate-f":1,"u2-expand-vertex-form":2,"u2-factored-coeffs":2,"u2-factored-double-root":2,"u2-factored-from-graph":2,"u2-factored-max-height":2,"u2-factored-with-a":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-function-from-vertex-point":3,"u2-graph-description":2,"u2-graph-features":2,"u2-intercepts-read-graph":2,"u2-intercepts-set":2,"u2-match-graph-standard":2,"u2-match-graph-vertex-form":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-params-characteristics":2,"u2-perimeter-max-area":2,"u2-pk-dr-linear":2,"u2-pk-dr-segment-graph":2,"u2-pk-graph-data":2,"u2-pk-graph-form":2,"u2-pk-line-equation-from-graph":2,"u2-point-on-graph":2,"u2-profit-max":2,"u2-range-context-mc":2,"u2-revenue-build":3,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-signs-from-graph":2,"u2-sketch-points":2,"u2-standard-from-factored":2,"u2-standard-to-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-form-from-graph":2,"u2-vertex-form-params":2,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-table":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-graph-mc":2,"u2-vertex-interpret":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-which-quadratic":2,"u2-widest-graph":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u2-y-intercept-point":2,"u2-zeros-from-factored":2,"u3-border":3,"u3-context-area":3,"u3-discriminant":2,"u3-discriminant-nature":2,"u3-discriminant-parameter":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-formula-repair":3,"u3-formula-substitution":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-pk-binom-tri-expand":2,"u3-pk-expand-square":2,"u3-pk-gcf":2,"u3-pk-gcf-binomial":2,"u3-pk-radical-coefficient":2,"u3-pk-radical-mixed":2,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-roots-zeros":2,"u3-setup-equation":1,"u3-solve-fraction-roots":2,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-vertex-intercepts":2,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-closest-integer":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-equation-shifted":2,"u4-cube-mixed":2,"u4-defined-boundary":1,"u4-defined-count":3,"u4-defined-two-radicals":2,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-both-sides":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-extraneous-valid-root":2,"u4-mixed-to-entire":1,"u4-mixed-to-entire-fraction":2,"u4-model-equation":2,"u4-model-equation-two-step":2,"u4-model-evaluate":1,"u4-model-solve-variable":2,"u4-multiply":2,"u4-multiply-mixed":2,"u4-no-solution-equation":3,"u4-order":2,"u4-order-mixed-index":2,"u4-pk-laws-integral":2,"u4-pk-laws-rational":2,"u4-pk-radical-entire":2,"u4-pk-radical-mixed":2,"u4-pk-which-is-solution":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-binomial":2,"u4-rationalize-coefficient":2,"u4-rationalize-cube-root":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restriction-boundary":1,"u4-restrictions":1,"u4-simplify-add":2,"u4-simplify-fraction-radicand":2,"u4-triangle-perimeter":2,"u4-variable-cube":2,"u4-variable-entire":2,"u4-variable-evaluate":1,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-mean-missing":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-infer-mean":2,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-samplesize":2,"u5-ci-shrink":2,"u5-ci-significance":2,"u5-compare-normal-shift":2,"u5-empirical":2,"u5-empirical-tail":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-isnormal":2,"u5-isnormal-data":2,"u5-media":4,"u5-media-position":3,"u5-media-ratio-claim":3,"u5-midpoint":1,"u5-normal-centre-facts":2,"u5-normal-count":2,"u5-normal-count-between":2,"u5-pk-freq-mean":2,"u5-polygon-point":1,"u5-position-argument":3,"u5-range":1,"u5-range-missing":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-calc-small":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-sd-interpret":2,"u5-sd-interpret-context":2,"u5-sd-match-set":2,"u5-sd-meaning":2,"u5-sd-transform":2,"u5-variance-from-sd":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-add-area-effect":2,"u6-add-model-height":2,"u6-add-photo-dimension":2,"u6-add-slope-rate":2,"u6-area-scale":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-pack-cost":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-sail-scale-mc":3,"u6-scale-factor":1,"u6-similar-dimension":1,"u6-slope-rate":2,"u6-tile-cost":3,"u6-unit-price-mc":2,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-wcr-better-buy-savings":4,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-converse-contrapositive":2,"u7-converse-truth":2,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-deductive-chain":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-pk-conjecture":2,"u7-pk-counterexample":2,"u7-pk-pattern-figure":2,"u7-pk-table-equation":2,"u7-pk-valid-chain":2,"u7-proof-error":3,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-triangular-total":3,"u7-valid-argument":2,"u7-valid-chains":2,"u8-add-gable-angle":2,"u8-add-parallel-decision":2,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent":2,"u8-congruent-perimeter":1,"u8-correspondence":3,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-check":2,"u8-parallel-x-value":3,"u8-pk-angle-measure":2,"u8-pk-parallel-decision":2,"u8-pk-transversal-pairs":2,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-proof-reason":2,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
+window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-ambiguous-design":3,"u1-angle-between-paths":4,"u1-angle-placement":2,"u1-bisector-post":3,"u1-corner-check":2,"u1-cosine-angle":2,"u1-cosine-angle-diagram":2,"u1-cosine-angle-mc":2,"u1-cosine-bridge-span":2,"u1-cosine-context":2,"u1-cosine-largest-angle":2,"u1-cosine-side":2,"u1-cosine-side-diagram":2,"u1-cosine-side-mc":2,"u1-crane-spread":2,"u1-crossing-distance":2,"u1-diagram-ambiguous-fit":2,"u1-diagram-both-laws":3,"u1-diagram-chain-setup":3,"u1-diagram-complete-plan":3,"u1-diagram-first-step":2,"u1-diagram-flaw-hunt":3,"u1-diagram-givens":2,"u1-diagram-law-pair":2,"u1-diagram-match":2,"u1-diagram-missing-mark":2,"u1-diagram-read-value":2,"u1-diagram-supplement":2,"u1-diagram-two-unknowns":2,"u1-diagram-unknown":2,"u1-double-plot":2,"u1-drone-split":3,"u1-farm-lanes":2,"u1-fence-angle":2,"u1-ferry-distance":2,"u1-gate-diagonal":2,"u1-guy-wire":3,"u1-harbour-chain":3,"u1-harbour-second-side":3,"u1-headland-boats":3,"u1-island-route":3,"u1-isosceles-span":2,"u1-kite-frame-chain":3,"u1-kite-spar":2,"u1-law-choice":2,"u1-law-choice-context":2,"u1-law-diagram-choice":2,"u1-law-formula":2,"u1-lighthouse-bearing":2,"u1-lock-gates":2,"u1-meadow-angle":2,"u1-median-length":4,"u1-mislabeled-diagram":2,"u1-offset-angle":3,"u1-orchard-tree":2,"u1-pairing-diagram":2,"u1-panel-perimeter":3,"u1-perimeter-angles":3,"u1-pipeline-angle":3,"u1-pk-hypotenuse-pick":2,"u1-pk-label-sides":2,"u1-pk-opposite-read":2,"u1-pk-other-angle-ratio":2,"u1-pk-pythagoras":2,"u1-pk-ratio-decimal":2,"u1-pk-ratio-def":2,"u1-pk-ratio-equation":2,"u1-pk-ratio-from-figure":2,"u1-pk-ratio-letters":2,"u1-pk-ratio-unreduced":2,"u1-pk-right-check":2,"u1-pk-role-from-diagram":2,"u1-pk-role-value":2,"u1-pk-role-words":2,"u1-pk-solve-scene":2,"u1-pk-two-angles-roles":2,"u1-quad-perimeter":3,"u1-race-course":3,"u1-raft-crossing":2,"u1-rafter-span":2,"u1-regatta-chain":4,"u1-regatta-choice":4,"u1-river-chain":3,"u1-sail-angle":2,"u1-scaffold-bay":3,"u1-shared-side-intro":3,"u1-sine-angle":2,"u1-sine-angle-mc":2,"u1-sine-side":2,"u1-sine-side-diagram":2,"u1-sine-side-mc":2,"u1-sine-supplement-side":2,"u1-sine-two-step":2,"u1-sketch-values":2,"u1-smallest-angle":2,"u1-survey-baseline":2,"u1-survey-network":4,"u1-truss-diagonal":3,"u1-two-lamps":3,"u1-two-stage-height":4,"u1-two-station-height":4,"u1-two-triangles":4,"u2-a-from-intercepts-point":3,"u2-axis-factored-num":1,"u2-axis-from-graph":2,"u2-axis-from-intercepts":1,"u2-axis-from-vertex-form":2,"u2-axis-standard-mc":2,"u2-axis-two-points":1,"u2-c-from-point":2,"u2-concavity":2,"u2-count-intercepts":1,"u2-domain-context":2,"u2-domain-range":2,"u2-dr-from-graph":2,"u2-dr-standard-form":2,"u2-dr-vertex-form":2,"u2-effect-of-a":2,"u2-effect-of-c":2,"u2-eq-from-characteristics":2,"u2-eq-from-table":3,"u2-eq-from-vertex":2,"u2-eq-intercepts-standard":2,"u2-equation-from-graph":2,"u2-evaluate-f":1,"u2-expand-vertex-form":2,"u2-factored-coeffs":2,"u2-factored-double-root":2,"u2-factored-from-graph":2,"u2-factored-max-height":2,"u2-factored-with-a":2,"u2-factored-y-intercept":1,"u2-fence-max":3,"u2-find-b-given-axis":2,"u2-function-from-vertex-point":3,"u2-graph-description":2,"u2-graph-features":2,"u2-intercepts-read-graph":2,"u2-intercepts-set":2,"u2-match-graph-standard":2,"u2-match-graph-vertex-form":2,"u2-max-area":3,"u2-max-context":2,"u2-max-height":2,"u2-max-product":2,"u2-min-cost":2,"u2-mirror-intercept":2,"u2-mirror-point":1,"u2-other-intercept":2,"u2-params-characteristics":2,"u2-perimeter-max-area":2,"u2-pk-dr-linear":2,"u2-pk-dr-segment-graph":2,"u2-pk-graph-data":2,"u2-pk-graph-form":2,"u2-pk-line-equation-from-graph":2,"u2-point-on-graph":2,"u2-profit-max":2,"u2-range-context-mc":2,"u2-revenue-build":3,"u2-revenue-max-price":3,"u2-revenue-model":2,"u2-signs-from-graph":2,"u2-sketch-points":2,"u2-standard-from-factored":2,"u2-standard-to-factored":2,"u2-standard-to-vertex-k":2,"u2-vertex-form-eval":1,"u2-vertex-form-from-graph":2,"u2-vertex-form-params":2,"u2-vertex-fraction-y":3,"u2-vertex-from-factored":2,"u2-vertex-from-table":2,"u2-vertex-from-two-points":2,"u2-vertex-given-axis":2,"u2-vertex-given-axis-factored":2,"u2-vertex-graph-mc":2,"u2-vertex-interpret":2,"u2-vertex-shift":1,"u2-vertex-time":1,"u2-vertex-to-standard-c":1,"u2-vertex-value":2,"u2-vertex-x":1,"u2-vertex-x-fraction":2,"u2-which-quadratic":2,"u2-widest-graph":2,"u2-xintercepts":2,"u2-xintercepts-factored":1,"u2-xintercepts-vertex-form":2,"u2-y-intercept":1,"u2-y-intercept-point":2,"u2-zeros-from-factored":2,"u3-border":3,"u3-context-area":3,"u3-discriminant":2,"u3-discriminant-nature":2,"u3-discriminant-parameter":3,"u3-discriminant-value":1,"u3-equal-roots-constant":2,"u3-equation-fraction-roots":2,"u3-equation-from-roots":2,"u3-exact-roots":2,"u3-factor-difference":2,"u3-factor-monic":2,"u3-factor-nonmonic":2,"u3-factor-solve":2,"u3-formula":2,"u3-formula-ground":2,"u3-formula-negative-a":2,"u3-formula-repair":3,"u3-formula-substitution":2,"u3-gcf-solve":2,"u3-model-number":2,"u3-number-pair":2,"u3-other-root":1,"u3-pk-binom-tri-expand":2,"u3-pk-expand-square":2,"u3-pk-gcf":2,"u3-pk-gcf-binomial":2,"u3-pk-radical-coefficient":2,"u3-pk-radical-mixed":2,"u3-right-triangle-legs":2,"u3-root-difference":3,"u3-roots-sum-product":1,"u3-roots-zeros":2,"u3-setup-equation":1,"u3-solve-fraction-roots":2,"u3-solve-height":2,"u3-solve-nonmonic":2,"u3-solve-rearrange":2,"u3-solve-square":1,"u3-squares-area":3,"u3-standard-coeffs":1,"u3-sum-squares-solve":2,"u3-two-numbers":3,"u3-vertex-intercepts":2,"u3-zeros-factored":1,"u4-add-unlike":2,"u4-binomial-square":2,"u4-closest-integer":2,"u4-combine-multi":2,"u4-compare-radicals":1,"u4-conjugate-area":2,"u4-cube-equation":2,"u4-cube-equation-shifted":2,"u4-cube-mixed":2,"u4-defined-boundary":1,"u4-defined-count":3,"u4-defined-two-radicals":2,"u4-diagonal-radical":2,"u4-difference-simplify":2,"u4-divide-radicals":2,"u4-entire-cube":1,"u4-entire-to-mixed":2,"u4-equation-both-sides":2,"u4-equation-restriction":1,"u4-evaluate-mixed":1,"u4-extraneous":3,"u4-extraneous-valid-root":2,"u4-mixed-to-entire":1,"u4-mixed-to-entire-fraction":2,"u4-model-equation":2,"u4-model-equation-two-step":2,"u4-model-evaluate":1,"u4-model-solve-variable":2,"u4-multiply":2,"u4-multiply-mixed":2,"u4-no-solution-equation":3,"u4-order":2,"u4-order-mixed-index":2,"u4-pk-laws-integral":2,"u4-pk-laws-rational":2,"u4-pk-radical-entire":2,"u4-pk-radical-mixed":2,"u4-pk-which-is-solution":2,"u4-product-simplify":2,"u4-radical-equation":2,"u4-rationalize":1,"u4-rationalize-binomial":2,"u4-rationalize-coefficient":2,"u4-rationalize-cube-root":2,"u4-reciprocal-sum":3,"u4-repair-simplify":2,"u4-restriction-boundary":1,"u4-restrictions":1,"u4-simplify-add":2,"u4-simplify-fraction-radicand":2,"u4-triangle-perimeter":2,"u4-variable-cube":2,"u4-variable-entire":2,"u4-variable-evaluate":1,"u4-variable-mixed":2,"u4-verify-root":1,"u4-width-radical":2,"u5-ad-claim":3,"u5-centre-mean":1,"u5-centre-mean-missing":1,"u5-centre-median":1,"u5-centre-mode":1,"u5-ci-build":1,"u5-ci-count":2,"u5-ci-endpoint":1,"u5-ci-from-endpoints":1,"u5-ci-infer-mean":2,"u5-ci-level-from-report":1,"u5-ci-majority":3,"u5-ci-read-report":2,"u5-ci-samplesize":2,"u5-ci-shrink":2,"u5-ci-significance":2,"u5-compare-normal-shift":2,"u5-empirical":2,"u5-empirical-tail":2,"u5-freq-countin":1,"u5-freq-missing":1,"u5-freq-total":1,"u5-histogram-read":2,"u5-isnormal":2,"u5-isnormal-data":2,"u5-media":4,"u5-media-position":3,"u5-media-ratio-claim":3,"u5-midpoint":1,"u5-normal-centre-facts":2,"u5-normal-count":2,"u5-normal-count-between":2,"u5-pk-freq-mean":2,"u5-polygon-point":1,"u5-position-argument":3,"u5-range":1,"u5-range-missing":1,"u5-relfreq":1,"u5-relfreq-rev":1,"u5-sd-calc":2,"u5-sd-calc-small":2,"u5-sd-decisions":4,"u5-sd-from-variance":1,"u5-sd-interpret":2,"u5-sd-interpret-context":2,"u5-sd-match-set":2,"u5-sd-meaning":2,"u5-sd-transform":2,"u5-variance-from-sd":1,"u5-z-applied":2,"u5-z-backwards":1,"u5-z-calc":1,"u5-z-compare":2,"u5-z-prob":2,"u6-add-area-effect":2,"u6-add-model-height":2,"u6-add-photo-dimension":2,"u6-add-slope-rate":2,"u6-area-scale":2,"u6-area2d-mc":2,"u6-area2d-num":2,"u6-area2d-tri":2,"u6-better-buy":2,"u6-breakeven-plans":2,"u6-compare-rates":2,"u6-diagram-cost":3,"u6-formula-mc":2,"u6-formula-sa":3,"u6-formula-vol":2,"u6-interpret-var":2,"u6-justify-consistency":3,"u6-map-distance":2,"u6-map-trail":2,"u6-model-sa":3,"u6-model-sa-mc":2,"u6-model-vol":3,"u6-pack-cost":2,"u6-plan-room-mc":2,"u6-poster-cost":3,"u6-poster-dimensions":2,"u6-rate-context-mc":2,"u6-rate-difference":2,"u6-rate-isolate":1,"u6-rate-solve":1,"u6-rate-solve-context":2,"u6-rate-travel":3,"u6-sail-scale-mc":3,"u6-scale-factor":1,"u6-sf2d-mc":2,"u6-sf2d-num":1,"u6-sf2d-rep":1,"u6-sf3d-mc":2,"u6-sf3d-num":1,"u6-sf3d-rep":1,"u6-similar-dimension":1,"u6-slope-rate":2,"u6-tile-cost":3,"u6-unit-price-mc":2,"u6-unit-rate":1,"u6-unknown-dimension":1,"u6-volume-scale":2,"u6-wcr-better-buy-savings":4,"u6-work-rate-solo":3,"u7-chain-conclusion":3,"u7-converse-contrapositive":2,"u7-converse-truth":2,"u7-counterexample":2,"u7-counterexample-claims":2,"u7-counterexample-gen":2,"u7-counterexample-name":2,"u7-deductive-chain":2,"u7-everyday-counterexample":2,"u7-false-pattern":2,"u7-figure-pattern":1,"u7-logic-var":3,"u7-pattern-equation":2,"u7-pattern-next":1,"u7-pattern-quad":2,"u7-pk-conjecture":2,"u7-pk-counterexample":2,"u7-pk-pattern-figure":2,"u7-pk-table-equation":2,"u7-pk-valid-chain":2,"u7-proof-error":3,"u7-proof-repair":3,"u7-race-order":2,"u7-sequence-gap":1,"u7-smallest-counterexample":2,"u7-tables-guests":2,"u7-triangular-total":3,"u7-valid-argument":2,"u7-valid-chains":2,"u8-add-gable-angle":2,"u8-add-parallel-decision":2,"u8-alternate-algebra":2,"u8-angle-chase":2,"u8-angle-sum-rule":1,"u8-co-interior":1,"u8-cointerior-algebra":2,"u8-congruence-deduce":1,"u8-congruence-perimeter":2,"u8-congruent":2,"u8-congruent-perimeter":1,"u8-correspondence":3,"u8-corresponding-algebra":2,"u8-diagonals":1,"u8-error-gen":2,"u8-error-num":1,"u8-error-var":2,"u8-exterior":1,"u8-exterior-algebra":3,"u8-isosceles-angles":2,"u8-isosceles-exterior":2,"u8-multi-angle":2,"u8-parallel-check":2,"u8-parallel-x-value":3,"u8-pk-angle-measure":2,"u8-pk-parallel-decision":2,"u8-pk-transversal-pairs":2,"u8-polygon-inverse":1,"u8-polygon-ratio":2,"u8-polygon-sum":1,"u8-proof-reason":2,"u8-regular-angle":1,"u8-regular-sides-from-angle":3,"u8-triangle-algebra":2,"u8-triangle-sum":1};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-ambiguous-count":"a","u1-ambiguous-design":"b","u1-angle-placement":"b","u1-corner-check":"a","u1-cosine-angle-mc":"a","u1-cosine-side-mc":"a","u1-crane-spread":"a","u1-crossing-distance":"a","u1-diagram-ambiguous-fit":"a","u1-diagram-both-laws":"b","u1-diagram-chain-setup":"b","u1-diagram-complete-plan":"b","u1-diagram-first-step":"b","u1-diagram-flaw-hunt":"b","u1-diagram-givens":"b","u1-diagram-law-pair":"b","u1-diagram-match":"b","u1-diagram-missing-mark":"b","u1-diagram-read-value":"a","u1-diagram-supplement":"b","u1-diagram-two-unknowns":"b","u1-diagram-unknown":"b","u1-double-plot":"a","u1-farm-lanes":"a","u1-gate-diagonal":"a","u1-harbour-chain":"a","u1-kite-spar":"a","u1-law-choice":"b","u1-law-choice-context":"a","u1-law-diagram-choice":"b","u1-law-formula":"b","u1-mislabeled-diagram":"b","u1-pairing-diagram":"b","u1-pk-hypotenuse-pick":"a","u1-pk-label-sides":"a","u1-pk-opposite-read":"a","u1-pk-other-angle-ratio":"a","u1-pk-pythagoras":"a","u1-pk-ratio-decimal":"a","u1-pk-ratio-def":"a","u1-pk-ratio-equation":"a","u1-pk-ratio-from-figure":"a","u1-pk-ratio-letters":"b","u1-pk-ratio-unreduced":"a","u1-pk-right-check":"a","u1-pk-role-from-diagram":"a","u1-pk-role-value":"b","u1-pk-role-words":"a","u1-pk-solve-scene":"a","u1-pk-two-angles-roles":"a","u1-sine-angle-mc":"a","u1-sine-side-mc":"a","u1-sketch-values":"b","u2-axis-from-graph":"a","u2-axis-from-vertex-form":"a","u2-axis-standard-mc":"a","u2-concavity":"a","u2-domain-context":"a","u2-domain-range":"b","u2-dr-from-graph":"b","u2-dr-standard-form":"b","u2-dr-vertex-form":"b","u2-effect-of-a":"a","u2-effect-of-c":"b","u2-eq-from-characteristics":"a","u2-eq-from-table":"a","u2-eq-intercepts-standard":"a","u2-equation-from-graph":"a","u2-expand-vertex-form":"a","u2-factored-double-root":"a","u2-factored-from-graph":"a","u2-factored-with-a":"a","u2-function-from-vertex-point":"a","u2-graph-description":"a","u2-graph-features":"a","u2-intercepts-read-graph":"a","u2-intercepts-set":"b","u2-match-graph-standard":"b","u2-match-graph-vertex-form":"b","u2-params-characteristics":"a","u2-pk-dr-linear":"a","u2-pk-dr-segment-graph":"b","u2-pk-graph-data":"a","u2-pk-graph-form":"a","u2-pk-line-equation-from-graph":"a","u2-point-on-graph":"a","u2-range-context-mc":"a","u2-revenue-build":"b","u2-revenue-model":"b","u2-signs-from-graph":"a","u2-sketch-points":"b","u2-standard-to-factored":"a","u2-vertex-form-from-graph":"a","u2-vertex-form-params":"b","u2-vertex-from-table":"a","u2-vertex-graph-mc":"a","u2-vertex-interpret":"b","u2-which-quadratic":"a","u2-widest-graph":"a","u2-y-intercept-point":"a","u2-zeros-from-factored":"a","u3-discriminant":"b","u3-discriminant-nature":"b","u3-discriminant-parameter":"b","u3-equation-fraction-roots":"b","u3-equation-from-roots":"b","u3-exact-roots":"b","u3-factor-nonmonic":"b","u3-formula-repair":"a","u3-formula-substitution":"b","u3-model-number":"b","u3-pk-binom-tri-expand":"b","u3-pk-expand-square":"b","u3-pk-gcf":"b","u3-pk-gcf-binomial":"b","u3-pk-radical-coefficient":"a","u3-pk-radical-mixed":"a","u3-roots-zeros":"b","u3-solve-fraction-roots":"a","u3-vertex-intercepts":"a","u4-add-unlike":"a","u4-binomial-square":"b","u4-closest-integer":"a","u4-combine-multi":"a","u4-defined-two-radicals":"a","u4-diagonal-radical":"a","u4-difference-simplify":"a","u4-divide-radicals":"a","u4-equation-both-sides":"a","u4-extraneous":"b","u4-mixed-to-entire-fraction":"a","u4-model-equation-two-step":"b","u4-multiply-mixed":"a","u4-no-solution-equation":"a","u4-order":"a","u4-order-mixed-index":"b","u4-pk-laws-integral":"b","u4-pk-laws-rational":"b","u4-pk-radical-entire":"a","u4-pk-radical-mixed":"a","u4-pk-which-is-solution":"a","u4-product-simplify":"a","u4-rationalize-binomial":"b","u4-rationalize-cube-root":"a","u4-reciprocal-sum":"a","u4-simplify-add":"a","u4-simplify-fraction-radicand":"a","u4-triangle-perimeter":"a","u4-variable-cube":"b","u4-variable-entire":"a","u4-variable-mixed":"b","u4-width-radical":"a","u5-ad-claim":"b","u5-ci-infer-mean":"b","u5-ci-majority":"b","u5-ci-samplesize":"b","u5-ci-significance":"b","u5-compare-normal-shift":"b","u5-isnormal":"b","u5-isnormal-data":"b","u5-media":"b","u5-media-position":"b","u5-media-ratio-claim":"b","u5-normal-centre-facts":"a","u5-pk-freq-mean":"a","u5-position-argument":"b","u5-sd-decisions":"b","u5-sd-interpret":"b","u5-sd-interpret-context":"b","u5-sd-match-set":"a","u5-sd-meaning":"b","u5-sd-transform":"b","u5-z-compare":"b","u6-add-area-effect":"a","u6-add-model-height":"a","u6-add-photo-dimension":"a","u6-add-slope-rate":"b","u6-better-buy":"b","u6-poster-dimensions":"b","u6-rate-difference":"b","u6-sail-scale-mc":"a","u6-slope-rate":"b","u6-unit-price-mc":"a","u7-converse-contrapositive":"b","u7-converse-truth":"b","u7-deductive-chain":"a","u7-pattern-equation":"a","u7-pk-conjecture":"b","u7-pk-counterexample":"b","u7-pk-pattern-figure":"a","u7-pk-table-equation":"a","u7-pk-valid-chain":"a","u7-proof-error":"b","u7-race-order":"a","u7-valid-argument":"b","u7-valid-chains":"b","u8-add-gable-angle":"a","u8-add-parallel-decision":"b","u8-angle-chase":"a","u8-congruent":"b","u8-correspondence":"a","u8-multi-angle":"a","u8-parallel-check":"b","u8-pk-angle-measure":"a","u8-pk-parallel-decision":"b","u8-pk-transversal-pairs":"a","u8-proof-reason":"b"};
+window.__BANK_BIMODAL={"u1-ambiguous-count":"a","u1-ambiguous-design":"b","u1-angle-placement":"b","u1-corner-check":"a","u1-cosine-angle-mc":"a","u1-cosine-side-mc":"a","u1-crane-spread":"a","u1-crossing-distance":"a","u1-diagram-ambiguous-fit":"a","u1-diagram-both-laws":"b","u1-diagram-chain-setup":"b","u1-diagram-complete-plan":"b","u1-diagram-first-step":"b","u1-diagram-flaw-hunt":"b","u1-diagram-givens":"b","u1-diagram-law-pair":"b","u1-diagram-match":"b","u1-diagram-missing-mark":"b","u1-diagram-read-value":"a","u1-diagram-supplement":"b","u1-diagram-two-unknowns":"b","u1-diagram-unknown":"b","u1-double-plot":"a","u1-farm-lanes":"a","u1-gate-diagonal":"a","u1-harbour-chain":"a","u1-kite-spar":"a","u1-law-choice":"b","u1-law-choice-context":"a","u1-law-diagram-choice":"b","u1-law-formula":"b","u1-mislabeled-diagram":"b","u1-pairing-diagram":"b","u1-pk-hypotenuse-pick":"a","u1-pk-label-sides":"a","u1-pk-opposite-read":"a","u1-pk-other-angle-ratio":"a","u1-pk-pythagoras":"a","u1-pk-ratio-decimal":"a","u1-pk-ratio-def":"a","u1-pk-ratio-equation":"a","u1-pk-ratio-from-figure":"a","u1-pk-ratio-letters":"b","u1-pk-ratio-unreduced":"a","u1-pk-right-check":"a","u1-pk-role-from-diagram":"a","u1-pk-role-value":"b","u1-pk-role-words":"a","u1-pk-solve-scene":"a","u1-pk-two-angles-roles":"a","u1-sine-angle-mc":"a","u1-sine-side-mc":"a","u1-sketch-values":"b","u2-axis-from-graph":"a","u2-axis-from-vertex-form":"a","u2-axis-standard-mc":"a","u2-concavity":"a","u2-domain-context":"a","u2-domain-range":"b","u2-dr-from-graph":"b","u2-dr-standard-form":"b","u2-dr-vertex-form":"b","u2-effect-of-a":"a","u2-effect-of-c":"b","u2-eq-from-characteristics":"a","u2-eq-from-table":"a","u2-eq-intercepts-standard":"a","u2-equation-from-graph":"a","u2-expand-vertex-form":"a","u2-factored-double-root":"a","u2-factored-from-graph":"a","u2-factored-with-a":"a","u2-function-from-vertex-point":"a","u2-graph-description":"a","u2-graph-features":"a","u2-intercepts-read-graph":"a","u2-intercepts-set":"b","u2-match-graph-standard":"b","u2-match-graph-vertex-form":"b","u2-params-characteristics":"a","u2-pk-dr-linear":"a","u2-pk-dr-segment-graph":"b","u2-pk-graph-data":"a","u2-pk-graph-form":"a","u2-pk-line-equation-from-graph":"a","u2-point-on-graph":"a","u2-range-context-mc":"a","u2-revenue-build":"b","u2-revenue-model":"b","u2-signs-from-graph":"a","u2-sketch-points":"b","u2-standard-to-factored":"a","u2-vertex-form-from-graph":"a","u2-vertex-form-params":"b","u2-vertex-from-table":"a","u2-vertex-graph-mc":"a","u2-vertex-interpret":"b","u2-which-quadratic":"a","u2-widest-graph":"a","u2-y-intercept-point":"a","u2-zeros-from-factored":"a","u3-discriminant":"b","u3-discriminant-nature":"b","u3-discriminant-parameter":"b","u3-equation-fraction-roots":"b","u3-equation-from-roots":"b","u3-exact-roots":"b","u3-factor-nonmonic":"b","u3-formula-repair":"a","u3-formula-substitution":"b","u3-model-number":"b","u3-pk-binom-tri-expand":"b","u3-pk-expand-square":"b","u3-pk-gcf":"b","u3-pk-gcf-binomial":"b","u3-pk-radical-coefficient":"a","u3-pk-radical-mixed":"a","u3-roots-zeros":"b","u3-solve-fraction-roots":"a","u3-vertex-intercepts":"a","u4-add-unlike":"a","u4-binomial-square":"b","u4-closest-integer":"a","u4-combine-multi":"a","u4-defined-two-radicals":"a","u4-diagonal-radical":"a","u4-difference-simplify":"a","u4-divide-radicals":"a","u4-equation-both-sides":"a","u4-extraneous":"b","u4-mixed-to-entire-fraction":"a","u4-model-equation-two-step":"b","u4-multiply-mixed":"a","u4-no-solution-equation":"a","u4-order":"a","u4-order-mixed-index":"b","u4-pk-laws-integral":"b","u4-pk-laws-rational":"b","u4-pk-radical-entire":"a","u4-pk-radical-mixed":"a","u4-pk-which-is-solution":"a","u4-product-simplify":"a","u4-rationalize-binomial":"b","u4-rationalize-cube-root":"a","u4-reciprocal-sum":"a","u4-simplify-add":"a","u4-simplify-fraction-radicand":"a","u4-triangle-perimeter":"a","u4-variable-cube":"b","u4-variable-entire":"a","u4-variable-mixed":"b","u4-width-radical":"a","u5-ad-claim":"b","u5-ci-infer-mean":"b","u5-ci-majority":"b","u5-ci-samplesize":"b","u5-ci-significance":"b","u5-compare-normal-shift":"b","u5-isnormal":"b","u5-isnormal-data":"b","u5-media":"b","u5-media-position":"b","u5-media-ratio-claim":"b","u5-normal-centre-facts":"a","u5-pk-freq-mean":"a","u5-position-argument":"b","u5-sd-decisions":"b","u5-sd-interpret":"b","u5-sd-interpret-context":"b","u5-sd-match-set":"a","u5-sd-meaning":"b","u5-sd-transform":"b","u5-z-compare":"b","u6-add-area-effect":"a","u6-add-model-height":"a","u6-add-photo-dimension":"a","u6-add-slope-rate":"b","u6-area2d-mc":"a","u6-better-buy":"b","u6-formula-mc":"a","u6-interpret-var":"b","u6-model-sa-mc":"a","u6-plan-room-mc":"a","u6-poster-dimensions":"b","u6-rate-context-mc":"a","u6-rate-difference":"b","u6-sail-scale-mc":"a","u6-sf2d-mc":"a","u6-sf3d-mc":"a","u6-slope-rate":"b","u6-unit-price-mc":"a","u7-converse-contrapositive":"b","u7-converse-truth":"b","u7-deductive-chain":"a","u7-logic-var":"b","u7-pattern-equation":"a","u7-pk-conjecture":"b","u7-pk-counterexample":"b","u7-pk-pattern-figure":"a","u7-pk-table-equation":"a","u7-pk-valid-chain":"a","u7-proof-error":"b","u7-race-order":"a","u7-valid-argument":"b","u7-valid-chains":"b","u8-add-gable-angle":"a","u8-add-parallel-decision":"b","u8-angle-chase":"a","u8-congruent":"b","u8-correspondence":"a","u8-error-gen":"b","u8-error-var":"b","u8-multi-angle":"a","u8-parallel-check":"b","u8-pk-angle-measure":"a","u8-pk-parallel-decision":"b","u8-pk-transversal-pairs":"a","u8-proof-reason":"b"};
