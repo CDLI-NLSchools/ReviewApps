@@ -103,6 +103,10 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 - Fixed the same wrong note on complete papers in five more apps: Physics 3204, Biology 3201, Earth Systems 3209, Biology 2201 and Science 1206. Across those apps it could appear on full-size mid-course, final and combined-unit practice exams even though nothing was missing; the papers themselves have not changed.
 - Four display fixes. The Practice online section no longer shows an empty Test dropdown on courses that have no mapped tests, such as the math courses: the dropdown now appears only where a chosen unit actually has tests to pick from. In Math 3200, graphs of square root functions now run all the way to the ends of their domains, so a branch that should meet the x-axis now touches it instead of stopping a little short above it. Sixteen worked solutions in Math 3200 and Math 2200 whose final steps printed as raw typesetting code now display as proper math; the questions and answers are unchanged. And in one Math 3200 question that compares the domains and ranges of two functions, the answer choices now set the function names in math style, matching the question itself.
 
+### Fixed
+
+- Corrected outcome wording in several course registries, including a Mathematics 1201 outcome that displayed a document header instead of its text.
+
 ## v1.2.0 - 2026-11-15
 
 ### Added
