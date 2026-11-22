@@ -6,6 +6,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Added
 
+- Mathematics 2201: practice added for ten more curriculum indicators, including proof, scale diagrams, rates and parallel line construction, completing coverage of all 91 outcomes.
 - Mathematics 2201: practice questions added for ten more curriculum indicators, completing the radical, reasoning, angle and proportional reasoning outcomes.
 - Mathematics 2201: five more curriculum indicators now have practice questions, covering radical equations and errors in angle proofs.
 - The nine science apps gain a much deeper written side. 1,747 of their multiple choice question templates can now also be asked as written questions: set the "Dual-form questions" setting to "Answer choices off" and they are dealt into the written part of a practice set or sheet with the choices removed, at 2 to 4 marks each. Science 1206's written pool grows from 25 templates to 203, Chemistry 2202's from 58 to 176, and every science app's practice tests and practice sets now draw their written sections from a far deeper pool. With answer choices on, the apps work exactly as before.
