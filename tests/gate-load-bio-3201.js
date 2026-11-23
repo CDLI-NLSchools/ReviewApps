@@ -49,7 +49,8 @@ ok(!!helperBlock, "helpers block found in built shell");
 eval(helperBlock.replace(/"use strict";/g, ""));
 ok(typeof mcq === "function" && typeof textq === "function" && typeof varset === "function", "mcq/textq/varset defined");
 ok(UNITS[1] === "Cell Reproduction and the Continuity of Life" && UNITS[2] === "Genetic Basis of Heredity" && UNITS[3] === "Evolutionary Change and Biodiversity", "UNITS read from the course config");
-ok(Object.keys(INDICATORS).length === 40, "INDICATORS has 40 codes, saw " + Object.keys(INDICATORS).length);
+/* Pin update, November 22, 2026 (STSE registration): the remaining 13 STSE indicators (8.9, 9.3 to 9.8, 10.1 to 10.6) were registered for rich-task use with no bank entries; the registered count pin rises from 40 to 53. The 40 tested indicators are unchanged. No bank content was changed to fit this gate. */
+ok(Object.keys(INDICATORS).length === 53, "INDICATORS has 53 codes (40 tested + 13 STSE registered November 22, 2026), saw " + Object.keys(INDICATORS).length);
 ok(window.__COURSE.exam.mid.total === 60 && window.__COURSE.exam.mid.srCount === 48 && window.__COURSE.exam.mid.crMarks === 12, "mid blueprint is 60 = SR 48 + CR 12");
 ok(window.__COURSE.presets.mid.cap === true, "mid preset carries the 6.4 cap");
 ok(window.__COURSE.presets.final.cap === true, "final preset carries the 6.5 cap (Jason's ruling)");

@@ -44,7 +44,8 @@ ok(!!helperBlock, "helpers block found in built shell");
 eval(helperBlock.replace(/"use strict";/g, ""));
 ok(typeof mcq === "function" && typeof textq === "function" && typeof varset === "function", "mcq/textq/varset defined");
 ok(UNITS[1] === "Weather Dynamics" && UNITS[2] === "Chemical Reactions" && UNITS[3] === "Motion" && UNITS[4] === "Sustainability of Ecosystems", "UNITS read from the course config");
-ok(Object.keys(INDICATORS).length === 33, "INDICATORS has 33 codes (25 Knowledge + 8 STSE registered Nov 19, 2026), saw " + Object.keys(INDICATORS).length);
+/* Pin update, November 22, 2026 (STSE registration): the remaining 19 STSE indicators (SC10.5.2, SC10.7.4 to SC10.7.15, SC10.9.1, SC10.9.3 to SC10.9.7) were registered for rich-task use with no bank entries, completing the course's 27 STSE codes; the registered count pin rises from 33 to 52. SC10.9.2 remains unregistered. No bank content was changed to fit this gate. */
+ok(Object.keys(INDICATORS).length === 52, "INDICATORS has 52 codes (25 Knowledge + 27 STSE: 8 registered Nov 19, 2026 and 19 registered Nov 22, 2026), saw " + Object.keys(INDICATORS).length);
 ok(!("SC10.9.2" in INDICATORS), "SC10.9.2 is not registered (no stated wording exists)");
 ok(JSON.stringify(C.presets.mid.units) === "[1,2]" && JSON.stringify(C.presets.final.units) === "[3,4]", "preset scopes are mid = Units 1+2, final = Units 3+4");
 ok(C.presets.mid.cap === undefined && C.presets.final.cap === undefined, "presets carry no caps");
@@ -79,18 +80,22 @@ eval(fs.readFileSync(ROOT + "/banks/sci-1206.js", "utf8"));
    denomination gaps the pool-depth audit found in the Chemical
    Reactions and Sustainability test partitions, taking the bank
    to 209. */
-ok(BANK.length === 209, "BANK has 209 entries, saw " + BANK.length);
+/* Pin update, November 20, 2026 (science test lengthening tranche): census pins updated to the deepened bank; values verified from the assembled bank the same day. No bank content was changed to fit this gate. */
+/* Pin update, November 20, 2026 (CR denomination tranche): census pins updated to the bank after the 62-entry CR denomination tranche (Science 1206: 222 entries, 25 CR entries); values verified from the assembled bank the same day. No bank content was changed to fit this gate. */
+/* Pin update, November 20, 2026 (reverse bimodal registration): the CRMARKS census pin updated to the bank after the registration of the 178 strippable entries (55 class a, 123 class b, 509 marks) per Bimodal-Classification-SR-Pools-Science-2026-11-20.md (Science 1206: CR manifest 203 entries); values verified from the assembled bank the same day. The text question check below now branches on the BIMODAL manifest as well: an entry registered bimodal draws multiple choice natively, and its constructed response form is produced by stripping at composition time and is proven by gate-bimodal, so the text shape requirement applies to the entries in the CR marks manifest only. No check was removed or weakened. No bank content was changed to fit this gate. */
+ok(BANK.length === 222, "BANK has 222 entries, saw " + BANK.length);
 const perUnit = { 1: 0, 2: 0, 3: 0, 4: 0 };
 BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; });
-ok(perUnit[1] === 83 && perUnit[2] === 66 && perUnit[3] === 33 && perUnit[4] === 27, "per-unit entries 83/66/33/27, saw " + perUnit[1] + "/" + perUnit[2] + "/" + perUnit[3] + "/" + perUnit[4]);
+ok(perUnit[1] === 83 && perUnit[2] === 67 && perUnit[3] === 38 && perUnit[4] === 34, "per-unit entries 83/67/38/34, saw " + perUnit[1] + "/" + perUnit[2] + "/" + perUnit[3] + "/" + perUnit[4]);
 ok(new Set(BANK.map(e => e.id)).size === BANK.length, "entry ids are unique");
 const CRMARKS = window.__BANK_CRMARKS || {};
-ok(Object.keys(CRMARKS).length === 18, "CRMARKS has 18 entries, saw " + Object.keys(CRMARKS).length);
+const BIMODAL = window.__BANK_BIMODAL || {};
+ok(Object.keys(CRMARKS).length === 203, "CRMARKS has 203 entries, saw " + Object.keys(CRMARKS).length);
 const crPerUnit = { 1: 0, 2: 0, 3: 0, 4: 0 };
 BANK.forEach(e => { if (CRMARKS[e.id]) crPerUnit[e.unit] += CRMARKS[e.id]; });
 ok(crPerUnit[1] >= 10 && crPerUnit[2] >= 10 && crPerUnit[3] >= 10 && crPerUnit[4] >= 10, "CR marks pool covers 10 per unit, saw " + JSON.stringify(crPerUnit));
 BANK.forEach(e => {
-  if (CRMARKS[e.id]) {
+  if (CRMARKS[e.id] && !BIMODAL[e.id]) {
     const q = e.gen();
     ok(q && q.type === "text", e.id + " generates a text (CR) question");
   }
@@ -98,4 +103,4 @@ BANK.forEach(e => {
 });
 
 if (fails.length) { console.log("GATE LOAD sci-1206: FAIL (" + fails.length + ")"); fails.forEach(f => console.log(" - " + f)); process.exit(1); }
-console.log("GATE LOAD sci-1206: PASS (209 entries, 83/66/33/27 per unit, 18 CR entries, 25 Knowledge + 8 STSE indicators)");
+console.log("GATE LOAD sci-1206: PASS (222 entries, 83/67/38/34 per unit, 203 CR entries, 25 Knowledge + 8 STSE indicators)");

@@ -19,7 +19,8 @@ ok(!!helperBlock, "helpers block found in built shell");
 eval(helperBlock.replace(/"use strict";/g, ""));
 ok(typeof mcq === "function" && typeof numq === "function" && typeof textq === "function" && typeof varset === "function", "mcq/numq/textq/varset defined");
 ok(window.__COURSE && UNITS[1] === "Motion" && UNITS[4] === "Introduction to Quantum Physics", "UNITS read from the course config");
-ok(Object.keys(INDICATORS).length === 27, "INDICATORS has 27 codes, saw " + Object.keys(INDICATORS).length);
+/* Pin update, November 22, 2026 (STSE registration): the 14 STSE indicators (families PH12.9 to PH12.12) were registered for rich-task use with no bank entries; the registered count pin rises from 27 to 41 and the under-3-entries check below covers the 27 Knowledge codes (families PH12.5 to PH12.8). No bank content was changed to fit this gate. */
+ok(Object.keys(INDICATORS).length === 41, "INDICATORS has 41 codes (27 Knowledge + 14 STSE registered November 22, 2026), saw " + Object.keys(INDICATORS).length);
 
 var BANK = [];
 function E(id, unit, indicators, level, kind, gen) { BANK.push({ id, unit, indicators, level, kind, gen }); }
@@ -37,8 +38,8 @@ BANK.forEach(e => { perUnit[e.unit] = (perUnit[e.unit] || 0) + 1; e.indicators.f
 ok(perUnit[1] === 34 && perUnit[2] === 36 && perUnit[3] === 77 && perUnit[4] === 38,
    "per-unit counts 34/36/77/38, saw " + JSON.stringify(perUnit));
 const codes = Object.keys(window.__COURSE.indicators);
-const thin = codes.filter(c => (census[c] || 0) < 3);
-ok(thin.length === 0, "indicators under 3 entries: " + thin.join(", "));
+const thin = codes.filter(c => (census[c] || 0) < 3 && /^PH12\.[5-8]\./.test(c));
+ok(thin.length === 0, "Knowledge indicators under 3 entries (STSE families PH12.9 to PH12.12 exempt, registered for rich-task use November 22, 2026): " + thin.join(", "));
 const unknown = Object.keys(census).filter(c => !window.__COURSE.indicators[c]);
 ok(unknown.length === 0, "entries tagged with unregistered codes: " + unknown.join(", "));
 
