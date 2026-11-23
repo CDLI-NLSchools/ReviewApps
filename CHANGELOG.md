@@ -6,6 +6,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Added
 
+- Registered the STSE outcomes in Physics 2204 and 3204, Chemistry 2202 and 3202, Biology 2201 and 3201, and Science 1206.
 - Mathematics 2201: practice added for ten more curriculum indicators, including proof, scale diagrams, rates and parallel line construction, completing coverage of all 91 outcomes.
 - Mathematics 2201: practice questions added for ten more curriculum indicators, completing the radical, reasoning, angle and proportional reasoning outcomes.
 - Mathematics 2201: five more curriculum indicators now have practice questions, covering radical equations and errors in angle proofs.
