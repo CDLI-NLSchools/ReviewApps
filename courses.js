@@ -53,14 +53,28 @@ window.COURSES = {
     "PH12.8.5": "Explain the relationship between the energy levels in Bohr's model, the energy difference between the levels and the energy of the photons emitted and absorbed",
     "PH12.8.6": "Use the quantum mechanical model to explain natural luminous phenomena",
     "PH12.8.7": "Summarize the evidence for the wave and particle models of light",
-    "PH12.8.8": "Explain the de Broglie hypothesis"
+    "PH12.8.8": "Explain the de Broglie hypothesis",
+    "PH12.9.1": "Distinguish between questions that can be answered by science and those that cannot, and between problems that can be solved by technology and those that cannot",
+    "PH12.9.2": "Analyze the knowledge and skills acquired in their study of science to identify areas of further study related to science and technology",
+    "PH12.10.1": "Analyze the knowledge and skills acquired in their study of science to identify areas of further study related to science and technology",
+    "PH12.11.1": "Explain the roles of evidence, theories, and paradigms in the development of scientific knowledge",
+    "PH12.11.2": "Describe the importance of peer review in the development of scientific knowledge",
+    "PH12.11.3": "Explain how a major scientific milestone revolutionized thinking in the scientific communities",
+    "PH12.11.4": "Analyze and describe examples where scientific understanding was enhanced or revised as a result of the invention of a technology",
+    "PH12.11.5": "Analyze society’s influence on scientific and technological endeavours",
+    "PH12.11.6": "Construct arguments to support a decision or judgement, using examples and evidence and recognizing various perspectives",
+    "PH12.11.7": "Analyze technological systems to interpret and explain their structure and dynamics",
+    "PH12.11.8": "Identify various constraints that result in tradeoffs during the development and improvement of technologies",
+    "PH12.12.1": "Explain how scientific knowledge evolves as new evidence comes to light and as laws and theories are tested and subsequently restricted, revised, or replaced",
+    "PH12.12.2": "Compare processes used in science with those used in technology",
+    "PH12.12.3": "Analyze and describe examples where technologies were developed based on scientific understanding"
   },
 
   unitInd: {
-    1: ["PH12.5.1", "PH12.5.2", "PH12.5.3", "PH12.5.4", "PH12.5.5"],
-    2: ["PH12.6.1", "PH12.6.2", "PH12.6.3", "PH12.6.4"],
-    3: ["PH12.7.1", "PH12.7.2", "PH12.7.3", "PH12.7.4", "PH12.7.5", "PH12.7.6", "PH12.7.7", "PH12.7.8", "PH12.7.9", "PH12.7.10"],
-    4: ["PH12.8.1", "PH12.8.2", "PH12.8.3", "PH12.8.4", "PH12.8.5", "PH12.8.6", "PH12.8.7", "PH12.8.8"]
+    1: ["PH12.5.1", "PH12.5.2", "PH12.5.3", "PH12.5.4", "PH12.5.5", "PH12.9.1", "PH12.9.2"],
+    2: ["PH12.6.1", "PH12.6.2", "PH12.6.3", "PH12.6.4", "PH12.10.1"],
+    3: ["PH12.7.1", "PH12.7.2", "PH12.7.3", "PH12.7.4", "PH12.7.5", "PH12.7.6", "PH12.7.7", "PH12.7.8", "PH12.7.9", "PH12.7.10", "PH12.11.1", "PH12.11.2", "PH12.11.3", "PH12.11.4", "PH12.11.5", "PH12.11.6", "PH12.11.7", "PH12.11.8"],
+    4: ["PH12.8.1", "PH12.8.2", "PH12.8.3", "PH12.8.4", "PH12.8.5", "PH12.8.6", "PH12.8.7", "PH12.8.8", "PH12.12.1", "PH12.12.2", "PH12.12.3"]
   },
 
   presets: {
@@ -177,7 +191,25 @@ window.COURSES = {
    "PH11.8.9": "Apply the laws of reflection and the laws of refraction to predict wave behaviour",
    "B.1": "Science 1206 review: speed, distance and time",
    "B.2": "Science 1206 review: motion graphs",
-   "B.3": "Science 1206 review: scalars, vectors and unit conversion"
+   "B.3": "Science 1206 review: scalars, vectors and unit conversion",
+   "PH11.9.1": "Explain how a major scientific milestone revolutionized thinking in the scientific communities",
+   "PH11.9.2": "Analyze society's influence on scientific and technological endeavours",
+   "PH11.9.3": "Evaluate the design of a technology and the way it functions on the basis of a variety of criteria that they have identified themselves",
+   "PH11.9.4": "Analyze and describe examples where technologies were developed based on scientific understanding",
+   "PH11.9.5": "Describe and evaluate the design of technological solutions and the way they function, using scientific principles",
+   "PH11.10.1": "Explain the importance of communicating the results of a scientific or technological endeavour, using appropriate language and conventions",
+   "PH11.10.2": "Distinguish between scientific questions and technological problems",
+   "PH11.10.3": "Describe and evaluate the design of technological solutions and the way they function, using scientific principles",
+   "PH11.10.4": "Distinguish between questions that can be answered by science and those that cannot, and between problems that can be solved by technology and those that cannot",
+   "PH11.10.5": "Analyze natural and technological systems to interpret and explain their structure and dynamics",
+   "PH11.10.6": "Identify various constraints that result in tradeoffs during the development and improvement of technologies",
+   "PH11.10.7": "Provide examples of how science and technology are an integral part of their lives and their community",
+   "PH11.10.8": "Analyze why and how a particular technology was developed and improved over time",
+   "PH11.10.9": "Analyze examples of Canadian contributions to science and technology",
+   "PH11.11.1": "Analyze the knowledge and skills acquired in their study of science to identify areas of further study related to science and technology",
+   "PH11.11.2": "Analyze from a variety of perspectives the risks and benefits to society and the environment of applying scientific knowledge or introducing a particular technology",
+   "PH11.11.3": "Describe and evaluate the design of technological solutions and the way they function, using scientific principles",
+   "PH11.11.4": "Analyze society's influence on scientific and technological endeavours"
   },
 
   unitInd: {
@@ -191,7 +223,12 @@ window.COURSES = {
     "PH11.6.2",
     "PH11.6.3",
     "PH11.6.4",
-    "PH11.6.5"
+    "PH11.6.5",
+    "PH11.9.1",
+    "PH11.9.2",
+    "PH11.9.3",
+    "PH11.9.4",
+    "PH11.9.5"
    ],
    "3": [
     "PH11.7.1",
@@ -209,7 +246,16 @@ window.COURSES = {
     "PH11.7.13",
     "PH11.7.14",
     "PH11.7.15",
-    "PH11.7.16"
+    "PH11.7.16",
+    "PH11.10.1",
+    "PH11.10.2",
+    "PH11.10.3",
+    "PH11.10.4",
+    "PH11.10.5",
+    "PH11.10.6",
+    "PH11.10.7",
+    "PH11.10.8",
+    "PH11.10.9"
    ],
    "4": [
     "PH11.8.1",
@@ -220,7 +266,11 @@ window.COURSES = {
     "PH11.8.6",
     "PH11.8.7",
     "PH11.8.8",
-    "PH11.8.9"
+    "PH11.8.9",
+    "PH11.11.1",
+    "PH11.11.2",
+    "PH11.11.3",
+    "PH11.11.4"
    ],
    "5": [
     "B.1",
@@ -331,6 +381,7 @@ window.COURSES = {
     "8.6": "STSE: Risks and Benefits to Society",
     "8.7": "STSE: Funding Decisions",
     "8.8": "STSE: Stem Cells and Society",
+    "8.9": "STSE: Science and Technology Careers",
     "6.1": "Mendel and the Concept of the Gene",
     "6.2": "Mendelian Genetics and Crosses",
     "6.3": "Chromosomes and the Extensions of Mendel",
@@ -343,6 +394,12 @@ window.COURSES = {
     "6.10": "Genetic Technologies",
     "9.1": "STSE: How Science Explains",
     "9.2": "STSE: Evidence, Theories and Paradigms",
+    "9.3": "STSE: How Scientific Knowledge Evolves",
+    "9.4": "STSE: Processes in Science and Technology",
+    "9.5": "STSE: Technology Enhancing Scientific Understanding",
+    "9.6": "STSE: Scientific Milestones",
+    "9.7": "STSE: Risks and Benefits to Society",
+    "9.8": "STSE: Making the Case",
     "7.1": "Natural Selection and Biodiversity",
     "7.2": "History of Evolutionary Thought",
     "7.3": "Evidence for Evolution",
@@ -352,13 +409,19 @@ window.COURSES = {
     "7.7": "Hardy-Weinberg",
     "7.8": "Causes of Gene Pool Change",
     "7.9": "Taxonomy and Classification",
-    "7.10": "Vertebrate Anatomy and Physiology"
+    "7.10": "Vertebrate Anatomy and Physiology",
+    "10.1": "STSE: Evidence, Theories and Paradigms",
+    "10.2": "STSE: How Scientific Knowledge Evolves",
+    "10.3": "STSE: Peer Review",
+    "10.4": "STSE: Science and Technology Careers",
+    "10.5": "STSE: Risks and Benefits to Society",
+    "10.6": "STSE: Technology Enhancing Scientific Understanding"
   },
 
   unitInd: {
-    1: ["5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "5.7", "5.8", "5.9", "5.10", "8.1", "8.2", "8.3", "8.4", "8.5", "8.6", "8.7", "8.8"],
-    2: ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "9.1", "9.2"],
-    3: ["7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10"]
+    1: ["5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "5.7", "5.8", "5.9", "5.10", "8.1", "8.2", "8.3", "8.4", "8.5", "8.6", "8.7", "8.8", "8.9"],
+    2: ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "9.1", "9.2", "9.3", "9.4", "9.5", "9.6", "9.7", "9.8"],
+    3: ["7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10", "10.1", "10.2", "10.3", "10.4", "10.5", "10.6"]
   },
 
   /* Staged hints: every converted entry carries its review book's
@@ -466,6 +529,9 @@ window.COURSES = {
     "5.4": "Population Growth and Sampling Techniques",
     "8.3": "STSE: Competition, Symbiosis and Non-native Species",
     "5.5": "Human Population, Carrying Capacity and Ecological Footprint",
+    "8.4": "STSE: Science and Technology in Daily Life and Community",
+    "8.5": "STSE: Scientific Questions and Technological Problems",
+    "8.6": "STSE: Courses of Action on Social Issues",
     "6.1": "Cell Theory and Abiogenesis",
     "9.1": "STSE: Evidence, Theories and Paradigms",
     "9.2": "STSE: Communicating Scientific Results",
@@ -479,6 +545,7 @@ window.COURSES = {
     "6.6": "Carbohydrates, Lipids and Proteins",
     "6.7": "Membrane Transport: Diffusion and Osmosis",
     "6.8": "Aerobic Respiration and Photosynthesis",
+    "9.6": "STSE: Science and Technology Careers",
     "7.1": "Homeostasis and Feedback Mechanisms",
     "7.2": "Plant Systems and Homeostasis",
     "7.3": "Tropisms and Homeostasis",
@@ -492,13 +559,21 @@ window.COURSES = {
     "7.11": "The Human Respiratory System",
     "7.12": "Digestive System and Nutrition",
     "7.13": "Digestive System and Nutrition",
-    "7.14": "The Excretory System"
+    "7.14": "The Excretory System",
+    "10.1": "STSE: Analyzing Natural Systems",
+    "10.2": "STSE: Questions Science Can and Cannot Answer",
+    "10.3": "STSE: Society's Influence on Science and Technology",
+    "10.4": "STSE: How Technologies Develop and Improve",
+    "10.5": "STSE: Risks and Benefits to Society",
+    "10.6": "STSE: Funding Decisions",
+    "10.7": "STSE: Making the Case",
+    "10.8": "STSE: Courses of Action on Social Issues"
   },
 
   unitInd: {
-    1: ["5.1", "5.2", "5.3", "5.4", "5.5", "8.1", "8.2", "8.3"],
-    2: ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "9.1", "9.2", "9.3", "9.4", "9.5"],
-    3: ["7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10", "7.11", "7.12", "7.13", "7.14"]
+    1: ["5.1", "5.2", "5.3", "5.4", "5.5", "8.1", "8.2", "8.3", "8.4", "8.5", "8.6"],
+    2: ["6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "9.1", "9.2", "9.3", "9.4", "9.5", "9.6"],
+    3: ["7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10", "7.11", "7.12", "7.13", "7.14", "10.1", "10.2", "10.3", "10.4", "10.5", "10.6", "10.7", "10.8"]
   },
 
   /* Staged hints: every converted entry carries its review book's
@@ -579,6 +654,7 @@ window.COURSES = {
     "SC10.6.4": "Weather Systems: Development, Severity and Movement",
     "SC10.6.5": "Analyzing Meteorological Data and Predicting Weather",
     "SC10.5.1": "How Science Explains Natural Phenomena",
+    "SC10.5.2": "Science and Technology in Individual and Group Settings",
     "SC10.5.3": "Technology Enhancing and Revising Understanding",
     "SC10.5.4": "Canadian Contributions to Science and Technology",
     "SC10.5.5": "How Scientific Knowledge Evolves",
@@ -592,12 +668,24 @@ window.COURSES = {
     "SC10.7.1": "Science and Technology in Daily Life and Community",
     "SC10.7.2": "Usefulness of Scientific Nomenclature Systems",
     "SC10.7.3": "How Domestic and Industrial Technologies Work",
+    "SC10.7.4": "Technologies Developed from Scientific Understanding",
+    "SC10.7.5": "How Society Supports and Influences Science and Technology",
+    "SC10.7.6": "Defending a Decision from Different Perspectives",
+    "SC10.7.7": "Science and Technology Careers",
     "SC10.8.7": "Motion Variables, Quantitatively",
     "SC10.8.8": "Displacement, Velocity and Time: Mathematics",
     "SC10.8.9": "Graphing Uniform Motion",
     "SC10.8.10": "Instantaneous and Average Velocity",
     "SC10.8.11": "Graphing Non-Uniform Motion",
     "SC10.8.12": "Velocity, Time and Acceleration",
+    "SC10.7.8": "Relating Personal Activities to Science Disciplines",
+    "SC10.7.9": "Areas of Further Study in Science and Technology",
+    "SC10.7.10": "Scientific Questions and Technological Problems",
+    "SC10.7.11": "Historical Development of a Technology",
+    "SC10.7.12": "Continued Testing and Technology Improvement",
+    "SC10.7.13": "Evaluating the Design of a Technology",
+    "SC10.7.14": "Analyzing Natural and Technological Systems",
+    "SC10.7.15": "Canadian Contributions to Science and Technology",
     "SC10.10.1": "Similar Ecosystems in Different Locations",
     "SC10.10.2": "Population Equilibrium and Resource Limits",
     "SC10.10.3": "Cycling of Matter: Carbon, Nitrogen and Oxygen",
@@ -605,14 +693,20 @@ window.COURSES = {
     "SC10.10.5": "Bioaccumulation and Trophic Levels",
     "SC10.10.6": "Impact of External Factors on Ecosystems",
     "SC10.10.7": "Biodiversity and Sustainability",
-    "SC10.10.8": "Ecosystem Responses to Stress and Change"
+    "SC10.10.8": "Ecosystem Responses to Stress and Change",
+    "SC10.9.1": "Courses of Action on Social Issues",
+    "SC10.9.3": "Paradigm Shifts and Scientific World Views",
+    "SC10.9.4": "Technology Enhancing and Revising Understanding",
+    "SC10.9.5": "Funding of Canadian Research Projects",
+    "SC10.9.6": "Importance of Peer Review",
+    "SC10.9.7": "Risks and Benefits to Society and the Environment"
   },
 
   unitInd: {
-    1: ["SC10.6.1", "SC10.6.2", "SC10.6.3", "SC10.6.4", "SC10.6.5", "SC10.5.1", "SC10.5.3", "SC10.5.4", "SC10.5.5", "SC10.5.6"],
-    2: ["SC10.8.1", "SC10.8.2", "SC10.8.3", "SC10.8.4", "SC10.8.5", "SC10.8.6", "SC10.7.1", "SC10.7.2", "SC10.7.3"],
-    3: ["SC10.8.7", "SC10.8.8", "SC10.8.9", "SC10.8.10", "SC10.8.11", "SC10.8.12"],
-    4: ["SC10.10.1", "SC10.10.2", "SC10.10.3", "SC10.10.4", "SC10.10.5", "SC10.10.6", "SC10.10.7", "SC10.10.8"]
+    1: ["SC10.6.1", "SC10.6.2", "SC10.6.3", "SC10.6.4", "SC10.6.5", "SC10.5.1", "SC10.5.3", "SC10.5.4", "SC10.5.5", "SC10.5.6", "SC10.5.2"],
+    2: ["SC10.8.1", "SC10.8.2", "SC10.8.3", "SC10.8.4", "SC10.8.5", "SC10.8.6", "SC10.7.1", "SC10.7.2", "SC10.7.3", "SC10.7.4", "SC10.7.5", "SC10.7.6", "SC10.7.7"],
+    3: ["SC10.8.7", "SC10.8.8", "SC10.8.9", "SC10.8.10", "SC10.8.11", "SC10.8.12", "SC10.7.8", "SC10.7.9", "SC10.7.10", "SC10.7.11", "SC10.7.12", "SC10.7.13", "SC10.7.14", "SC10.7.15"],
+    4: ["SC10.10.1", "SC10.10.2", "SC10.10.3", "SC10.10.4", "SC10.10.5", "SC10.10.6", "SC10.10.7", "SC10.10.8", "SC10.9.1", "SC10.9.3", "SC10.9.4", "SC10.9.5", "SC10.9.6", "SC10.9.7"]
   },
 
   /* Staged hints: bank entries carry one hint stage each. */
@@ -1910,7 +2004,27 @@ window.COURSES = {
     "B.1": "Chemistry 2202 review: moles and molar mass",
     "B.2": "Chemistry 2202 review: concentration and dilution",
     "B.3": "Chemistry 2202 review: stoichiometry and yield",
-    "B.4": "Chemistry 2202 review: solubility and equilibrium basics"
+    "B.4": "Chemistry 2202 review: solubility and equilibrium basics",
+    "9.1": "Analyze and describe examples where technologies were developed based upon scientific understanding",
+    "9.2": "Analyze and describe examples where scientific understanding was enhanced or revised as a result of the invention of a technology",
+    "9.3": "Identify and describe science and technology-based careers",
+    "9.4": "Explain the roles of evidence, theories, and paradigms in the development of scientific knowledge",
+    "10.1": "Explain how scientific knowledge evolves as new evidence comes to light and as laws and theories are tested and subsequently restricted, revised, or replaced",
+    "10.2": "Explain the roles of evidence, theories, and paradigms in the development of scientific knowledge",
+    "10.3": "Construct arguments to support a decision, or judgment, using examples and evidence and recognizing variousperspectives",
+    "10.4": "Analyze society's influence on scientific and technological endeavours using examples from acid-base chemistry",
+    "10.5": "Describe science and technology-based careers related to acid-base chemistry",
+    "10.6": "Explain the importance of communicating the results of a scientific or technological endeavour, using appropriate language and conventions",
+    "10.7": "Analyze and describe examples where scientific understanding was enhanced or revised as a result of the invention of a technology",
+    "11.1": "Analyze and describe examples where technologies were developed based on scientific understanding",
+    "11.2": "Analyze from a variety of perspectives the risks and benefits to society and the environment of applying scientific knowledge or introducing a particular technology",
+    "11.3": "Propose courses of action on social issues related to science and technology, taking into account an array of perspectives, including that of sustainability",
+    "11.4": "Analyze the knowledge and skills acquired in their study of science to identify areas of further study related to science and technology",
+    "11.5": "Distinguish between questions that can be answered by science and those that cannot, and between problems that can be solved by technology and those that cannot",
+    "11.6": "Analyze why scientific and technological activities take place in a variety of individual and group settings",
+    "11.7": "Describe the importance of peer review in the development of scientific knowledge",
+    "12.1": "Distinguish between scientific questions and technological problems",
+    "12.5": "Analyze why and how a particular technology was developed and improved over time"
   },
 
   unitInd: {
@@ -1921,7 +2035,11 @@ window.COURSES = {
       "5.4",
       "5.5",
       "5.6",
-      "5.7"
+      "5.7",
+      "9.1",
+      "9.2",
+      "9.3",
+      "9.4"
     ],
     "2": [
       "6.1",
@@ -1931,7 +2049,14 @@ window.COURSES = {
       "6.5",
       "6.6",
       "6.7",
-      "6.8"
+      "6.8",
+      "10.1",
+      "10.2",
+      "10.3",
+      "10.4",
+      "10.5",
+      "10.6",
+      "10.7"
     ],
     "3": [
       "7.1",
@@ -1945,7 +2070,14 @@ window.COURSES = {
       "7.9",
       "7.10",
       "7.11",
-      "7.12"
+      "7.12",
+      "11.1",
+      "11.2",
+      "11.3",
+      "11.4",
+      "11.5",
+      "11.6",
+      "11.7"
     ],
     "4": [
       "8.1",
@@ -1956,7 +2088,9 @@ window.COURSES = {
       "8.6",
       "8.7",
       "8.8",
-      "8.9"
+      "8.9",
+      "12.1",
+      "12.5"
     ],
     "5": [
       "B.1",
@@ -2090,7 +2224,26 @@ window.COURSES = {
     "7.8": "Describe processes of polymerization and identify some important natural and synthetic polymers",
     "B.1": "Science 1206 review: isotopes and subatomic particles",
     "B.2": "Science 1206 review: average atomic mass",
-    "B.3": "Science 1206 review: naming compounds and writing formulas"
+    "B.3": "Science 1206 review: naming compounds and writing formulas",
+    "8.1": "Explain the roles of evidence, theories, and paradigms in the development of scientific knowledge",
+    "8.2": "Explain how a major scientific milestone revolutionized thinking in the scientific communities",
+    "8.3": "Analyze and describe examples where scientific understanding was enhanced or revised as a result of the invention of a technology",
+    "8.4": "Analyze society’s influence on scientific and technological endeavours",
+    "8.5": "Compare processes used in science with those used in technology",
+    "8.6": "Identify various constraints that results in trade-offs during the development and improvement of technologies",
+    "8.7": "Identify and describe science-and technology-based careers related to the science they are studying",
+    "9.1": "Analyze and describe examples where technologies were developed based on scientific understanding",
+    "9.2": "Analyze from a variety of perspectives the risks and benefits to society and the environment of applying scientific knowledge or introducing a particular technology",
+    "9.3": "Analyze examples of Canadian contributions to science and technology",
+    "10.1": "Explain how a major scientific milestone revolutionized thinking in the scientific communities",
+    "10.2": "Explain how scientific knowledge evolves as new evidence comes to light",
+    "10.3": "Provide examples of how science and technology are an integral part of their lives and their community",
+    "10.4": "Debate the merits of funding specific technological endeavours and not others",
+    "10.5": "Describe and evaluate the design of technological solutions, and the way they function using scientific principles",
+    "10.6": "Analyze natural and technological systems to interpret and explain their structure and dynamics",
+    "10.7": "Identify various constraints that result in the trade-offs during the development and improvement of technologies",
+    "10.8": "Distinguish between scientific questions and technological problems",
+    "10.9": "Evaluate the design of a technology and the way it functions, on the basis of a variety of criteria that they have identified themselves"
   },
 
   unitInd: {
@@ -2104,7 +2257,14 @@ window.COURSES = {
       "5.7",
       "5.8",
       "5.9",
-      "5.10"
+      "5.10",
+      "8.1",
+      "8.2",
+      "8.3",
+      "8.4",
+      "8.5",
+      "8.6",
+      "8.7"
     ],
     "2": [
       "6.1",
@@ -2119,7 +2279,10 @@ window.COURSES = {
       "6.10",
       "6.11",
       "6.12",
-      "6.13"
+      "6.13",
+      "9.1",
+      "9.2",
+      "9.3"
     ],
     "3": [
       "7.1",
@@ -2129,7 +2292,16 @@ window.COURSES = {
       "7.5",
       "7.6",
       "7.7",
-      "7.8"
+      "7.8",
+      "10.1",
+      "10.2",
+      "10.3",
+      "10.4",
+      "10.5",
+      "10.6",
+      "10.7",
+      "10.8",
+      "10.9"
     ],
     "4": [
       "B.1",
