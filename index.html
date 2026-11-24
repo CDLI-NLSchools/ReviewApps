@@ -4253,12 +4253,13 @@ function tCodeOpenFetch(){
   var sp=new URLSearchParams(window.__QPAYLOAD||location.search);
   function hit(q){if(!q)return;var q2=tCodeOpenVia(q,sp);try{var p=new URLSearchParams(q2);if(!p.get("via")&&!p.get("teacher")){p.set("via","code");q2=p.toString();}}catch(e){}window.__QPAYLOAD=q2;window.__QCODE=null;tCodeOpenBoot();}
   try{var reg=window.PACK_CODES;if(reg&&reg[code]&&reg[code].q){hit(reg[code].q);return;}}catch(e){}
+  var settled=0,hitDone=false;
+  function fin(){settled++;if(settled>=2&&!hitDone&&!window.__QPAYLOAD)tCodeOpenBanner("miss",code);}
+  function tryHit(q){if(q&&!hitDone){hitDone=true;hit(q);}}
   var snapP=(typeof fetchSnapshotCodes==="function")?fetchSnapshotCodes():Promise.resolve({ok:false,codes:{}});
-  snapP.then(function(snap){
-    var sq=snap&&snap.codes?snap.codes[code]:null;if(sq){hit(sq);return;}
-    var fp=(typeof fetchSheetCodes==="function")?fetchSheetCodes():Promise.resolve({ok:false,codes:{}});
-    fp.then(function(res){var tq=res&&res.codes?res.codes[code]:null;if(tq)hit(tq);else if(!window.__QPAYLOAD)tCodeOpenBanner("miss",code);}).catch(function(){if(!window.__QPAYLOAD)tCodeOpenBanner("miss",code);});
-  }).catch(function(){if(!window.__QPAYLOAD)tCodeOpenBanner("miss",code);});
+  var sheetP=(typeof fetchSheetCodes==="function")?fetchSheetCodes():Promise.resolve({ok:false,codes:{}});
+  snapP.then(function(snap){tryHit(snap&&snap.codes?snap.codes[code]:null);fin();},function(){fin();});
+  sheetP.then(function(res){tryHit(res&&res.codes?res.codes[code]:null);fin();},function(){fin();});
 }
 if(window.__QCODE&&!window.__QPAYLOAD){if(document.readyState==="complete")tCodeOpenFetch();else window.addEventListener("load",tCodeOpenFetch);}
 var TEACHER=false;

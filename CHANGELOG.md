@@ -41,7 +41,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Fixed
 
-- A printed sheet set opened from its QR code or short link could land on a blank course page instead of the set. The registry found the set, but the app then stopped on the set's sheet settings before dealing the questions. Sets opened by code, QR code or link now deal properly, including sets that started as printable sheets.
+- A printed sheet set opened from its QR code or short link could land on a blank course page instead of the set. The registry found the set, but the app then stopped on the set's sheet settings before dealing the questions. Sets opened by code, QR code or link now deal properly, including sets that started as printable sheets. Opening a set from a link is also faster: the app now checks the saved code list and the registry at the same time instead of one after the other.
 
 ### Changed
 
