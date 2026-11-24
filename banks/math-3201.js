@@ -1899,10 +1899,12 @@ BANK.forEach(function(e){if(["u4-express-as-power"].indexOf(e.id)>=0)e.pkFlag=tr
 // BIMODAL: u5-expand-log=b
 // BIMODAL: u5-condense-log=b
 /* ================= Unit 5: Logarithmic Functions ================= */
-/* Bank-local helpers for Units 5 to 9. lgS builds a log string with the
-   argument as given; dis3 / dis3s build three distractors guaranteed distinct
+/* Bank-local helpers for Units 5 to 9. lgS builds a log string; a compound
+   argument (a sum or difference at the top level) is wrapped in parentheses
+   so it cannot be read as the log of the first term alone, while arguments
+   already wrapped by the caller are left as given; dis3 / dis3s build three distractors guaranteed distinct
    from the correct answer and from each other (numeric and string forms). */
-function lgS(b,arg){return "\\log_{"+b+"} "+arg;}
+function lgS(b,arg){var s=String(arg);if(s.indexOf("\\left(")!==0){var t=s.replace(/\{[^{}]*\}/g,"");if(/[+\-\u2212]/.test(t))s="\\left("+s+"\\right)";}return "\\log_{"+b+"} "+s;}
 function dis3(correct,cands){
   var out=[],seen={},c=String(correct);seen[c]=1;
   for(var i=0;i<cands.length&&out.length<3;i++){var s=String(cands[i]);if(!seen[s]){seen[s]=1;out.push(s);}}
