@@ -372,11 +372,16 @@ function p22Refract(med1,med2,th1label,th1,th2label,th2){
   var r1=th1*Math.PI/180,L1=86;
   var ix=CX-L1*Math.sin(r1),iy=CY-L1*Math.cos(r1);
   o+=p22Arrow(ix,iy,CX,CY,2.6);
-  o+=p22Txt((ix+CX)/2-8,(iy+CY)/2-8,th1label,12,true,"end");
+  /* Angle arcs from the normal to each ray, November 24, 2026 (Report a Problem,
+     u4-89-snell-angle): the arcs and the labels on the bisectors make it visually
+     explicit that both angles are measured from the normal, not from the surface. */
+  o+='<path d="M '+p22n(CX)+' '+p22n(CY-34)+' A 34 34 0 0 0 '+p22n(CX-34*Math.sin(r1))+' '+p22n(CY-34*Math.cos(r1))+'" fill="none" stroke="'+P22_INK+'" stroke-width="1.2"/>';
+  o+=p22Txt(CX-52*Math.sin(r1/2),CY-52*Math.cos(r1/2)+4,th1label,12,true,"middle");
   var r2=th2*Math.PI/180,L2=80;
   var ex=CX+L2*Math.sin(r2),ey=CY+L2*Math.cos(r2);
   o+=p22Arrow(CX,CY,ex,ey,2.6,P22_ALT);
-  o+=p22Txt((CX+ex)/2+10,(CY+ey)/2+6,th2label,12,true,"start");
+  o+='<path d="M '+p22n(CX)+' '+p22n(CY+30)+' A 30 30 0 0 0 '+p22n(CX+30*Math.sin(r2))+' '+p22n(CY+30*Math.cos(r2))+'" fill="none" stroke="'+P22_INK+'" stroke-width="1.2"/>';
+  o+=p22Txt(CX+52*Math.sin(r2/2),CY+52*Math.cos(r2/2)+4,th2label,12,true,"middle");
   return p22Svg(W,H,o,"Refraction diagram");
 }
 /* Motion graph shapes for the bridging description entry. */

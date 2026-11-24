@@ -1182,7 +1182,7 @@ E("bio-u1-59-q09",1,["5.9"],2,"var",varset([
     return mcq("A researcher observes a developing embryo with a beating heart but no evidence of viability outside the uterus. Which trimester is most likely represented?",
       "First trimester",
       ["Early fourth trimester","Late second trimester","Third trimester"],
-      "The heart begins beating during the first trimester, but the fetus is not viable outside the uterus until much later (late second trimester onward). A beating heart with no viability points to the first trimester, and there is no fourth trimester.",
+      "The heart begins beating during the first trimester, weeks before it can be heard from outside the body, but the fetus is not viable outside the uterus until much later (late second trimester onward). A beating heart with no viability points to the first trimester, and there is no fourth trimester.",
       {});
   }
 ]),["Use two milestones: a heartbeat appears very early in development, while viability, surviving outside the uterus, is not reached until much later. Where does \"beating heart but not viable\" land?"]);

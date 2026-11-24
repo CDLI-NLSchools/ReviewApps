@@ -6278,6 +6278,18 @@ function stripQ(q){
       if(s.indexOf("infinity")>=0)addV(s.replace(/infinity/g,"inf"));
       addV(s.replace(/±/g,"+/-"));addV(s.replace(/×/g,"x"));addV(s.replace(/≠/g,"!="));addV(s.replace(/\bpi\b/g,"π"));
     });
+    /* Wording variants, November 24, 2026 (Jason's ruling on the Report a Problem
+       items bio-u1-52-q01 and es-u3-32-q03): the same phrase with or without a
+       leading article, and with the final word's trailing s on or off, is the
+       same answer. Mechanical variants only, like the symbol swaps above. */
+    Object.keys(vars).slice().forEach(function(s){
+      var na=s.replace(/^(a|an|the)\s+/,"");if(na!==s)addV(na);
+      var w=s.split(" "),last=w[w.length-1];
+      if(/^[a-z]{3,}$/.test(last)){
+        if(/s$/.test(last)&&!/ss$/.test(last)){var v1=w.slice();v1[v1.length-1]=last.slice(0,-1);addV(v1.join(" "));}
+        else if(!/s$/.test(last)){var v2=w.slice();v2[v2.length-1]=last+"s";addV(v2.join(" "));}
+      }
+    });
     out.type="text";out.answers=Object.keys(vars);
     if(!out.answers.length){out.answers=[dt.toLowerCase()];out.selfCheck=true;}
     return out;
