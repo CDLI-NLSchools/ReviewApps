@@ -10,8 +10,8 @@
    build.py); the unit files read them as globals, so the unified bank
    module carries them in this helpers file, first in the build order.
    Values verbatim from the standalone preamble. */
-var CHEM_AM={H:1.01,He:4.00,Li:6.94,Be:9.01,B:10.81,C:12.01,N:14.01,O:16.00,F:19.00,Ne:20.18,Na:22.99,Mg:24.31,Al:26.98,Si:28.09,P:30.97,S:32.07,Cl:35.45,K:39.10,Ca:40.08,Cr:52.00,Mn:54.94,Fe:55.85,Co:58.93,Ni:58.69,Cu:63.55,Zn:65.39,Br:79.90,Ag:107.87,Sn:118.71,I:126.90,Ba:137.33,Hg:200.59,Pb:207.20};
-var CHEM_AV=6.022e23;
+var CHEM_AM={H:1.01,He:4.00,Li:6.94,Be:9.01,B:10.81,C:12.01,N:14.01,O:16.00,F:19.00,Ne:20.18,Na:22.99,Mg:24.31,Al:26.98,Si:28.09,P:30.97,S:32.07,Cl:35.45,K:39.10,Ca:40.08,Cr:52.00,Mn:54.94,Fe:55.85,Co:58.93,Ni:58.71,Cu:63.55,Zn:65.38,Br:79.90,Ag:107.87,Sn:118.69,I:126.90,Ba:137.33,Hg:200.59,Pb:207.19};
+var CHEM_AV=6.02e23;
 
 /* ============ Diagram figures (Phase C, Nov 2026) ============
    Original code-generated SVG drawings, built from each question's own
@@ -609,20 +609,20 @@ E("u1-52-moles-to-mass",1,["5.2"],2,"gen",function(){
 E("u1-52-particles-to-moles",1,["5.2"],2,"gen",function(){
   var cps=[{f:"H\u2082O",p:"molecules"},{f:"CO\u2082",p:"molecules"},{f:"NH\u2083",p:"molecules"},{f:"CH\u2084",p:"molecules"},{f:"O\u2082",p:"molecules"},{f:"NaCl",p:"formula units"},{f:"CaCO\u2083",p:"formula units"},{f:"MgO",p:"formula units"},{f:"Fe",p:"atoms"},{f:"Cu",p:"atoms"},{f:"Zn",p:"atoms"},{f:"He",p:"atoms"}];
   var cp=pick(cps),e=pick([23,23,24]),k=ri(120,950)/100;
-  var moles=k*Math.pow(10,e-23)/6.022,ans=sfR(moles,3);
-  return numq("A sample contains \\("+fmtF(k,2)+" \\times 10^{"+e+"}\\) "+cp.p+" of "+cp.f+". How many moles is this? Give your answer in mol.",ans,Math.max(0.01,ans*0.02),"One mole contains \\(6.022 \\times 10^{23}\\) particles. Amount in moles = number of particles / \\(6.022 \\times 10^{23}\\) = \\("+fmtF(k,2)+" \\times 10^{"+e+"}\\) / \\(6.022 \\times 10^{23}\\) = <b>"+F3(ans)+" mol</b>.",{cp:cp.f,k:k,e:e});
+  var moles=k*Math.pow(10,e-23)/6.02,ans=sfR(moles,3);
+  return numq("A sample contains \\("+fmtF(k,2)+" \\times 10^{"+e+"}\\) "+cp.p+" of "+cp.f+". How many moles is this? Give your answer in mol.",ans,Math.max(0.01,ans*0.02),"One mole contains \\(6.02 \\times 10^{23}\\) particles. Amount in moles = number of particles / \\(6.02 \\times 10^{23}\\) = \\("+fmtF(k,2)+" \\times 10^{"+e+"}\\) / \\(6.02 \\times 10^{23}\\) = <b>"+F3(ans)+" mol</b>.",{cp:cp.f,k:k,e:e});
 });
 
 E("u1-52-mass-to-particles",1,["5.2"],3,"gen",function(){
   var cps=[{f:"H\u2082O",m:2*CHEM_AM.H+CHEM_AM.O,p:"molecules"},{f:"CO\u2082",m:CHEM_AM.C+2*CHEM_AM.O,p:"molecules"},{f:"NH\u2083",m:CHEM_AM.N+3*CHEM_AM.H,p:"molecules"},{f:"CH\u2084",m:CHEM_AM.C+4*CHEM_AM.H,p:"molecules"},{f:"NaCl",m:CHEM_AM.Na+CHEM_AM.Cl,p:"formula units"},{f:"CaCO\u2083",m:CHEM_AM.Ca+CHEM_AM.C+3*CHEM_AM.O,p:"formula units"},{f:"Fe",m:CHEM_AM.Fe,p:"atoms"},{f:"Cu",m:CHEM_AM.Cu,p:"atoms"}];
   var cp=pick(cps),nDrawn=ri(20,600)/100,mass=Math.round(nDrawn*cp.m*100)/100,n=mass/cp.m,ans=sfR(sfR(n,4)*CHEM_AV,3);
-  return numq("How many "+cp.p+" are in "+gF(mass)+" g of "+cp.f+"? Give your answer as a number in scientific notation, for example 1.20e24 (the molar mass of "+cp.f+" is "+fmtF(cp.m,2)+" g/mol).",ans,ans*0.02,"First change mass to moles: "+gF(mass)+" g / "+fmtF(cp.m,2)+" g/mol = "+iF(n)+" mol. Then multiply by the Avogadro constant: "+iF(n)+" \u00D7 \\(6.022 \\times 10^{23}\\) = <b>"+ans.toExponential(2)+" "+cp.p+"</b>.",{cp:cp.f,n:nDrawn});
+  return numq("How many "+cp.p+" are in "+gF(mass)+" g of "+cp.f+"? Give your answer as a number in scientific notation, for example 1.20e24 (the molar mass of "+cp.f+" is "+fmtF(cp.m,2)+" g/mol).",ans,ans*0.02,"First change mass to moles: "+gF(mass)+" g / "+fmtF(cp.m,2)+" g/mol = "+iF(n)+" mol. Then multiply by the Avogadro constant: "+iF(n)+" \u00D7 \\(6.02 \\times 10^{23}\\) = <b>"+ans.toExponential(2)+" "+cp.p+"</b>.",{cp:cp.f,n:nDrawn});
 });
 
 E("u1-52-mass-to-volume-stp",1,["5.2"],2,"gen",function(){
   var gases=[{f:"O\u2082",m:2*CHEM_AM.O},{f:"N\u2082",m:2*CHEM_AM.N},{f:"CO\u2082",m:CHEM_AM.C+2*CHEM_AM.O},{f:"H\u2082",m:2*CHEM_AM.H},{f:"NH\u2083",m:CHEM_AM.N+3*CHEM_AM.H},{f:"CH\u2084",m:CHEM_AM.C+4*CHEM_AM.H},{f:"SO\u2082",m:CHEM_AM.S+2*CHEM_AM.O},{f:"CO",m:CHEM_AM.C+CHEM_AM.O}];
-  var g=pick(gases),nDrawn=ri(10,500)/100,mass=sfR(nDrawn*g.m,4),n=mass/g.m,vol=sfR(sfR(n,4)*22.4,3);
-  return numq("What volume does "+gF(mass)+" g of "+g.f+" gas occupy at STP? Give your answer in L (the molar mass of "+g.f+" is "+fmtF(g.m,2)+" g/mol, and the molar volume at STP is 22.4 L/mol).",vol,Math.max(0.05,vol*0.02),"First change mass to moles: "+gF(mass)+" g / "+fmtF(g.m,2)+" g/mol = "+iF(n)+" mol. Then multiply by the molar volume at STP: "+iF(n)+" \u00D7 22.4 L/mol = <b>"+F3(vol)+" L</b>.",{cp:g.f,n:nDrawn});
+  var g=pick(gases),nDrawn=ri(10,500)/100,mass=sfR(nDrawn*g.m,4),n=mass/g.m,vol=sfR(sfR(n,4)*22.7,3);
+  return numq("What volume does "+gF(mass)+" g of "+g.f+" gas occupy at STP? Give your answer in L (the molar mass of "+g.f+" is "+fmtF(g.m,2)+" g/mol, and the molar volume at STP is 22.7 L/mol).",vol,Math.max(0.05,vol*0.02),"First change mass to moles: "+gF(mass)+" g / "+fmtF(g.m,2)+" g/mol = "+iF(n)+" mol. Then multiply by the molar volume at STP: "+iF(n)+" \u00D7 22.7 L/mol = <b>"+F3(vol)+" L</b>.",{cp:g.f,n:nDrawn});
 });
 
 E("u1-53-dynamic-equilibrium",1,["5.3"],1,"gen",function(){
@@ -965,8 +965,8 @@ E("u1-57-particles-ratio",1,["5.7"],3,"gen",function(){
   ];
   var r=pick(rxns),i=ri(0,r.sp.length-1),j=ri(0,r.sp.length-1);
   while(j===i){j=ri(0,r.sp.length-1);}
-  var G=r.sp[i],T=r.sp[j],k=ri(150,900)/100,molesGiven=sfR(k/6.022,4),ans=sfR(molesGiven*T.c/G.c,3);
-  return numq("For the reaction "+r.eq+", a sample contains \\("+fmtF(k,2)+" \\times 10^{23}\\) particles of "+G.n+". How many moles of "+T.n+" will react with or form from this sample? Give your answer in mol.",ans,Math.max(0.01,ans*0.02),"First change particles to moles: \\("+fmtF(k,2)+" \\times 10^{23}\\) / \\(6.022 \\times 10^{23}\\) = "+iF(molesGiven)+" mol of "+G.n+". Then apply the mole ratio from the equation: "+iF(molesGiven)+" \u00D7 ("+T.c+" / "+G.c+") = <b>"+F3(ans)+" mol</b> of "+T.n+".",{eq:r.eq,g:G.n,t:T.n,k:k});
+  var G=r.sp[i],T=r.sp[j],k=ri(150,900)/100,molesGiven=sfR(k/6.02,4),ans=sfR(molesGiven*T.c/G.c,3);
+  return numq("For the reaction "+r.eq+", a sample contains \\("+fmtF(k,2)+" \\times 10^{23}\\) particles of "+G.n+". How many moles of "+T.n+" will react with or form from this sample? Give your answer in mol.",ans,Math.max(0.01,ans*0.02),"First change particles to moles: \\("+fmtF(k,2)+" \\times 10^{23}\\) / \\(6.02 \\times 10^{23}\\) = "+iF(molesGiven)+" mol of "+G.n+". Then apply the mole ratio from the equation: "+iF(molesGiven)+" \u00D7 ("+T.c+" / "+G.c+") = <b>"+F3(ans)+" mol</b> of "+T.n+".",{eq:r.eq,g:G.n,t:T.n,k:k});
 });
 
 E("u1-58-mass-to-mass",1,["5.8"],2,"gen",function(){
@@ -993,8 +993,8 @@ E("u1-58-mass-to-gas-volume",1,["5.8"],2,"gen",function(){
     {eq:"Na\u2082CO\u2083 + 2HCl \u2192 2NaCl + H\u2082O + CO\u2082",A:{f:"Na\u2082CO\u2083",m:2*CHEM_AM.Na+CHEM_AM.C+3*CHEM_AM.O,c:1},G:{f:"CO\u2082",c:1}},
     {eq:"2NaHCO\u2083 \u2192 Na\u2082CO\u2083 + H\u2082O + CO\u2082",A:{f:"NaHCO\u2083",m:CHEM_AM.Na+CHEM_AM.H+CHEM_AM.C+3*CHEM_AM.O,c:2},G:{f:"CO\u2082",c:1}}
   ];
-  var r=pick(rxns),massA=ri(10,1500)/10,nA=sfR(massA/r.A.m,4),nG=sfR(nA*r.G.c/r.A.c,4),ans=sfR(nG*22.4,3);
-  return numq("For the reaction "+r.eq+", what volume of "+r.G.f+" gas at STP is produced from "+gF(massA)+" g of "+r.A.f+"? Give your answer in L.",ans,Math.max(0.05,ans*0.02),"Change the given mass to moles: "+gF(massA)+" g / "+fmtF(r.A.m,2)+" g/mol = "+iF(nA)+" mol of "+r.A.f+". Apply the mole ratio: "+iF(nA)+" \u00D7 ("+r.G.c+" / "+r.A.c+") = "+iF(nG)+" mol of "+r.G.f+". Change moles of gas to volume at STP: "+iF(nG)+" \u00D7 22.4 L/mol = <b>"+F3(ans)+" L</b>.",{eq:r.eq,massA:massA});
+  var r=pick(rxns),massA=ri(10,1500)/10,nA=sfR(massA/r.A.m,4),nG=sfR(nA*r.G.c/r.A.c,4),ans=sfR(nG*22.7,3);
+  return numq("For the reaction "+r.eq+", what volume of "+r.G.f+" gas at STP is produced from "+gF(massA)+" g of "+r.A.f+"? Give your answer in L.",ans,Math.max(0.05,ans*0.02),"Change the given mass to moles: "+gF(massA)+" g / "+fmtF(r.A.m,2)+" g/mol = "+iF(nA)+" mol of "+r.A.f+". Apply the mole ratio: "+iF(nA)+" \u00D7 ("+r.G.c+" / "+r.A.c+") = "+iF(nG)+" mol of "+r.G.f+". Change moles of gas to volume at STP: "+iF(nG)+" \u00D7 22.7 L/mol = <b>"+F3(ans)+" L</b>.",{eq:r.eq,massA:massA});
 });
 
 E("u1-58-concentration",1,["5.8"],2,"gen",function(){
@@ -1150,8 +1150,8 @@ E("u1-510-antacid-calculation",1,["5.10"],2,"gen",function(){
 
 E("u1-510-airbag-and-fertilizer",1,["5.10"],2,"gen",function(){
   if(pick(["airbag","fertilizer"])==="airbag"){
-    var mNaN3=CHEM_AM.Na+3*CHEM_AM.N,mass=ri(20,120),n=sfR(mass/mNaN3,4),nN2=sfR(n*3/2,4),ans=sfR(nN2*22.4,3);
-    return numq("A vehicle airbag contains "+mass+" g of sodium azide, NaN\u2083, which decomposes by the reaction 2NaN\u2083 \u2192 2Na + 3N\u2082. What volume of nitrogen gas at STP does the airbag produce? Give your answer in L (the molar mass of NaN\u2083 is "+fmtF(mNaN3,2)+" g/mol).",ans,Math.max(0.05,ans*0.02),"Change the mass to moles: "+mass+" g / "+fmtF(mNaN3,2)+" g/mol = "+iF(n)+" mol of NaN\u2083. Apply the mole ratio: "+iF(n)+" \u00D7 (3 / 2) = "+iF(nN2)+" mol of N\u2082. Change to volume at STP: "+iF(nN2)+" \u00D7 22.4 L/mol = <b>"+F3(ans)+" L</b>.",{mass:mass});
+    var mNaN3=CHEM_AM.Na+3*CHEM_AM.N,mass=ri(20,120),n=sfR(mass/mNaN3,4),nN2=sfR(n*3/2,4),ans=sfR(nN2*22.7,3);
+    return numq("A vehicle airbag contains "+mass+" g of sodium azide, NaN\u2083, which decomposes by the reaction 2NaN\u2083 \u2192 2Na + 3N\u2082. What volume of nitrogen gas at STP does the airbag produce? Give your answer in L (the molar mass of NaN\u2083 is "+fmtF(mNaN3,2)+" g/mol).",ans,Math.max(0.05,ans*0.02),"Change the mass to moles: "+mass+" g / "+fmtF(mNaN3,2)+" g/mol = "+iF(n)+" mol of NaN\u2083. Apply the mole ratio: "+iF(n)+" \u00D7 (3 / 2) = "+iF(nN2)+" mol of N\u2082. Change to volume at STP: "+iF(nN2)+" \u00D7 22.7 L/mol = <b>"+F3(ans)+" L</b>.",{mass:mass});
   }
   var ferts=[{f:"urea, CO(NH\u2082)\u2082",m:CHEM_AM.C+CHEM_AM.O+2*(CHEM_AM.N+2*CHEM_AM.H),nMass:2*CHEM_AM.N},{f:"ammonium nitrate, NH\u2084NO\u2083",m:2*CHEM_AM.N+4*CHEM_AM.H+3*CHEM_AM.O,nMass:2*CHEM_AM.N},{f:"ammonium sulfate, (NH\u2084)\u2082SO\u2084",m:2*CHEM_AM.N+8*CHEM_AM.H+CHEM_AM.S+4*CHEM_AM.O,nMass:2*CHEM_AM.N}];
   var f=pick(ferts),bag=pick([10,20,25,40]),frac=sfR(f.nMass/f.m,4),ans=sfR(bag*frac,3);
@@ -1715,14 +1715,14 @@ E("u1-510-peroxide-oxygen", 1, ["5.10"], 2, "gen", function() {
   var volL = volMl / 1000;
   var molH2O2 = conc * volL;
   var molO2 = molH2O2 / 2;
-  var rawVolO2 = molO2 * 22.4;
+  var rawVolO2 = molO2 * 22.7;
   var ans = sfR(rawVolO2, 3);
   var tol = Math.max(0.05, ans * 0.02);
   return numq(
     intro + " " + gF(volMl) + " mL of a " + F3(conc) + " mol/L aqueous hydrogen peroxide solution, which decomposes completely according to: 2H₂O₂ → 2H₂O + O₂. What volume of oxygen gas (O₂), in litres, is produced at STP?",
     ans,
     tol,
-    "Converting " + gF(volMl) + " mL to " + iF(volL) + " L gives n(H₂O₂) = " + F3(conc) + " mol/L × " + iF(volL) + " L = " + iF(molH2O2) + " mol. By the 2 : 1 mole ratio, n(O₂) = " + iF(molH2O2) + " mol / 2 = " + iF(molO2) + " mol, and multiplying by 22.4 L/mol at STP gives " + iF(rawVolO2) + " L, which rounds to <b>" + F3(ans) + " L</b>.",
+    "Converting " + gF(volMl) + " mL to " + iF(volL) + " L gives n(H₂O₂) = " + F3(conc) + " mol/L × " + iF(volL) + " L = " + iF(molH2O2) + " mol. By the 2 : 1 mole ratio, n(O₂) = " + iF(molH2O2) + " mol / 2 = " + iF(molO2) + " mol, and multiplying by 22.7 L/mol at STP gives " + iF(rawVolO2) + " L, which rounds to <b>" + F3(ans) + " L</b>.",
     { volMl: volMl, conc: conc, ans: ans }
   );
 });
@@ -1791,17 +1791,17 @@ E("u1-52-mc-moles-particles",1,["5.2"],2,"gen",function(){
   o.c=t2sf(ans);o.w=o.w.map(function(s){return s.trim();});
   return mcq("How many "+k[1]+" are in "+t2sf(n)+" mol of "+k[0]+"?",
     o.c,o.w,
-    "Multiply the amount in moles by the Avogadro constant, 6.022 \u00D7 10\u00B2\u00B3 particles per mole: "+t2sf(n)+" mol \u00D7 6.022 \u00D7 10\u00B2\u00B3 = <b>"+o.c+"</b> "+k[1]+".",{kind:k[0],n:n});
+    "Multiply the amount in moles by the Avogadro constant, 6.02 \u00D7 10\u00B2\u00B3 particles per mole: "+t2sf(n)+" mol \u00D7 6.02 \u00D7 10\u00B2\u00B3 = <b>"+o.c+"</b> "+k[1]+".",{kind:k[0],n:n});
 });
 
 E("u1-52-mc-mass-volume-stp",1,["5.2"],3,"gen",function(){
   var gases=[["hydrogen","H\u2082",2.02],["oxygen","O\u2082",32.00],["nitrogen","N\u2082",28.02],["carbon dioxide","CO\u2082",44.01],["methane","CH\u2084",16.05],["ammonia","NH\u2083",17.04]];
   var g=pick(gases),mass=pick([1.00,2.00,4.00,5.00,8.00,10.0,16.0,20.0,32.0,44.0]);
-  var vol=mass/g[2]*22.4;
-  var o=t2opts(vol,[mass*22.4,g[2]/mass*22.4,vol/10],"L");
-  return mcq("What volume does "+t2sf(mass)+" g of "+g[0]+" gas, "+g[1]+", occupy at STP? The molar mass of "+g[1]+" is "+g[2].toFixed(2)+" g/mol, and one mole of any gas occupies 22.4 L at STP.",
+  var vol=mass/g[2]*22.7;
+  var o=t2opts(vol,[mass*22.7,g[2]/mass*22.7,vol/10],"L");
+  return mcq("What volume does "+t2sf(mass)+" g of "+g[0]+" gas, "+g[1]+", occupy at STP? The molar mass of "+g[1]+" is "+g[2].toFixed(2)+" g/mol, and one mole of any gas occupies 22.7 L at STP.",
     o.c,o.w,
-    "First convert mass to moles: n = "+t2sf(mass)+" g / "+g[2].toFixed(2)+" g/mol = "+t2sf(mass/g[2])+" mol. Then multiply by the molar volume at STP: "+t2sf(mass/g[2])+" mol \u00D7 22.4 L/mol = <b>"+o.c+"</b>.",{gas:g[0],mass:mass});
+    "First convert mass to moles: n = "+t2sf(mass)+" g / "+g[2].toFixed(2)+" g/mol = "+t2sf(mass/g[2])+" mol. Then multiply by the molar volume at STP: "+t2sf(mass/g[2])+" mol \u00D7 22.7 L/mol = <b>"+o.c+"</b>.",{gas:g[0],mass:mass});
 });
 
 var T2_RXN=[
