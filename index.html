@@ -6290,6 +6290,19 @@ function stripQ(q){
         else if(!/s$/.test(last)){var v2=w.slice();v2[v2.length-1]=last+"s";addV(v2.join(" "));}
       }
     });
+    /* Count variants, November 24, 2026 (Jason's ruling on Math 2201
+       u3-vertex-intercepts): when the stem asks "how many" and the key is a
+       counting phrase ("Two x-intercepts", "One x-intercept",
+       "No x-intercepts"), the bare count is the same answer in any of its
+       forms: the digit, the number word, and for a zero count also "none".
+       Mechanical variants only, like the passes above; the "of" guard keeps
+       keys like "One of the factors" out. */
+    var cm=dt.toLowerCase().match(/^(no|zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)\s+(\S+)/);
+    if(cm&&cm[2]!=="of"&&/how many/i.test(q.prompt||"")){
+      var cwords=["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve"];
+      var cn=cm[1]==="no"?0:(/^\d+$/.test(cm[1])?parseInt(cm[1],10):cwords.indexOf(cm[1]));
+      if(cn>=0){addV(String(cn));if(cn<cwords.length)addV(cwords[cn]);if(cn===0)addV("none");}
+    }
     out.type="text";out.answers=Object.keys(vars);
     if(!out.answers.length){out.answers=[dt.toLowerCase()];out.selfCheck=true;}
     return out;
