@@ -4836,7 +4836,7 @@ E("u3-78-dissolving",3,["7.8"],2,"gen",function(){
 });
 
 E("u3-78-molar-from-data",3,["7.8"],2,"gen",function(){
-  var subs=[{n:"magnesium",M:24.31,dH:-602,verb:"burns in oxygen"},{n:"calcium",M:40.08,dH:-635,verb:"burns in oxygen"},{n:"sulfur",M:32.07,dH:-297,verb:"burns in oxygen"},{n:"zinc",M:65.39,dH:-350,verb:"reacts completely with excess acid"}];
+  var subs=[{n:"magnesium",M:24.31,dH:-602,verb:"burns in oxygen"},{n:"calcium",M:40.08,dH:-635,verb:"burns in oxygen"},{n:"sulfur",M:32.07,dH:-297,verb:"burns in oxygen"},{n:"zinc",M:65.38,dH:-350,verb:"reacts completely with excess acid"}];
   var s=pick(subs);
   var mass=pick([1.00,1.50,2.00,2.50,3.00,5.00]);
   var n=sfR(mass/s.M,4);
@@ -6584,11 +6584,11 @@ var PLATING=[
   {ion:"Ag\u207A",metal:"silver",z:1,M:107.87},
   {ion:"Cu\u00B2\u207A",metal:"copper",z:2,M:63.55},
   {ion:"Al\u00B3\u207A",metal:"aluminium",z:3,M:26.98},
-  {ion:"Zn\u00B2\u207A",metal:"zinc",z:2,M:65.39},
-  {ion:"Ni\u00B2\u207A",metal:"nickel",z:2,M:58.69},
+  {ion:"Zn\u00B2\u207A",metal:"zinc",z:2,M:65.38},
+  {ion:"Ni\u00B2\u207A",metal:"nickel",z:2,M:58.71},
   {ion:"Cr\u00B3\u207A",metal:"chromium",z:3,M:52.00},
-  {ion:"Pb\u00B2\u207A",metal:"lead",z:2,M:207.20},
-  {ion:"Sn\u00B2\u207A",metal:"tin",z:2,M:118.71}
+  {ion:"Pb\u00B2\u207A",metal:"lead",z:2,M:207.19},
+  {ion:"Sn\u00B2\u207A",metal:"tin",z:2,M:118.69}
 ];
 
 E("u4-88-faraday-mass",4,["8.8"],3,"gen",function(){
@@ -6803,7 +6803,7 @@ E("u4-88-mc-electrolysis-products",4,["8.8"],2,"gen",function(){
 });
 
 E("u4-88-mc-plating-mass",4,["8.8"],3,"gen",function(){
-  var metals=[["silver","Ag\u207A",1,107.87],["copper","Cu\u00B2\u207A",2,63.55],["nickel","Ni\u00B2\u207A",2,58.69],["zinc","Zn\u00B2\u207A",2,65.39],["aluminum","Al\u00B3\u207A",3,26.98],["chromium","Cr\u00B3\u207A",3,52.00]];
+  var metals=[["silver","Ag\u207A",1,107.87],["copper","Cu\u00B2\u207A",2,63.55],["nickel","Ni\u00B2\u207A",2,58.71],["zinc","Zn\u00B2\u207A",2,65.38],["aluminum","Al\u00B3\u207A",3,26.98],["chromium","Cr\u00B3\u207A",3,52.00]];
   var m=pick(metals),cur=pick([1.50,2.00,2.50,3.00,4.00,5.00,6.00,8.00]);
   var mins=pick([10.0,15.0,20.0,30.0,40.0,45.0,60.0]);
   var mass=cur*(mins*60)/96500*m[3]/m[2];

@@ -34,6 +34,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Changed
 
+- Chemistry 3202's constants now match the same Chemistry Data Sheet: the atomic masses for zinc, lead, nickel and tin in its questions, and the Avogadro constant and masses in its Chemistry 2202 review panel, have been aligned to the sheet's values.
 - Chemistry 2202's reference panels and constants now match the Chemistry Data Sheet students are given. The Unit 1 panel's solubility generalizations have been replaced with the data sheet's Solubility Rules, the same table the Unit 2 panel carries; the molar volume at STP is now 22.7 L/mol (at 100 kPa) in the panel and in the five questions that use it, where it was 22.4; the Avogadro constant is now 6.02 x 10^23; and the atomic masses for zinc, lead, nickel and tin match the sheet's periodic table.
 - Chemistry 2202's solubility questions for outcome 6.11 have been rewritten. They no longer ask for molar solubility calculations; instead, students class ionic compounds as high or low solubility using the Solubility Rules table on the Chemistry Data Sheet, the way the outcome is taught. The Unit 2 reference panel now carries that table's rules as well, so the given students practise with matches the sheet they are handed in class.
 - Chemistry 2202 no longer uses the term "bond order", which is not part of the course. The question that used it now asks how many electrons each atom contributes to a covalent bond.
