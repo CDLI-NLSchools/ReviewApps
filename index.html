@@ -5043,8 +5043,33 @@ function tShareURL(teacher){
   if(teacher)p.set("teacher","1");
   return location.origin+location.pathname+"?"+p.toString();
 }
+var _linkCodes={};
+function tLinkCodeFor(url){
+  var q=url.split("?")[1]||"";
+  if(!q||q.indexOf("set=")<0)return "";
+  if(_linkCodes[q])return _linkCodes[q];
+  try{fetchSheetCodes();fetchSnapshotCodes();}catch(e){}
+  var code=tCodeRandom(),guard=0;
+  while(tCodeTaken(code)&&guard<12){code=tCodeRandom();guard++;}
+  if(tCodeTaken(code))return "";
+  tMintPost(code,q);
+  _linkCodes[q]=code;
+  countEvent("set_code_mint",[analyticsCourse()]);
+  return code;
+}
 function tCopyLink(teacher,statusEl){
   var url=tShareURL(teacher);
+  if(url.length>7000){
+    var code=tLinkCodeFor(url);
+    if(code){
+      var shown=code.slice(0,3)+" "+code.slice(3);
+      var text=(teacher?"Review Apps teacher set code: ":"Review Apps set code: ")+shown+"\nOpen "+location.origin+location.pathname+" and type the code on the home page."+(teacher?" It opens this exact set with the editing controls on. Keep it for yourself.":" It opens the exact set your teacher shared.");
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);}
+      if(!teacher)countEvent("student_link_copy",[analyticsCourse(),"s"+(tShufPref()==="shuf"?"1":"0")+"-h"+(tHintPref()==="off"?"1":"0")+"-e"+(tExPref()==="off"?"1":"0")+"-k"+(tRetryPref()==="keep"?"1":"0")]);
+      if(statusEl)statusEl.textContent=teacher?("This set is too large for a direct link, so it was saved under a teacher set code instead: "+shown+". The code and its instructions are copied. Type the code on the Review Apps home page to reopen this exact set with the editing controls on."):("This set is too large for a direct link, so it was saved under a set code instead: "+shown+". The code and its instructions are copied. Students type the code on the Review Apps home page to open this exact set.");
+      return;
+    }
+  }
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url);}
   if(!teacher)countEvent("student_link_copy",[analyticsCourse(),"s"+(tShufPref()==="shuf"?"1":"0")+"-h"+(tHintPref()==="off"?"1":"0")+"-e"+(tExPref()==="off"?"1":"0")+"-k"+(tRetryPref()==="keep"?"1":"0")]);
   if(statusEl)statusEl.textContent=teacher?"Teacher link copied: it opens this exact set with the editing controls on. Keep it for yourself.":"Link copied for students: it opens this exact set, with no editing controls.";
