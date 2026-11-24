@@ -3969,7 +3969,7 @@ function settings(){
 }
 function tags(q){
   var e=q._entry;
-  return '<span class="tag">'+L9("Unit ","Unité ")+e.unit+'</span> '+(TEACHER?'<span class="tag ind">'+e.indicators.join(", ")+'</span> ':"")+'<span class="tag lvl">'+L9("Level ","Niveau ")+e.level+'</span>'+(e.enrich?' <span class="tag enr">Enrichment</span>':"");
+  return '<span class="tag">'+L9("Unit ","Unité ")+e.unit+'</span> '+(TEACHER?'<span class="tag ind">'+e.indicators.join(", ")+'</span> ':"")+'<span class="tag lvl">'+L9("Level ","Niveau ")+e.level+'</span>'+(e.enrich?' <span class="tag enr">Enrichment</span>':"")+((typeof isPK==="function"&&isPK(e))?' <span class="tag pk">'+L9("Prior knowledge","Connaissances préalables")+'</span>':"");
 }
 var current=null,checkedCount=0,correctCount=0,checkMode="each",endGraded=false;
 var setResults={};
