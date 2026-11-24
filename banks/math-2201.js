@@ -13330,7 +13330,7 @@ E("u3-squares-area",3,["4.3"],2,"gen",function(){
   var ctx=pick([["two square garden plots","plot"],["two square patios","patio"],["two square quilts","quilt"]]);
   var q=numq("A gardener has "+ctx[0]+". The side of the larger "+ctx[1]+" is "+m+" m longer than the side of the smaller one, and their areas add to \\("+T+"\\text{ m}^2\\). What is the side length of the smaller "+ctx[1]+", in metres?",
     s,0.011,
-    "Let the smaller side be \\(s\\); the larger is \\(s + "+m+"\\). Then \\(s^2 + (s + "+m+")^2 = "+T+"\\). A shortcut: \\((2s + "+m+")^2 = 2 \\times "+T+" - "+(m*m)+" = "+(2*T-m*m)+"\\), so \\(2s + "+m+" = "+(2*s+m)+"\\) and \\(s = "+s+"\\) m. (Check: \\("+s+"^2 + "+(s+m)+"^2 = "+(s*s)+" + "+((s+m)*(s+m))+" = "+T+"\\).)",
+    "Let the smaller side be \\(s\\); the larger is \\(s + "+m+"\\). Expanding, then dividing by 2 and collecting: \\[\\begin{aligned} s^2 + (s + "+m+")^2 &= "+T+" \\\\ 2s^2 + "+(2*m)+"s + "+(m*m)+" &= "+T+" \\\\ s^2 + "+m+"s - "+(s*(s+m))+" &= 0 \\\\ (s - "+s+")(s + "+(s+m)+") &= 0 \\end{aligned}\\] The roots are \\(s = "+s+"\\) and \\(s = -"+(s+m)+"\\); a side length cannot be negative, so the smaller side is <b>\\("+s+"\\text{ m}\\)</b>. (Check: \\("+s+"^2 + "+(s+m)+"^2 = "+(s*s)+" + "+((s+m)*(s+m))+" = "+T+"\\).)",
     {s:s,m:m,T:T});
   q.figure=twoSquaresSVG(m);
   return q;
