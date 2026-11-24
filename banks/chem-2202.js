@@ -2053,10 +2053,10 @@ E("u2-01", 2, ["6.1"], 1, "gen", function () {
   var e = pick(ex), q = pick([0, 1, 2]), ans, prompt;
   if (q === 0) { ans = e.p; prompt = "In the " + e.b + " bond in " + e.m + ", how many pairs of electrons are shared between the two atoms?"; }
   else if (q === 1) { ans = 2 * e.p; prompt = "In the " + e.b + " bond in " + e.m + ", how many electrons are shared between the two atoms in total?"; }
-  else { ans = e.p; prompt = "The " + e.b + " bond in " + e.m + " is a " + e.t + " bond. What is its bond order?"; }
+  else { ans = e.p; prompt = "In the " + e.b + " bond in " + e.m + ", how many electrons does each of the two atoms contribute to the bond?"; }
   var ds = [], offs = [1, -1, 2, 3], oi = 0;
   while (ds.length < 3 && oi < offs.length) { var v = ans + offs[oi++]; if (v >= 0 && v !== ans && ds.indexOf(String(v)) < 0) ds.push(String(v)); }
-  return mcq(prompt, String(ans), ds, "A single bond shares 1 pair of electrons, a double bond shares 2 pairs and a triple bond shares 3 pairs. Each shared pair contains 2 electrons, and the bond order equals the number of shared pairs. The bond shown is a " + e.t + " bond, so the answer is " + ans + ".", { mol: e.m, bond: e.t, ask: q });
+  return mcq(prompt, String(ans), ds, "A single bond shares 1 pair of electrons, a double bond shares 2 pairs and a triple bond shares 3 pairs. Each shared pair contains 2 electrons, one contributed by each of the two atoms. The bond shown is a " + e.t + " bond, so the answer is " + ans + ".", { mol: e.m, bond: e.t, ask: q });
 });
 
 E("u2-02", 2, ["6.1"], 2, "gen", function () {
