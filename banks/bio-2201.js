@@ -874,11 +874,13 @@ E("bio-u1-55-q05",1,["5.5"],2,"var",varset([
 ]),["If fewer children are being born, which part of the pyramid (the base, representing youngest age groups) would shrink?"]);
 E("bio-u1-55-q06",1,["5.5"],2,"var",varset([
   function(){
-    return mcq("A government official examines this population pyramid when planning future services. Which decision would be most appropriate based on the data?",
+    var q=mcq("A government official examines this population pyramid when planning future services. Which decision would be most appropriate based on the data?",
       "Increase retirement services because a large portion of the population is approaching older age groups.",
       ["Build more elementary schools because the largest population group is under age 10.","Focus only on immigration because there are no young adults entering the workforce.","Reduce healthcare funding because the elderly population is very small."],
       "The correct answer is increase retirement services because a large portion of the population is approaching older age groups . Reading the age distribution in the pyramid allows planners to anticipate which services will be needed as that group ages, rather than assuming the largest group is young children or that there are no young adults at all.",
       {});
+    q.figure='<img src="banks/bio-2201/assets/u1-55-q06.png" alt="Population pyramid showing the percentage of the population in each five-year age group, males on the left and females on the right. The base is narrow, about 4 percent in each of the youngest age groups. The bars widen with age to a largest share of about 8 percent at ages 50 to 59, then narrow again toward the top, and about one fifth of the population is aged 65 or older." style="max-width:100%;height:auto">';
+    return q;
   }
 ]),["Look at which age groups appear to be the largest in the pyramid, what services would that group need as they age?"]);
 E("bio-u1-55-q07",1,["5.5"],2,"var",varset([
