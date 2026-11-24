@@ -1243,7 +1243,7 @@ E("u1-sa-basic",1,["5.1","5.2"],2,"gen",function(){
       "A closed rectangular storage box has length "+a+" cm, width "+b+" cm and height "+c+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.":
       "The net of a closed rectangular prism is six rectangles in three congruent pairs, with dimensions "+a+" cm by "+b+" cm, "+a+" cm by "+c+" cm, and "+b+" cm by "+c+" cm. Sketch the net in words and determine the total surface area of the prism. Give your answer to the nearest tenth, in square centimetres.";
     var q=numq(prompt4,ans4,0.11,
-      "Add the areas of the three pairs of congruent faces: \\[ \\begin{aligned} SA &= 2(lw + lh + wh) \\\\ &= 2("+a+"\\times"+b+" + "+a+"\\times"+c+" + "+b+"\\times"+c+") \\\\ &= "+ans4+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans4)+" square centimetres</b>.",{mode:mode,a:a,b:b,c:c,shape:"prism"});
+      "Find the area of each face and add them together. Each face has a congruent partner, so the three different faces are counted twice: \\[ \\begin{aligned} SA &= 2("+a+"\\times"+b+") + 2("+a+"\\times"+c+") + 2("+b+"\\times"+c+") \\\\ &= "+(2*a*b)+" + "+(2*a*c)+" + "+(2*b*c)+" \\\\ &= "+ans4+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans4)+" square centimetres</b>.",{mode:mode,a:a,b:b,c:c,shape:"prism"});
     q.figure=u1figPrism(a,b,c,fmt(a)+" cm",fmt(b)+" cm",fmt(c)+" cm");
     return q;
   }
@@ -1267,7 +1267,7 @@ E("u1-sa-unknown",1,["5.3"],2,"gen",function(){
   if(mode===2){
     var w=ri(3,9),h2=ri(3,9),l=ri(4,14),SA2=2*(l*w+l*h2+w*h2);
     var q=numq("A closed rectangular box has width "+w+" cm, height "+h2+" cm and total surface area "+SA2+" square centimetres. Determine its length. Give your answer to the nearest tenth, in centimetres.",l,0.11,
-      "Substitute into the surface area formula and solve for the length: \\[ \\begin{aligned} 2(lw + lh + wh) &= "+SA2+" \\\\ l("+w+" + "+h2+") &= "+(SA2/2-w*h2)+" \\\\ l &= "+l+" \\end{aligned} \\] So the length is <b>"+l+" centimetres</b>.",{mode:mode,w:w,h:h2,shape:"prism"});
+      "Add the areas of the faces: two are l by w, two are l by h, and two are w by h. Collect the faces that involve l, halve both sides, and solve for l: \\[ \\begin{aligned} 2(l\\times w) + 2(l\\times h) + 2(w\\times h) &= "+SA2+" \\\\ l("+w+" + "+h2+") &= "+(SA2/2-w*h2)+" \\\\ l &= "+l+" \\end{aligned} \\] So the length is <b>"+l+" centimetres</b>.",{mode:mode,w:w,h:h2,shape:"prism"});
     q.figure=u1figPrism(l,w,h2,"?",fmt(w)+" cm",fmt(h2)+" cm");
     return q;
   }
@@ -1572,7 +1572,7 @@ E("u1-pk-sa-rect-prism", 1, ["5.2"], 2, "gen", function(){
   var l=ri(3,14), w=ri(3,12), h=ri(2,10);
   var sa=2*(l*w+l*h+w*h);
   var q=numq("Find the surface area of the right rectangular prism shown, in square centimetres.", sa, 0.01,
-    "Work face by face. The front and back are "+l+" by "+h+", the sides are "+w+" by "+h+", and the top and bottom are "+l+" by "+w+": \\[ \\begin{aligned} SA &= 2(lw+lh+wh) \\\\ &= 2("+fmt(l*w)+"+"+fmt(l*h)+"+"+fmt(w*h)+") \\\\ &= 2("+fmt(l*w+l*h+w*h)+") \\\\ &= "+sa+" \\end{aligned} \\] The surface area is <b>"+sa+" cm\\(^{2}\\)</b>.",
+    "Work face by face. The front and back are "+l+" by "+h+", the sides are "+w+" by "+h+", and the top and bottom are "+l+" by "+w+": \\[ \\begin{aligned} SA &= 2("+fmt(l*h)+") + 2("+fmt(w*h)+") + 2("+fmt(l*w)+") \\\\ &= "+(2*l*h)+" + "+(2*w*h)+" + "+(2*l*w)+" \\\\ &= "+sa+" \\end{aligned} \\] The surface area is <b>"+sa+" cm\\(^{2}\\)</b>.",
     {mode:"rect-sa", l:l, w:w, h:h});
   q.figure=u4boxSVG(l,w,h);
   return q;
@@ -8397,7 +8397,7 @@ E("u1-sa-choice",1,["5.2"],2,"gen",function(){
       ans=2*(l*w+l*h+w*h);
       ds=[fmt(l*w*h),fmt(2*(l*h+w*h)),fmt(l*w+l*h+w*h)];
       prompt="A closed rectangular box is "+l+" cm long, "+w+" cm wide and "+h+" cm high. What is the surface area of the box, in square centimetres?";
-      sol="The box has three pairs of matching faces: \\[ 2(lw + lh + wh) = 2("+l+" \\times "+w+" + "+l+" \\times "+h+" + "+w+" \\times "+h+") = 2("+ (l*w+l*h+w*h) +") = "+ans+" \\] The surface area is <b>"+ans+" square centimetres</b>.";
+      sol="The box has three pairs of matching faces. Find the area of one face from each pair, double it, and add the three results: \\[ 2("+l+" \\times "+w+") + 2("+l+" \\times "+h+") + 2("+w+" \\times "+h+") = "+(2*l*w)+" + "+(2*l*h)+" + "+(2*w*h)+" = "+ans+" \\] The surface area is <b>"+ans+" square centimetres</b>.";
     }else{
       var r=pick([2,3,4,5,6,7,8]),hh=ri(4,15);
       ans=u1r2(2*3.14*r*(r+hh));
