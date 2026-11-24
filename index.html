@@ -86,7 +86,11 @@
   .tctl{margin:10px 0 2px;padding:8px 10px;border:1px dashed var(--accent2);border-radius:8px;background:#f4f7fb;font-size:.88rem;}
   .tctl .tlab{font-weight:bold;margin-right:4px;}
   .tctl button{margin:2px 4px 2px 0;}
-  .tbar{margin-top:12px;padding:10px 12px;border:1px solid var(--accent2);border-radius:8px;background:#f4f7fb;}
+  .tbar{margin-top:12px;padding:10px 12px;border:1px solid var(--accent2);border-radius:8px;background:#f4f7fb;display:flex;flex-direction:column;gap:10px;}
+.trow{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;}
+.trow label.hint,.tpanel label.hint,.texports label.hint{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;margin:0;}
+.texports{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-top:0;}
+.adv label:has(input[type=checkbox]){flex-direction:row;align-items:center;max-width:540px;}
   .tbar button{margin:2px 4px 2px 0;}
   .tbar .texports{margin-top:6px;}
   .tpanel{margin-top:12px;padding:10px 12px;border:1px solid var(--accent2);border-radius:8px;background:#f4f7fb;}
@@ -280,7 +284,7 @@
    picker instead of the builder; the main script's boot
    sequence is guarded by window.__NOCOURSE. */
 (function(){try{
-  var id=new URLSearchParams(location.search).get("course");
+  var id=new URLSearchParams(window.__QPAYLOAD||location.search).get("course");
   var c=(window.COURSES&&id)?window.COURSES[id]:null;
   if(c){window.__COURSE=c;document.title=c.title;if(c.language)document.documentElement.lang=c.language;}
   else{window.__COURSE=null;window.__NOCOURSE=true;document.title="Review Apps";}
@@ -3811,7 +3815,7 @@ var REPORT_FORM={url:"https://docs.google.com/forms/d/e/1FAIpQLSetn4AeZSWxcO_3za
    endpoint changes nothing in the app, and an empty endpoint
    disables counting entirely. */
 var ANALYTICS_ENDPOINT="https://cdli.goatcounter.com/count";
-function analyticsCourse(){try{var id=new URLSearchParams(location.search).get("course");return (id&&window.COURSES&&window.COURSES[id])?id:null;}catch(e){return null;}}
+function analyticsCourse(){try{var id=new URLSearchParams(window.__QPAYLOAD||location.search).get("course");return (id&&window.COURSES&&window.COURSES[id])?id:null;}catch(e){return null;}}
 function analyticsSend(path,isEvent){
   try{
     if(!ANALYTICS_ENDPOINT)return;
@@ -4204,6 +4208,43 @@ function retryMissed(){
    panel. A move only reorders the item array: state stays keyed to
    the question's _tuid, totals are untouched, and set links store
    tokens in set order, so a reordered set reopens in its new order. */
+/* ---- set code payload override (Nov 24, 2026) ---- */
+window.__QPAYLOAD=null;window.__QCODE=null;
+(function(){
+  try{
+    var sp=new URLSearchParams(window.__QPAYLOAD||location.search),co=sp.get("codeopen");
+    if(!co)return;
+    window.__QCODE=co;
+    var raw=null;try{raw=sessionStorage.getItem("raCodePayload");}catch(e){}
+    if(raw){var o=JSON.parse(raw);if(o&&o.code===co&&o.q)window.__QPAYLOAD=tCodeOpenVia(o.q,sp);}
+  }catch(e){}
+})();
+function tCodeOpenVia(q,sp){
+  try{var via=sp.get("via");if(via){var p=new URLSearchParams(q);if(!p.get("via")){p.set("via",via);return p.toString();}}}catch(e){}
+  return q;
+}
+function tCodeOpenBoot(){
+  var touched=applyURL();
+  if(new URLSearchParams(window.__QPAYLOAD||location.search).get("set")&&tRebuildFromURL()){tCodeTeacherBar();return;}
+  if(touched&&new URLSearchParams(window.__QPAYLOAD||location.search).get("nostart")!=="1"&&(new URLSearchParams(window.__QPAYLOAD||location.search).get("unit")||new URLSearchParams(window.__QPAYLOAD||location.search).get("preset")||new URLSearchParams(window.__QPAYLOAD||location.search).get("indicator"))){
+    var m=new URLSearchParams(window.__QPAYLOAD||location.search).get("mode");
+    if(m==="sheet"||m==="worksheet")startSheet();else if(m==="exam")startExam();else startOnline();
+  }
+  tCodeTeacherBar();
+}
+function tCodeOpenFetch(){
+  var code=window.__QCODE;if(!code||window.__QPAYLOAD)return;
+  var sp=new URLSearchParams(window.__QPAYLOAD||location.search);
+  function hit(q){if(!q)return;window.__QPAYLOAD=tCodeOpenVia(q,sp);window.__QCODE=null;tCodeOpenBoot();}
+  try{var reg=window.PACK_CODES;if(reg&&reg[code]&&reg[code].q){hit(reg[code].q);return;}}catch(e){}
+  var snapP=(typeof fetchSnapshotCodes==="function")?fetchSnapshotCodes():Promise.resolve({ok:false,codes:{}});
+  snapP.then(function(snap){
+    var sq=snap&&snap.codes?snap.codes[code]:null;if(sq){hit(sq);return;}
+    var fp=(typeof fetchSheetCodes==="function")?fetchSheetCodes():Promise.resolve({ok:false,codes:{}});
+    fp.then(function(res){var tq=res&&res.codes?res.codes[code]:null;if(tq)hit(tq);});
+  });
+}
+if(window.__QCODE&&!window.__QPAYLOAD){if(document.readyState==="complete")tCodeOpenFetch();else window.addEventListener("load",tCodeOpenFetch);}
 var TEACHER=false;
 function isPK(e){return !!e.pkFlag||e.indicators.some(function(c){return c.indexOf("PK")===0;});} /* Prior knowledge: an entry counts when it carries a PK-coded indicator (the Math 2201 guide codes PK.1 and PK.2) or the pkFlag property set in its bank module by the flagging pass of Nov 13, 2026: entries whose assessed target belongs to an earlier course, approved family by family under the assessed-target standard (see the prior knowledge audit). */
 var T=null; /* teacher context for the set on screen, or null */
@@ -4781,6 +4822,22 @@ function tPrintCodeBlock(view){
   var qr=tQrSvg(qrUrl);
   var href=url.replace(/&/g,"&amp;");
   var qrHref=qrUrl.replace(/&/g,"&amp;");
+  /* An over-long set address (a hand-picked or adopted set carries
+     its full question text) cannot be opened as a URL at all: the
+     server refuses it (URI Too Long, Nov 24, 2026). For those,
+     the QR code and the code's own link carry the short code
+     address instead (?course=..&codeopen=CODE, via=qr on the QR);
+     the shell resolves the code through the registry and opens
+     the set without the long address reaching the server. The
+     registry entry and the canonical address are unchanged, and
+     ordinary sets keep the direct QR and link above. */
+  if(url.length>7000){
+    var short=url.split("?")[0]+"?course="+encodeURIComponent(qp.get("course")||"")+"&codeopen="+code;
+    qrUrl=short+"&via=qr";
+    qr=tQrSvg(qrUrl);
+    href=short.replace(/&/g,"&amp;");
+    qrHref=qrUrl.replace(/&/g,"&amp;");
+  }
   var html='<div class="codebox"><div class="codelabel">'+L9("Set code","Code de l'ensemble")+'</div>'
     +'<div class="code"><a href="'+href+'">'+code.slice(0,3)+' '+code.slice(3)+'</a></div>'
     +(qr?('<a href="'+qrHref+'"><span class="qr">'+qr+'</span></a>'):"")
@@ -4811,7 +4868,7 @@ function tPrintCodeBlock(view){
    why the editable view sits one click deep rather than at the
    code's front door. */
 function tCodeVia(){
-  try{var v=new URLSearchParams(location.search).get("via");return v==="code"||v==="qr";}catch(e){return false;}
+  try{var v=new URLSearchParams(window.__QPAYLOAD||location.search).get("via");return v==="code"||v==="qr";}catch(e){return false;}
 }
 function tCodePracticeFromSet(view,salt,body,edited,s){
   /* The practice render of a sheet or exam set value: the same
@@ -4835,7 +4892,7 @@ function tCodePracticeFromSet(view,salt,body,edited,s){
   return true;
 }
 function tCodeTeacherURL(){
-  var p=new URLSearchParams(location.search);
+  var p=new URLSearchParams(window.__QPAYLOAD||location.search);
   var tmode=p.get("tmode")||"";
   var set=p.get("set");
   if(set){var vt=set.split(":")[0].charAt(0);tmode=(vt==="s")?"sheet":((vt==="e")?"exam":"");}
@@ -5522,7 +5579,7 @@ if(window.__COURSE){
   window.addEventListener("beforeunload",function(){resumeSaveNow();});
 }
 function tRebuildFromURL(){
-  var set=new URLSearchParams(location.search).get("set");if(!set)return false;
+  var set=new URLSearchParams(window.__QPAYLOAD||location.search).get("set");if(!set)return false;
   var parts=set.split(":");if(parts.length<3)return false;
   var vtag=parts[0],salt=parts[1],body=parts.slice(2).join(":");
   var view=vtag.charAt(0),edited=vtag.indexOf("*")>=0;
@@ -5607,7 +5664,7 @@ function tctlHtml(i){
 }
 function tBarHtml(){
   if(!TEACHER||!T||T.view!=="online")return "";
-  return '<div class="tbar"><b>Teacher tools:</b> <button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button>'+tShufSelHtml()+tScafSelHtml()+' <span class="hint" id="tStatus" role="status"></span><div class="texports"><button type="button" class="alt" data-kahoot="1">Download for Kahoot</button><button type="button" class="alt" data-blooket="1">Download for Blooket</button><button type="button" class="alt" data-brightspace="1">Download for Brightspace</button> <label class="hint">Variants per question <select id="bsVarSel"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label> <span class="hint" id="gameStatus" role="status"></span></div><div style="margin-top:10px;"><b>Advanced options:</b> <span class="hint">Levels follow the course Table of Specifications. The default mix matches the exams: about 20% Level 1 (quick, one or two steps), 60% Level 2 (application: carry out the prescribed method), 20% Level 3 (higher-end thinking: analyse, justify, evaluate, transfer).</span><div class="adv"><label>Level 1 %<input type="number" id="lv1" min="0" max="100" value="'+settings().mix[0]+'"></label><label>Level 2 %<input type="number" id="lv2" min="0" max="100" value="'+settings().mix[1]+'"></label><label>Level 3 %<input type="number" id="lv3" min="0" max="100" value="'+settings().mix[2]+'"></label><label><input type="checkbox" id="timerChk"'+(settings().timer?" checked":"")+'> Show the exam timer on practice exams (it counts up; '+(window.__COURSE&&window.__COURSE.timerNote?("the real exam allows "+window.__COURSE.timerNote):"it is a guide only and never locks you out")+')</label>'+(BANK.some(function(e){return !!e.enrich;})?'<label><input type="checkbox" id="enrChk"'+(settings().enr?" checked":"")+'> Include enrichment questions (beyond the named indicators; practice draws only, never in composed tests or exams)</label>':"")+'</div></div><div id="tPicker" hidden></div></div>';
+  return '<div class="tbar"><div class="trow"><b>Teacher tools:</b><button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button></div><div class="trow tlinkopts">'+tShufSelHtml()+tScafSelHtml()+'</div><span class="hint" id="tStatus" role="status"></span><div class="texports"><button type="button" class="alt" data-kahoot="1">Download for Kahoot</button><button type="button" class="alt" data-blooket="1">Download for Blooket</button><button type="button" class="alt" data-brightspace="1">Download for Brightspace</button> <label class="hint">Variants per question <select id="bsVarSel"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label> <span class="hint" id="gameStatus" role="status"></span></div><div style="margin-top:10px;"><b>Advanced options:</b> <span class="hint">Levels follow the course Table of Specifications. The default mix matches the exams: about 20% Level 1 (quick, one or two steps), 60% Level 2 (application: carry out the prescribed method), 20% Level 3 (higher-end thinking: analyse, justify, evaluate, transfer).</span><div class="adv"><label>Level 1 %<input type="number" id="lv1" min="0" max="100" value="'+settings().mix[0]+'"></label><label>Level 2 %<input type="number" id="lv2" min="0" max="100" value="'+settings().mix[1]+'"></label><label>Level 3 %<input type="number" id="lv3" min="0" max="100" value="'+settings().mix[2]+'"></label><label><input type="checkbox" id="timerChk"'+(settings().timer?" checked":"")+'> Show the exam timer on practice exams (it counts up; '+(window.__COURSE&&window.__COURSE.timerNote?("the real exam allows "+window.__COURSE.timerNote):"it is a guide only and never locks you out")+')</label>'+(BANK.some(function(e){return !!e.enrich;})?'<label><input type="checkbox" id="enrChk"'+(settings().enr?" checked":"")+'> Include enrichment questions (beyond the named indicators; practice draws only, never in composed tests or exams)</label>':"")+'</div></div><div id="tPicker" hidden></div></div>';
 }
 function tOnlineStatus(m){var st=$("tStatus");if(st)st.textContent=m;}
 function tWireOnline(){
@@ -8568,7 +8625,7 @@ function settingsToURL(){
   return location.pathname+"?"+p.toString();
 }
 function applyURL(){
-  var p=new URLSearchParams(location.search);var touched=false;
+  var p=new URLSearchParams(window.__QPAYLOAD||location.search);var touched=false;
   if(p.get("preset")==="mid"){state.units=(window.__COURSE&&window.__COURSE.presets.mid)?window.__COURSE.presets.mid.units.slice():[];touched=true;state.finalCap=false;state.midCap=!!(window.__COURSE&&window.__COURSE.presets.mid&&window.__COURSE.presets.mid.cap);if(window.__COURSE&&window.__COURSE.presets.mid&&window.__COURSE.presets.mid.mix)hidCtl.mix=window.__COURSE.presets.mid.mix.slice();}
   else if(p.get("preset")==="final"){state.units=(window.__COURSE&&window.__COURSE.presets.final)?window.__COURSE.presets.final.units.slice():[];touched=true;state.midCap=false;state.finalCap=!!(window.__COURSE&&window.__COURSE.presets.final&&window.__COURSE.presets.final.cap);if(window.__COURSE&&window.__COURSE.presets.final&&window.__COURSE.presets.final.mix)hidCtl.mix=window.__COURSE.presets.final.mix.slice();}
   else if(p.get("unit")){state.units=p.get("unit").split(",").map(Number).filter(function(u){return UNITS[u];});touched=true;}
@@ -8696,7 +8753,7 @@ if(window.__COURSE&&window.__COURSE.language==="fr"){
     var __si=document.getElementById("seedIn");if(__si)__si.setAttribute("placeholder","p. ex. Période 3 mardi");
   }
 }
-function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySelectorAll("details[open]"),function(d){if(d.id)o.push(d.id);});sessionStorage.setItem("advReturn",JSON.stringify({y:window.scrollY||0,open:o}));}catch(e){}try{if(typeof advSetCapture==="function")advSetCapture();}catch(e){}}var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}try{var __ret=sessionStorage.getItem("advReturn");if(__ret){sessionStorage.removeItem("advReturn");var __rj=JSON.parse(__ret);window.addEventListener("load",function(){setTimeout(function(){(__rj.open||[]).forEach(function(id){var d=document.getElementById(id);if(d)d.open=true;});window.scrollTo(0,__rj.y||0);},80);});}}catch(e){}
+function __saveSpot(){try{var o=[];Array.prototype.forEach.call(document.querySelectorAll("details[open]"),function(d){if(d.id)o.push(d.id);});sessionStorage.setItem("advReturn",JSON.stringify({y:window.scrollY||0,open:o}));}catch(e){}try{if(typeof advSetCapture==="function")advSetCapture();}catch(e){}}var __adv=document.getElementById("advToolsBtn");if(__adv){if(new URLSearchParams(window.__QPAYLOAD||location.search).get("teacher")==="1"){__adv.hidden=true;}else{__adv.hidden=false;__adv.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"teacher=1&nostart=1";});}}var __off=document.getElementById("advToolsOff");if(__off){__off.addEventListener("click",function(e){e.preventDefault();__saveSpot();var u=settingsToURL();location.href=u+(u.indexOf("?")>=0?"&":"?")+"nostart=1";});}try{var __ret=sessionStorage.getItem("advReturn");if(__ret){sessionStorage.removeItem("advReturn");var __rj=JSON.parse(__ret);window.addEventListener("load",function(){setTimeout(function(){(__rj.open||[]).forEach(function(id){var d=document.getElementById(id);if(d)d.open=true;});window.scrollTo(0,__rj.y||0);},80);});}}catch(e){}
 (function(){var __pm=$("presetMid");if(!__pm)return;if(window.__COURSE&&window.__COURSE.presets.mid){__pm.addEventListener("click",function(){setPreset(window.__COURSE.presets.mid.units.slice(),!!window.__COURSE.presets.mid.cap);if(window.__COURSE.presets.mid.mix){var __mx=window.__COURSE.presets.mid.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pm.style.display="none";}})();
 (function(){var __pf=$("presetFinal");if(!__pf)return;if(window.__COURSE&&window.__COURSE.presets.final){__pf.addEventListener("click",function(){setPreset(window.__COURSE.presets.final.units.slice(),window.__COURSE.presets.final.cap?"final":undefined);if(window.__COURSE.presets.final.mix){var __mx=window.__COURSE.presets.final.mix;hidCtl.mix=__mx.slice();if($("lv1")){$("lv1").value=__mx[0];$("lv2").value=__mx[1];$("lv3").value=__mx[2];}}});}else{__pf.style.display="none";}})();
 $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&window.__COURSE.allUnits?window.__COURSE.allUnits.slice():Object.keys(UNITS).map(Number).sort(function(a,b){return a-b;}));});
@@ -8881,13 +8938,13 @@ if(advSetRestore()){
      verbatim, with its answer state: the switch changed nothing
      but the mode. */
 }
-else if(new URLSearchParams(location.search).get("set")&&tRebuildFromURL()){
+else if(new URLSearchParams(window.__QPAYLOAD||location.search).get("set")&&tRebuildFromURL()){
   /* A set link was opened: the exact set it encodes is on screen. */
   var _lu=(typeof T!=="undefined"&&T&&T.scope&&T.scope.units)?T.scope.units:null;
   countEvent("practice_start",[analyticsCourse(),(_lu&&_lu.length===1)?("u"+_lu[0]):"all",TEACHER?"teacher":"student"]);
 }
-else if(urlTouched&&new URLSearchParams(location.search).get("nostart")!=="1"&&(new URLSearchParams(location.search).get("unit")||new URLSearchParams(location.search).get("preset")||new URLSearchParams(location.search).get("indicator"))){
-  var _m=(new URLSearchParams(location.search).get("mode"));if(_m==="sheet"||_m==="worksheet"){startSheet();}else if(_m==="exam"){startExam();}else{startOnline();}
+else if(urlTouched&&new URLSearchParams(window.__QPAYLOAD||location.search).get("nostart")!=="1"&&(new URLSearchParams(window.__QPAYLOAD||location.search).get("unit")||new URLSearchParams(window.__QPAYLOAD||location.search).get("preset")||new URLSearchParams(window.__QPAYLOAD||location.search).get("indicator"))){
+  var _m=(new URLSearchParams(window.__QPAYLOAD||location.search).get("mode"));if(_m==="sheet"||_m==="worksheet"){startSheet();}else if(_m==="exam"){startExam();}else{startOnline();}
 }
 tCodeTeacherBar();
 resumeBootCheck();
@@ -9058,14 +9115,14 @@ if(window.__NOCOURSE){(function(){
   if(!form)return;
   var input=document.getElementById("pkCodeIn"),msg=document.getElementById("pkCodeMsg");
   function pkMsg(en,fr){return window.__PKFR?fr:en;}
-  function openSet(q,teacher){
+  function openSet(q,teacher,code){
     try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:teacher?"teacher_code_open":"pack_code_open",event:true});}catch(e){}
     var base=location.pathname.substring(0,location.pathname.lastIndexOf("/")+1);
     var p=new URLSearchParams(q);
     p.set("via","code");
     if(p.get("set")){p.delete("mode");}
     else if(p.get("seed")){var m=p.get("mode");if(m==="sheet"||m==="exam")p.set("tmode",m);p.delete("mode");}
-    location.href=base+"?"+p.toString();
+    var url=base+"?"+p.toString();if(url.length>7000){try{sessionStorage.setItem("raCodePayload",JSON.stringify({code:code||"",q:p.toString()}));}catch(e){}location.href=base+"?course="+encodeURIComponent(p.get("course")||"")+"&codeopen="+encodeURIComponent(code||"");}else{location.href=url;}
   }
   form.addEventListener("submit",function(ev){
     ev.preventDefault();
@@ -9073,16 +9130,16 @@ if(window.__NOCOURSE){(function(){
     var reg=(typeof window!=="undefined"&&window.PACK_CODES)?window.PACK_CODES:null;
     if(!reg){msg.textContent=pkMsg("Pack codes are not available right now. Pick a course on the Review Apps home page, or scan the QR code on your pack.","Les codes des ensembles imprimés ne sont pas disponibles en ce moment. Choisissez un cours sur la page d’accueil des Review Apps, ou balayez le code QR sur votre ensemble.");return;}
     var hit=reg[code];
-    if(hit&&hit.q){openSet(hit.q,false);return;}
+    if(hit&&hit.q){openSet(hit.q,false,code);return;}
     msg.textContent=pkMsg("Checking the teacher code registry\u2026","V\u00e9rification du registre des codes des enseignants\u2026");
     var snapP=(typeof window.fetchSnapshotCodes==="function")?window.fetchSnapshotCodes():Promise.resolve({ok:false,codes:{},rows:0});
     snapP.then(function(snap){
       var sq=snap&&snap.codes?snap.codes[code]:null;
-      if(sq){openSet(sq,true);return;}
+      if(sq){openSet(sq,true,code);return;}
     var fetched=(typeof window.fetchSheetCodes==="function")?window.fetchSheetCodes():Promise.resolve({ok:false,codes:{},rows:0});
     fetched.then(function(res){
       var tq=res&&res.codes?res.codes[code]:null;
-      if(tq){openSet(tq,true);return;}
+      if(tq){openSet(tq,true,code);return;}
       if(!res||!res.ok||!res.rows){msg.textContent=pkMsg("That code is not in the printed pack list, and the teacher code registry is not available right now. Try again in a moment, or scan the QR code on your sheet.","Ce code n\u2019est pas dans la liste des ensembles imprim\u00e9s, et le registre des codes des enseignants n\u2019est pas disponible en ce moment. R\u00e9essayez dans un instant, ou balayez le code QR sur votre feuille.");return;}
       msg.textContent=pkMsg("That code was not recognized. Check the six characters on your pack and try again.","Ce code n’a pas été reconnu. Vérifiez les six caractères sur votre ensemble et réessayez.");
     });
