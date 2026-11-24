@@ -3323,64 +3323,120 @@ E("u2-50", 2, ["6.10"], 3, "gen", function () {
   return mcq("Which solvent will dissolve " + su.f + ", a " + (su.pol ? "polar" : "nonpolar") + " substance, most readily?", correctSv, ds2, "Choose a solvent of the same type as the solute, so that solute to solvent attractions can replace the attractions broken during dissolving. " + su.f + " is " + (su.pol ? "polar" : "nonpolar") + ", and of the options only " + correctSv + " is of the matching type, following the rule that like dissolves like.", { solute: su.f, solvent: correctSv });
 });
 
-// 6.11 Molar solubility
+// 6.11 Solubility from the data sheet rules table
+/* Reworked Nov 24, 2026 (Jason's ruling, on teacher feedback): the
+   eight 6.11 entries were molar-solubility calculations, but the
+   course treats this outcome through the Solubility Rules table
+   given on the Chemistry Data Sheet, which classes an ionic
+   compound as high solubility when more than 0.1 mol/L dissolves
+   in water at 25 °C and low solubility when less does. The
+   replacements ask students to class compounds from that table.
+   Every class in SOL611 is the table's own call, including its
+   trap cases: sulfides of Group IIA ions and hydroxides of Sr2+
+   and Ba2+ are high, and CaSO4 and Ag2SO4 are low. Fluorides are
+   absent because the table has no fluoride column. */
+var SOL611 = [
+  ["NaCl", 1, "halide", "compounds of Group IA ions are all high solubility, and sodium is a Group IA ion"],
+  ["KCl", 1, "halide", "compounds of Group IA ions are all high solubility, and potassium is a Group IA ion"],
+  ["LiCl", 1, "halide", "compounds of Group IA ions are all high solubility, and lithium is a Group IA ion"],
+  ["KBr", 1, "halide", "compounds of Group IA ions are all high solubility, and potassium is a Group IA ion"],
+  ["NaBr", 1, "halide", "compounds of Group IA ions are all high solubility, and sodium is a Group IA ion"],
+  ["KI", 1, "halide", "compounds of Group IA ions are all high solubility, and potassium is a Group IA ion"],
+  ["NaI", 1, "halide", "compounds of Group IA ions are all high solubility, and sodium is a Group IA ion"],
+  ["MgCl₂", 1, "halide", "chlorides are high solubility for most cations, and magnesium is not one of the listed low-solubility cations"],
+  ["CaCl₂", 1, "halide", "chlorides are high solubility for most cations, and calcium is not one of the listed low-solubility cations"],
+  ["BaCl₂", 1, "halide", "chlorides are high solubility for most cations, and barium is not one of the listed low-solubility cations"],
+  ["ZnCl₂", 1, "halide", "chlorides are high solubility for most cations, and zinc is not one of the listed low-solubility cations"],
+  ["FeCl₂", 1, "halide", "chlorides are high solubility for most cations, and iron(II) is not one of the listed low-solubility cations"],
+  ["CaBr₂", 1, "halide", "bromides are high solubility for most cations, and calcium is not one of the listed low-solubility cations"],
+  ["NH₄Cl", 1, "halide", "ammonium compounds are all high solubility"],
+  ["NaNO₃", 1, "nitrate", "nitrates are all high solubility"],
+  ["KNO₃", 1, "nitrate", "nitrates are all high solubility"],
+  ["AgNO₃", 1, "nitrate", "nitrates are all high solubility, whichever cation they are paired with"],
+  ["Ca(NO₃)₂", 1, "nitrate", "nitrates are all high solubility"],
+  ["KClO₃", 1, "chlorate", "chlorates are all high solubility"],
+  ["NaClO₄", 1, "perchlorate", "perchlorates are all high solubility"],
+  ["Na₂SO₄", 1, "sulfate", "sulfates are high solubility for most cations, and sodium is not one of the listed low-solubility cations"],
+  ["K₂SO₄", 1, "sulfate", "sulfates are high solubility for most cations, and potassium is not one of the listed low-solubility cations"],
+  ["MgSO₄", 1, "sulfate", "sulfates are high solubility for most cations, and magnesium is not one of the listed low-solubility cations"],
+  ["CuSO₄", 1, "sulfate", "sulfates are high solubility for most cations, and copper(II) is not one of the listed low-solubility cations"],
+  ["(NH₄)₂SO₄", 1, "sulfate", "ammonium compounds are all high solubility"],
+  ["Na₂CO₃", 1, "carbonate", "carbonates are high solubility for Group IA ions, and sodium is a Group IA ion"],
+  ["(NH₄)₂CO₃", 1, "carbonate", "carbonates are high solubility for ammonium compounds"],
+  ["K₂S", 1, "sulfide", "sulfides are high solubility for Group IA ions, and potassium is a Group IA ion"],
+  ["CaS", 1, "sulfide", "sulfides are high solubility for Group IIA ions, and calcium is a Group IIA ion"],
+  ["MgS", 1, "sulfide", "sulfides are high solubility for Group IIA ions, and magnesium is a Group IIA ion"],
+  ["NaOH", 1, "hydroxide", "hydroxides are high solubility for Group IA ions, and sodium is a Group IA ion"],
+  ["KOH", 1, "hydroxide", "hydroxides are high solubility for Group IA ions, and potassium is a Group IA ion"],
+  ["Ba(OH)₂", 1, "hydroxide", "the table lists barium as one of the cations whose hydroxides are high solubility"],
+  ["Sr(OH)₂", 1, "hydroxide", "the table lists strontium as one of the cations whose hydroxides are high solubility"],
+  ["CH₃COONa", 1, "acetate", "acetates are high solubility for most cations, and sodium is not one of the listed low-solubility cations"],
+  ["AgCl", 0, "halide", "the table lists silver as a low-solubility cation for chlorides"],
+  ["AgBr", 0, "halide", "the table lists silver as a low-solubility cation for bromides"],
+  ["AgI", 0, "halide", "the table lists silver as a low-solubility cation for iodides"],
+  ["PbCl₂", 0, "halide", "the table lists lead as a low-solubility cation for chlorides"],
+  ["CuCl", 0, "halide", "the table lists copper(I) as a low-solubility cation for chlorides"],
+  ["BaSO₄", 0, "sulfate", "the table lists barium as a low-solubility cation for sulfates"],
+  ["CaSO₄", 0, "sulfate", "the table lists calcium as a low-solubility cation for sulfates"],
+  ["SrSO₄", 0, "sulfate", "the table lists strontium as a low-solubility cation for sulfates"],
+  ["PbSO₄", 0, "sulfate", "the table lists lead as a low-solubility cation for sulfates"],
+  ["Ag₂SO₄", 0, "sulfate", "the table lists silver as a low-solubility cation for sulfates"],
+  ["CaCO₃", 0, "carbonate", "carbonates are low solubility for most cations other than Group IA ions and ammonium"],
+  ["BaCO₃", 0, "carbonate", "carbonates are low solubility for most cations other than Group IA ions and ammonium"],
+  ["MgCO₃", 0, "carbonate", "carbonates are low solubility for most cations other than Group IA ions and ammonium"],
+  ["PbCO₃", 0, "carbonate", "carbonates are low solubility for most cations other than Group IA ions and ammonium"],
+  ["Ca₃(PO₄)₂", 0, "phosphate", "phosphates are low solubility for most cations other than Group IA ions and ammonium"],
+  ["CaSO₃", 0, "sulfite", "sulfites are low solubility for most cations other than Group IA ions and ammonium"],
+  ["Mg(OH)₂", 0, "hydroxide", "hydroxides are low solubility for most cations, and magnesium is not one of the listed high-solubility exceptions"],
+  ["Fe(OH)₃", 0, "hydroxide", "hydroxides are low solubility for most cations, and iron(III) is not one of the listed high-solubility exceptions"],
+  ["Cu(OH)₂", 0, "hydroxide", "hydroxides are low solubility for most cations, and copper(II) is not one of the listed high-solubility exceptions"],
+  ["Zn(OH)₂", 0, "hydroxide", "hydroxides are low solubility for most cations, and zinc is not one of the listed high-solubility exceptions"],
+  ["ZnS", 0, "sulfide", "sulfides are low solubility for most cations other than Group IA, Group IIA and ammonium"],
+  ["PbS", 0, "sulfide", "sulfides are low solubility for most cations other than Group IA, Group IIA and ammonium"],
+  ["CuS", 0, "sulfide", "sulfides are low solubility for most cations other than Group IA, Group IIA and ammonium"],
+  ["FeS", 0, "sulfide", "sulfides are low solubility for most cations other than Group IA, Group IIA and ammonium"],
+  ["CH₃COOAg", 0, "acetate", "the table lists silver as a low-solubility cation for acetates"]
+];
+function sol611pool(hi) { return SOL611.filter(function (c) { return (c[1] === 1) === hi; }); }
+function sol611take(arr, n) { return shuffle(arr.slice()).slice(0, n); }
+function sol611mix(n, nLow) { return shuffle(sol611take(sol611pool(false), nLow).concat(sol611take(sol611pool(true), n - nLow))); }
+function sol611names(set) { return set.map(function (c) { return c[0]; }).join(", "); }
+function sol611why(set) { return set.map(function (c) { return c[0] + " has " + (c[1] ? "high" : "low") + " solubility, because " + c[3] + "."; }).join(" "); }
+function sol611count(set, hi) { return set.filter(function (c) { return (c[1] === 1) === hi; }).length; }
+function sol611sig(set) { return set.map(function (c) { return c[0]; }).join("|"); }
+function sol611row(f) { for (var i = 0; i < SOL611.length; i++) { if (SOL611[i][0] === f) return SOL611[i]; } return null; }
+
 E("u2-51", 2, ["6.11"], 2, "gen", function () {
-  var salts = [
-    { f: "NaCl", comp: [["Na", 1], ["Cl", 1]] }, { f: "KCl", comp: [["K", 1], ["Cl", 1]] },
-    { f: "KBr", comp: [["K", 1], ["Br", 1]] }, { f: "NaBr", comp: [["Na", 1], ["Br", 1]] },
-    { f: "NaNO₃", comp: [["Na", 1], ["N", 1], ["O", 3]] }, { f: "KNO₃", comp: [["K", 1], ["N", 1], ["O", 3]] },
-    { f: "AgNO₃", comp: [["Ag", 1], ["N", 1], ["O", 3]] }, { f: "CaCl₂", comp: [["Ca", 1], ["Cl", 2]] },
-    { f: "MgCl₂", comp: [["Mg", 1], ["Cl", 2]] }, { f: "Na₂SO₄", comp: [["Na", 2], ["S", 1], ["O", 4]] },
-    { f: "Ca(NO₃)₂", comp: [["Ca", 1], ["N", 2], ["O", 6]] }, { f: "NH₄Cl", comp: [["N", 1], ["H", 4], ["Cl", 1]] }
-  ];
-  var s = pick(salts);
-  var M = 0; s.comp.forEach(function (c) { M += CHEM_AM[c[0]] * c[1]; });
-  var target = pick([0.05, 0.10, 0.20, 0.25, 0.40, 0.50, 0.80, 1.20]);
-  var per100 = pick([true, false]);
-  var gL = target * M;
-  var given = per100 ? iF(gL / 10) + " g per 100 mL" : iF(gL) + " g per L";
-  var ans = target;
-  return numq("The solubility of " + s.f + " is " + given + " at the stated temperature. The molar mass of " + s.f + " is " + fmtF(M, 2) + " g/mol. Calculate its molar solubility in mol/L.", ans, Math.max(0.01, ans * 0.02), "Convert the mass solubility to a per litre basis first. " + (per100 ? "A solubility of " + iF(gL / 10) + " g per 100 mL is " + iF(gL) + " g in 1000 mL, that is, per litre." : "The solubility is already given per litre as " + iF(gL) + " g/L.") + " Divide the mass per litre by the molar mass: " + iF(gL) + " g / " + fmtF(M, 2) + " g/mol = <b>" + F3(ans) + " mol/L</b>. That is the molar solubility.", { salt: s.f, M: fmtF(M, 2) });
+  var set = sol611mix(4, ri(1, 3));
+  var n = sol611count(set, false);
+  return numq("According to the Solubility Rules table on the Chemistry Data Sheet, an ionic compound has high solubility in water at 25 °C if more than 0.1 mol/L dissolves, and low solubility if less than 0.1 mol/L dissolves. Of the compounds " + sol611names(set) + ", how many have low solubility?",
+    n, 0,
+    "Class each compound from its ions. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have low solubility.",
+    { set: sol611sig(set) });
 });
 
 E("u2-52", 2, ["6.11"], 2, "gen", function () {
-  var salts = [
-    { f: "LiCl", comp: [["Li", 1], ["Cl", 1]] }, { f: "NaF", comp: [["Na", 1], ["F", 1]] },
-    { f: "KI", comp: [["K", 1], ["I", 1]] }, { f: "MgSO₄", comp: [["Mg", 1], ["S", 1], ["O", 4]] },
-    { f: "CaBr₂", comp: [["Ca", 1], ["Br", 2]] }, { f: "ZnCl₂", comp: [["Zn", 1], ["Cl", 2]] },
-    { f: "FeCl₂", comp: [["Fe", 1], ["Cl", 2]] }, { f: "CuSO₄", comp: [["Cu", 1], ["S", 1], ["O", 4]] },
-    { f: "BaCl₂", comp: [["Ba", 1], ["Cl", 2]] }, { f: "Na₂CO₃", comp: [["Na", 2], ["C", 1], ["O", 3]] }
-  ];
-  var s = pick(salts);
-  var M = 0; s.comp.forEach(function (c) { M += CHEM_AM[c[0]] * c[1]; });
-  var target = pick([0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.75, 1.20]);
-  var temp = pick([20, 25, 30]);
-  var g100 = target * M / 10;
-  var ans = target;
-  return numq("At " + temp + " °C, a saturated solution of " + s.f + " contains " + iF(g100) + " g of the salt in every 100 mL of solution. The molar mass of " + s.f + " is " + fmtF(M, 2) + " g/mol. What is the molar solubility of " + s.f + " in mol/L at this temperature?", ans, Math.max(0.01, ans * 0.02), "Scale the mass up to one litre: " + iF(g100) + " g per 100 mL means 10 x " + iF(g100) + " = " + iF(g100 * 10) + " g per litre. Convert mass to amount by dividing by the molar mass: " + iF(g100 * 10) + " g / " + fmtF(M, 2) + " g/mol = <b>" + F3(ans) + " mol/L</b>. That amount per litre is the molar solubility.", { salt: s.f, M: fmtF(M, 2), temp: temp });
+  var set = sol611mix(4, ri(1, 3));
+  var n = sol611count(set, true);
+  return numq("Use the Solubility Rules table on the Chemistry Data Sheet, which classes an ionic compound as high solubility when more than 0.1 mol/L dissolves in water at 25 °C and low solubility when less dissolves. Of the compounds " + sol611names(set) + ", how many have high solubility?",
+    n, 0,
+    "Class each compound from its ions. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have high solubility.",
+    { set: sol611sig(set) });
 });
 
 E("u2-53", 2, ["6.11"], 3, "gen", function () {
-  var salts = [
-    { f: "NaCl", comp: [["Na", 1], ["Cl", 1]] }, { f: "KNO₃", comp: [["K", 1], ["N", 1], ["O", 3]] },
-    { f: "CuSO₄", comp: [["Cu", 1], ["S", 1], ["O", 4]] }, { f: "MgSO₄", comp: [["Mg", 1], ["S", 1], ["O", 4]] },
-    { f: "CaCl₂", comp: [["Ca", 1], ["Cl", 2]] }, { f: "KI", comp: [["K", 1], ["I", 1]] },
-    { f: "Na₂SO₄", comp: [["Na", 2], ["S", 1], ["O", 4]] }, { f: "BaCl₂", comp: [["Ba", 1], ["Cl", 2]] },
-    { f: "AgNO₃", comp: [["Ag", 1], ["N", 1], ["O", 3]] }, { f: "ZnCl₂", comp: [["Zn", 1], ["Cl", 2]] }
-  ];
-  var s = pick(salts);
-  var M = 0; s.comp.forEach(function (c) { M += CHEM_AM[c[0]] * c[1]; });
-  var target = pick([0.20, 0.25, 0.40, 0.50, 0.80, 1.20]);
-  var vol = pick([200, 250, 400, 500, 1000]);
-  var mass = target * M * vol / 1000;
-  var askMoles = pick([true, false]);
-  if (askMoles) {
-    var ansM = target * vol / 1000;
-    return numq("A saturated solution of " + s.f + " is prepared with a volume of " + vol + " mL. It contains " + iF(mass) + " g of dissolved " + s.f + ". The molar mass of " + s.f + " is " + fmtF(M, 2) + " g/mol. How many moles of " + s.f + " are dissolved in the solution?", ansM, Math.max(0.01, ansM * 0.02), "Amount in moles is mass divided by molar mass. The amount dissolved is " + iF(mass) + " g / " + fmtF(M, 2) + " g/mol = <b>" + F3(ansM) + " mol</b>. The volume is not needed for this question, but it is consistent with a molar solubility of " + F3(target) + " mol/L.", { salt: s.f, vol: vol });
-  }
-  var ans = target;
-  var amt = sfR(sfR(mass, 4) / M, 4);
-  return numq("A saturated solution of " + s.f + " is prepared with a volume of " + vol + " mL. It contains " + iF(mass) + " g of dissolved " + s.f + ". The molar mass of " + s.f + " is " + fmtF(M, 2) + " g/mol. Calculate the molar solubility of " + s.f + " in mol/L.", ans, Math.max(0.01, ans * 0.02), "First find the amount dissolved: " + iF(mass) + " g / " + fmtF(M, 2) + " g/mol = " + iF(amt) + " mol. Molar solubility is amount per litre of solution, and the volume is " + vol + " mL, which is " + F3(vol / 1000) + " L. Dividing gives " + iF(amt) + " mol / " + F3(vol / 1000) + " L = <b>" + F3(ans) + " mol/L</b>.", { salt: s.f, vol: vol });
+  var pairs = [["AgNO₃", "AgCl"], ["AgNO₃", "Ag₂SO₄"], ["CaS", "CaSO₄"], ["CaCl₂", "CaCO₃"], ["Ba(OH)₂", "BaSO₄"], ["Na₂CO₃", "CaCO₃"], ["K₂S", "ZnS"], ["NaOH", "Mg(OH)₂"], ["CuSO₄", "CuS"], ["(NH₄)₂CO₃", "BaCO₃"]];
+  var pr = pick(pairs);
+  var rest = SOL611.filter(function (c) { return pr.indexOf(c[0]) < 0; });
+  var others = shuffle(sol611take(rest.filter(function (c) { return c[1] === 0; }), ri(1, 2)).concat(sol611take(rest.filter(function (c) { return c[1] === 1; }), 2)));
+  others = others.slice(0, 4);
+  while (others.length < 4) { var extra = pick(rest); if (pr.indexOf(extra[0]) < 0 && others.indexOf(extra) < 0) others.push(extra); }
+  var set = shuffle([sol611row(pr[0]), sol611row(pr[1])].concat(others));
+  var n = sol611count(set, false);
+  return numq("Equal samples of six ionic compounds are stirred into separate beakers of water at 25 °C. The compounds are " + sol611names(set) + ". A compound with low solubility on the Solubility Rules table (less than 0.1 mol/L) will mostly stay undissolved. In how many of the beakers will the compound have low solubility?",
+    n, 0,
+    "Class each compound from its ions, watching for the pair that shares an ion but is classed differently. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have low solubility.",
+    { set: sol611sig(set) });
 });
 
 // 6.12 Effect of solutes on the melting point of ice
@@ -3882,66 +3938,43 @@ E("u2-71", 2, ["6.10"], 2, "gen", function () {
     { solute: c.s, dir: c.dir });
 });
 
-// LEVEL: 1 - one division with both values given and no scaling step (contrast the per 100 mL mode of u2-51 and the two-step u2-52)
-// LENGTHS: key=11
+// LEVEL: 1 - three compounds classed from the rules table; count the low-solubility ones (6.11 rework, Nov 24, 2026)
 E("u2-72", 2, ["6.11"], 1, "gen", function () {
-  var salts = [
-    { f: "NaCl", c: [["Na", 1], ["Cl", 1]] }, { f: "KCl", c: [["K", 1], ["Cl", 1]] },
-    { f: "KBr", c: [["K", 1], ["Br", 1]] }, { f: "NaBr", c: [["Na", 1], ["Br", 1]] },
-    { f: "NaNO₃", c: [["Na", 1], ["N", 1], ["O", 3]] }, { f: "KNO₃", c: [["K", 1], ["N", 1], ["O", 3]] },
-    { f: "AgNO₃", c: [["Ag", 1], ["N", 1], ["O", 3]] }, { f: "CaCl₂", c: [["Ca", 1], ["Cl", 2]] },
-    { f: "MgCl₂", c: [["Mg", 1], ["Cl", 2]] }, { f: "Na₂SO₄", c: [["Na", 2], ["S", 1], ["O", 4]] },
-    { f: "Ca(NO₃)₂", c: [["Ca", 1], ["N", 2], ["O", 6]] }, { f: "NH₄Cl", c: [["N", 1], ["H", 4], ["Cl", 1]] }
-  ];
-  var s = pick(salts);
-  var M = 0; s.c.forEach(function (p) { M += CHEM_AM[p[0]] * p[1]; });
-  var target = pick([0.05, 0.10, 0.20, 0.25, 0.40, 0.50, 0.80, 1.20]);
-  var gL = target * M, temp = pick([20, 25]);
-  return numq("A saturated solution of " + s.f + " at " + temp + " °C contains " + iF(gL) + " g of the salt in each litre of solution. The molar mass of " + s.f + " is " + fmtF(M, 2) + " g/mol. What is the molar solubility of " + s.f + ", in mol/L?",
-    target, Math.max(0.01, target * 0.02),
-    "Molar solubility is the concentration of a saturated solution. Divide the mass per litre by the molar mass: " + iF(gL) + " g/L / " + fmtF(M, 2) + " g/mol = <b>" + F3(target) + " mol/L</b>.",
-    { salt: s.f, M: fmtF(M, 2), temp: temp });
+  var set = sol611mix(3, pick([1, 2]));
+  var n = sol611count(set, false);
+  return numq("Use the Solubility Rules table on the Chemistry Data Sheet. It classes an ionic compound as high solubility if more than 0.1 mol/L dissolves in water at 25 °C, and low solubility if less than 0.1 mol/L dissolves. Of the compounds " + sol611names(set) + ", how many have low solubility in water at 25 °C?",
+    n, 0,
+    "Class each compound from its ions. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have low solubility.",
+    { set: sol611sig(set) });
 });
 
-// LEVEL: 2 - the 6.11 conversion run in reverse: multiply the molar solubility by the molar mass, then scale from a litre down to 100 mL
-// LENGTHS: key=17
+// LEVEL: 2 - four compounds from one anion family, where the family's listed exception cations decide the count (6.11 rework, Nov 24, 2026)
 E("u2-73", 2, ["6.11"], 2, "gen", function () {
-  var salts = [
-    { f: "LiCl", c: [["Li", 1], ["Cl", 1]] }, { f: "NaF", c: [["Na", 1], ["F", 1]] },
-    { f: "KI", c: [["K", 1], ["I", 1]] }, { f: "MgSO₄", c: [["Mg", 1], ["S", 1], ["O", 4]] },
-    { f: "CaBr₂", c: [["Ca", 1], ["Br", 2]] }, { f: "ZnCl₂", c: [["Zn", 1], ["Cl", 2]] },
-    { f: "FeCl₂", c: [["Fe", 1], ["Cl", 2]] }, { f: "CuSO₄", c: [["Cu", 1], ["S", 1], ["O", 4]] },
-    { f: "BaCl₂", c: [["Ba", 1], ["Cl", 2]] }, { f: "Na₂CO₃", c: [["Na", 2], ["C", 1], ["O", 3]] }
+  var fams = [
+    { tag: "sulfate", label: "sulfates" },
+    { tag: "halide", label: "halides (chlorides, bromides or iodides)" },
+    { tag: "hydroxide", label: "hydroxides" }
   ];
-  var s = pick(salts);
-  var M = 0; s.c.forEach(function (p) { M += CHEM_AM[p[0]] * p[1]; });
-  var target = s.f === "NaF" ? pick([0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.75]) : pick([0.10, 0.15, 0.20, 0.30, 0.40, 0.60, 0.75, 1.20]);
-  var gL = target * M, g100 = gL / 10, ans = sfR(g100, 3), temp = pick([20, 25, 30]);
-  return numq("The molar solubility of " + s.f + " at " + temp + " °C is " + F3(target) + " mol/L. The molar mass of " + s.f + " is " + fmtF(M, 2) + " g/mol. Calculate the solubility of " + s.f + " in grams per 100 mL of solution.",
-    ans, Math.max(0.05, ans * 0.02),
-    "First change the amount per litre into a mass per litre by multiplying by the molar mass: " + F3(target) + " mol/L x " + fmtF(M, 2) + " g/mol = " + iF(gL) + " g/L. One hundred millilitres is one tenth of a litre, so the mass dissolved in 100 mL is " + iF(gL) + " g / 10 = <b>" + F3(ans) + " g per 100 mL</b>.",
-    { salt: s.f, S: target, M: fmtF(M, 2), temp: temp });
+  var fam = pick(fams);
+  var inFam = SOL611.filter(function (c) { return c[2] === fam.tag; });
+  var set = shuffle(sol611take(inFam.filter(function (c) { return c[1] === 0; }), 2).concat(sol611take(inFam.filter(function (c) { return c[1] === 1; }), 2)));
+  var n = sol611count(set, false);
+  return numq("All four of these compounds are " + fam.label + ": " + sol611names(set) + ". According to the Solubility Rules table on the Chemistry Data Sheet, how many of them have low solubility in water at 25 °C (less than 0.1 mol/L)?",
+    n, 0,
+    "Within one family, the cation decides. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have low solubility.",
+    { set: sol611sig(set), fam: fam.tag });
 });
 
-// LEVEL: 2 - two chained steps: amount from the molar solubility and the volume in litres, then mass from the amount and the molar mass
-// LENGTHS: key=6
+// LEVEL: 2 - five compounds drawn from the table's trap cases, where a first guess often classes them wrong; count the high-solubility ones (6.11 rework, Nov 24, 2026)
 E("u2-74", 2, ["6.11"], 2, "gen", function () {
-  var salts = [
-    { f: "NaCl", c: [["Na", 1], ["Cl", 1]] }, { f: "KNO₃", c: [["K", 1], ["N", 1], ["O", 3]] },
-    { f: "CuSO₄", c: [["Cu", 1], ["S", 1], ["O", 4]] }, { f: "MgSO₄", c: [["Mg", 1], ["S", 1], ["O", 4]] },
-    { f: "CaCl₂", c: [["Ca", 1], ["Cl", 2]] }, { f: "KI", c: [["K", 1], ["I", 1]] },
-    { f: "Na₂SO₄", c: [["Na", 2], ["S", 1], ["O", 4]] }, { f: "BaCl₂", c: [["Ba", 1], ["Cl", 2]] },
-    { f: "AgNO₃", c: [["Ag", 1], ["N", 1], ["O", 3]] }, { f: "ZnCl₂", c: [["Zn", 1], ["Cl", 2]] }
-  ];
-  var s = pick(salts);
-  var M = 0; s.c.forEach(function (p) { M += CHEM_AM[p[0]] * p[1]; });
-  var target = pick([0.20, 0.25, 0.40, 0.50, 0.80, 1.20]);
-  var vol = pick([200, 250, 400, 500]);
-  var moles = target * vol / 1000, mass = moles * M, ans = sfR(mass, 3);
-  return numq("The molar solubility of " + s.f + " is " + F3(target) + " mol/L at the stated temperature, and its molar mass is " + fmtF(M, 2) + " g/mol. What mass of " + s.f + ", in grams, is dissolved in " + vol + " mL of a saturated solution?",
-    ans, Math.max(0.05, ans * 0.02),
-    "First find the amount dissolved: molar solubility times the volume in litres gives " + F3(target) + " mol/L x " + F3(vol / 1000) + " L = " + iF(moles) + " mol. Then change the amount into a mass with the molar mass: " + iF(moles) + " mol x " + fmtF(M, 2) + " g/mol = <b>" + F3(ans) + " g</b>.",
-    { salt: s.f, S: target, vol: vol, M: fmtF(M, 2) });
+  var traps = ["AgNO₃", "CaS", "MgS", "Ba(OH)₂", "Sr(OH)₂", "(NH₄)₂CO₃", "Na₂CO₃", "CaSO₄", "Ag₂SO₄", "CH₃COOAg", "CuCl", "AgCl"].map(sol611row);
+  var set = shuffle(sol611take(traps.filter(function (c) { return c[1] === 0; }), ri(2, 3)).concat(sol611take(traps.filter(function (c) { return c[1] === 1; }), 2)));
+  set = set.slice(0, 5);
+  var n = sol611count(set, true);
+  return numq("Some of these compounds are not classed the way a first guess might suggest. According to the Solubility Rules table on the Chemistry Data Sheet, how many of the compounds " + sol611names(set) + " have high solubility in water at 25 °C (more than 0.1 mol/L)?",
+    n, 0,
+    "Class each compound from its ions, not from how familiar it looks. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have high solubility.",
+    { set: sol611sig(set) });
 });
 
 // LEVEL: 1 - one rehearsed idea (more dissolved particles means a lower melting point) read off two concentrations of the same solute
@@ -4049,30 +4082,33 @@ E("u2-78", 2, ["6.13"], 1, "gen", function () {
     { cue: cues.indexOf(c), cls: c.cls });
 });
 
-/* Lengthening tranche additions (Nov 20, 2026): multiple-choice depth
-   for indicator 6.11 (molar solubility), priced at 2 entries in
-   Science-Test-Lengthening-Feasibility-2026-11-20.md, Section 6.
-   SME-flagged for the specialist pass. */
-var T2_SALTS=[["AgCl",143.32],["BaSO\u2084",233.39],["CaCO\u2083",100.09],["PbCl\u2082",278.11],["CaF\u2082",78.08],["Mg(OH)\u2082",58.33]];
-
-E("u2-611-mc-from-mass",2,["6.11"],2,"gen",function(){
-  var s=pick(T2_SALTS),sol=pick([0.00200,0.00500,0.0100,0.0200,0.0500,0.100,0.200]);
-  var vol=pick([100,250,500]);
-  var mass=sol*(vol/1000)*s[1];
-  var o=t2opts(sol,[sol*10,sol/10,sol*(vol/1000)],"mol/L");
-  return mcq("A saturated solution of "+s[0]+" contains "+t2sf(mass)+" g of the salt in "+vol+" mL of solution. The molar mass of "+s[0]+" is "+s[1].toFixed(2)+" g/mol. What is the molar solubility of "+s[0]+"?",
-    o.c,o.w,
-    "Convert the dissolved mass to moles: "+t2sf(mass)+" g / "+s[1].toFixed(2)+" g/mol = "+t2sf(mass/s[1])+" mol. Molar solubility is that amount per litre of solution: "+t2sf(mass/s[1])+" mol / "+t2sf(vol/1000)+" L = <b>"+o.c+"</b>.",{salt:s[0],vol:vol});
+/* The two multiple-choice 6.11 entries (Nov 20, 2026 tranche,
+   reworked Nov 24, 2026 with the rest of 6.11): single-compound
+   classification from the data sheet Solubility Rules table. The
+   key in each is a formula with no subscript digits, so the
+   bimodal written form accepts what a student types plainly. */
+E("u2-611-mc-from-mass", 2, ["6.11"], 2, "gen", function () {
+  var lowsf = ["AgCl", "AgBr", "AgI", "PbS", "CuS", "FeS", "ZnS"];
+  var hisf = ["NaCl", "KCl", "LiCl", "KBr", "NaBr", "KI", "NaI"];
+  var key = sol611row(pick(lowsf));
+  var wrongs = sol611take(hisf, 3);
+  var wrows = wrongs.map(sol611row);
+  return mcq("According to the Solubility Rules table on the Chemistry Data Sheet, which of the following compounds has low solubility in water at 25 °C (less than 0.1 mol/L)?",
+    key[0], wrongs,
+    key[0] + " has low solubility, because " + key[3] + ". The others are all high solubility: " + sol611why(wrows) + " The compound with low solubility is <b>" + key[0] + "</b>.",
+    { set: key[0] + "|" + wrongs.join("|") });
 });
 
-E("u2-611-mc-mass-dissolved",2,["6.11"],2,"gen",function(){
-  var s=pick(T2_SALTS),sol=pick([0.00200,0.00500,0.0100,0.0200,0.0500,0.100,0.200]);
-  var vol=pick([200,250,400,500,1000]);
-  var mass=sol*(vol/1000)*s[1];
-  var o=t2opts(mass,[sol*(vol/1000),sol*s[1],mass*10],"g");
-  return mcq("The molar solubility of "+s[0]+" is "+t2sf(sol)+" mol/L, and its molar mass is "+s[1].toFixed(2)+" g/mol. What mass of "+s[0]+" dissolves in "+vol+" mL of water to make a saturated solution?",
-    o.c,o.w,
-    "Amount dissolved = molar solubility \u00D7 volume in litres: "+t2sf(sol)+" mol/L \u00D7 "+t2sf(vol/1000)+" L = "+t2sf(sol*vol/1000)+" mol. Convert to mass: \u00D7 "+s[1].toFixed(2)+" g/mol = <b>"+o.c+"</b>.",{salt:s[0],vol:vol});
+E("u2-611-mc-mass-dissolved", 2, ["6.11"], 2, "gen", function () {
+  var hisf = ["NaCl", "KCl", "LiCl", "KBr", "NaBr", "KI", "NaI"];
+  var lowopts = ["BaSO₄", "CaCO₃", "PbCl₂", "Mg(OH)₂", "CaSO₄", "Fe(OH)₃", "Ag₂SO₄"];
+  var key = sol611row(pick(hisf));
+  var wrongs = sol611take(lowopts, 3);
+  var wrows = wrongs.map(sol611row);
+  return mcq("According to the Solubility Rules table on the Chemistry Data Sheet, which of the following compounds has high solubility in water at 25 °C (more than 0.1 mol/L)?",
+    key[0], wrongs,
+    key[0] + " has high solubility, because " + key[3] + ". The others are all low solubility: " + sol611why(wrows) + " The compound with high solubility is <b>" + key[0] + "</b>.",
+    { set: key[0] + "|" + wrongs.join("|") });
 });
 
 /* ----- bank-u3.js ----- */
