@@ -4224,6 +4224,7 @@ function tCodeOpenVia(q,sp){
   return q;
 }
 function tCodeOpenBoot(){
+  tCodeOpenBanner("off");
   var touched=applyURL();
   if(new URLSearchParams(window.__QPAYLOAD||location.search).get("set")&&tRebuildFromURL()){tCodeTeacherBar();return;}
   if(touched&&new URLSearchParams(window.__QPAYLOAD||location.search).get("nostart")!=="1"&&(new URLSearchParams(window.__QPAYLOAD||location.search).get("unit")||new URLSearchParams(window.__QPAYLOAD||location.search).get("preset")||new URLSearchParams(window.__QPAYLOAD||location.search).get("indicator"))){
@@ -4232,17 +4233,32 @@ function tCodeOpenBoot(){
   }
   tCodeTeacherBar();
 }
+function tCodeOpenBanner(state,code){
+  var b=document.getElementById("codeopen-banner");
+  if(state==="off"){if(b)b.remove();return;}
+  if(!b){
+    b=document.createElement("div");b.id="codeopen-banner";b.setAttribute("role","status");
+    b.style.cssText="position:fixed;top:0;left:0;right:0;z-index:9999;background:#fdf6e0;color:#4a3b00;border-bottom:2px solid #e3b505;padding:10px 14px;font:15px/1.45 system-ui,sans-serif;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.18)";
+    b.innerHTML='<div id="codeopen-msg"></div><div style="height:4px;background:#e8dcc0;border-radius:2px;margin-top:8px;overflow:hidden"><div id="codeopen-bar" style="height:100%;width:40%;background:#e3b505;border-radius:2px"></div></div>';
+    document.body.appendChild(b);
+    if(!document.getElementById("codeopen-style")){var st=document.createElement("style");st.id="codeopen-style";st.textContent="@keyframes codeopen-slide{0%{transform:translateX(-110%)}100%{transform:translateX(280%)}}#codeopen-bar{animation:codeopen-slide 1.2s ease-in-out infinite}";document.head.appendChild(st);}
+  }
+  var msg=document.getElementById("codeopen-msg"),bar=document.getElementById("codeopen-bar");
+  if(state==="load"){if(msg)msg.textContent=L9("Opening your set…","Ouverture de ton ensemble…");if(bar)bar.style.display="";}
+  if(state==="miss"){if(msg)msg.innerHTML="<b>"+L9("This set link could not be opened.","Impossible d'ouvrir ce lien d'ensemble.")+"</b> "+L9("The code may be wrong, or the set may still be registering. You can also type the code on the home page.","Le code est peut-être erroné, ou l'ensemble est peut-être encore en cours d'enregistrement. Tu peux aussi taper le code sur la page d'accueil.");if(bar)bar.style.display="none";}
+}
 function tCodeOpenFetch(){
   var code=window.__QCODE;if(!code||window.__QPAYLOAD)return;
+  tCodeOpenBanner("load");
   var sp=new URLSearchParams(window.__QPAYLOAD||location.search);
-  function hit(q){if(!q)return;window.__QPAYLOAD=tCodeOpenVia(q,sp);window.__QCODE=null;tCodeOpenBoot();}
+  function hit(q){if(!q)return;var q2=tCodeOpenVia(q,sp);try{var p=new URLSearchParams(q2);if(!p.get("via")&&!p.get("teacher")){p.set("via","code");q2=p.toString();}}catch(e){}window.__QPAYLOAD=q2;window.__QCODE=null;tCodeOpenBoot();}
   try{var reg=window.PACK_CODES;if(reg&&reg[code]&&reg[code].q){hit(reg[code].q);return;}}catch(e){}
   var snapP=(typeof fetchSnapshotCodes==="function")?fetchSnapshotCodes():Promise.resolve({ok:false,codes:{}});
   snapP.then(function(snap){
     var sq=snap&&snap.codes?snap.codes[code]:null;if(sq){hit(sq);return;}
     var fp=(typeof fetchSheetCodes==="function")?fetchSheetCodes():Promise.resolve({ok:false,codes:{}});
-    fp.then(function(res){var tq=res&&res.codes?res.codes[code]:null;if(tq)hit(tq);});
-  });
+    fp.then(function(res){var tq=res&&res.codes?res.codes[code]:null;if(tq)hit(tq);else if(!window.__QPAYLOAD)tCodeOpenBanner("miss",code);}).catch(function(){if(!window.__QPAYLOAD)tCodeOpenBanner("miss",code);});
+  }).catch(function(){if(!window.__QPAYLOAD)tCodeOpenBanner("miss",code);});
 }
 if(window.__QCODE&&!window.__QPAYLOAD){if(document.readyState==="complete")tCodeOpenFetch();else window.addEventListener("load",tCodeOpenFetch);}
 var TEACHER=false;
@@ -5143,10 +5159,10 @@ function tCopyLink(teacher,statusEl){
     var code=tLinkCodeFor(url);
     if(code){
       var shown=code.slice(0,3)+" "+code.slice(3);
-      var text=(teacher?"Review Apps teacher set code: ":"Review Apps set code: ")+shown+"\nOpen "+location.origin+location.pathname+" and type the code on the home page."+(teacher?" It opens this exact set with the editing controls on. Keep it for yourself.":" It opens the exact set your teacher shared.");
+      var text=location.origin+location.pathname+"?course="+encodeURIComponent(new URLSearchParams(url.split("?")[1]||"").get("course")||"")+"&codeopen="+code;
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);}
       if(!teacher)countEvent("student_link_copy",[analyticsCourse(),"s"+(tShufPref()==="shuf"?"1":"0")+"-h"+(tHintPref()==="off"?"1":"0")+"-e"+(tExPref()==="off"?"1":"0")+"-k"+(tRetryPref()==="keep"?"1":"0")]);
-      if(statusEl)statusEl.textContent=teacher?("This set is too large for a direct link, so it was saved under a teacher set code instead: "+shown+". The code and its instructions are copied. Type the code on the Review Apps home page to reopen this exact set with the editing controls on."):("This set is too large for a direct link, so it was saved under a set code instead: "+shown+". The code and its instructions are copied. Students type the code on the Review Apps home page to open this exact set.");
+      if(statusEl)statusEl.textContent=teacher?("This set is too large for its full link, so a short link was copied instead. It opens this exact set with the editing controls on. The set code "+shown+" also works typed on the Review Apps home page."):("This set is too large for its full link, so a short link was copied instead. It opens this exact set. The set code "+shown+" also works typed on the Review Apps home page.");
       return;
     }
   }
