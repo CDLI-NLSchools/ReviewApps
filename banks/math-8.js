@@ -5598,6 +5598,7 @@ function precPair(keyT, ds){
   return ds.map(function(o,i){ var nt=render(ps[i],found[i]); if(nt===o.t) return o; var n2={}; for(var kk in o) n2[kk]=o[kk]; n2.t=nt; return n2; });
 }
 function u5lcm(a,b){return a*b/u5gcd(a,b);}
+function u5cop(d){var o=[];for(var n=1;n<d;n++){if(u5gcd(n,d)===1)o.push(n);}return o;}
 function u5M(n,d){return "\\("+u5disp(n,d)+"\\)";}
 function u5red(n,d){var g=u5gcd(n,d);return [n/g,d/g];}
 function u5disp(n,d){var r=u5red(n,d);n=r[0];d=r[1];if(d===1)return String(n);if(n>d){var w=Math.floor(n/d),rem=n%d;if(rem===0)return String(w);return w+"\\frac{"+rem+"}{"+d+"}";}return "\\frac{"+n+"}{"+d+"}";}
@@ -6023,10 +6024,10 @@ E("u3-pk-simplify-fraction", 3, ["6.4"], 1, "gen", function(){
   var k=ri(2,6);var N=p*k,D=q*k;
   var ctx=pick(["pure","length","mass","time"]);
   var prompt;
-  if(ctx==="length")prompt="A strip is "+u5M(N,D)+" of a metre long. Write this length as a fraction in lowest terms.";
-  else if(ctx==="mass")prompt="A bag has a mass of "+u5M(N,D)+" of a kilogram. Write this mass as a fraction in lowest terms.";
-  else if(ctx==="time")prompt="A task takes "+u5M(N,D)+" of an hour. Write this time as a fraction in lowest terms.";
-  else prompt="Write "+u5M(N,D)+" in lowest terms.";
+  if(ctx==="length")prompt="A strip is "+"\\("+FR(N,D)+"\\)"+" of a metre long. Write this length as a fraction in lowest terms.";
+  else if(ctx==="mass")prompt="A bag has a mass of "+"\\("+FR(N,D)+"\\)"+" of a kilogram. Write this mass as a fraction in lowest terms.";
+  else if(ctx==="time")prompt="A task takes "+"\\("+FR(N,D)+"\\)"+" of an hour. Write this time as a fraction in lowest terms.";
+  else prompt="Write "+"\\("+FR(N,D)+"\\)"+" in lowest terms.";
   var sol="The greatest common factor of "+N+" and "+D+" is "+k+". Divide the numerator and the denominator by "+k+".\\[ \\begin{aligned} "+FR(N,D)+" &= "+FR(N/k,D/k)+" \\end{aligned} \\] The answer is <b>"+u5M(p,q)+"</b>.";
   return mcq(prompt,{t:u5M(p,q),fb:"Yes: dividing "+N+" and "+D+" each by their common factor "+k+" gives lowest terms."},
     u5fopts([p,q],[{p:[p,D],fb:"That divides only the numerator by "+k+". The denominator must be divided by the same factor."},{p:[N,q],fb:"That divides only the denominator by "+k+". The numerator must be divided by the same factor."},{p:[N-k,D-k],fb:"That subtracts "+k+" from the top and bottom. Simplifying means dividing by a common factor, not subtracting."}]),
@@ -6035,7 +6036,7 @@ E("u3-pk-simplify-fraction", 3, ["6.4"], 1, "gen", function(){
 E("u3-pk-common-denominator", 3, ["6.4"], 1, "gen", function(){
   var pairs=[[2,4],[2,6],[3,6],[4,6],[3,4],[4,8],[5,10],[6,8],[3,8],[4,10],[5,6],[6,10],[8,12],[9,12],[4,12],[3,9],[5,15],[6,9],[8,10],[10,15]];
   var pr=pick(pairs);var d1=pr[0],d2=pr[1];var L=u5lcm(d1,d2);
-  var na=ri(1,d1-1),nb=ri(1,d2-1);
+  var na=pick(u5cop(d1)),nb=pick(u5cop(d2)); /* coprime numerators: u5M reduces for display, so a shared factor would show the student a different fraction than the solution works with */
   var prompt="What is the least common denominator of "+u5M(na,d1)+" and "+u5M(nb,d2)+"?";
   var sol="List multiples of "+d1+": "+d1+", "+(2*d1)+", "+(3*d1)+", "+(4*d1)+". List multiples of "+d2+": "+d2+", "+(2*d2)+", "+(3*d2)+", "+(4*d2)+". The first multiple they share is "+L+", so the least common denominator is <b>"+L+"</b>.";
   return mcq(prompt,{t:String(L),fb:"Yes: "+L+" is the smallest number that is a multiple of both "+d1+" and "+d2+"."},
@@ -6321,10 +6322,10 @@ E("u5-pk-simplify-fraction", 5, ["3.12"], 1, "gen", function(){
   var k=ri(2,6);var N=p*k,D=q*k;
   var ctx=pick(["pure","length","mass","time"]);
   var prompt;
-  if(ctx==="length")prompt="A strip is "+u5M(N,D)+" of a metre long. Write this length as a fraction in lowest terms.";
-  else if(ctx==="mass")prompt="A bag has a mass of "+u5M(N,D)+" of a kilogram. Write this mass as a fraction in lowest terms.";
-  else if(ctx==="time")prompt="A task takes "+u5M(N,D)+" of an hour. Write this time as a fraction in lowest terms.";
-  else prompt="Write "+u5M(N,D)+" in lowest terms.";
+  if(ctx==="length")prompt="A strip is "+"\\("+FR(N,D)+"\\)"+" of a metre long. Write this length as a fraction in lowest terms.";
+  else if(ctx==="mass")prompt="A bag has a mass of "+"\\("+FR(N,D)+"\\)"+" of a kilogram. Write this mass as a fraction in lowest terms.";
+  else if(ctx==="time")prompt="A task takes "+"\\("+FR(N,D)+"\\)"+" of an hour. Write this time as a fraction in lowest terms.";
+  else prompt="Write "+"\\("+FR(N,D)+"\\)"+" in lowest terms.";
   var sol="The greatest common factor of "+N+" and "+D+" is "+k+". Divide the numerator and the denominator by "+k+".\\[ \\begin{aligned} "+FR(N,D)+" &= "+FR(N/k,D/k)+" \\end{aligned} \\] The answer is <b>"+u5M(p,q)+"</b>.";
   return mcq(prompt,{t:u5M(p,q),fb:"Yes: dividing "+N+" and "+D+" each by their common factor "+k+" gives lowest terms."},
     u5fopts([p,q],[{p:[p,D],fb:"That divides only the numerator by "+k+". The denominator must be divided by the same factor."},{p:[N,q],fb:"That divides only the denominator by "+k+". The numerator must be divided by the same factor."},{p:[N-k,D-k],fb:"That subtracts "+k+" from the top and bottom. Simplifying means dividing by a common factor, not subtracting."}]),
