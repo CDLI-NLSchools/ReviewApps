@@ -6455,7 +6455,7 @@ E("u8-laws-error",8,["1.6","1.7"],3,"gen",function(){
     else if (F === 4) Fstr = u8L(b, X + "^{" + r + "}") + " = \\left(" + u8L(b, X) + "\\right)^{" + r + "}";
     else Fstr = u8L(b, "(" + X + " - " + Y + ")") + " = " + u8L(b, X) + " - " + u8L(b, Y);
     var sol = "The three laws of logarithms are: \\(" + T1 + "\\), \\(" + T2 + "\\), and \\(" + T3 + "\\). The chosen equality breaks one of them: the laws apply to a product, a quotient, or a power of the argument, never to a sum or a difference of arguments, and the result is a sum or difference of logarithms, never a product or a power of logarithms.";
-    return mcq("For positive values of \\(" + X + "\\) and \\(" + Y + "\\), which equality is **NOT** true?",
+    return mcq("For positive values of \\(" + X + "\\) and \\(" + Y + "\\), which equality is <b>NOT</b> true?",
       "\\(" + Fstr + "\\)",
       ["\\(" + T1 + "\\)", "\\(" + T2 + "\\)", "\\(" + T3 + "\\)"],
       sol, {mode:"false", F:F, b:b});
@@ -9464,7 +9464,7 @@ E("u9-pk-binom-expand",9,["3.14"], 2, "gen", function () {
   var prompt = "Expand and simplify \\(" + u3Par(A, "x") + u3Par(B, "x") + "\\).";
   var sol = "Multiply each term of the binomial by each of the three terms of the trinomial, giving six partial products, then combine like terms." +
     u3Alg([u3Par(A, "x") + u3Par(B, "x") + " &= " + u3StrSeq(partials), "&= " + keyRaw]) +
-    "The expanded form is **" + u3M(keyRaw) + "**.";
+    "The expanded form is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), u3DistrCoeffs(prod, "x", 3), sol,
     { t: "expand", P: u3TermsOf(A, "x"), Q: u3TermsOf(B, "x") });
 });
@@ -9494,7 +9494,7 @@ E("u9-pk-monomial-expand",9,["3.14"], 1, "gen", function () {
   var prompt = "Expand and simplify \\(" + pdesc + "\\).";
   var sol = "Multiply the monomial by every term inside the brackets." +
     u3Alg([pdesc + " &= " + u3StrSeq(partials), "&= " + keyRaw]) +
-    "The expanded form is **" + u3M(keyRaw) + "**.";
+    "The expanded form is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), distr.slice(0, 3), sol, { t: "expand", P: P, Q: Q });
 });
 E("u9-pk-binomial-expand",9,["3.14"], 2, "gen", function () {
@@ -9505,7 +9505,7 @@ E("u9-pk-binomial-expand",9,["3.14"], 2, "gen", function () {
   var prompt = "Expand and simplify \\(" + u3Par(A, v) + u3Par(B, v) + "\\).";
   var sol = "Multiply each term of the first binomial by each term of the second binomial, then combine like terms." +
     u3Alg([u3Par(A, v) + u3Par(B, v) + " &= " + u3StrSeq(partials), "&= " + keyRaw]) +
-    "The expanded form is **" + u3M(keyRaw) + "**.";
+    "The expanded form is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), u3DistrCoeffs(prod, v, 3), sol,
     { t: "expand", P: u3TermsOf(A, v), Q: u3TermsOf(B, v) });
 });

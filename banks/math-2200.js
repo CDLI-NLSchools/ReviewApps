@@ -2667,7 +2667,7 @@ E("u2-pk-factor-monic",2,["4.41"], 2, "gen", function () {
   var prompt = "When the trinomial \\(" + poly + "\\) is factored as a product of two binomials, the two constant terms are two numbers. What is the larger of those two numbers?";
   var sol = "Find two numbers that multiply to \\(" + C + "\\) and add to \\(" + B + "\\): the numbers are \\(" + Math.min(r, s) + "\\) and \\(" + Math.max(r, s) + "\\)." +
     u3Alg([poly + " &= " + u3FacRaw("", facs, v)]) +
-    "The larger of the two constant terms is **" + ans + "**.";
+    "The larger of the two constant terms is <b>" + ans + "</b>.";
   return numq(prompt, ans, 0.01, sol, { t: "pair", r: r, s: s, B: B, C: C });
 });
 
@@ -2680,7 +2680,7 @@ E("u2-pk-binom-expand",2,["4.43"], 2, "gen", function () {
   var prompt = "Expand and simplify \\(" + u3Par(A, "x") + u3Par(B, "x") + "\\).";
   var sol = "Multiply each term of the binomial by each of the three terms of the trinomial, giving six partial products, then combine like terms." +
     u3Alg([u3Par(A, "x") + u3Par(B, "x") + " &= " + u3StrSeq(partials), "&= " + keyRaw]) +
-    "The expanded form is **" + u3M(keyRaw) + "**.";
+    "The expanded form is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), u3DistrCoeffs(prod, "x", 3), sol,
     { t: "expand", P: u3TermsOf(A, "x"), Q: u3TermsOf(B, "x") });
 });
@@ -3658,7 +3658,7 @@ E("u3-pk-gcf",3,["3.14"], 2, "gen", function () {
   var prompt = "Determine the greatest common factor of the terms of \\(" + polyRaw + "\\), and express the polynomial in factored form.";
   var sol = "Every term contains the factor \\(" + gRaw + "\\). Dividing each term by \\(" + gRaw + "\\) leaves \\(" + u3PC(quo, "x") + "\\), whose terms share no further common factor." +
     u3Alg([polyRaw + " &= " + keyRaw]) +
-    "In factored form, the polynomial is **" + u3M(keyRaw) + "**.";
+    "In factored form, the polynomial is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), shuffle(cands).slice(0, 3), sol,
     { t: "fac", g: gRaw, parts: [quo], v: "x" });
 });
@@ -3675,7 +3675,7 @@ E("u3-pk-factor-monic",3,["3.15"], 2, "gen", function () {
   var prompt = "When the trinomial \\(" + poly + "\\) is factored as a product of two binomials, the two constant terms are two numbers. What is the larger of those two numbers?";
   var sol = "Find two numbers that multiply to \\(" + C + "\\) and add to \\(" + B + "\\): the numbers are \\(" + Math.min(r, s) + "\\) and \\(" + Math.max(r, s) + "\\)." +
     u3Alg([poly + " &= " + u3FacRaw("", facs, v)]) +
-    "The larger of the two constant terms is **" + ans + "**.";
+    "The larger of the two constant terms is <b>" + ans + "</b>.";
   return numq(prompt, ans, 0.01, sol, { t: "pair", r: r, s: s, B: B, C: C });
 });
 
@@ -3699,7 +3699,7 @@ E("u3-pk-diff-squares",3,["3.15"], 1, "gen", function () {
     addT("(" + u3Str([[a + 1, 1, 0], [b, 0, 1]]) + ")(" + u3Str([[a + 1, 1, 0], [-b, 0, 1]]) + ")");
     var solT = "Each term is a perfect square: \\(" + poly + " = (" + a + "x)^2 - (" + b + "y)^2\\). A difference of squares factors into a sum and a difference of the two square roots. As a trinomial the middle term is \\(0\\): a pair of numbers multiplying to the negative constant term and adding to \\(0\\) must be opposites, which is why the two factors differ only in sign." +
       u3Alg([poly + " &= " + keyRaw]) +
-      "The factored form is **" + u3M(keyRaw) + "**.";
+      "The factored form is <b>" + u3M(keyRaw) + "</b>.";
     return mcq("Factor the polynomial \\(" + poly + "\\).",
       u3M(keyRaw), shuffle(cands).slice(0, 3), solT, { t: "facT", P: P, Q: Q, poly: poly });
   }
@@ -3712,7 +3712,7 @@ E("u3-pk-diff-squares",3,["3.15"], 1, "gen", function () {
   var sqTerm = a2 === 1 ? v + "^2" : (a2 * a2) + v + "^2";
   var sol = "Each term is a perfect square: \\(" + poly2 + " = (" + a2 + v + ")^2 - " + b2 + "^2\\). Written as a trinomial, this is \\(" + sqTerm + " + 0" + v + " - " + (b2 * b2) + "\\), the case where the middle coefficient is \\(0\\). A factor pair of \\(-" + (b2 * b2) + "\\) that adds to \\(0\\) must consist of opposites, \\(" + b2 + "\\) and \\(-" + b2 + "\\), so the factors differ only in sign." +
     u3Alg([poly2 + " &= " + keyRaw2]) +
-    "The factored form is **" + u3M(keyRaw2) + "**.";
+    "The factored form is <b>" + u3M(keyRaw2) + "</b>.";
   return mcq("Factor the polynomial \\(" + poly2 + "\\).",
     u3M(keyRaw2), u3FacDistr("", facs, v, prod, 3), sol,
     { t: "fac", g: "", parts: facs, v: v });
@@ -3745,7 +3745,7 @@ E("u3-pk-monomial-expand",3,["3.14"], 1, "gen", function () {
   var prompt = "Expand and simplify \\(" + pdesc + "\\).";
   var sol = "Multiply the monomial by every term inside the brackets." +
     u3Alg([pdesc + " &= " + u3StrSeq(partials), "&= " + keyRaw]) +
-    "The expanded form is **" + u3M(keyRaw) + "**.";
+    "The expanded form is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), distr.slice(0, 3), sol, { t: "expand", P: P, Q: Q });
 });
 
@@ -7078,7 +7078,7 @@ E("u5-pk-gcf",5,["3.5"], 2, "gen", function () {
   var prompt = "Determine the greatest common factor of the terms of \\(" + polyRaw + "\\), and express the polynomial in factored form.";
   var sol = "Every term contains the factor \\(" + gRaw + "\\). Dividing each term by \\(" + gRaw + "\\) leaves \\(" + u3PC(quo, "x") + "\\), whose terms share no further common factor." +
     u3Alg([polyRaw + " &= " + keyRaw]) +
-    "In factored form, the polynomial is **" + u3M(keyRaw) + "**.";
+    "In factored form, the polynomial is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), shuffle(cands).slice(0, 3), sol,
     { t: "fac", g: gRaw, parts: [quo], v: "x" });
 });
@@ -7097,7 +7097,7 @@ E("u5-pk-factor-product",5,["3.5"], 2, "gen", function () {
       u3Alg([poly + " &= " + keyRaw,
              keyRaw + " &= " + u3StrSeq(u3Mul(u3TermsOf(facs[0], "x"), u3TermsOf(facs[1], "x"))),
              "&= " + poly]) +
-      "As a product of its factors, the polynomial is **" + u3M(keyRaw) + "**.";
+      "As a product of its factors, the polynomial is <b>" + u3M(keyRaw) + "</b>.";
     return mcq("Express the polynomial \\(" + poly + "\\) as a product of its factors.",
       u3M(keyRaw), u3FacDistr("", facs, "x", prod, 3), sol,
       { t: "fac", g: "", parts: facs, v: "x" });
@@ -7119,7 +7119,7 @@ E("u5-pk-factor-product",5,["3.5"], 2, "gen", function () {
   addC(gRaw + u3Par([A + 1, B, C], "x"));
   var sol2 = "The terms share the factor \\(" + gRaw + "\\). Removing it leaves \\(" + u3PC(quo, "x") + "\\). Verify by multiplying the factors back out." +
     u3Alg([keyRaw2 + " &= " + u3StrSeq(prodTerms), "&= " + polyRaw]) +
-    "As a product of its factors, the polynomial is **" + u3M(keyRaw2) + "**.";
+    "As a product of its factors, the polynomial is <b>" + u3M(keyRaw2) + "</b>.";
   return mcq("Express the polynomial \\(" + polyRaw + "\\) as a product of its factors.",
     u3M(keyRaw2), shuffle(cands).slice(0, 3), sol2,
     { t: "fac", g: gRaw, parts: [quo], v: "x" });

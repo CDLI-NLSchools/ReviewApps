@@ -3335,7 +3335,7 @@ E("u3-monomial-expand", 3, ["3.4"], 1, "gen", function () {
   var prompt = "Expand and simplify \\(" + pdesc + "\\).";
   var sol = "Multiply the monomial by every term inside the brackets." +
     u3Alg([pdesc + " &= " + u3StrSeq(partials), "&= " + keyRaw]) +
-    "The expanded form is **" + u3M(keyRaw) + "**.";
+    "The expanded form is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), distr.slice(0, 3), sol, { t: "expand", P: P, Q: Q });
 });
 function u3PerturbTerms(terms) {
@@ -3365,7 +3365,7 @@ E("u3-mult-factor-rel", 3, ["3.8"], 1, "var", varset([
       ["Factoring is the reverse of multiplying: the factors of a polynomial add together to give the polynomial.",
        "Multiplying is the reverse of factoring: the terms of a product multiply together to give each separate factor.",
        "Multiplying and factoring are the same process: both rewrite a polynomial as a sum of its individual terms."],
-      "Multiplying builds a product from factors, and factoring undoes that step by splitting a polynomial back into the expressions that multiply to give it. The statement that says this is **" + key + "**",
+      "Multiplying builds a product from factors, and factoring undoes that step by splitting a polynomial back into the expressions that multiply to give it. The statement that says this is <b>" + key + "</b>",
       { t: "stmt", ans: key });
   },
   function () {
@@ -3375,7 +3375,7 @@ E("u3-mult-factor-rel", 3, ["3.8"], 1, "var", varset([
       ["Add \\((x + 2)\\) and \\((x + 3)\\) and confirm that the sum is \\(x^2 + 5x + 6\\).",
        "Multiply \\((x + 2)\\) by \\((x + 3)\\) and confirm that the product is \\(x^2 + 6x + 5\\).",
        "Substitute \\(x = 0\\) into \\(x^2 + 5x + 6\\) and confirm that the value is \\(6\\)."],
-      "Factoring and multiplying are inverse processes, so a factorization is checked by multiplying the factors back together and comparing with the original polynomial. The checking action is **" + key + "**",
+      "Factoring and multiplying are inverse processes, so a factorization is checked by multiplying the factors back together and comparing with the original polynomial. The checking action is <b>" + key + "</b>",
       { t: "stmt", ans: key });
   },
   function () {
@@ -3385,7 +3385,7 @@ E("u3-mult-factor-rel", 3, ["3.8"], 1, "var", varset([
       ["\\((x + 1)(x + 4) = x^2 + 4x + 4\\) and \\(x^2 + 4x + 4 = (x + 1)(x + 4)\\)",
        "\\((x + 2)(x + 3) = x^2 + 6x + 6\\) and \\(x^2 + 6x + 6 = (x + 2)(x + 3)\\)",
        "\\((x + 1)(x + 4) = x^2 + 5x + 4\\) and \\(x^2 + 5x + 4 = (x + 2)(x + 3)\\)"],
-      "The two equations must use the same polynomial and the same factors, with one equation expanding the product and the other splitting the polynomial into those factors. Since \\((x + 1)(x + 4) = x^2 + 5x + 4\\), the inverse pair is **" + key + "**.",
+      "The two equations must use the same polynomial and the same factors, with one equation expanding the product and the other splitting the polynomial into those factors. Since \\((x + 1)(x + 4) = x^2 + 5x + 4\\), the inverse pair is <b>" + key + "</b>.",
       { t: "stmt", ans: key });
   },
   function () {
@@ -3395,7 +3395,7 @@ E("u3-mult-factor-rel", 3, ["3.8"], 1, "var", varset([
       ["Because factoring rewrites the polynomial as a sum, and expanding a sum reverses that rewriting exactly.",
        "Because each factor has the same degree as the polynomial, so expanding restores every original term in its place.",
        "Because expanding removes the common factor from each term of the polynomial, which returns the terms to their places."],
-      "A factored form is a product of expressions that together equal the polynomial, so multiplying them back out must reproduce the polynomial exactly. The reason is **" + key + "**",
+      "A factored form is a product of expressions that together equal the polynomial, so multiplying them back out must reproduce the polynomial exactly. The reason is <b>" + key + "</b>",
       { t: "stmt", ans: key });
   }
 ]));
@@ -3409,7 +3409,7 @@ E("u3-two-digit", 3, ["3.1"], 1, "var", varset([
       ["\\((30 + 4)(20 + 4)\\)", "\\((30 + 4) + (20 + 6)\\)", "\\((30 \\times 20) + (4 \\times 6)\\)"],
       "Split each number into tens and ones: \\(34 = 30 + 4\\) and \\(26 = 20 + 6\\). The product keeps both splits as factors, exactly like a product of binomials." +
       u3Alg(["(30 + 4)(20 + 6) &= 600 + 180 + 80 + 24", "&= 884"]) +
-      "This matches \\(34 \\times 26 = 884\\). The matching expression is **" + key + "**.",
+      "This matches \\(34 \\times 26 = 884\\). The matching expression is <b>" + key + "</b>.",
       { t: "stmt", ans: key });
   },
   function () {
@@ -3418,7 +3418,7 @@ E("u3-two-digit", 3, ["3.1"], 1, "var", varset([
       ["1235", "1435", "1640"],
       "Each part of one split multiplies each part of the other, as with binomials." +
       u3Alg(["(40 + 7)(30 + 5) &= 1200 + 200 + 210 + 35", "&= 1645"]) +
-      "The value of the product is **1645**.",
+      "The value of the product is <b>1645</b>.",
       { t: "stmt", ans: "1645" });
   },
   function () {
@@ -3426,7 +3426,7 @@ E("u3-two-digit", 3, ["3.1"], 1, "var", varset([
     return mcq("Setting \\(x = 10\\) in the binomial product \\((x + 3)(x + 5)\\) produces a product of two two-digit numbers. Which product is it?",
       key,
       ["\\(10 \\times 15\\)", "\\(13 \\times 8\\)", "\\(30 \\times 50\\)"],
-      "Replace \\(x\\) by \\(10\\) in each binomial: \\(x + 3 = 13\\) and \\(x + 5 = 15\\). A binomial in \\(x\\) with \\(x = 10\\) is a two-digit number split into tens and ones. The product is **" + key + "**.",
+      "Replace \\(x\\) by \\(10\\) in each binomial: \\(x + 3 = 13\\) and \\(x + 5 = 15\\). A binomial in \\(x\\) with \\(x = 10\\) is a two-digit number split into tens and ones. The product is <b>" + key + "</b>.",
       { t: "stmt", ans: key });
   },
   function () {
@@ -3434,7 +3434,7 @@ E("u3-two-digit", 3, ["3.1"], 1, "var", varset([
     return mcq("The product \\(52 \\times 23\\) is split as \\((50 + 2)(20 + 3)\\). Which list gives all four partial products?",
       key,
       ["1000, 150, 40", "1000, 100, 60, 6", "100, 150, 40, 6"],
-      "Multiply each part of the first split by each part of the second: \\(50 \\times 20 = 1000\\), \\(50 \\times 3 = 150\\), \\(2 \\times 20 = 40\\) and \\(2 \\times 3 = 6\\). Their sum is \\(1196 = 52 \\times 23\\). The four partial products are **" + key + "**.",
+      "Multiply each part of the first split by each part of the second: \\(50 \\times 20 = 1000\\), \\(50 \\times 3 = 150\\), \\(2 \\times 20 = 40\\) and \\(2 \\times 3 = 6\\). Their sum is \\(1196 = 52 \\times 23\\). The four partial products are <b>" + key + "</b>.",
       { t: "stmt", ans: key });
   }
 ]));
@@ -3448,7 +3448,7 @@ E("u3-area-model", 3, ["3.2", "3.3"], 1, "var", varset([
       ["\\(x^2 + 8x + 8\\)", "\\(x^2 + 6x + 6\\)", "\\(x^2 + 4x + 8\\)"],
       "The area of the whole rectangle is the sum of the four partial areas." +
       u3Alg(["x^2 + 2x + 4x + 8 &= x^2 + 6x + 8"]) +
-      "The total area is **" + key + "**.",
+      "The total area is <b>" + key + "</b>.",
       { t: "stmt", ans: key });
   },
   function () {
@@ -3456,7 +3456,7 @@ E("u3-area-model", 3, ["3.2", "3.3"], 1, "var", varset([
     return mcq("Four regions of an area model have areas \\(x^2\\), \\(3x\\), \\(4x\\) and \\(12\\). The total area, \\(x^2 + 7x + 12\\), is the product of the rectangle's length and width. Which expressions give the length and width?",
       key,
       ["\\((x + 2)(x + 6)\\)", "\\((x + 1)(x + 12)\\)", "\\((x + 3)(x + 7)\\)"],
-      "The side pieces must produce the partial areas: \\(3x\\) comes from a side piece of \\(3\\) meeting the \\(x\\) side, and \\(4x\\) from a side piece of \\(4\\), with \\(3 \\times 4 = 12\\) for the corner region. The sides are \\(x + 3\\) and \\(x + 4\\), so the length and width are given by **" + key + "**.",
+      "The side pieces must produce the partial areas: \\(3x\\) comes from a side piece of \\(3\\) meeting the \\(x\\) side, and \\(4x\\) from a side piece of \\(4\\), with \\(3 \\times 4 = 12\\) for the corner region. The sides are \\(x + 3\\) and \\(x + 4\\), so the length and width are given by <b>" + key + "</b>.",
       { t: "stmt", ans: key });
   },
   function () {
@@ -3464,7 +3464,7 @@ E("u3-area-model", 3, ["3.2", "3.3"], 1, "var", varset([
     return mcq("An algebra-tile rectangle uses one \\(x^2\\) tile, five \\(x\\) tiles and six unit tiles, with no gaps. Which product does the rectangle model?",
       key,
       ["\\((x + 1)(x + 6)\\)", "\\((x + 2)(x + 2)\\)", "\\((x + 5)(x + 6)\\)"],
-      "The tiles total \\(x^2 + 5x + 6\\). The side pieces must add to \\(5\\) (the number of \\(x\\) tiles along the sides) and multiply to \\(6\\) (the unit tiles in the corner), giving pieces of \\(2\\) and \\(3\\). The product modelled is **" + key + "**.",
+      "The tiles total \\(x^2 + 5x + 6\\). The side pieces must add to \\(5\\) (the number of \\(x\\) tiles along the sides) and multiply to \\(6\\) (the unit tiles in the corner), giving pieces of \\(2\\) and \\(3\\). The product modelled is <b>" + key + "</b>.",
       { t: "stmt", ans: key });
   },
   function () {
@@ -3472,7 +3472,7 @@ E("u3-area-model", 3, ["3.2", "3.3"], 1, "var", varset([
     return mcq("In an area model for \\((x + 2)(x + 5)\\), one side of the rectangle is \\(x + 2\\). The four regions have areas \\(x^2\\), \\(5x\\), \\(2x\\) and \\(10\\). What is the other side of the rectangle?",
       key,
       ["\\(x + 2\\)", "\\(x + 7\\)", "\\(x + 10\\)"],
-      "The region \\(5x\\) is formed where the \\(x\\) part of the known side meets a piece of length \\(5\\) on the other side, and the corner \\(10 = 2 \\times 5\\) confirms that piece. The other side is **" + key + "**.",
+      "The region \\(5x\\) is formed where the \\(x\\) part of the known side meets a piece of length \\(5\\) on the other side, and the corner \\(10 = 2 \\times 5\\) confirms that piece. The other side is <b>" + key + "</b>.",
       { t: "stmt", ans: key });
   }
 ]));
@@ -3486,7 +3486,7 @@ E("u3-binomial-expand", 3, ["3.4"], 2, "gen", function () {
   var prompt = "Expand and simplify \\(" + u3Par(A, v) + u3Par(B, v) + "\\).";
   var sol = "Multiply each term of the first binomial by each term of the second binomial, then combine like terms." +
     u3Alg([u3Par(A, v) + u3Par(B, v) + " &= " + u3StrSeq(partials), "&= " + keyRaw]) +
-    "The expanded form is **" + u3M(keyRaw) + "**.";
+    "The expanded form is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), u3DistrCoeffs(prod, v, 3), sol,
     { t: "expand", P: u3TermsOf(A, v), Q: u3TermsOf(B, v) });
 });
@@ -3500,7 +3500,7 @@ E("u3-binom-tri-expand", 3, ["3.4"], 2, "gen", function () {
   var prompt = "Expand and simplify \\(" + u3Par(A, "x") + u3Par(B, "x") + "\\).";
   var sol = "Multiply each term of the binomial by each of the three terms of the trinomial, giving six partial products, then combine like terms." +
     u3Alg([u3Par(A, "x") + u3Par(B, "x") + " &= " + u3StrSeq(partials), "&= " + keyRaw]) +
-    "The expanded form is **" + u3M(keyRaw) + "**.";
+    "The expanded form is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), u3DistrCoeffs(prod, "x", 3), sol,
     { t: "expand", P: u3TermsOf(A, "x"), Q: u3TermsOf(B, "x") });
 });
@@ -3529,7 +3529,7 @@ E("u3-special-products", 3, ["3.4"], 2, "gen", function () {
     ? "Squaring a binomial produces three terms; the middle term comes from both cross products together."
     : "The two factors are conjugates, so the two cross products are opposites and cancel.") +
     u3Alg(steps) +
-    "The coefficient of \\(" + v + "\\) in the expansion is **" + ans + "**.";
+    "The coefficient of \\(" + v + "\\) in the expansion is <b>" + ans + "</b>.";
   return numq(prompt, ans, 0.01, sol, { t: "coef", P: A, Q: B, v: v });
 });
 
@@ -3553,7 +3553,7 @@ E("u3-verify-sub", 3, ["3.5"], 1, "gen", function () {
     (bad
       ? "The two values differ, so the claim does not hold. "
       : "The two values agree, which supports the claim (one value is a check, not a proof). ") +
-    "The value of the left side is **" + lhs + "**.";
+    "The value of the left side is <b>" + lhs + "</b>.";
   return numq(prompt, lhs, 0.01, sol, { t: "verify", b: b, c: c, v: v, rhs: rhs });
 });
 
@@ -3587,7 +3587,7 @@ E("u3-gcf", 3, ["3.10"], 2, "gen", function () {
   var prompt = "Determine the greatest common factor of the terms of \\(" + polyRaw + "\\), and express the polynomial in factored form.";
   var sol = "Every term contains the factor \\(" + gRaw + "\\). Dividing each term by \\(" + gRaw + "\\) leaves \\(" + u3PC(quo, "x") + "\\), whose terms share no further common factor." +
     u3Alg([polyRaw + " &= " + keyRaw]) +
-    "In factored form, the polynomial is **" + u3M(keyRaw) + "**.";
+    "In factored form, the polynomial is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), shuffle(cands).slice(0, 3), sol,
     { t: "fac", g: gRaw, parts: [quo], v: "x" });
 });
@@ -3604,7 +3604,7 @@ E("u3-factor-monic", 3, ["3.12"], 2, "gen", function () {
   var prompt = "When the trinomial \\(" + poly + "\\) is factored as a product of two binomials, the two constant terms are two numbers. What is the larger of those two numbers?";
   var sol = "Find two numbers that multiply to \\(" + C + "\\) and add to \\(" + B + "\\): the numbers are \\(" + Math.min(r, s) + "\\) and \\(" + Math.max(r, s) + "\\)." +
     u3Alg([poly + " &= " + u3FacRaw("", facs, v)]) +
-    "The larger of the two constant terms is **" + ans + "**.";
+    "The larger of the two constant terms is <b>" + ans + "</b>.";
   return numq(prompt, ans, 0.01, sol, { t: "pair", r: r, s: s, B: B, C: C });
 });
 
@@ -3626,7 +3626,7 @@ E("u3-factor-hard", 3, ["3.12"], 2, "gen", function () {
     u3Alg([poly + " &= " + keyRaw,
            keyRaw + " &= " + u3StrSeq(u3Mul(u3TermsOf(facs[0], "x"), u3TermsOf(facs[1], "x"))),
            "&= " + poly]) +
-    "The factored form is **" + u3M(keyRaw) + "**.";
+    "The factored form is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), u3FacDistr("", facs, "x", prod, 3), sol,
     { t: "fac", g: "", parts: facs, v: "x" });
 });
@@ -3645,7 +3645,7 @@ E("u3-factor-product", 3, ["3.9", "3.11"], 2, "gen", function () {
       u3Alg([poly + " &= " + keyRaw,
              keyRaw + " &= " + u3StrSeq(u3Mul(u3TermsOf(facs[0], "x"), u3TermsOf(facs[1], "x"))),
              "&= " + poly]) +
-      "As a product of its factors, the polynomial is **" + u3M(keyRaw) + "**.";
+      "As a product of its factors, the polynomial is <b>" + u3M(keyRaw) + "</b>.";
     return mcq("Express the polynomial \\(" + poly + "\\) as a product of its factors.",
       u3M(keyRaw), u3FacDistr("", facs, "x", prod, 3), sol,
       { t: "fac", g: "", parts: facs, v: "x" });
@@ -3667,7 +3667,7 @@ E("u3-factor-product", 3, ["3.9", "3.11"], 2, "gen", function () {
   addC(gRaw + u3Par([A + 1, B, C], "x"));
   var sol2 = "The terms share the factor \\(" + gRaw + "\\). Removing it leaves \\(" + u3PC(quo, "x") + "\\). Verify by multiplying the factors back out." +
     u3Alg([keyRaw2 + " &= " + u3StrSeq(prodTerms), "&= " + polyRaw]) +
-    "As a product of its factors, the polynomial is **" + u3M(keyRaw2) + "**.";
+    "As a product of its factors, the polynomial is <b>" + u3M(keyRaw2) + "</b>.";
   return mcq("Express the polynomial \\(" + polyRaw + "\\) as a product of its factors.",
     u3M(keyRaw2), shuffle(cands).slice(0, 3), sol2,
     { t: "fac", g: gRaw, parts: [quo], v: "x" });
@@ -3711,7 +3711,7 @@ E("u3-factor-gcf-first", 3, ["3.9", "3.10"], 2, "gen", function () {
   var prompt = "Factor the polynomial \\(" + poly + "\\) completely.";
   var sol = "First remove the greatest common factor, \\(" + g0 + "\\), then factor what remains. " + note + "." +
     u3Alg([poly + " &= " + g0 + "(" + quoRaw + ")", "&= " + keyRaw]) +
-    "Factored completely, the polynomial is **" + u3M(keyRaw) + "**.";
+    "Factored completely, the polynomial is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), shuffle(cands).slice(0, 3), sol,
     { t: "fac", g: String(g0), parts: facs, v: "x" });
 });
@@ -3736,7 +3736,7 @@ E("u3-diff-squares", 3, ["3.14"], 1, "gen", function () {
     addT("(" + u3Str([[a + 1, 1, 0], [b, 0, 1]]) + ")(" + u3Str([[a + 1, 1, 0], [-b, 0, 1]]) + ")");
     var solT = "Each term is a perfect square: \\(" + poly + " = (" + a + "x)^2 - (" + b + "y)^2\\). A difference of squares factors into a sum and a difference of the two square roots. As a trinomial the middle term is \\(0\\): a pair of numbers multiplying to the negative constant term and adding to \\(0\\) must be opposites, which is why the two factors differ only in sign." +
       u3Alg([poly + " &= " + keyRaw]) +
-      "The factored form is **" + u3M(keyRaw) + "**.";
+      "The factored form is <b>" + u3M(keyRaw) + "</b>.";
     return mcq("Factor the polynomial \\(" + poly + "\\).",
       u3M(keyRaw), shuffle(cands).slice(0, 3), solT, { t: "facT", P: P, Q: Q, poly: poly });
   }
@@ -3749,7 +3749,7 @@ E("u3-diff-squares", 3, ["3.14"], 1, "gen", function () {
   var sqTerm = a2 === 1 ? v + "^2" : (a2 * a2) + v + "^2";
   var sol = "Each term is a perfect square: \\(" + poly2 + " = (" + a2 + v + ")^2 - " + b2 + "^2\\). Written as a trinomial, this is \\(" + sqTerm + " + 0" + v + " - " + (b2 * b2) + "\\), the case where the middle coefficient is \\(0\\). A factor pair of \\(-" + (b2 * b2) + "\\) that adds to \\(0\\) must consist of opposites, \\(" + b2 + "\\) and \\(-" + b2 + "\\), so the factors differ only in sign." +
     u3Alg([poly2 + " &= " + keyRaw2]) +
-    "The factored form is **" + u3M(keyRaw2) + "**.";
+    "The factored form is <b>" + u3M(keyRaw2) + "</b>.";
   return mcq("Factor the polynomial \\(" + poly2 + "\\).",
     u3M(keyRaw2), u3FacDistr("", facs, v, prod, 3), sol,
     { t: "fac", g: "", parts: facs, v: v });
@@ -3765,7 +3765,7 @@ E("u3-perfect-square", 3, ["3.12"], 1, "gen", function () {
   var prompt = "The trinomial \\(" + poly + "\\) is a perfect-square trinomial. It factors as the square of a binomial, \\((p" + v + " + k)^2\\), for some numbers \\(p\\) and \\(k\\). What is the value of \\(k\\)?";
   var sol = "The first term is \\((" + a + v + ")^2\\), so \\(p = " + a + "\\). The last term is \\(" + b + "^2\\), and the middle term checks: \\(2 \\times " + a + " \\times " + b + " = " + (2 * a * b) + "\\), with the sign of the middle term giving the sign of \\(k\\)." +
     u3Alg([poly + " &= " + facRaw]) +
-    "The value of \\(k\\) is **" + (s * b) + "**.";
+    "The value of \\(k\\) is <b>" + (s * b) + "</b>.";
   return numq(prompt, s * b, 0.01, sol, { t: "pst", a: a, b: b, s: s });
 });
 
@@ -3778,7 +3778,7 @@ E("u3-strategy", 3, ["3.6"], 3, "var", varset([
       ["Multiply each term of the first binomial by the matching term of the second binomial, then combine like terms.",
        "Multiply the first terms together and the last terms together, then add the two products together.",
        "Add each term of the first binomial to each term of the second binomial, then combine like terms."],
-      "Every term of one binomial must meet every term of the other, giving four partial products before like terms are combined; matching terms only, or using only the first and last products, misses the cross products. The correct generalization is **" + key + "**",
+      "Every term of one binomial must meet every term of the other, giving four partial products before like terms are combined; matching terms only, or using only the first and last products, misses the cross products. The correct generalization is <b>" + key + "</b>",
       { t: "stmt", ans: key });
   },
   function () {
@@ -3788,7 +3788,7 @@ E("u3-strategy", 3, ["3.6"], 3, "var", varset([
       ["Five, because the number of partial products is the sum of the numbers of terms in the factors, 2 + 3.",
        "Six, because the binomial contributes 3 partial products and the trinomial contributes 3 more.",
        "Nine, because each of the 3 terms of the trinomial multiplies each of the 3 terms of the trinomial."],
-      "Count the pairings: each of the 2 terms of the binomial pairs with each of the 3 terms of the trinomial, giving \\(2 \\times 3 = 6\\) partial products. The correct count is **" + key + "**",
+      "Count the pairings: each of the 2 terms of the binomial pairs with each of the 3 terms of the trinomial, giving \\(2 \\times 3 = 6\\) partial products. The correct count is <b>" + key + "</b>",
       { t: "stmt", ans: key });
   },
   function () {
@@ -3798,7 +3798,7 @@ E("u3-strategy", 3, ["3.6"], 3, "var", varset([
       ["FOIL names pairings for two binomials only; the trinomial must be factored into binomials before any multiplication can begin.",
        "FOIL works only when both factors have positive terms; the trinomial's terms must be rearranged into the right order first.",
        "FOIL gives the outer and inner products twice, so two of the six partial products have to be discarded at the end of the work."],
-      "FOIL is a checklist for the four pairings of two binomials. With a trinomial factor there are six pairings, and the two extra ones involve the third term. The reason is **" + key + "**",
+      "FOIL is a checklist for the four pairings of two binomials. With a trinomial factor there are six pairings, and the two extra ones involve the third term. The reason is <b>" + key + "</b>",
       { t: "stmt", ans: key });
   },
   function () {
@@ -3808,7 +3808,7 @@ E("u3-strategy", 3, ["3.6"], 3, "var", varset([
       ["Multiply the monomial by the first and last terms of the polynomial, then combine any like terms.",
        "Multiply the monomial by the term with the highest degree, then add the remaining terms unchanged.",
        "Add the monomial to every term of the polynomial, then combine any like terms in the result."],
-      "Distribution has no term limit: the monomial multiplies every term of the polynomial, however many there are, and like terms are combined afterwards. The strategy is **" + key + "**",
+      "Distribution has no term limit: the monomial multiplies every term of the polynomial, however many there are, and like terms are combined afterwards. The strategy is <b>" + key + "</b>",
       { t: "stmt", ans: key });
   }
 ]));
@@ -3822,7 +3822,7 @@ E("u3-mult-error", 3, ["3.7"], 3, "var", varset([
       ["\\(x^2 + 15\\)", "\\(x^2 + 5x + 15\\)", "\\(x^2 + 8x + 8\\)"],
       "The error: only the first and last terms were multiplied, so the two cross products are missing. Correct work:" +
       u3Alg(["(x + 3)(x + 5) &= x^2 + 5x + 3x + 15", "&= x^2 + 8x + 15"]) +
-      "The correct product is **" + key + "**.",
+      "The correct product is <b>" + key + "</b>.",
       { t: "expand", P: [[1, 1, 0], [3, 0, 0]], Q: [[1, 1, 0], [5, 0, 0]] });
   },
   function () {
@@ -3832,7 +3832,7 @@ E("u3-mult-error", 3, ["3.7"], 3, "var", varset([
       ["\\(2x^2 + 5x + 4\\)", "\\(2x^2 + 9x + 5\\)", "\\(2x^2 + 6x + 4\\)"],
       "The error is in the outer product: \\(2x \\times 4 = 8x\\), not \\(4x\\). Correct work:" +
       u3Alg(["(2x + 1)(x + 4) &= 2x^2 + 8x + x + 4", "&= 2x^2 + 9x + 4"]) +
-      "The correct product is **" + key + "**.",
+      "The correct product is <b>" + key + "</b>.",
       { t: "expand", P: [[2, 1, 0], [1, 0, 0]], Q: [[1, 1, 0], [4, 0, 0]] });
   },
   function () {
@@ -3842,7 +3842,7 @@ E("u3-mult-error", 3, ["3.7"], 3, "var", varset([
       ["\\(x^2 + 4x + 12\\)", "\\(x^2 - 4x - 12\\)", "\\(x^2 + 8x - 12\\)"],
       "The error is in the last step: the constant term \\(-12\\) changed sign while the \\(x\\) terms were combined. Correct work:" +
       u3Alg(["(x - 2)(x + 6) &= x^2 + 6x - 2x - 12", "&= x^2 + 4x - 12"]) +
-      "The correct product is **" + key + "**.",
+      "The correct product is <b>" + key + "</b>.",
       { t: "expand", P: [[1, 1, 0], [-2, 0, 0]], Q: [[1, 1, 0], [6, 0, 0]] });
   },
   function () {
@@ -3852,7 +3852,7 @@ E("u3-mult-error", 3, ["3.7"], 3, "var", varset([
       ["\\(3x^3 + 6x^2 + 4\\)", "\\(3x^3 + 6x^2 + 12\\)", "\\(3x^3 + 2x^2 + 12x\\)"],
       "The error: the last term was never multiplied by \\(3x\\); it should become \\(3x \\times 4 = 12x\\). Correct work:" +
       u3Alg(["3x(x^2 + 2x + 4) &= 3x^3 + 6x^2 + 12x"]) +
-      "The correct product is **" + key + "**.",
+      "The correct product is <b>" + key + "</b>.",
       { t: "expand", P: [[3, 1, 0]], Q: [[1, 2, 0], [2, 1, 0], [4, 0, 0]] });
   },
   function () {
@@ -3862,7 +3862,7 @@ E("u3-mult-error", 3, ["3.7"], 3, "var", varset([
       ["\\(x^2 + 16\\)", "\\(x^2 + 4x + 16\\)", "\\(x^2 + 8x + 8\\)"],
       "The error: squaring a binomial is not squaring each term separately; the cross term \\(2 \\times x \\times 4 = 8x\\) is missing. Correct work:" +
       u3Alg(["(x + 4)^2 &= x^2 + 4x + 4x + 16", "&= x^2 + 8x + 16"]) +
-      "The correct product is **" + key + "**.",
+      "The correct product is <b>" + key + "</b>.",
       { t: "expand", P: [[1, 1, 0], [4, 0, 0]], Q: [[1, 1, 0], [4, 0, 0]] });
   }
 ]));
@@ -3876,7 +3876,7 @@ E("u3-factor-error", 3, ["3.13"], 3, "var", varset([
       ["\\((x + 6)(x + 2)\\)", "\\((x + 1)(x + 12)\\)", "\\((x + 2)(x + 5)\\)"],
       "The error: \\(6\\) and \\(2\\) multiply to \\(12\\) but add to \\(8\\), not \\(7\\). The pair that multiplies to \\(12\\) and adds to \\(7\\) is \\(3\\) and \\(4\\)." +
       u3Alg(["x^2 + 7x + 12 &= (x + 3)(x + 4)"]) +
-      "The correct factorization is **" + key + "**.",
+      "The correct factorization is <b>" + key + "</b>.",
       { t: "fac", g: "", parts: [[1, 3], [1, 4]], v: "x" });
   },
   function () {
@@ -3886,7 +3886,7 @@ E("u3-factor-error", 3, ["3.13"], 3, "var", varset([
       ["\\((x - 1)(x - 6)\\)", "\\((x + 2)(x + 3)\\)", "\\((x - 1)(x - 5)\\)"],
       "The error: \\(-1\\) and \\(-6\\) multiply to \\(6\\) but add to \\(-7\\), not \\(-5\\). The pair that multiplies to \\(6\\) and adds to \\(-5\\) is \\(-2\\) and \\(-3\\)." +
       u3Alg(["x^2 - 5x + 6 &= (x - 2)(x - 3)"]) +
-      "The correct factorization is **" + key + "**.",
+      "The correct factorization is <b>" + key + "</b>.",
       { t: "fac", g: "", parts: [[1, -2], [1, -3]], v: "x" });
   },
   function () {
@@ -3896,7 +3896,7 @@ E("u3-factor-error", 3, ["3.13"], 3, "var", varset([
       ["\\((2x + 3)(x + 1)\\)", "\\((2x + 3)(x + 3)\\)", "\\((2x + 1)(x + 1)\\)"],
       "The error: the student's factors expand to \\(2x^2 + 5x + 3\\); the cross sum is \\(2 \\times 1 + 3 \\times 1 = 5\\), not \\(7\\). Swapping the constants gives a cross sum of \\(2 \\times 3 + 1 \\times 1 = 7\\)." +
       u3Alg(["2x^2 + 7x + 3 &= (2x + 1)(x + 3)"]) +
-      "The correct factorization is **" + key + "**.",
+      "The correct factorization is <b>" + key + "</b>.",
       { t: "fac", g: "", parts: [[2, 1], [1, 3]], v: "x" });
   },
   function () {
@@ -3906,7 +3906,7 @@ E("u3-factor-error", 3, ["3.13"], 3, "var", varset([
       ["\\((x - 4)(x - 4)\\)", "\\((x + 4)(x + 4)\\)", "\\((x - 2)(x - 8)\\)"],
       "The error: \\((x - 4)(x - 4)\\) expands to \\(x^2 - 8x + 16\\), which has an \\(x\\) term. A difference of squares needs one factor with \\(+4\\) and one with \\(-4\\), so the \\(x\\) terms cancel." +
       u3Alg(["x^2 - 16 &= (x + 4)(x - 4)"]) +
-      "The correct factorization is **" + key + "**.",
+      "The correct factorization is <b>" + key + "</b>.",
       { t: "fac", g: "", parts: [[1, 4], [1, -4]], v: "x" });
   },
   function () {
@@ -3916,7 +3916,7 @@ E("u3-factor-error", 3, ["3.13"], 3, "var", varset([
       ["\\(4x(x + 8)\\)", "\\(4(x^2 + 8x)\\)", "\\(2x(2x + 8)\\)"],
       "The error: the second term inside the brackets was not divided by the common factor; \\(8x \\div 4x = 2\\), not \\(8\\)." +
       u3Alg(["4x^2 + 8x &= 4x(x + 2)"]) +
-      "The correct factorization is **" + key + "**.",
+      "The correct factorization is <b>" + key + "</b>.",
       { t: "fac", g: "4x", parts: [[1, 2]], v: "x" });
   }
 ]));
@@ -3949,7 +3949,7 @@ E("u3-factorable-k", 3, ["3.12"], 2, "gen", function () {
       dSign = sums.slice();
       dExtra = key.concat([c + 2, -(c + 2)]);
       prompt = "Find all integer values of \\(k\\) for which the trinomial \\(x^2 + kx + " + c + "\\) is factorable over the integers.";
-      sol = "The trinomial factors over the integers exactly when it splits as \\((x + p)(x + q)\\) with \\(pq = " + c + "\\) and \\(p + q = k\\). The factor pairs of \\(" + c + "\\) are " + pairList(P) + ". Their sums are " + sums.join(", ") + ", and taking both members of a pair negative gives the further sums " + sums.map(function (s) { return -s; }).join(", ") + ". No other pair of integers has product \\(" + c + "\\), so these are all the possible values of \\(k\\). The values of \\(k\\) are **" + u3M(u3SetRaw(key)) + "**.";
+      sol = "The trinomial factors over the integers exactly when it splits as \\((x + p)(x + q)\\) with \\(pq = " + c + "\\) and \\(p + q = k\\). The factor pairs of \\(" + c + "\\) are " + pairList(P) + ". Their sums are " + sums.join(", ") + ", and taking both members of a pair negative gives the further sums " + sums.map(function (s) { return -s; }).join(", ") + ". No other pair of integers has product \\(" + c + "\\), so these are all the possible values of \\(k\\). The values of \\(k\\) are <b>" + u3M(u3SetRaw(key)) + "</b>.";
       sig = { t: "kfac", arm: "mid", c: c };
     } else if (arm === "midneg") {
       var m = ri(6, 48), P2 = u3PairsOf(m);
@@ -3966,7 +3966,7 @@ E("u3-factorable-k", 3, ["3.12"], 2, "gen", function () {
       prompt = "Find all integer values of \\(k\\) for which the trinomial \\(x^2 + kx - " + m + "\\) is factorable over the integers.";
       sol = "The trinomial factors over the integers exactly when it splits as \\((x + p)(x - q)\\) with \\(pq = " + m + "\\), and then \\(k = p - q\\). The factor pairs of \\(" + m + "\\) are " + pairList(P2) + ", and their differences \\(q - p\\) are " + diffs.join(", ") + ". Interchanging the two members of a pair changes the sign of the difference, which gives the negative values of \\(k\\) as well." +
         (hasZero ? " The pair with equal members has difference \\(0\\), so \\(k = 0\\) is included." : "") +
-        " The values of \\(k\\) are **" + u3M(u3SetRaw(key)) + "**.";
+        " The values of \\(k\\) are <b>" + u3M(u3SetRaw(key)) + "</b>.";
       sig = { t: "kfac", arm: "midneg", c: -m };
     } else if (arm === "const") {
       var b = ri(4, 10), prods = [], prs = [];
@@ -3977,7 +3977,7 @@ E("u3-factorable-k", 3, ["3.12"], 2, "gen", function () {
       dSign = key.concat([0]);
       dExtra = key.concat([-(b + 1)]);
       prompt = "Find all positive integer values of \\(k\\) for which the trinomial \\(x^2 + " + b + "x + k\\) is factorable over the integers.";
-      sol = "The trinomial factors over the integers exactly when it splits as \\((x + p)(x + q)\\) with \\(p + q = " + b + "\\) and \\(pq = k\\). Because \\(k\\) must be positive, \\(p\\) and \\(q\\) have the same sign, and because their sum is the positive number \\(" + b + "\\), both are positive. The pairs of positive integers with sum \\(" + b + "\\) are " + pairList(prs) + ", and their products are " + key.join(", ") + ". The positive integer values of \\(k\\) are **" + u3M(u3SetRaw(key)) + "**.";
+      sol = "The trinomial factors over the integers exactly when it splits as \\((x + p)(x + q)\\) with \\(p + q = " + b + "\\) and \\(pq = k\\). Because \\(k\\) must be positive, \\(p\\) and \\(q\\) have the same sign, and because their sum is the positive number \\(" + b + "\\), both are positive. The pairs of positive integers with sum \\(" + b + "\\) are " + pairList(prs) + ", and their products are " + key.join(", ") + ". The positive integer values of \\(k\\) are <b>" + u3M(u3SetRaw(key)) + "</b>.";
       sig = { t: "kfac", arm: "const", b: b };
     } else {
       var sgn = pick([1, -1]), m2 = ri(6, 36), c2 = sgn * m2, P3 = u3PairsOf(m2);
@@ -4000,7 +4000,7 @@ E("u3-factorable-k", 3, ["3.12"], 2, "gen", function () {
       sol = (c2 > 0
         ? "The trinomial factors over the integers exactly when \\(k\\) is the sum of a factor pair of \\(" + m2 + "\\) or the negative of such a sum, since the two numbers in a pair are either both positive or both negative. The factor pairs of \\(" + m2 + "\\) are " + pairList(P3) + ", with sums " + P3.map(function (f) { return f[0] + f[1]; }).join(", ") + ". Only the positive sums answer the question."
         : "The trinomial factors over the integers exactly when it splits as \\((x + p)(x - q)\\) with \\(pq = " + m2 + "\\) and \\(k = p - q\\), or with the factors interchanged, which negates \\(k\\). The factor pairs of \\(" + m2 + "\\) are " + pairList(P3) + ", with differences " + P3.map(function (f) { return f[1] - f[0]; }).join(", ") + ". Only the positive differences answer the question.") +
-        " The positive integer values of \\(k\\) are **" + u3M(u3SetRaw(key)) + "**.";
+        " The positive integer values of \\(k\\) are <b>" + u3M(u3SetRaw(key)) + "</b>.";
       sig = { t: "kfac", arm: "posonly", c: c2 };
     }
     var raws = [u3SetRaw(key), u3SetRaw(dMiss), u3SetRaw(dSign), u3SetRaw(dExtra)];
@@ -8336,6 +8336,7 @@ BANK.forEach(function(e){var t=PKT_U7[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.
 // Cut verbatim from the standalone bank source
 // (math-1201-review/bank-src.js, lines 4642 to 4889).
 // CRMARKS: u2-square-diagonal=3
+// CRMARKS: u2-root-context=2
 // CRMARKS: u2-entire-radical-cr=3
 // CRMARKS: u2-prime-factor-cr=2
 // CRMARKS: u4-table-extend-cr=3
@@ -8444,17 +8445,27 @@ E("u1-vol-choice",1,["5.4"],2,"gen",function(){
   return q;
 });
 
-/* U2a. Squares and cubes in context, path not named (1.9, 1.20, L3, CR 3) */
+/* U2a. Square area from its diagonal, path not named (1.9, 1.20, L3, CR 3).
+   Split Nov 24, 2026 (Jason's call): the area-to-perimeter and
+   volume-to-edge modes that used to deal here are prescribed
+   two-step applications with a decimal approximation, which is
+   Level 2 work, not Level 3; they now live in u2-root-context
+   below. This entry keeps the one mode whose path is not named:
+   the student has to see that the diagonal determines the area. */
 E("u2-square-diagonal",2,["1.9","1.20"],3,"gen",function(){
-  var mode=ri(1,3);
+  var d=2*ri(3,15),ans=d*d/2;
+  return numq("A square window has a diagonal of \\("+d+"\\) cm. What is the area of the window, in square centimetres?",
+    ans,0.01,
+    "The diagonal splits the square into two right triangles, and the area of a square can be built from its diagonal: the two triangles each have area \\(\\frac{d \\times d}{2} \\div 2\\), so together \\[ A = \\frac{d^2}{2} = \\frac{"+d+"^2}{2} = \\frac{"+(d*d)+"}{2} = "+ans+" \\] The area is <b>\\("+ans+"\\) square centimetres</b>.",
+    {mode:1,d:d,ans:ans});
+});
+
+/* U2a2. Roots in context: square area to perimeter, cube volume
+   to edge (1.9, 1.20, L2, CR 2). Split from u2-square-diagonal
+   Nov 24, 2026; see the note there. */
+E("u2-root-context",2,["1.9","1.20"],2,"gen",function(){
+  var mode=ri(1,2);
   if(mode===1){
-    var d=2*ri(3,15),ans=d*d/2;
-    return numq("A square window has a diagonal of \\("+d+"\\) cm. What is the area of the window, in square centimetres?",
-      ans,0.01,
-      "The diagonal splits the square into two right triangles, and the area of a square can be built from its diagonal: the two triangles each have area \\(\\frac{d \\times d}{2} \\div 2\\), so together \\[ A = \\frac{d^2}{2} = \\frac{"+d+"^2}{2} = \\frac{"+(d*d)+"}{2} = "+ans+" \\] The area is <b>\\("+ans+"\\) square centimetres</b>.",
-      {mode:mode,d:d,ans:ans});
-  }
-  if(mode===2){
     var A=pick([30,32,38,40,42,45,48,50,52,55,58,60,62,65,68,70,72,75,78,80,82,85,88,90,92,95,98]);
     var side=Math.sqrt(A),per=Math.round(4*side*10)/10;
     return numq("A square garden plot has an area of \\("+A+"\\) square metres. What is the perimeter of the plot, to the nearest tenth of a metre?",
@@ -8613,7 +8624,7 @@ E("u5-line-point-cr",5,["4.24"],2,"gen",function(){
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-between":2,"u1-convert-choice":2,"u1-convert-multistep":2,"u1-convert-si":2,"u1-estimate":2,"u1-justify-unit":3,"u1-linear-problem":2,"u1-pk-area-circle":2,"u1-pk-circumference":2,"u1-pk-estimate-count":2,"u1-pk-estimate-reasonable":2,"u1-pk-pythag-model":2,"u1-pk-sa-from-net":2,"u1-pk-vol-rect-prism":2,"u1-read-instrument":2,"u1-reasonable":3,"u1-referent":2,"u1-sa-basic":3,"u1-sa-choice":2,"u1-sa-unknown":2,"u1-sphere":3,"u1-strategy":3,"u1-unit-analysis":2,"u1-vol-basic":2,"u1-vol-choice":2,"u1-vol-relation":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-index":2,"u2-laws-integral":3,"u2-laws-rational":2,"u2-order-irrational":3,"u2-perfect":2,"u2-pk-between-two":2,"u2-pk-decimal-to-fraction":2,"u2-pk-divisible-by":2,"u2-pk-estimate-between":2,"u2-pk-factor-list":2,"u2-pk-factors-root":2,"u2-pk-frac-to-decimal":2,"u2-pk-order-four":2,"u2-pk-parentheses-sign":2,"u2-pk-product-law":2,"u2-pk-repeated-mult":2,"u2-pk-root-between":2,"u2-pk-sqrt-perfect":2,"u2-pk-square-of-number":2,"u2-prime-factor":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-entire":2,"u2-radical-mixed":2,"u2-rational-exp":2,"u2-rational-pattern":2,"u2-sort-numbers":2,"u2-square-diagonal":3,"u2-zero-one":2,"u3-area-model":2,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-factorable-k":3,"u3-gcf":2,"u3-monomial-expand":2,"u3-mult-error":2,"u3-mult-factor-rel":2,"u3-pk-add":2,"u3-pk-addsub-xy":3,"u3-pk-degree":2,"u3-pk-divide-monomial":2,"u3-pk-multiply-monomial":2,"u3-pk-parts":2,"u3-pk-subtract":3,"u3-special-products":2,"u3-strategy":3,"u3-two-digit":2,"u3-verify-sub":1,"u4-connect-points":3,"u4-domain-range":3,"u4-dr-linear":2,"u4-eval-function":2,"u4-fn-convert":2,"u4-fn-notation":2,"u4-graph-data":2,"u4-graph-read-cr":2,"u4-indep-dep":2,"u4-intercept-count":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-match-representations":3,"u4-match-slope-intercept":2,"u4-pair-intercept-cr":2,"u4-pk-evaluate-expression":2,"u4-pk-graph-describe":3,"u4-pk-pattern-figure":2,"u4-pk-point-on-graph":2,"u4-pk-table-equation":2,"u4-rate-of-change":3,"u4-represent":2,"u4-situation-graph":2,"u4-sketch-fn":2,"u4-sketch-situation":2,"u4-solve-input":2,"u4-sort-graphs":2,"u4-table-extend-cr":3,"u4-wcr-context-domain":3,"u5-another-point":2,"u5-compare-forms":3,"u5-context-line":2,"u5-draw-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-equivalent":3,"u5-graph-form":2,"u5-graph-strategy":2,"u5-identify-form":2,"u5-line-point-cr":2,"u5-match-graphs":2,"u5-parallel-perp":2,"u5-pk-construct-graph":2,"u5-pk-express-rate":2,"u5-pk-graph-equation":2,"u5-pk-two-term-ratio":2,"u5-pk-which-is-solution":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-any-two":3,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-hv":2,"u5-slope-rate":3,"u5-slope-rise-run":2,"u5-slope-sign":2,"u6-add-count-standard":2,"u6-add-strategy-choice":3,"u6-add-term-meaning":3,"u6-break-even":2,"u6-intersection":2,"u6-mixture":2,"u6-model":3,"u6-pk-balance-model":2,"u6-pk-context-equation":2,"u6-pk-table-equation":2,"u6-pk-which-is-solution":2,"u6-problem":3,"u6-relate":2,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-strategy":2,"u6-travel":2,"u6-verify":2,"u6-word-problem":2,"u7-add-identify-side":2,"u7-add-ramp-angle":2,"u7-add-ratio-345":2,"u7-add-solve-hypotenuse":2,"u7-brace-leftover":2,"u7-choose-ratio":2,"u7-clinometer":3,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-label-sides":2,"u7-pk-is-right":2,"u7-pythagoras":2,"u7-ramp-run":3,"u7-ratio-def":2,"u7-ratio-similar":2,"u7-rope-angle":2,"u7-solve-triangle":3,"u7-two-triangles":2,"u7-wcr-two-observation-height":5};
+window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-between":2,"u1-convert-choice":2,"u1-convert-multistep":2,"u1-convert-si":2,"u1-estimate":2,"u1-justify-unit":3,"u1-linear-problem":2,"u1-pk-area-circle":2,"u1-pk-circumference":2,"u1-pk-estimate-count":2,"u1-pk-estimate-reasonable":2,"u1-pk-pythag-model":2,"u1-pk-sa-from-net":2,"u1-pk-vol-rect-prism":2,"u1-read-instrument":2,"u1-reasonable":3,"u1-referent":2,"u1-sa-basic":3,"u1-sa-choice":2,"u1-sa-unknown":2,"u1-sphere":3,"u1-strategy":3,"u1-unit-analysis":2,"u1-vol-basic":2,"u1-vol-choice":2,"u1-vol-relation":2,"u1-vol-unknown":2,"u2-entire-radical-cr":3,"u2-evaluate-exp":2,"u2-gcf-lcm":2,"u2-gcf-lcm-problem":3,"u2-index":2,"u2-laws-integral":3,"u2-laws-rational":2,"u2-order-irrational":3,"u2-perfect":2,"u2-pk-between-two":2,"u2-pk-decimal-to-fraction":2,"u2-pk-divisible-by":2,"u2-pk-estimate-between":2,"u2-pk-factor-list":2,"u2-pk-factors-root":2,"u2-pk-frac-to-decimal":2,"u2-pk-order-four":2,"u2-pk-parentheses-sign":2,"u2-pk-product-law":2,"u2-pk-repeated-mult":2,"u2-pk-root-between":2,"u2-pk-sqrt-perfect":2,"u2-pk-square-of-number":2,"u2-prime-factor":2,"u2-prime-factor-cr":2,"u2-problem":3,"u2-radical-entire":2,"u2-radical-mixed":2,"u2-rational-exp":2,"u2-rational-pattern":2,"u2-root-context":2,"u2-sort-numbers":2,"u2-square-diagonal":3,"u2-zero-one":2,"u3-area-model":2,"u3-binom-tri-expand":3,"u3-binomial-expand":2,"u3-diff-squares":2,"u3-factor-error":3,"u3-factor-gcf-first":2,"u3-factor-hard":3,"u3-factor-monic":2,"u3-factor-product":2,"u3-factorable-k":3,"u3-gcf":2,"u3-monomial-expand":2,"u3-mult-error":2,"u3-mult-factor-rel":2,"u3-pk-add":2,"u3-pk-addsub-xy":3,"u3-pk-degree":2,"u3-pk-divide-monomial":2,"u3-pk-multiply-monomial":2,"u3-pk-parts":2,"u3-pk-subtract":3,"u3-special-products":2,"u3-strategy":3,"u3-two-digit":2,"u3-verify-sub":1,"u4-connect-points":3,"u4-domain-range":3,"u4-dr-linear":2,"u4-eval-function":2,"u4-fn-convert":2,"u4-fn-notation":2,"u4-graph-data":2,"u4-graph-read-cr":2,"u4-indep-dep":2,"u4-intercept-count":2,"u4-intercepts":2,"u4-intercepts-solve":2,"u4-match-representations":3,"u4-match-slope-intercept":2,"u4-pair-intercept-cr":2,"u4-pk-evaluate-expression":2,"u4-pk-graph-describe":3,"u4-pk-pattern-figure":2,"u4-pk-point-on-graph":2,"u4-pk-table-equation":2,"u4-rate-of-change":3,"u4-represent":2,"u4-situation-graph":2,"u4-sketch-fn":2,"u4-sketch-situation":2,"u4-solve-input":2,"u4-sort-graphs":2,"u4-table-extend-cr":3,"u4-wcr-context-domain":3,"u5-another-point":2,"u5-compare-forms":3,"u5-context-line":2,"u5-draw-line":2,"u5-eq-from-graph":3,"u5-eq-parallel-perp":2,"u5-eq-slope-point":2,"u5-eq-two-points":3,"u5-equivalent":3,"u5-graph-form":2,"u5-graph-strategy":2,"u5-identify-form":2,"u5-line-point-cr":2,"u5-match-graphs":2,"u5-parallel-perp":2,"u5-pk-construct-graph":2,"u5-pk-express-rate":2,"u5-pk-graph-equation":2,"u5-pk-two-term-ratio":2,"u5-pk-which-is-solution":2,"u5-point-from-slope-cr":3,"u5-problem-equation":2,"u5-problem-equation-solve":2,"u5-rewrite-form":2,"u5-slope-any-two":3,"u5-slope-context":3,"u5-slope-error":2,"u5-slope-from-form-cr":2,"u5-slope-hv":2,"u5-slope-rate":3,"u5-slope-rise-run":2,"u5-slope-sign":2,"u6-add-count-standard":2,"u6-add-strategy-choice":3,"u6-add-term-meaning":3,"u6-break-even":2,"u6-intersection":2,"u6-mixture":2,"u6-model":3,"u6-pk-balance-model":2,"u6-pk-context-equation":2,"u6-pk-table-equation":2,"u6-pk-which-is-solution":2,"u6-problem":3,"u6-relate":2,"u6-solution-count":2,"u6-solve-algebra":3,"u6-solve-elimination":4,"u6-solve-graph":3,"u6-strategy":2,"u6-travel":2,"u6-verify":2,"u6-word-problem":2,"u7-add-identify-side":2,"u7-add-ramp-angle":2,"u7-add-ratio-345":2,"u7-add-solve-hypotenuse":2,"u7-brace-leftover":2,"u7-choose-ratio":2,"u7-clinometer":3,"u7-find-angle":2,"u7-find-hypotenuse":2,"u7-find-side":3,"u7-label-sides":2,"u7-pk-is-right":2,"u7-pythagoras":2,"u7-ramp-run":3,"u7-ratio-def":2,"u7-ratio-similar":2,"u7-rope-angle":2,"u7-solve-triangle":3,"u7-two-triangles":2,"u7-wcr-two-observation-height":5};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose

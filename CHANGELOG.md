@@ -34,11 +34,13 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Fixed
 
+- Worked solutions in some factoring and polynomial questions in Mathematics 1201, 2200, 2201, 3200 and 3201 showed two asterisks around the final answer instead of bold type. Those answers now appear in bold, as they were meant to.
 - Set codes for large sets now open properly. Entering a code for a set built from hand-picked or adopted questions used to end at the same "URI Too Long" error, because opening the code still loaded the set's full address in the browser. The app now loads the set from the code registry directly, without the long address ever being requested, and the QR code on a printed large set carries the short code address too. Codes already handed out work as they are.
 - Copying a teacher or student link for a large set in Advanced Tools no longer produces a link so long that servers refuse it (the "URI Too Long" error). Sets built from hand-picked or adopted questions carry their full text in the link and could run to tens of thousands of characters. When a set's link passes the safe length, the buttons now save the set under a six character set code instead, the same registry printed set codes use, and copy the code with its instructions: students type the code on the Review Apps home page to open the exact set. Smaller sets still copy the direct link, unchanged.
 
 ### Changed
 
+- Mathematics 1201: the square garden plot and cube tank questions in Unit 2 now sit at Level 2 in their own entry. They had shared a Level 3 entry with the square diagonal question; finding a perimeter from an area, or an edge length from a volume, follows a set method, while the diagonal question leaves the path for the student to find, so it stays at Level 3.
 - The Teacher tools panel is laid out in tidy rows: the action buttons on one row, the student link options (answer choices, hints, examples, retry checking) on their own row with each setting kept together, then the downloads row. Nothing about what the controls do has changed; they are just easier to find and read, especially on a narrow screen.
 - The example button on practice questions now reads "See a similar example" instead of "See a worked example", and the box it opens is headed "Similar example". The example is a similar problem (same kind of question, different numbers), and the new label says exactly that.
 - Math 1201's rectangle perimeter solutions now add the four sides, the way the course teaches it, instead of presenting the 2(l + w) formula. Worked examples in the Unit 1 measurement questions now match the question's shape too: a circle circumference question gets a circle example, not a rectangle one.

@@ -7082,7 +7082,7 @@ E("u3-pk-gcf", 3, ["4.8"], 2, "gen", function () {
   var prompt = "Determine the greatest common factor of the terms of \\(" + polyRaw + "\\), and express the polynomial in factored form.";
   var sol = "Every term contains the factor \\(" + gRaw + "\\). Dividing each term by \\(" + gRaw + "\\) leaves \\(" + u3PC(quo, "x") + "\\), whose terms share no further common factor." +
     u3Alg([polyRaw + " &= " + keyRaw]) +
-    "In factored form, the polynomial is **" + u3M(keyRaw) + "**.";
+    "In factored form, the polynomial is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), shuffle(cands).slice(0, 3), sol,
     { t: "fac", g: gRaw, parts: [quo], v: "x" });
 });
@@ -7094,7 +7094,7 @@ E("u3-pk-binom-tri-expand", 3, ["4.8"], 2, "gen", function () {
   var prompt = "Expand and simplify \\(" + u3Par(A, "x") + u3Par(B, "x") + "\\).";
   var sol = "Multiply each term of the binomial by each of the three terms of the trinomial, giving six partial products, then combine like terms." +
     u3Alg([u3Par(A, "x") + u3Par(B, "x") + " &= " + u3StrSeq(partials), "&= " + keyRaw]) +
-    "The expanded form is **" + u3M(keyRaw) + "**.";
+    "The expanded form is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), u3DistrCoeffs(prod, "x", 3), sol,
     { t: "expand", P: u3TermsOf(A, "x"), Q: u3TermsOf(B, "x") });
 });
