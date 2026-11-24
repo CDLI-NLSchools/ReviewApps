@@ -41,6 +41,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Fixed
 
+- Mathematics 9 composite surface area solutions (a cylinder on a prism; a pyramid roof on a box) now use the technique taught in the course: find each solid's surface area on its own, add them, then subtract the overlap twice because the joining face is hidden on both solids. The answers are unchanged.
 - A printed sheet set opened from its QR code or short link could land on a blank course page instead of the set. The registry found the set, but the app then stopped on the set's sheet settings before dealing the questions. Sets opened by code, QR code or link now deal properly, including sets that started as printable sheets. Opening a set from a link is also faster: the app now checks the saved code list and the registry at the same time instead of one after the other.
 
 ### Changed

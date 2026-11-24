@@ -975,11 +975,11 @@ E("u2-sa-cyl-on-prism", 2, ["9.3"], 3, "gen", function(){
   var tot=u2r1(prism+side);
   var ctx=pick(["A cylindrical water tank stands on top of a rectangular concrete base","A thick round candle stands on top of a rectangular wooden stand"]);
   var q = numq(ctx+". The cylinder has radius "+r+" cm and height "+hc+" cm, and its base sits fully on the top face of the prism. The prism measures "+l+" cm long, "+w+" cm wide and "+h+" cm high. Find the total exposed surface area, in square centimetres. Use \\(\\pi = 3.14\\) and give your answer to one decimal place.", tot, 0.6,
-    "The circle where the cylinder meets the prism is hidden, and the cylinder bottom is not exposed, so those two equal circles cancel out of the total. The prism's face areas are "+fmt(l*w)+", "+fmt(l*h)+" and "+fmt(w*h)+", each appearing twice, and the cylinder contributes only its curved side, which unrolls into a rectangle with length the circumference and width "+hc+": \\[ \\begin{aligned} SA &= 2("+fmt(l*w)+") + 2("+fmt(l*h)+") + 2("+fmt(w*h)+") + 2(3.14)("+r+")("+hc+") \\\\ &= "+prism+" + "+fmt(side)+" \\\\ &= "+fmt(tot)+" \\end{aligned} \\] The total exposed surface area is <b>"+fmt(tot)+" cm\\(^{2}\\)</b>.",
+    "Find the surface area of each solid on its own first, then take off the overlap. The prism's face areas are "+fmt(l*w)+", "+fmt(l*h)+" and "+fmt(w*h)+", each appearing twice, so its surface area is "+prism+". The cylinder's two circular faces each have area "+fmt(top)+", and its curved side unrolls into a rectangle with length the circumference and width "+hc+", area "+fmt(side)+", so its surface area is "+fmt(u2r2(2*top+side))+". The circle where the cylinder sits is hidden on both solids, so it comes off twice: \\[ \\begin{aligned} SA &= "+prism+" + "+fmt(u2r2(2*top+side))+" - 2("+fmt(top)+") \\\\ &= "+fmt(tot)+" \\end{aligned} \\] The total exposed surface area is <b>"+fmt(tot)+" cm\\(^{2}\\)</b>.",
     {mode:"cyl-on-prism", r:r, hc:hc, l:l, w:w, h:h});
     q.figure = solCylOnPrism(r, hc, l, w, h, fmt(r) + " cm", fmt(hc) + " cm", fmt(l) + " cm", fmt(w) + " cm", fmt(h) + " cm", "Cylinder on a rectangular prism with labelled dimensions");
     return q;
-}, ["Split the solid into the prism and the cylinder, then think about the join.", "Find the prism surface area, then add only the exposed parts of the cylinder."]);
+}, ["Split the solid into the prism and the cylinder, and find each surface area on its own.", "Add the two surface areas, then subtract the circle where they join twice, because it is hidden on both solids."]);
 
 E("u2-best-estimate-side", 2, ["6.5","6.8"], 3, "gen", function(){
   var best=u2r1(ri(24,98)/10);
@@ -7030,8 +7030,8 @@ E("u2-gap-sa-cans-mc", 2, ["9.3"], 2, "gen", function () {
 // where the roof's slant height must be derived by the Pythagorean
 // theorem before any face can be counted (the Level 2 composite entry
 // u2-gap-composite-sa-mc is given every dimension it needs; here the
-// slant height is found first, then the exposed faces are counted by
-// the net method with the join hidden on both solids).
+// slant height is found first, then the two solids' surface areas
+// are added and the join is taken off twice).
 E("u2-gap-pyramid-roof-mc", 2, ["9.2"], 3, "gen", function () {
   var s = 0, hb = 0, hp = 0, slant = 0, key = 0, d1 = 0, d2 = 0, d3 = 0, tries = 0;
   do {
@@ -7051,13 +7051,13 @@ E("u2-gap-pyramid-roof-mc", 2, ["9.2"], 3, "gen", function () {
   } while ((new Set([key, d1, d2, d3]).size < 4 || new Set([String(key).length, String(d1).length, String(d2).length, String(d3).length]).size > 1) && tries < 80);
   var thing = pick(["model building", "garden shed", "lookout tower"]);
   var prompt = "A " + thing + " is built from a square box with a square pyramid roof on top. The box measures " + s + " cm long, " + s + " cm wide and " + hb + " cm high. The base of the pyramid exactly covers the top of the box, and the pyramid's vertical height is " + hp + " cm. What is the total surface area of the " + thing + ", in square centimetres?";
-  var sol = "The triangular faces of the roof need the slant height, which is not given. It is the hypotenuse of a right triangle whose legs are half the base side, " + half + ", and the pyramid's height, " + hp + ": \\[ \\begin{aligned} \\text{slant}^{2} &= " + half + "^{2} + " + hp + "^{2} = " + (half * half + hp * hp) + " \\\\ \\text{slant} &= " + slant + " \\end{aligned} \\] Now count the exposed faces. The box shows its bottom, area " + (s * s) + ", and its four sides, each " + s + " by " + hb + "; its top is covered by the roof. The roof shows four triangular faces, each with base " + s + " and height " + slant + ". The square where the roof sits is hidden on both solids, so it is counted on neither: \\[ \\begin{aligned} SA &= " + (s * s) + " + 4(" + (s * hb) + ") + 4(" + (s * slant / 2) + ") \\\\ &= " + key + " \\end{aligned} \\] The total surface area is <b>" + key + " cm\\(^{2}\\)</b>.";
-  return mcq(prompt, { t: String(key), fb: "Correct: the slant height comes from the Pythagorean theorem, and only the exposed faces are counted." },
+  var sol = "The triangular faces of the roof need the slant height, which is not given. It is the hypotenuse of a right triangle whose legs are half the base side, " + half + ", and the pyramid's height, " + hp + ": \\[ \\begin{aligned} \\text{slant}^{2} &= " + half + "^{2} + " + hp + "^{2} = " + (half * half + hp * hp) + " \\\\ \\text{slant} &= " + slant + " \\end{aligned} \\] Now find each solid's surface area on its own. The box has two square faces of area " + (s * s) + " and four side faces, each " + s + " by " + hb + ", so its surface area is " + (2 * s * s + 4 * s * hb) + ". The roof has a square base of area " + (s * s) + " and four triangular faces, each with base " + s + " and height " + slant + ", so its surface area is " + (s * s + 2 * s * slant) + ". The square where the roof sits is hidden on both solids, so it comes off twice: \\[ \\begin{aligned} SA &= " + (2 * s * s + 4 * s * hb) + " + " + (s * s + 2 * s * slant) + " - 2(" + (s * s) + ") \\\\ &= " + key + " \\end{aligned} \\] The total surface area is <b>" + key + " cm\\(^{2}\\)</b>.";
+  return mcq(prompt, { t: String(key), fb: "Correct: the slant height comes from the Pythagorean theorem, and the square hidden at the join comes off both solids." },
     [{ t: String(d1), fb: "That adds the two solids whole: the square where the roof meets the box is hidden on both solids, so it must come off both." },
      { t: String(d2), fb: "That takes the hidden square off only once: it is a face of each solid, so it comes off twice." },
      { t: String(d3), fb: "That uses the pyramid's vertical height as the slant height: the triangular faces need the slant height, found with the Pythagorean theorem." }],
     sol, { mode: "gap-pyramid-roof", s: s, hb: hb, hp: hp, slant: slant });
-}, ["The roof's triangular faces need the slant height, which the problem does not state directly.", "Halve the base side and use the Pythagorean theorem with the pyramid's height to get the slant height, then count only the exposed faces."]);
+}, ["The roof's triangular faces need the slant height, which the problem does not state directly.", "Halve the base side and use the Pythagorean theorem with the pyramid's height to get the slant height, then add both surface areas and take the hidden square off twice."]);
 
 
 /* Unit 3: Powers and Exponent Laws */
