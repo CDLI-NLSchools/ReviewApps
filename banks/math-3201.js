@@ -4631,7 +4631,7 @@ E("u9-prob-perm-context",9,["9.28"],3,"gen",function(){
     sol+" Justification for Level 3: the favourable arrangements have to be built with permutation reasoning before the probability ratio can be formed.",{n:n,shape:shape});
 });
 /* --- probability with combinations (9.32). Moved from Unit 8 on November 24, 2026 under Jason’s ruling: probability questions belong in the Probability unit, not in Counting Methods. --- */
-E("u9-prob-comb",9,["9.32"],2,"gen",function(){
+E("u9-prob-comb",9,["9.32","9.30"],2,"gen",function(){
   var ctx=pick([
     {lead:"A bag contains",tail:"marbles",g1:"red",g2:"blue"},
     {lead:"A drawer contains",tail:"socks",g1:"black",g2:"white"},
@@ -4645,7 +4645,7 @@ E("u9-prob-comb",9,["9.32"],2,"gen",function(){
     "Count combinations: there are \\(\\binom{"+a+"}{2} = "+nCr(a,2)+"\\) ways to draw two "+ctx.g1+" and \\(\\binom{"+t+"}{2} = "+nCr(t,2)+"\\) ways to draw any two, so the probability is \\("+frN(nCr(a,2),nCr(t,2))+"\\). The first two distractors come from mishandling the second draw (keeping the full pool of "+t+" for it, or treating the draws as independent with replacement); the last counts the wrong colour.",
     {a:a,b:b});
 });
-E("u9-prob-comb-hard",9,["9.32"],3,"gen",function(){
+E("u9-prob-comb-hard",9,["9.32","9.30"],3,"gen",function(){
   var n=pick([8,9,10,11,12]),r=pick([3,4]);while(n-2<r)n++;
   var tot=nCr(n,r),favour=nCr(n-2,r);
   var setting=pick([{g:"committee",p:"club members"},{g:"team",p:"players trying out"},{g:"project group",p:"students"}]);
@@ -4656,7 +4656,7 @@ E("u9-prob-comb-hard",9,["9.32"],3,"gen",function(){
     "If neither of them is chosen, all "+r+" members come from the other "+(n-2)+" "+setting.p+": \\(\\binom{"+(n-2)+"}{"+r+"} = "+favour+"\\) favourable groups out of \\(\\binom{"+n+"}{"+r+"} = "+tot+"\\) equally likely groups, giving \\("+frN(favour,tot)+"\\). The first distractor is the opposite event (at least one of them is chosen). Justification for Level 3: the favourable set has to be rebuilt around the exclusion before the probability ratio can be formed.",
     {n:n,r:r});
 });
-E("u9-prob-comb-context",9,["9.32"],3,"gen",function(){
+E("u9-prob-comb-context",9,["9.32","9.30"],3,"gen",function(){
   var shape=pick(["exactly","atleast","all"]);
   var g=pick([4,5,6,7,8]),b=pick([4,5,6,7,8]),t=g+b;
   if(shape==="atleast"&&b<3)b=5;if(shape==="all"&&g<3)g=5;
