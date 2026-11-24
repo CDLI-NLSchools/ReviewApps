@@ -6102,7 +6102,7 @@ function renderOnline(scroll){
       if(q.type==="num"&&!FR9)html+='<p class="hint">Very small or large answers can be typed like 7.94e-9.</p>';
     }
     html+='<p><button type="button" data-check="'+i+'">'+L9("Check","Vérifier")+'</button> '+(hintsAllowed()?'<button type="button" class="alt" data-hint="'+i+'">'+L9("Hint","Indice")+'</button> ':'')+(exAllowedQ(q)?'<button type="button" class="alt" data-ex="'+i+'">'+L9("See a similar example","Voir un exemple similaire")+'</button> ':'')+'<button type="button" class="alt" data-sol="'+i+'">'+L9("Show worked solution","Voir la solution détaillée")+'</button></p><div class="fb" id="fb'+i+'"></div><div class="fbtext" id="fbt'+i+'"></div>'+(hintsAllowed()?'<div class="hintbox" id="hint'+i+'" hidden></div>':'')+'<div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>'+L9("Worked solution:","Solution détaillée :")+'</b> '+stepHTML(q.solution)+'</div>'
-      +(isProseText(q)?'<div class="selfrate" id="sr'+i+'" hidden><p class="srlead">'+L9("Compare your answer with the model answer and the marking points. How did you do?","Compare ta réponse avec la réponse modèle et les points de notation. Comment t'en es-tu sorti ?")+'</p><p class="srbtns"><button type="button" class="alt" data-rate="got" data-rateq="'+i+'">'+L9("I got it","Je l'ai réussie")+'</button> <button type="button" class="alt" data-rate="part" data-rateq="'+i+'">'+L9("I got part of it","Je l'ai réussie en partie")+'</button> <button type="button" class="alt" data-rate="missed" data-rateq="'+i+'">'+L9("I missed it","Je l'ai manquée")+'</button></p></div>':'')
+      +(q.type==="text"?'<div class="selfrate" id="sr'+i+'" hidden><p class="srlead">'+L9("Compare your answer with the model answer and the marking points. How did you do?","Compare ta réponse avec la réponse modèle et les points de notation. Comment t'en es-tu sorti ?")+'</p><p class="srbtns"><button type="button" class="alt" data-rate="got" data-rateq="'+i+'">'+L9("I got it","Je l'ai réussie")+'</button> <button type="button" class="alt" data-rate="part" data-rateq="'+i+'">'+L9("I got part of it","Je l'ai réussie en partie")+'</button> <button type="button" class="alt" data-rate="missed" data-rateq="'+i+'">'+L9("I missed it","Je l'ai manquée")+'</button></p></div>':'')
       +'<p class="reprow"><button type="button" class="alt repbtn" data-rep="'+i+'">'+L9("Report a problem","Signaler un problème")+'</button></p>'
       +'<div class="rep" id="rep'+i+'"><label>'+L9("What is the problem?","Quel est le problème ?")+'<select id="reptype'+i+'"><option>'+L9("The question looks wrong or unclear","La question semble fausse ou peu claire")+'</option><option>'+L9("The worked solution doesn't work out","La solution détaillée ne fonctionne pas")+'</option><option>'+L9("My answer was marked wrong but should be right","Ma réponse a été marquée fausse, mais elle devrait être bonne")+'</option><option>'+L9("Something else is out of place","Quelque chose d'autre ne va pas")+'</option></select></label>'
       +'<label>'+L9("Anything you noticed (optional)","Ce que tu as remarqué (facultatif)")+'<textarea id="repnote'+i+'" rows="3"></textarea></label>'
@@ -6182,6 +6182,7 @@ function checkQ(i){
   else if(q.type==="num"){var v=FR9?frParseNum(($("ans"+i).value||"")):parseFloat(($("ans"+i).value||"").replace(/[$,%\u00B0]/g,""));if(isNaN(v)){$("fb"+i).innerHTML='<span class="notyet">'+L9("Type a number first.","Entre d'abord un nombre.")+'</span>';$("fb"+i).classList.add("show");return;}ok=Math.abs(v-q.answer)<=q.tol;}
   else if(isProseText(q)){checkProse(i);return;}
   else{var t=($("ans"+i).value||"").trim().toLowerCase().replace(/\s+/g," ");ok=q.answers.some(function(a){return t===a.replace(/\s+/g," ");});}
+  if(q.type==="text"&&!ok){textSelfAssess(i,t);return;}
   var fb=$("fb"+i);fb.classList.add("show");
   if(!fb.dataset.done){checkedCount++;if(ok)correctCount++;fb.dataset.done="1";setResults[i]={ok:ok,inds:(q._entry?q._entry.indicators.slice():[])};updateScore();maybeSummary();}
   fb.innerHTML=ok?('<span class="ok">'+L9("Correct.","Exact.")+'</span> '+L9("Nice work.","Beau travail.")):(checkMode==="end"?('<span class="notyet">'+L9("Not quite.","Pas tout à fait.")+'</span> '+L9("The worked solution is open below.","La solution détaillée est ouverte ci-dessous.")):('<span class="notyet">'+L9("Not quite.","Pas tout à fait.")+'</span> '+L9("Try again, or open the worked solution.","Essaie encore, ou ouvre la solution détaillée.")));
@@ -6206,7 +6207,7 @@ function checkQ(i){
    exactly once, like any other check; changing it afterwards moves
    the counters with the change rather than double-counting, which
    betters the first-check-sticks behaviour of the auto-marked
-   types. Short text answers keep the exact-match check above. */
+   types. Short text answers keep the exact-match check above as a confirmation only: since Nov 24, 2026 a mismatch is not judged "Not quite" but handed to this same self-assessment (see textSelfAssess). */
 var PROSE_TEXT_MIN=36;
 function isProseText(q){return !!q&&q.type==="text"&&((q.selfCheck===true)||(!!q.answers&&q.answers.length>0&&Math.min.apply(null,q.answers.map(function(a){return String(a).length;}))>PROSE_TEXT_MIN));}
 function proseReveal(i){
@@ -6246,6 +6247,27 @@ function rateProse(i,rate){
   fb.classList.add("show");
   fb.innerHTML=(rate==="got"?('<span class="ok">'+L9("You marked this: I got it.","Tu as noté : je l'ai réussie.")+'</span> '+L9("Nice work.","Beau travail.")):rate==="part"?('<span class="notyet">'+L9("You marked this: I got part of it.","Tu as noté : je l'ai réussie en partie.")+'</span> '+L9("Look at the marking points to see what was missing.","Regarde les points de notation pour voir ce qui manquait.")):('<span class="notyet">'+L9("You marked this: I missed it.","Tu as noté : je l'ai manquée.")+'</span> '+L9("Read the model answer and the marking points, then practise this idea again soon.","Lis la réponse modèle et les points de notation, puis pratique cette idée de nouveau bientôt.")));
   updateScore();maybeSummary();
+}
+function textSelfAssess(i,t){
+  /* Short text answers: a mismatch is not a verdict (Nov 24, 2026).
+     The exact-match check in checkQ still confirms a match, but a
+     typed answer that does not match is no longer judged "Not
+     quite": the worked solution opens and the student rates their
+     answer on the same 3-point scale as a prose answer, and
+     rateProse records the rating as the result. An empty box
+     earns the write-first prompt, as with prose. Once a question
+     is recorded, or handed over once, later checks change
+     nothing. Numeric and multiple choice checks are unchanged. */
+  var fb=$("fb"+i);if(!fb)return;
+  if(fb.dataset.done||fb.dataset.selfassess)return;
+  if(t===""){
+    fb.innerHTML='<span class="notyet">'+L9("Write an answer first.","Écris d'abord une réponse.")+'</span> '+L9("Then compare it with the worked solution and rate how you did.","Compare-la ensuite avec la solution détaillée, puis note comment tu t'en es sorti.");
+    fb.classList.add("show");return;
+  }
+  fb.dataset.selfassess="1";
+  fb.innerHTML='<span class="notyet">'+L9("Not an exact match.","Pas une correspondance exacte.")+'</span> '+L9("Compare your answer with the worked solution below, then rate how you did.","Compare ta réponse avec la solution détaillée ci-dessous, puis note comment tu t'en es sorti.");
+  fb.classList.add("show");
+  proseReveal(i);
 }
 function gradeAll(){
   if(endGraded||!current)return;

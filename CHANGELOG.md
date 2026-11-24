@@ -41,6 +41,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Changed
 
+- Written answers are no longer marked wrong just because the wording differs from the expected answer. An exact match is still confirmed right away; if a typed answer does not match exactly, the app opens the worked solution and asks the student to rate their answer (I got it, I got part of it, I missed it), the same self-check the longer written questions already used, instead of saying "Not quite". Multiple choice and numeric answers are checked as before.
 - Mathematics 1201: the square garden plot and cube tank questions in Unit 2 now sit at Level 2 in their own entry. They had shared a Level 3 entry with the square diagonal question; finding a perimeter from an area, or an edge length from a volume, follows a set method, while the diagonal question leaves the path for the student to find, so it stays at Level 3.
 - The Teacher tools panel is laid out in tidy rows: the action buttons on one row, the student link options (answer choices, hints, examples, retry checking) on their own row with each setting kept together, then the downloads row. Nothing about what the controls do has changed; they are just easier to find and read, especially on a narrow screen.
 - The example button on practice questions now reads "See a similar example" instead of "See a worked example", and the box it opens is headed "Similar example". The example is a similar problem (same kind of question, different numbers), and the new label says exactly that.
