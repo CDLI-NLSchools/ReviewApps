@@ -38,6 +38,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Changed
 
+- The example button on practice questions now reads "See a similar example" instead of "See a worked example", and the box it opens is headed "Similar example". The example is a similar problem (same kind of question, different numbers), and the new label says exactly that.
 - Math 1201's rectangle perimeter solutions now add the four sides, the way the course teaches it, instead of presenting the 2(l + w) formula. Worked examples in the Unit 1 measurement questions now match the question's shape too: a circle circumference question gets a circle example, not a rectangle one.
 - Math 1201's rectangular prism surface area solutions now work face by face, the way the course teaches it: find the area of each different face, double it for its matching partner, and add. They no longer present the packaged 2(lw + lh + wh) formula.
 - Worked examples now match the shape of the question on screen in Math 1201 Unit 1's surface area and volume questions. If you are working on a pyramid question, the worked example is a pyramid question with different numbers, not a cone or a cylinder. Where no same-shape example turns up, the app still shows a different question from the same set rather than none.

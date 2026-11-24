@@ -4016,7 +4016,7 @@ function showHint(i){
   var box=$("hint"+i);if(!box)return;
   var stage=+(box.dataset.stage||0);
   var h1=q._entry.hint1||"",h2=q._entry.hint2||"";
-  var first=h1?stepHTML(h1):(exSuppressed()?L9("Work out the first step this kind of question calls for, and try just that step here.","Trouve le premier pas que ce type de question demande, et essaie seulement ce pas ici."):L9("Look at the worked example for this kind of question, then try the same first move here.","Regarde l'exemple travaillé pour ce type de question, puis essaie le même premier pas ici."));
+  var first=h1?stepHTML(h1):(exSuppressed()?L9("Work out the first step this kind of question calls for, and try just that step here.","Trouve le premier pas que ce type de question demande, et essaie seulement ce pas ici."):L9("Look at the similar example for this kind of question, then try the same first move here.","Regarde l'exemple similaire pour ce type de question, puis essaie le même premier pas ici."));
   var last=h2?2:1;
   if(stage>=last){box.hidden=true;box.innerHTML="";box.dataset.stage="0";}
   else if(stage===0){box.innerHTML="<b>"+L9("Hint:","Indice :")+"</b> "+first;box.hidden=false;box.dataset.stage="1";noteHelp(i,"hint");}
@@ -4048,7 +4048,7 @@ function dealExample(i,n,prev){
 function renderExample(i,exq){
   var box=$("ex"+i);if(!box)return;
   box._exq=exq;
-  var h='<b>'+L9("Worked example","Exemple travaillé")+'</b> '+L9("(same skill, different numbers; not scored)","(même habileté, nombres différents; non noté)")+'<div class="prompt">'+stepHTML(exq.prompt)+"</div>";
+  var h='<b>'+L9("Similar example","Exemple similaire")+'</b> '+L9("(same skill, different numbers; not scored)","(même habileté, nombres différents; non noté)")+'<div class="prompt">'+stepHTML(exq.prompt)+"</div>";
   if(exq.figure)h+='<div class="fig">'+exq.figure+"</div>";
   if(exq.type==="mc"){h+='<div class="opts">'+exq.options.map(function(o,j){return "<label><b>"+"ABCD"[j]+".</b> "+o+(j===exq.correct?" <b>\u2713 "+L9("correct","bonne réponse")+"</b>":"")+"</label>";}).join("")+"</div>";}
   else if(exq.type==="num"){h+="<p>"+L9("Answer: ","Réponse : ")+"<b>"+fmtAns(exq.answer)+"</b></p>";}
@@ -4058,7 +4058,7 @@ function renderExample(i,exq){
   box.innerHTML=h;box.hidden=false;typesetMath(box);
   Array.prototype.forEach.call(box.querySelectorAll("[data-exanother]"),function(b){b.addEventListener("click",function(){anotherExample(i);});});
 }
-function setExLabel(i,open){var b=document.querySelector('[data-ex="'+i+'"]');if(b)b.textContent=open?L9("Hide worked example","Masquer l'exemple travaillé"):L9("See a worked example","Voir un exemple travaillé");}
+function setExLabel(i,open){var b=document.querySelector('[data-ex="'+i+'"]');if(b)b.textContent=open?L9("Hide similar example","Masquer l'exemple similaire"):L9("See a similar example","Voir un exemple similaire");}
 function setSolLabel(i,open){var b=document.querySelector('[data-sol="'+i+'"]');if(b)b.textContent=open?L9("Hide worked solution","Masquer la solution détaillée"):L9("Show worked solution","Voir la solution détaillée");}
 function closeScaffolding(i){var hb=$("hint"+i);if(hb){hb.hidden=true;hb.innerHTML="";hb.dataset.stage="0";}var xb=$("ex"+i);if(xb&&!xb.hidden){xb.hidden=true;setExLabel(i,false);}}
 function toggleSolution(i){var sol=$("sol"+i);if(!sol)return;var open=sol.classList.toggle("show");setSolLabel(i,open);if(open){closeScaffolding(i);noteHelp(i,"sol");}}
@@ -4992,7 +4992,7 @@ function revealExamples(){
     var solB=document.querySelector('[data-sol="'+i+'"]');if(!solB||!solB.parentNode)return;
     var b=document.createElement("button");
     b.type="button";b.className="alt";b.setAttribute("data-ex",String(i));
-    b.textContent=L9("See a worked example","Voir un exemple travaillé");
+    b.textContent=L9("See a similar example","Voir un exemple similaire");
     b.addEventListener("click",function(){toggleExample(i);});
     solB.parentNode.insertBefore(b,solB);
     solB.parentNode.insertBefore(document.createTextNode(" "),solB);
@@ -6021,7 +6021,7 @@ function renderOnline(scroll){
       html+='<p>'+L9("Your answer: ","Ta réponse : ")+'<input type="text" class="ans" id="ans'+i+'" autocomplete="off"></p>';
       if(q.type==="num"&&!FR9)html+='<p class="hint">Very small or large answers can be typed like 7.94e-9.</p>';
     }
-    html+='<p><button type="button" data-check="'+i+'">'+L9("Check","Vérifier")+'</button> '+(hintsAllowed()?'<button type="button" class="alt" data-hint="'+i+'">'+L9("Hint","Indice")+'</button> ':'')+(exAllowedQ(q)?'<button type="button" class="alt" data-ex="'+i+'">'+L9("See a worked example","Voir un exemple travaillé")+'</button> ':'')+'<button type="button" class="alt" data-sol="'+i+'">'+L9("Show worked solution","Voir la solution détaillée")+'</button></p><div class="fb" id="fb'+i+'"></div><div class="fbtext" id="fbt'+i+'"></div>'+(hintsAllowed()?'<div class="hintbox" id="hint'+i+'" hidden></div>':'')+'<div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>'+L9("Worked solution:","Solution détaillée :")+'</b> '+stepHTML(q.solution)+'</div>'
+    html+='<p><button type="button" data-check="'+i+'">'+L9("Check","Vérifier")+'</button> '+(hintsAllowed()?'<button type="button" class="alt" data-hint="'+i+'">'+L9("Hint","Indice")+'</button> ':'')+(exAllowedQ(q)?'<button type="button" class="alt" data-ex="'+i+'">'+L9("See a similar example","Voir un exemple similaire")+'</button> ':'')+'<button type="button" class="alt" data-sol="'+i+'">'+L9("Show worked solution","Voir la solution détaillée")+'</button></p><div class="fb" id="fb'+i+'"></div><div class="fbtext" id="fbt'+i+'"></div>'+(hintsAllowed()?'<div class="hintbox" id="hint'+i+'" hidden></div>':'')+'<div class="exbox" id="ex'+i+'" hidden></div><div class="sol" id="sol'+i+'"><b>'+L9("Worked solution:","Solution détaillée :")+'</b> '+stepHTML(q.solution)+'</div>'
       +(isProseText(q)?'<div class="selfrate" id="sr'+i+'" hidden><p class="srlead">'+L9("Compare your answer with the model answer and the marking points. How did you do?","Compare ta réponse avec la réponse modèle et les points de notation. Comment t'en es-tu sorti ?")+'</p><p class="srbtns"><button type="button" class="alt" data-rate="got" data-rateq="'+i+'">'+L9("I got it","Je l'ai réussie")+'</button> <button type="button" class="alt" data-rate="part" data-rateq="'+i+'">'+L9("I got part of it","Je l'ai réussie en partie")+'</button> <button type="button" class="alt" data-rate="missed" data-rateq="'+i+'">'+L9("I missed it","Je l'ai manquée")+'</button></p></div>':'')
       +'<p class="reprow"><button type="button" class="alt repbtn" data-rep="'+i+'">'+L9("Report a problem","Signaler un problème")+'</button></p>'
       +'<div class="rep" id="rep'+i+'"><label>'+L9("What is the problem?","Quel est le problème ?")+'<select id="reptype'+i+'"><option>'+L9("The question looks wrong or unclear","La question semble fausse ou peu claire")+'</option><option>'+L9("The worked solution doesn't work out","La solution détaillée ne fonctionne pas")+'</option><option>'+L9("My answer was marked wrong but should be right","Ma réponse a été marquée fausse, mais elle devrait être bonne")+'</option><option>'+L9("Something else is out of place","Quelque chose d'autre ne va pas")+'</option></select></label>'
