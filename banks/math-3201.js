@@ -3408,8 +3408,6 @@ E("u7-subset-difference-cr",7,["2.1"],2,"gen",function(){
 // CRMARKS: u8-pathways-context=3
 // CRMARKS: u8-perm-or-comb=1
 // CRMARKS: u8-perm-r=1
-// CRMARKS: u8-prob-comb=2
-// CRMARKS: u8-prob-comb-hard=3
 // CRMARKS: u8-together-apart=3
 // CRMARKS: u8-tree-diagram=1
 // CRMARKS: u8-tree-outcomes=2
@@ -3419,8 +3417,6 @@ E("u7-subset-difference-cr",7,["2.1"],2,"gen",function(){
 // CRMARKS: u8-identical-effect=2
 // CRMARKS: u8-order-matters=2
 // CRMARKS: u8-comb-strategy=2
-// BIMODAL: u8-prob-comb-hard=a
-// BIMODAL: u8-prob-comb=a
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
 // BIMODAL: u8-assumptions=b
 // BIMODAL: u8-perm-strategy=b
@@ -3927,34 +3923,6 @@ E("u8-comb-strategy",8,["9.31"],1,"var",varset([
     ["The number of people not chosen, counted from the full group of eight people in the room","The number of committees that can be formed from the eight people in total","The number of positions on the committee, doubled to allow for the two directions"],
     "The ordered count lists each committee once for every arrangement of its 3 members, and 3 members can be arranged in 3! = 6 ways. Dividing by 6 removes the ordering: 336 ÷ 6 = 56 committees. Recognizing what the divisor means is the strategy, not just the arithmetic.",{});}
 ]));
-/* --- probability with combinations (9.32) --- */
-/* --- probability with combinations (9.32) --- */
-/* --- probability with combinations (9.32) --- */
-E("u8-prob-comb",8,["9.32"],2,"gen",function(){
-  var ctx=pick([
-    {lead:"A bag contains",tail:"marbles",g1:"red",g2:"blue"},
-    {lead:"A drawer contains",tail:"socks",g1:"black",g2:"white"},
-    {lead:"A small deck contains",tail:"cards",g1:"hearts",g2:"spades"}
-  ]);
-  var a=pick([3,4,5,6,7]),b=pick([3,4,5,6,7]);if(a===b)b=b===7?6:b+1;
-  var t=a+b;
-  return mcq(ctx.lead+" "+a+" "+ctx.g1+" and "+b+" "+ctx.g2+" "+ctx.tail+" ("+t+" in total). Two are drawn at random without replacement. What is the probability that <b>both</b> are "+ctx.g1+"?",
-    MV(frN(nCr(a,2),nCr(t,2))),
-    [MV(frN(a*(a-1),t*t)),MV(frN(a*a,t*t)),MV(frN(nCr(b,2),nCr(t,2)))],
-    "Count combinations: there are \\(\\binom{"+a+"}{2} = "+nCr(a,2)+"\\) ways to draw two "+ctx.g1+" and \\(\\binom{"+t+"}{2} = "+nCr(t,2)+"\\) ways to draw any two, so the probability is \\("+frN(nCr(a,2),nCr(t,2))+"\\). The first two distractors come from mishandling the second draw (keeping the full pool of "+t+" for it, or treating the draws as independent with replacement); the last counts the wrong colour.",
-    {a:a,b:b});
-});
-E("u8-prob-comb-hard",8,["9.32"],3,"gen",function(){
-  var n=pick([8,9,10,11,12]),r=pick([3,4]);while(n-2<r)n++;
-  var tot=nCr(n,r),favour=nCr(n-2,r);
-  var setting=pick([{g:"committee",p:"club members"},{g:"team",p:"players trying out"},{g:"project group",p:"students"}]);
-  var names=pick([["Morgan","Riley"],["Sam","Priya"],["Alex","Jordan"],["Emma","Liam"],["Noah","Ava"]]);
-  return mcq("A "+setting.g+" of "+r+" is chosen at random from "+n+" "+setting.p+". Two of the "+setting.p+" are "+names[0]+" and "+names[1]+". What is the probability that <b>neither</b> "+names[0]+" nor "+names[1]+" is on the "+setting.g+"?",
-    MV(frN(favour,tot)),
-    [MV(frN(tot-favour,tot)),MV(frN(nCr(n-1,r),tot)),MV(frN(2,n))],
-    "If neither of them is chosen, all "+r+" members come from the other "+(n-2)+" "+setting.p+": \\(\\binom{"+(n-2)+"}{"+r+"} = "+favour+"\\) favourable groups out of \\(\\binom{"+n+"}{"+r+"} = "+tot+"\\) equally likely groups, giving \\("+frN(favour,tot)+"\\). The first distractor is the opposite event (at least one of them is chosen). Justification for Level 3: the favourable set has to be rebuilt around the exclusion before the probability ratio can be formed.",
-    {n:n,r:r});
-});
 E("u8-mixed-roles",8,["9.24"],2,"gen",function(){
   var n=pick([6,7,8,9,10,11,12]),r=pick([2,3,4]);
   var jobList={2:"captain and vice-captain",3:"captain, equipment manager, and treasurer",4:"captain, vice-captain, equipment manager, and treasurer"};
@@ -4249,7 +4217,9 @@ E("u8-reverse-count",8,["9.19"],2,"gen",function(){
 // CRMARKS: u9-me-prob=1
 // CRMARKS: u9-nonme-prob=2
 // CRMARKS: u9-prob-basics=1
+// CRMARKS: u9-prob-comb=2
 // CRMARKS: u9-prob-comb-context=3
+// CRMARKS: u9-prob-comb-hard=3
 // CRMARKS: u9-prob-odds-determine=1
 // CRMARKS: u9-prob-perm-context=3
 // CRMARKS: u9-represent-events=2
@@ -4266,6 +4236,8 @@ E("u8-reverse-count",8,["9.19"],2,"gen",function(){
 // BIMODAL: u9-represent-events=a
 // BIMODAL: u9-prob-perm-context=a
 // BIMODAL: u9-prob-comb-context=a
+// BIMODAL: u9-prob-comb=a
+// BIMODAL: u9-prob-comb-hard=a
 // BIMODAL: u9-create-solve-game=b
 // BIMODAL: u9-compare-games=a
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
@@ -4658,6 +4630,32 @@ E("u9-prob-perm-context",9,["9.28"],3,"gen",function(){
     pick3Frac(corr,pool),
     sol+" Justification for Level 3: the favourable arrangements have to be built with permutation reasoning before the probability ratio can be formed.",{n:n,shape:shape});
 });
+/* --- probability with combinations (9.32). Moved from Unit 8 on November 24, 2026 under Jason’s ruling: probability questions belong in the Probability unit, not in Counting Methods. --- */
+E("u9-prob-comb",9,["9.32"],2,"gen",function(){
+  var ctx=pick([
+    {lead:"A bag contains",tail:"marbles",g1:"red",g2:"blue"},
+    {lead:"A drawer contains",tail:"socks",g1:"black",g2:"white"},
+    {lead:"A small deck contains",tail:"cards",g1:"hearts",g2:"spades"}
+  ]);
+  var a=pick([3,4,5,6,7]),b=pick([3,4,5,6,7]);if(a===b)b=b===7?6:b+1;
+  var t=a+b;
+  return mcq(ctx.lead+" "+a+" "+ctx.g1+" and "+b+" "+ctx.g2+" "+ctx.tail+" ("+t+" in total). Two are drawn at random without replacement. What is the probability that <b>both</b> are "+ctx.g1+"?",
+    MV(frN(nCr(a,2),nCr(t,2))),
+    [MV(frN(a*(a-1),t*t)),MV(frN(a*a,t*t)),MV(frN(nCr(b,2),nCr(t,2)))],
+    "Count combinations: there are \\(\\binom{"+a+"}{2} = "+nCr(a,2)+"\\) ways to draw two "+ctx.g1+" and \\(\\binom{"+t+"}{2} = "+nCr(t,2)+"\\) ways to draw any two, so the probability is \\("+frN(nCr(a,2),nCr(t,2))+"\\). The first two distractors come from mishandling the second draw (keeping the full pool of "+t+" for it, or treating the draws as independent with replacement); the last counts the wrong colour.",
+    {a:a,b:b});
+});
+E("u9-prob-comb-hard",9,["9.32"],3,"gen",function(){
+  var n=pick([8,9,10,11,12]),r=pick([3,4]);while(n-2<r)n++;
+  var tot=nCr(n,r),favour=nCr(n-2,r);
+  var setting=pick([{g:"committee",p:"club members"},{g:"team",p:"players trying out"},{g:"project group",p:"students"}]);
+  var names=pick([["Morgan","Riley"],["Sam","Priya"],["Alex","Jordan"],["Emma","Liam"],["Noah","Ava"]]);
+  return mcq("A "+setting.g+" of "+r+" is chosen at random from "+n+" "+setting.p+". Two of the "+setting.p+" are "+names[0]+" and "+names[1]+". What is the probability that <b>neither</b> "+names[0]+" nor "+names[1]+" is on the "+setting.g+"?",
+    MV(frN(favour,tot)),
+    [MV(frN(tot-favour,tot)),MV(frN(nCr(n-1,r),tot)),MV(frN(2,n))],
+    "If neither of them is chosen, all "+r+" members come from the other "+(n-2)+" "+setting.p+": \\(\\binom{"+(n-2)+"}{"+r+"} = "+favour+"\\) favourable groups out of \\(\\binom{"+n+"}{"+r+"} = "+tot+"\\) equally likely groups, giving \\("+frN(favour,tot)+"\\). The first distractor is the opposite event (at least one of them is chosen). Justification for Level 3: the favourable set has to be rebuilt around the exclusion before the probability ratio can be formed.",
+    {n:n,r:r});
+});
 E("u9-prob-comb-context",9,["9.32"],3,"gen",function(){
   var shape=pick(["exactly","atleast","all"]);
   var g=pick([4,5,6,7,8]),b=pick([4,5,6,7,8]),t=g+b;
@@ -4945,7 +4943,7 @@ BANK.forEach(function(e){if(e.id==="u9-binomial-prob"||e.id==="u9-binomial-expec
 // CRMARKS: u7-pk-sort-numbers=2
 // CRMARKS: u7-pk-subsets=2
 // CRMARKS: u8-pk-sample-space=2
-// CRMARKS: u8-pk-product-rule=2
+// CRMARKS: u9-pk-product-rule=2
 // CRMARKS: u9-pk-prob-basic-b=2
 // CRMARKS: u9-pk-exp-vs-theor-b=2
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
@@ -4968,7 +4966,7 @@ BANK.forEach(function(e){if(e.id==="u9-binomial-prob"||e.id==="u9-binomial-expec
 // BIMODAL: u7-pk-sort-numbers=b
 // BIMODAL: u7-pk-subsets=a
 // BIMODAL: u8-pk-sample-space=a
-// BIMODAL: u8-pk-product-rule=a
+// BIMODAL: u9-pk-product-rule=a
 // BIMODAL: u9-pk-prob-basic-b=a
 // BIMODAL: u9-pk-exp-vs-theor-b=a
 /* Math 3201 PK tranche (November 16, 2026). Prior knowledge check entries
@@ -6322,7 +6320,7 @@ E("u8-pk-sample-space",8,["9.16"],1,"gen",function(){
     {t:String(tot),fb:"Yes: "+A[1]+" outcomes times "+B[1]+" outcomes gives "+tot+"."},ds3,
     "The events are independent, so multiply: \\("+A[1]+" \\times "+B[1]+" = "+tot+"\\). The sample space has <b>"+tot+"</b> outcomes.",{mode:"count"});
 },["For two independent events, multiply the outcome counts to size the sample space.","Start by counting the outcomes of each event on its own."]);
-E("u8-pk-product-rule",8,["9.16"], 1, "gen", function () {
+E("u9-pk-product-rule",9,["9.1"], 1, "gen", function () {
   var attempt = 0, cfg = null;
   while (attempt < 60 && !cfg) {
     attempt++;
@@ -6354,7 +6352,7 @@ E("u8-pk-product-rule",8,["9.16"], 1, "gen", function () {
   function F2A(c) { return u7red(c.F * 6 + c.G * c.S, c.S * 6)[0]; }
   function F2B(c) { return u7red(c.F * 6 + c.G * c.S, c.S * 6)[1]; }
 }, ["Independent events do not affect each other, so the probability that both happen is a product.", "Find the probability of each event on its own first, then multiply the two fractions."]);
-E("u8-pk-two-draws",8,["9.16"], 1, "gen", function () {
+E("u9-pk-two-draws",9,["9.1"], 1, "gen", function () {
   var triples = [["red", "blue", "green"], ["red", "yellow", "blue"], ["white", "black", "orange"], ["purple", "green", "yellow"], ["blue", "orange", "pink"]];
   var pair = null;
   for (var t = 0; t < 60 && !pair; t++) {
@@ -6523,8 +6521,8 @@ var PKT3201={
   "u7-pk-sort-numbers":{src:"Math 1201 indicator 1.18",group:"real-numbers",for:PK3201_FOR_C7},
   "u7-pk-subsets":{src:"Math 1201 indicator 1.19",group:"real-numbers",for:PK3201_FOR_C7},
   "u8-pk-sample-space":{src:"Math 8 indicator 12.1",group:"listing-outcomes",for:PK3201_FOR_C8},
-  "u8-pk-product-rule":{src:"Math 9 indicator 12.4",group:"listing-outcomes",for:PK3201_FOR_C8},
-  "u8-pk-two-draws":{src:"Math 9 indicator 12.4",group:"listing-outcomes",for:PK3201_FOR_C8},
+  "u9-pk-product-rule":{src:"Math 9 indicator 12.4",group:"listing-outcomes",for:PK3201_FOR_C9},
+  "u9-pk-two-draws":{src:"Math 9 indicator 12.4",group:"listing-outcomes",for:PK3201_FOR_C9},
   "u9-prob-basics":{src:"Math 7 indicator 12.1 (seed entry, flagged by this tranche)",group:"probability-forms",for:PK3201_FOR_C9},
   "u9-context-prob":{src:"Math 7 indicator 12.1 and Math 9 indicator 12.4 (seed entry, flagged by this tranche)",group:"probability-forms",for:PK3201_FOR_C9},
   "u9-decisions":{src:"Math 9 indicator 12.4 (seed entry, flagged by this tranche)",group:"probability-decisions",for:PK3201_FOR_C9},
@@ -6537,10 +6535,10 @@ BANK.forEach(function(e){var t=PKT3201[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-add-diff-den":2,"u1-add-same-den":2,"u1-context-cost":3,"u1-context-wind":3,"u1-context-work":3,"u1-create-equivalent":1,"u1-div":2,"u1-equiv-forms":1,"u1-error-simplify":2,"u1-extraneous":2,"u1-lcd":1,"u1-mult":2,"u1-npv-equation":1,"u1-npv-linear":1,"u1-npv-operations":1,"u1-npv-quadratic":2,"u1-npv-why":2,"u1-pk-add-unlike":2,"u1-pk-diff-squares":2,"u1-pk-gcf":2,"u1-pk-multiply-fractions":2,"u1-reverse-restrictions":3,"u1-simplify-gcf":1,"u1-simplify-monomial":1,"u1-simplify-quad":2,"u1-solve-cross":2,"u1-solve-quad-eq":2,"u1-solve-simple":1,"u1-sub-monomial-den":2,"u1-two-step-simplify":3,"u2-characteristics-equation":2,"u2-degree-equation":1,"u2-end-behaviour":1,"u2-fit-value":2,"u2-graph-characteristics":1,"u2-match-by-characteristics":2,"u2-match-equation-graph":2,"u2-model-change-cr":2,"u2-model-decision":3,"u2-model-multistep-cr":5,"u2-pk-domain-range":2,"u2-pk-graph-description":2,"u2-pk-vertex-form-params":2,"u2-pk-which-quadratic":2,"u2-recover-and-predict-cr":3,"u2-reverse-intercepts":3,"u2-scatter-type":2,"u2-sketch-match":2,"u2-turning-points-graph":1,"u2-y-intercept":1,"u2-zeros-and-intercept-cr":3,"u3-build-equation":2,"u3-characteristics-combo-cr":2,"u3-data-equation":2,"u3-data-fit-params":1,"u3-decimal-convert":1,"u3-deg-to-rad":1,"u3-eq-amplitude-period":1,"u3-eq-phase-shift":1,"u3-eq-range-midline":1,"u3-evaluate-equation-cr":3,"u3-ferris-interpret":1,"u3-first-max-time-cr":2,"u3-graph-amplitude":1,"u3-graph-full-equation":4,"u3-graph-period-midline":1,"u3-graph-range":1,"u3-match-eq-graph":2,"u3-periodic-or-sinusoidal":2,"u3-pk-label-sides":2,"u3-pk-params-characteristics":2,"u3-pk-ratio-def":2,"u3-rad-to-deg":1,"u3-temp-model":3,"u3-tide-predict":3,"u4-app-decision":3,"u4-compare-models":3,"u4-compound-model":1,"u4-data-fit-equation":2,"u4-data-next-value":1,"u4-eq-characteristics":1,"u4-estimate-solution":1,"u4-express-as-power":1,"u4-find-base":3,"u4-graph-characteristics":1,"u4-growth-model-eval":2,"u4-growth-or-decay":2,"u4-half-life":2,"u4-interpret-graph-model":1,"u4-match-by-description":2,"u4-match-graph":2,"u4-pk-laws-integral":2,"u4-pk-repeated-mult":2,"u4-reverse-half-life":3,"u4-solve-common-base":2,"u4-solve-isolate":2,"u4-solve-rewrite-base":2,"u4-solve-two-sided":2,"u5-catch-up":3,"u5-condense-log":2,"u5-context-model":2,"u5-convert-form":1,"u5-data-fit-log":2,"u5-eq-char":1,"u5-estimate-log":1,"u5-evaluate-log":1,"u5-evaluate-mixed":1,"u5-expand-log":2,"u5-graph-char":1,"u5-growth-time":2,"u5-interpret-graph":1,"u5-law-numeric":2,"u5-match-graph":2,"u5-ph-scale":2,"u5-pk-laws-rational":2,"u5-pk-rational-exp":2,"u5-richter-decibel":2,"u5-simplify-eval":2,"u5-solve-condense":3,"u5-solve-log-basic":1,"u5-solve-with-logs":2,"u5-two-bases":3,"u5-which-law":1,"u6-add-rent-lease-buy":2,"u6-amortization-read":1,"u6-appreciate-depreciate":1,"u6-compare-costs":3,"u6-compound-amount":2,"u6-cost-benefit":3,"u6-credit-fees":2,"u6-depreciation-value":2,"u6-find-term":2,"u6-identify-compound":2,"u6-interest-earned":2,"u6-justify-decision":3,"u6-payments-term":1,"u6-pk-percent-convert":2,"u6-present-value":2,"u6-read-formula":1,"u6-rent-buy-lease":2,"u6-simple-interest":1,"u6-simple-vs-compound":2,"u6-total-cost-loan":1,"u6-wcr-compound-loan-interest":5,"u7-applications":2,"u7-complement-elements":1,"u7-deduction-mc":1,"u7-disjoint-check":2,"u7-error-correct":2,"u7-error-identify":2,"u7-error-venn":2,"u7-exactly-two-cr":3,"u7-operations":2,"u7-pk-sort-numbers":2,"u7-pk-subsets":2,"u7-region-meaning":1,"u7-relations-count-cr":2,"u7-search-logic":1,"u7-set-concepts":2,"u7-subset-difference-cr":2,"u7-subset-relation":2,"u7-symmetric-difference-cr":3,"u7-three-set-problem":2,"u7-two-set-notation":1,"u7-two-set-problem":1,"u7-two-set-totals-cr":3,"u7-venn-fill":1,"u7-venn-missing":2,"u7-venn-read":1,"u7-venn-three-read":2,"u8-arrange-all":1,"u8-assumptions":2,"u8-comb-r":1,"u8-comb-strategy":2,"u8-comb-two-group":2,"u8-committee-atleast":3,"u8-factorial-equation":2,"u8-factorial-value":1,"u8-fcp-cases":3,"u8-fcp-context":1,"u8-fcp-pattern":1,"u8-fcp-restricted":3,"u8-fixed-position":2,"u8-identical-effect":2,"u8-identical-perm":2,"u8-mixed-roles":2,"u8-order-matters":2,"u8-pathways":2,"u8-pathways-context":3,"u8-perm-or-comb":1,"u8-perm-r":1,"u8-perm-strategy":2,"u8-pk-product-rule":2,"u8-pk-sample-space":2,"u8-prob-comb":2,"u8-prob-comb-hard":3,"u8-together-apart":3,"u8-tree-diagram":1,"u8-tree-outcomes":2,"u9-binomial-expected":2,"u9-binomial-identify":2,"u9-classify-events":2,"u9-compare-games":3,"u9-complementary":1,"u9-conditional":2,"u9-context-prob":1,"u9-convert-odds-prob":1,"u9-create-problem":2,"u9-create-solve-game":3,"u9-decisions":2,"u9-dep-vs-indep":2,"u9-independent-pair-cr":2,"u9-independent-prob":1,"u9-me-or-not":2,"u9-me-prob":1,"u9-media-statements":2,"u9-nonme-prob":2,"u9-odds-context":3,"u9-odds-vs-prob":2,"u9-pk-exp-vs-theor-b":2,"u9-pk-prob-basic-b":2,"u9-prob-basics":1,"u9-prob-comb-context":3,"u9-prob-odds-determine":1,"u9-prob-perm-context":3,"u9-represent-events":2,"u9-same-colour-cr":3};
+window.__BANK_CRMARKS={"u1-add-diff-den":2,"u1-add-same-den":2,"u1-context-cost":3,"u1-context-wind":3,"u1-context-work":3,"u1-create-equivalent":1,"u1-div":2,"u1-equiv-forms":1,"u1-error-simplify":2,"u1-extraneous":2,"u1-lcd":1,"u1-mult":2,"u1-npv-equation":1,"u1-npv-linear":1,"u1-npv-operations":1,"u1-npv-quadratic":2,"u1-npv-why":2,"u1-pk-add-unlike":2,"u1-pk-diff-squares":2,"u1-pk-gcf":2,"u1-pk-multiply-fractions":2,"u1-reverse-restrictions":3,"u1-simplify-gcf":1,"u1-simplify-monomial":1,"u1-simplify-quad":2,"u1-solve-cross":2,"u1-solve-quad-eq":2,"u1-solve-simple":1,"u1-sub-monomial-den":2,"u1-two-step-simplify":3,"u2-characteristics-equation":2,"u2-degree-equation":1,"u2-end-behaviour":1,"u2-fit-value":2,"u2-graph-characteristics":1,"u2-match-by-characteristics":2,"u2-match-equation-graph":2,"u2-model-change-cr":2,"u2-model-decision":3,"u2-model-multistep-cr":5,"u2-pk-domain-range":2,"u2-pk-graph-description":2,"u2-pk-vertex-form-params":2,"u2-pk-which-quadratic":2,"u2-recover-and-predict-cr":3,"u2-reverse-intercepts":3,"u2-scatter-type":2,"u2-sketch-match":2,"u2-turning-points-graph":1,"u2-y-intercept":1,"u2-zeros-and-intercept-cr":3,"u3-build-equation":2,"u3-characteristics-combo-cr":2,"u3-data-equation":2,"u3-data-fit-params":1,"u3-decimal-convert":1,"u3-deg-to-rad":1,"u3-eq-amplitude-period":1,"u3-eq-phase-shift":1,"u3-eq-range-midline":1,"u3-evaluate-equation-cr":3,"u3-ferris-interpret":1,"u3-first-max-time-cr":2,"u3-graph-amplitude":1,"u3-graph-full-equation":4,"u3-graph-period-midline":1,"u3-graph-range":1,"u3-match-eq-graph":2,"u3-periodic-or-sinusoidal":2,"u3-pk-label-sides":2,"u3-pk-params-characteristics":2,"u3-pk-ratio-def":2,"u3-rad-to-deg":1,"u3-temp-model":3,"u3-tide-predict":3,"u4-app-decision":3,"u4-compare-models":3,"u4-compound-model":1,"u4-data-fit-equation":2,"u4-data-next-value":1,"u4-eq-characteristics":1,"u4-estimate-solution":1,"u4-express-as-power":1,"u4-find-base":3,"u4-graph-characteristics":1,"u4-growth-model-eval":2,"u4-growth-or-decay":2,"u4-half-life":2,"u4-interpret-graph-model":1,"u4-match-by-description":2,"u4-match-graph":2,"u4-pk-laws-integral":2,"u4-pk-repeated-mult":2,"u4-reverse-half-life":3,"u4-solve-common-base":2,"u4-solve-isolate":2,"u4-solve-rewrite-base":2,"u4-solve-two-sided":2,"u5-catch-up":3,"u5-condense-log":2,"u5-context-model":2,"u5-convert-form":1,"u5-data-fit-log":2,"u5-eq-char":1,"u5-estimate-log":1,"u5-evaluate-log":1,"u5-evaluate-mixed":1,"u5-expand-log":2,"u5-graph-char":1,"u5-growth-time":2,"u5-interpret-graph":1,"u5-law-numeric":2,"u5-match-graph":2,"u5-ph-scale":2,"u5-pk-laws-rational":2,"u5-pk-rational-exp":2,"u5-richter-decibel":2,"u5-simplify-eval":2,"u5-solve-condense":3,"u5-solve-log-basic":1,"u5-solve-with-logs":2,"u5-two-bases":3,"u5-which-law":1,"u6-add-rent-lease-buy":2,"u6-amortization-read":1,"u6-appreciate-depreciate":1,"u6-compare-costs":3,"u6-compound-amount":2,"u6-cost-benefit":3,"u6-credit-fees":2,"u6-depreciation-value":2,"u6-find-term":2,"u6-identify-compound":2,"u6-interest-earned":2,"u6-justify-decision":3,"u6-payments-term":1,"u6-pk-percent-convert":2,"u6-present-value":2,"u6-read-formula":1,"u6-rent-buy-lease":2,"u6-simple-interest":1,"u6-simple-vs-compound":2,"u6-total-cost-loan":1,"u6-wcr-compound-loan-interest":5,"u7-applications":2,"u7-complement-elements":1,"u7-deduction-mc":1,"u7-disjoint-check":2,"u7-error-correct":2,"u7-error-identify":2,"u7-error-venn":2,"u7-exactly-two-cr":3,"u7-operations":2,"u7-pk-sort-numbers":2,"u7-pk-subsets":2,"u7-region-meaning":1,"u7-relations-count-cr":2,"u7-search-logic":1,"u7-set-concepts":2,"u7-subset-difference-cr":2,"u7-subset-relation":2,"u7-symmetric-difference-cr":3,"u7-three-set-problem":2,"u7-two-set-notation":1,"u7-two-set-problem":1,"u7-two-set-totals-cr":3,"u7-venn-fill":1,"u7-venn-missing":2,"u7-venn-read":1,"u7-venn-three-read":2,"u8-arrange-all":1,"u8-assumptions":2,"u8-comb-r":1,"u8-comb-strategy":2,"u8-comb-two-group":2,"u8-committee-atleast":3,"u8-factorial-equation":2,"u8-factorial-value":1,"u8-fcp-cases":3,"u8-fcp-context":1,"u8-fcp-pattern":1,"u8-fcp-restricted":3,"u8-fixed-position":2,"u8-identical-effect":2,"u8-identical-perm":2,"u8-mixed-roles":2,"u8-order-matters":2,"u8-pathways":2,"u8-pathways-context":3,"u8-perm-or-comb":1,"u8-perm-r":1,"u8-perm-strategy":2,"u8-pk-sample-space":2,"u8-together-apart":3,"u8-tree-diagram":1,"u8-tree-outcomes":2,"u9-binomial-expected":2,"u9-binomial-identify":2,"u9-classify-events":2,"u9-compare-games":3,"u9-complementary":1,"u9-conditional":2,"u9-context-prob":1,"u9-convert-odds-prob":1,"u9-create-problem":2,"u9-create-solve-game":3,"u9-decisions":2,"u9-dep-vs-indep":2,"u9-independent-pair-cr":2,"u9-independent-prob":1,"u9-me-or-not":2,"u9-me-prob":1,"u9-media-statements":2,"u9-nonme-prob":2,"u9-odds-context":3,"u9-odds-vs-prob":2,"u9-pk-exp-vs-theor-b":2,"u9-pk-prob-basic-b":2,"u9-pk-product-rule":2,"u9-prob-basics":1,"u9-prob-comb":2,"u9-prob-comb-context":3,"u9-prob-comb-hard":3,"u9-prob-odds-determine":1,"u9-prob-perm-context":3,"u9-represent-events":2,"u9-same-colour-cr":3};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-add-diff-den":"b","u1-add-same-den":"a","u1-extraneous":"b","u1-npv-why":"b","u1-pk-add-unlike":"a","u1-pk-diff-squares":"b","u1-pk-gcf":"b","u1-pk-multiply-fractions":"a","u1-reverse-restrictions":"b","u1-simplify-quad":"b","u1-solve-quad-eq":"a","u1-sub-monomial-den":"b","u2-characteristics-equation":"a","u2-match-by-characteristics":"b","u2-match-equation-graph":"b","u2-model-decision":"b","u2-pk-domain-range":"b","u2-pk-graph-description":"a","u2-pk-vertex-form-params":"b","u2-pk-which-quadratic":"a","u2-scatter-type":"a","u2-sketch-match":"b","u2-zeros-and-intercept-cr":"b","u3-build-equation":"b","u3-characteristics-combo-cr":"a","u3-data-equation":"b","u3-graph-full-equation":"b","u3-match-eq-graph":"b","u3-periodic-or-sinusoidal":"a","u3-pk-label-sides":"a","u3-pk-params-characteristics":"a","u3-pk-ratio-def":"a","u4-app-decision":"b","u4-compare-models":"a","u4-growth-or-decay":"b","u4-match-by-description":"b","u4-match-graph":"b","u4-pk-laws-integral":"b","u4-pk-repeated-mult":"b","u5-condense-log":"b","u5-expand-log":"b","u5-match-graph":"b","u5-pk-laws-rational":"a","u5-pk-rational-exp":"a","u5-solve-with-logs":"a","u5-two-bases":"a","u6-add-rent-lease-buy":"a","u6-compare-costs":"a","u6-credit-fees":"a","u6-identify-compound":"b","u6-justify-decision":"b","u6-pk-percent-convert":"a","u6-rent-buy-lease":"a","u6-simple-vs-compound":"b","u7-applications":"b","u7-disjoint-check":"a","u7-error-identify":"b","u7-operations":"a","u7-pk-sort-numbers":"b","u7-pk-subsets":"a","u7-set-concepts":"b","u7-subset-relation":"a","u8-assumptions":"b","u8-comb-strategy":"b","u8-identical-effect":"b","u8-order-matters":"b","u8-perm-strategy":"b","u8-pk-product-rule":"a","u8-pk-sample-space":"a","u8-prob-comb":"a","u8-prob-comb-hard":"a","u9-binomial-expected":"b","u9-binomial-identify":"b","u9-classify-events":"b","u9-compare-games":"a","u9-create-solve-game":"b","u9-decisions":"b","u9-dep-vs-indep":"b","u9-media-statements":"b","u9-odds-context":"a","u9-odds-vs-prob":"b","u9-pk-exp-vs-theor-b":"a","u9-pk-prob-basic-b":"a","u9-prob-comb-context":"a","u9-prob-perm-context":"a","u9-represent-events":"a"};
+window.__BANK_BIMODAL={"u1-add-diff-den":"b","u1-add-same-den":"a","u1-extraneous":"b","u1-npv-why":"b","u1-pk-add-unlike":"a","u1-pk-diff-squares":"b","u1-pk-gcf":"b","u1-pk-multiply-fractions":"a","u1-reverse-restrictions":"b","u1-simplify-quad":"b","u1-solve-quad-eq":"a","u1-sub-monomial-den":"b","u2-characteristics-equation":"a","u2-match-by-characteristics":"b","u2-match-equation-graph":"b","u2-model-decision":"b","u2-pk-domain-range":"b","u2-pk-graph-description":"a","u2-pk-vertex-form-params":"b","u2-pk-which-quadratic":"a","u2-scatter-type":"a","u2-sketch-match":"b","u2-zeros-and-intercept-cr":"b","u3-build-equation":"b","u3-characteristics-combo-cr":"a","u3-data-equation":"b","u3-graph-full-equation":"b","u3-match-eq-graph":"b","u3-periodic-or-sinusoidal":"a","u3-pk-label-sides":"a","u3-pk-params-characteristics":"a","u3-pk-ratio-def":"a","u4-app-decision":"b","u4-compare-models":"a","u4-growth-or-decay":"b","u4-match-by-description":"b","u4-match-graph":"b","u4-pk-laws-integral":"b","u4-pk-repeated-mult":"b","u5-condense-log":"b","u5-expand-log":"b","u5-match-graph":"b","u5-pk-laws-rational":"a","u5-pk-rational-exp":"a","u5-solve-with-logs":"a","u5-two-bases":"a","u6-add-rent-lease-buy":"a","u6-compare-costs":"a","u6-credit-fees":"a","u6-identify-compound":"b","u6-justify-decision":"b","u6-pk-percent-convert":"a","u6-rent-buy-lease":"a","u6-simple-vs-compound":"b","u7-applications":"b","u7-disjoint-check":"a","u7-error-identify":"b","u7-operations":"a","u7-pk-sort-numbers":"b","u7-pk-subsets":"a","u7-set-concepts":"b","u7-subset-relation":"a","u8-assumptions":"b","u8-comb-strategy":"b","u8-identical-effect":"b","u8-order-matters":"b","u8-perm-strategy":"b","u8-pk-sample-space":"a","u9-binomial-expected":"b","u9-binomial-identify":"b","u9-classify-events":"b","u9-compare-games":"a","u9-create-solve-game":"b","u9-decisions":"b","u9-dep-vs-indep":"b","u9-media-statements":"b","u9-odds-context":"a","u9-odds-vs-prob":"b","u9-pk-exp-vs-theor-b":"a","u9-pk-prob-basic-b":"a","u9-pk-product-rule":"a","u9-prob-comb":"a","u9-prob-comb-context":"a","u9-prob-comb-hard":"a","u9-prob-perm-context":"a","u9-represent-events":"a"};
