@@ -34,6 +34,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Changed
 
+- Math 1201's rectangle perimeter solutions now add the four sides, the way the course teaches it, instead of presenting the 2(l + w) formula. Worked examples in the Unit 1 measurement questions now match the question's shape too: a circle circumference question gets a circle example, not a rectangle one.
 - Math 1201's rectangular prism surface area solutions now work face by face, the way the course teaches it: find the area of each different face, double it for its matching partner, and add. They no longer present the packaged 2(lw + lh + wh) formula.
 - Worked examples now match the shape of the question on screen in Math 1201 Unit 1's surface area and volume questions. If you are working on a pyramid question, the worked example is a pyramid question with different numbers, not a cone or a cylinder. Where no same-shape example turns up, the app still shows a different question from the same set rather than none.
 - Chemistry 3202's constants now match the same Chemistry Data Sheet: the atomic masses for zinc, lead, nickel and tin in its questions, and the Avogadro constant and masses in its Chemistry 2202 review panel, have been aligned to the sheet's values.

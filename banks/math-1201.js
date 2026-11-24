@@ -1161,7 +1161,7 @@ E("u1-linear-problem",1,["5.14"],1,"gen",function(){
       v1=ri(3,20); v2=ri(3,15); ans=2*(v1+v2);
       ds=[fmt(v1+v2),fmt(v1*v2),fmt(2*v1+v2)];
       prompt="A tape measure gives the length of a rectangular garden as "+v1+" metres and the width as "+v2+" metres. Determine the perimeter of the garden, in metres.";
-      sol="Add the length and width, then double: \\[ \\begin{aligned} P &= 2(l + w) \\\\ &= 2("+v1+" + "+v2+") \\\\ &= "+ans+" \\end{aligned} \\] So the perimeter is <b>"+ans+" metres</b>.";
+      sol="Add the four sides. The two lengths are each "+v1+" metres and the two widths are each "+v2+" metres: \\[ \\begin{aligned} P &= "+v1+" + "+v2+" + "+v1+" + "+v2+" \\\\ &= "+ans+" \\end{aligned} \\] So the perimeter is <b>"+ans+" metres</b>.";
     }else if(mode===4){
       v1=pick([10,20,25,50]); v2=pick([2,3,4,5]); var tot4=v1*v2/10; ans=v2/10;
       ds=[fmt(tot4),fmt(v2),fmt(v2/100)];
@@ -1174,7 +1174,7 @@ E("u1-linear-problem",1,["5.14"],1,"gen",function(){
       sol="Multiply the length of one roll by the number of rolls: \\[ \\begin{aligned} "+v1+" \\times "+v2+" &= "+ans+" \\end{aligned} \\] So the total length is <b>"+ans+" centimetres</b>.";
     }
   }while(!u1setOk([fmt(ans)].concat(ds.map(function(x){return String(x);})))&&tries<80);
-  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,v1:v1,v2:v2});
+  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,v1:v1,v2:v2,shape:(mode===1||mode===2)?"circle":mode===3?"rectangle":mode===4?"division":"multiplication"});
   if(mode===1)q.figure=u1figCirc(fmt(C)+" cm","d");
   else if(mode===2)q.figure=u1figCirc(fmt(C2)+" cm","r");
   else if(mode===3)q.figure=u1figRect(v1,v2,v1+" m",v2+" m");
