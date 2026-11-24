@@ -4907,7 +4907,30 @@ function tCodeTeacherBar(){
   if(!document.getElementById("againBtn"))return;
   if(sess.querySelector(".codeteach"))return;
   var bar=document.createElement("div");bar.className="codeteach";
-  var a=document.createElement("a");a.href=tCodeTeacherURL();
+  var a=document.createElement("a");
+  var url=tCodeTeacherURL();
+  if(url.length>7000){
+    /* The teacher address of an over-long set cannot be opened
+       as a URL either (URI Too Long, Nov 24, 2026, the same wall
+       the code opening hit). The link mints a registry code for
+       the teacher address on click, stores it as the code
+       payload, and follows the short code address instead, so
+       the print and edit view opens exactly as it does for an
+       ordinary set. If minting fails the direct address is
+       followed, as before. */
+    a.href="#";
+    a.addEventListener("click",function(ev){
+      ev.preventDefault();
+      var code=tLinkCodeFor(url);
+      if(!code){location.href=url;return;}
+      var q=url.split("?")[1]||"";
+      try{sessionStorage.setItem("raCodePayload",JSON.stringify({code:code,q:q}));}catch(e){}
+      var course=new URLSearchParams(q).get("course")||"";
+      location.href=location.pathname+"?course="+encodeURIComponent(course)+"&codeopen="+encodeURIComponent(code);
+    });
+  }else{
+    a.href=url;
+  }
   a.textContent=L9("Teacher: print or edit this set","Enseignant : imprimer ou modifier cet ensemble");
   bar.appendChild(a);
   sess.insertBefore(bar,sess.firstChild);
