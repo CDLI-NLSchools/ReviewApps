@@ -4038,10 +4038,12 @@ function dealExample(i,n,prev){
   var q=current[i];if(!q||!q._entry)return null;
   var e=q._entry;
   var sd=sessionSeed?(sessionSeed+"|example|"+e.id+"|"+n):"";
-  return withSeed(sd,function(){var c=canonQ(q),pc=prev?canonQ(prev):null,t=null,first=null,broke=false;
-    for(var k=0;k<12;k++){var cand=e.gen();cand._entry=e;if(!first)first=cand;t=cand;var cc=canonQ(cand);if(cc!==c&&cc!==pc){broke=true;break;}}
-    if(!broke)return first; // ran out of different examples: cycle back to the first instance
-    return t;});
+  return withSeed(sd,function(){var c=canonQ(q),pc=prev?canonQ(prev):null,t=null,first=null,fallback=null;
+    var key=(q._p&&q._p.shape)||null,cap=key?40:12;
+    for(var k=0;k<cap;k++){var cand=e.gen();cand._entry=e;if(!first)first=cand;var cc=canonQ(cand);if(cc===c||cc===pc)continue;if(!fallback)fallback=cand;if(!key||(cand._p&&cand._p.shape===key)){t=cand;break;}}
+    if(t)return t;
+    if(fallback)return fallback; // no same-shape example turned up: any different instance
+    return first;}); // nothing different turned up: cycle back to the first instance
 }
 function renderExample(i,exq){
   var box=$("ex"+i);if(!box)return;

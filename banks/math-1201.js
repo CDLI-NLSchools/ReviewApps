@@ -1226,14 +1226,14 @@ E("u1-sa-basic",1,["5.1","5.2"],2,"gen",function(){
       "A closed cylindrical paint can has radius "+r+" cm and height "+h+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.":
       "The net of a closed cylinder is a rectangle joined to two congruent circles. The circles have radius "+r+" cm, and the rectangle has height "+h+" cm and length equal to the circumference of a circle. Sketch the net in words and determine the total surface area of the cylinder. Give your answer to the nearest tenth, in square centimetres.";
     var q=numq(prompt,ans,0.11,
-      "The surface area of a closed cylinder is the two circles plus the curved rectangle: \\[ \\begin{aligned} SA &= 2\\pi r^2 + 2\\pi r h \\\\ &= 2\\pi("+r+")^2 + 2\\pi("+r+")("+h+") \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans)+" square centimetres</b>.",{mode:mode,r:r,h:h});
+      "The surface area of a closed cylinder is the two circles plus the curved rectangle: \\[ \\begin{aligned} SA &= 2\\pi r^2 + 2\\pi r h \\\\ &= 2\\pi("+r+")^2 + 2\\pi("+r+")("+h+") \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans)+" square centimetres</b>.",{mode:mode,r:r,h:h,shape:"cylinder"});
     q.figure=u1figCyl(r,h,fmt(r)+" cm",fmt(h)+" cm");
     return q;
   }
   if(mode===3){
     var r3=ri(3,9),l3=r3+ri(2,7),ans3=u1r1(Math.PI*r3*(r3+l3));
     var q=numq("A solid cone ornament has radius "+r3+" cm and slant height "+l3+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.",ans3,0.11,
-      "The surface area of a cone is the circular base plus the lateral area: \\[ \\begin{aligned} SA &= \\pi r^2 + \\pi r l \\\\ &= \\pi("+r3+")^2 + \\pi("+r3+")("+l3+") \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans3)+" square centimetres</b>.",{mode:mode,r:r3,l:l3});
+      "The surface area of a cone is the circular base plus the lateral area: \\[ \\begin{aligned} SA &= \\pi r^2 + \\pi r l \\\\ &= \\pi("+r3+")^2 + \\pi("+r3+")("+l3+") \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans3)+" square centimetres</b>.",{mode:mode,r:r3,l:l3,shape:"cone"});
     q.figure=u1figCone(r3,Math.sqrt(Math.max(l3*l3-r3*r3,0.25)),{rLab:fmt(r3)+" cm",lLab:fmt(l3)+" cm"});
     return q;
   }
@@ -1243,13 +1243,13 @@ E("u1-sa-basic",1,["5.1","5.2"],2,"gen",function(){
       "A closed rectangular storage box has length "+a+" cm, width "+b+" cm and height "+c+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.":
       "The net of a closed rectangular prism is six rectangles in three congruent pairs, with dimensions "+a+" cm by "+b+" cm, "+a+" cm by "+c+" cm, and "+b+" cm by "+c+" cm. Sketch the net in words and determine the total surface area of the prism. Give your answer to the nearest tenth, in square centimetres.";
     var q=numq(prompt4,ans4,0.11,
-      "Add the areas of the three pairs of congruent faces: \\[ \\begin{aligned} SA &= 2(lw + lh + wh) \\\\ &= 2("+a+"\\times"+b+" + "+a+"\\times"+c+" + "+b+"\\times"+c+") \\\\ &= "+ans4+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans4)+" square centimetres</b>.",{mode:mode,a:a,b:b,c:c});
+      "Add the areas of the three pairs of congruent faces: \\[ \\begin{aligned} SA &= 2(lw + lh + wh) \\\\ &= 2("+a+"\\times"+b+" + "+a+"\\times"+c+" + "+b+"\\times"+c+") \\\\ &= "+ans4+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans4)+" square centimetres</b>.",{mode:mode,a:a,b:b,c:c,shape:"prism"});
     q.figure=u1figPrism(a,b,c,fmt(a)+" cm",fmt(b)+" cm",fmt(c)+" cm");
     return q;
   }
   var s=ri(4,12),l6=s+ri(2,8),ans6=s*s+2*s*l6;
   var q=numq("A square based pyramid paperweight has base side "+s+" cm and slant height "+l6+" cm. Determine its total surface area. Give your answer to the nearest tenth, in square centimetres.",ans6,0.11,
-    "The surface area is the square base plus four congruent triangular faces: \\[ \\begin{aligned} SA &= s^2 + 2sl \\\\ &= "+s+"^2 + 2("+s+")("+l6+") \\\\ &= "+ans6+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans6)+" square centimetres</b>.",{mode:mode,s:s,l:l6});
+    "The surface area is the square base plus four congruent triangular faces: \\[ \\begin{aligned} SA &= s^2 + 2sl \\\\ &= "+s+"^2 + 2("+s+")("+l6+") \\\\ &= "+ans6+" \\end{aligned} \\] So the surface area is <b>"+fmt(ans6)+" square centimetres</b>.",{mode:mode,s:s,l:l6,shape:"pyramid"});
   q.figure=u1figPyr(s,Math.sqrt(Math.max(l6*l6-(s/2)*(s/2),0.25)),{sLab:fmt(s)+" cm",lLab:fmt(l6)+" cm"});
   return q;
 });
@@ -1260,14 +1260,14 @@ E("u1-sa-unknown",1,["5.3"],2,"gen",function(){
   if(mode===1){
     var r=ri(3,9),h=ri(4,14),SA=u1r1(2*Math.PI*r*(r+h));
     var q=numq("A closed cylinder has radius "+r+" cm and total surface area "+fmt(SA)+" square centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h,0.11,
-      "Substitute into the surface area formula and solve for the height: \\[ \\begin{aligned} 2\\pi r(r + h) &= "+fmt(SA)+" \\\\ r + h &\\approx \\frac{"+fmt(SA)+"}{2\\pi("+r+")} \\\\ h &\\approx "+h+" \\end{aligned} \\] So the height is <b>"+h+" centimetres</b>.",{mode:mode,r:r});
+      "Substitute into the surface area formula and solve for the height: \\[ \\begin{aligned} 2\\pi r(r + h) &= "+fmt(SA)+" \\\\ r + h &\\approx \\frac{"+fmt(SA)+"}{2\\pi("+r+")} \\\\ h &\\approx "+h+" \\end{aligned} \\] So the height is <b>"+h+" centimetres</b>.",{mode:mode,r:r,shape:"cylinder"});
     q.figure=u1figCyl(r,h,fmt(r)+" cm","?");
     return q;
   }
   if(mode===2){
     var w=ri(3,9),h2=ri(3,9),l=ri(4,14),SA2=2*(l*w+l*h2+w*h2);
     var q=numq("A closed rectangular box has width "+w+" cm, height "+h2+" cm and total surface area "+SA2+" square centimetres. Determine its length. Give your answer to the nearest tenth, in centimetres.",l,0.11,
-      "Substitute into the surface area formula and solve for the length: \\[ \\begin{aligned} 2(lw + lh + wh) &= "+SA2+" \\\\ l("+w+" + "+h2+") &= "+(SA2/2-w*h2)+" \\\\ l &= "+l+" \\end{aligned} \\] So the length is <b>"+l+" centimetres</b>.",{mode:mode,w:w,h:h2});
+      "Substitute into the surface area formula and solve for the length: \\[ \\begin{aligned} 2(lw + lh + wh) &= "+SA2+" \\\\ l("+w+" + "+h2+") &= "+(SA2/2-w*h2)+" \\\\ l &= "+l+" \\end{aligned} \\] So the length is <b>"+l+" centimetres</b>.",{mode:mode,w:w,h:h2,shape:"prism"});
     q.figure=u1figPrism(l,w,h2,"?",fmt(w)+" cm",fmt(h2)+" cm");
     return q;
   }
@@ -1276,13 +1276,13 @@ E("u1-sa-unknown",1,["5.3"],2,"gen",function(){
     if(r3>=l3){r3=l3-3;}
     LA=u1r1(Math.PI*r3*l3);
     var q=numq("The lateral surface area of a cone is "+fmt(LA)+" square centimetres and its slant height is "+l3+" cm. Determine its radius. Give your answer to the nearest tenth, in centimetres.",r3,0.11,
-      "The lateral area is pi times radius times slant height, so divide: \\[ \\begin{aligned} r &= \\frac{LA}{\\pi l} \\\\ &\\approx \\frac{"+fmt(LA)+"}{\\pi("+l3+")} \\\\ &\\approx "+r3+" \\end{aligned} \\] So the radius is <b>"+r3+" centimetres</b>.",{mode:mode,l:l3});
+      "The lateral area is pi times radius times slant height, so divide: \\[ \\begin{aligned} r &= \\frac{LA}{\\pi l} \\\\ &\\approx \\frac{"+fmt(LA)+"}{\\pi("+l3+")} \\\\ &\\approx "+r3+" \\end{aligned} \\] So the radius is <b>"+r3+" centimetres</b>.",{mode:mode,l:l3,shape:"cone"});
     q.figure=u1figCone(r3,Math.sqrt(Math.max(l3*l3-r3*r3,0.25)),{rLab:"?",lLab:fmt(l3)+" cm"});
     return q;
   }
   var s=ri(4,12),l4=ri(5,14),SA4=s*s+2*s*l4;
   var q=numq("A square based pyramid has base side "+s+" cm and total surface area "+SA4+" square centimetres. Determine its slant height. Give your answer to the nearest tenth, in centimetres.",l4,0.11,
-    "Subtract the base area, then divide by twice the base side: \\[ \\begin{aligned} 2sl &= "+SA4+" - "+s+"^2 \\\\ l &= \\frac{"+(SA4-s*s)+"}{2("+s+")} \\\\ &= "+l4+" \\end{aligned} \\] So the slant height is <b>"+l4+" centimetres</b>.",{mode:mode,s:s});
+    "Subtract the base area, then divide by twice the base side: \\[ \\begin{aligned} 2sl &= "+SA4+" - "+s+"^2 \\\\ l &= \\frac{"+(SA4-s*s)+"}{2("+s+")} \\\\ &= "+l4+" \\end{aligned} \\] So the slant height is <b>"+l4+" centimetres</b>.",{mode:mode,s:s,shape:"pyramid"});
   q.figure=u1figPyr(s,Math.sqrt(Math.max(l4*l4-(s/2)*(s/2),0.25)),{sLab:fmt(s)+" cm",lLab:"?"});
   return q;
 });
@@ -1293,34 +1293,34 @@ E("u1-vol-basic",1,["5.4"],2,"gen",function(){
   if(mode===1){
     var r=ri(3,10),h=ri(5,16),ans=u1r1(Math.PI*r*r*h);
     var q=numq("A cylindrical water tank has radius "+r+" cm and height "+h+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans,0.11,
-      "The volume of a cylinder is the area of its base times its height, \\(V = A_b \\times h\\). First find the base area: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r+")^2 \\\\ V &= A_b \\times h = \\pi("+r+")^2("+h+") \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the volume is <b>"+fmt(ans)+" cubic centimetres</b>.",{mode:mode,r:r,h:h});
+      "The volume of a cylinder is the area of its base times its height, \\(V = A_b \\times h\\). First find the base area: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r+")^2 \\\\ V &= A_b \\times h = \\pi("+r+")^2("+h+") \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the volume is <b>"+fmt(ans)+" cubic centimetres</b>.",{mode:mode,r:r,h:h,shape:"cylinder"});
     q.figure=u1figCyl(r,h,fmt(r)+" cm",fmt(h)+" cm");
     return q;
   }
   if(mode===2){
     var r2=ri(3,9),h2=pick([6,9,12,15]),ans2=u1r1(Math.PI*r2*r2*h2/3);
     var q=numq("A cone shaped pile of sand has radius "+r2+" cm and height "+h2+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans2,0.11,
-      "The volume of a cone is one third of the area of its base times its height. First find the base area: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r2+")^2 \\\\ V &= \\frac{1}{3} A_b \\times h = \\frac{1}{3}\\pi("+r2+")^2("+h2+") \\\\ &\\approx "+fmt(ans2)+" \\end{aligned} \\] So the volume is <b>"+fmt(ans2)+" cubic centimetres</b>.",{mode:mode,r:r2,h:h2});
+      "The volume of a cone is one third of the area of its base times its height. First find the base area: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r2+")^2 \\\\ V &= \\frac{1}{3} A_b \\times h = \\frac{1}{3}\\pi("+r2+")^2("+h2+") \\\\ &\\approx "+fmt(ans2)+" \\end{aligned} \\] So the volume is <b>"+fmt(ans2)+" cubic centimetres</b>.",{mode:mode,r:r2,h:h2,shape:"cone"});
     q.figure=u1figCone(r2,h2,{rLab:fmt(r2)+" cm",hLab:fmt(h2)+" cm"});
     return q;
   }
   if(mode===3){
     var a=ri(3,14),b=ri(3,12),c=ri(3,12),ans3=a*b*c;
     var q=numq("A rectangular storage crate has length "+a+" cm, width "+b+" cm and height "+c+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans3,0.11,
-      "The volume of a prism is the area of its base times its height, \\(V = A_b \\times h\\). First find the base area: \\[ \\begin{aligned} A_b &= l \\times w = "+a+" \\times "+b+" = "+(a*b)+" \\\\ V &= A_b \\times h = "+(a*b)+" \\times "+c+" \\\\ &= "+ans3+" \\end{aligned} \\] So the volume is <b>"+ans3+" cubic centimetres</b>.",{mode:mode,a:a,b:b,c:c});
+      "The volume of a prism is the area of its base times its height, \\(V = A_b \\times h\\). First find the base area: \\[ \\begin{aligned} A_b &= l \\times w = "+a+" \\times "+b+" = "+(a*b)+" \\\\ V &= A_b \\times h = "+(a*b)+" \\times "+c+" \\\\ &= "+ans3+" \\end{aligned} \\] So the volume is <b>"+ans3+" cubic centimetres</b>.",{mode:mode,a:a,b:b,c:c,shape:"prism"});
     q.figure=u1figPrism(a,b,c,fmt(a)+" cm",fmt(b)+" cm",fmt(c)+" cm");
     return q;
   }
   if(mode===4){
     var tb=pick([4,6,8,10,12]),th=pick([3,4,5,6]),L=ri(5,14),ans4=(tb*th/2)*L;
     var q=numq("A tent is a triangular prism. Its triangular end has base "+tb+" cm and height "+th+" cm, and the prism is "+L+" cm long. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans4,0.11,
-      "The volume of a prism is the area of its base times its length. The base is the triangular end: \\[ \\begin{aligned} A_b &= \\frac{1}{2}bh = \\frac{1}{2}("+tb+")("+th+") = "+(tb*th/2)+" \\\\ V &= A_b \\times L = "+(tb*th/2)+" \\times "+L+" \\\\ &= "+ans4+" \\end{aligned} \\] So the volume is <b>"+fmt(ans4)+" cubic centimetres</b>.",{mode:mode,tb:tb,th:th,L:L});
+      "The volume of a prism is the area of its base times its length. The base is the triangular end: \\[ \\begin{aligned} A_b &= \\frac{1}{2}bh = \\frac{1}{2}("+tb+")("+th+") = "+(tb*th/2)+" \\\\ V &= A_b \\times L = "+(tb*th/2)+" \\times "+L+" \\\\ &= "+ans4+" \\end{aligned} \\] So the volume is <b>"+fmt(ans4)+" cubic centimetres</b>.",{mode:mode,tb:tb,th:th,L:L,shape:"triangular prism"});
     q.figure=u1figTriPrism(tb,th,L,fmt(tb)+" cm",fmt(th)+" cm",fmt(L)+" cm");
     return q;
   }
   var s=ri(4,12),h5=pick([3,6,9,12]),ans5=s*s*h5/3;
   var q=numq("A square based pyramid ornament has base side "+s+" cm and height "+h5+" cm. Determine its volume. Give your answer to the nearest tenth, in cubic centimetres.",ans5,0.11,
-    "The volume of a pyramid is one third of the area of its base times its height. First find the base area: \\[ \\begin{aligned} A_b &= s^2 = "+s+"^2 = "+(s*s)+" \\\\ V &= \\frac{1}{3} A_b \\times h = \\frac{1}{3}("+s+")^2("+h5+") \\\\ &= "+ans5+" \\end{aligned} \\] So the volume is <b>"+fmt(ans5)+" cubic centimetres</b>.",{mode:mode,s:s,h:h5});
+    "The volume of a pyramid is one third of the area of its base times its height. First find the base area: \\[ \\begin{aligned} A_b &= s^2 = "+s+"^2 = "+(s*s)+" \\\\ V &= \\frac{1}{3} A_b \\times h = \\frac{1}{3}("+s+")^2("+h5+") \\\\ &= "+ans5+" \\end{aligned} \\] So the volume is <b>"+fmt(ans5)+" cubic centimetres</b>.",{mode:mode,s:s,h:h5,shape:"pyramid"});
   q.figure=u1figPyr(s,h5,{sLab:fmt(s)+" cm",hLab:fmt(h5)+" cm"});
   return q;
 });
@@ -1345,7 +1345,7 @@ E("u1-vol-relation",1,["5.5"],1,"gen",function(){
     prompt="A right pyramid has volume "+small+" cubic centimetres. A right prism has the same base and the same height as the pyramid. Determine the volume of the prism, in cubic centimetres.";
     sol="A prism holds three times the volume of a pyramid with the same base and height: \\[ \\begin{aligned} V &= 3 \\times "+small+" \\\\ &= "+big+" \\end{aligned} \\] So the prism volume is <b>"+big+" cubic centimetres</b>.";
   }
-  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,small:small});
+  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,small:small,shape:(mode===1||mode===2)?"cylinder and cone":"prism and pyramid"});
   if(mode===1)q.figure=u1figPair("cyl","cone",fmt(big)+" cm³","?");
   else if(mode===2)q.figure=u1figPair("cone","cyl",fmt(small)+" cm³","?");
   else if(mode===3)q.figure=u1figPair("prism","pyr",fmt(big)+" cm³","?");
@@ -1359,35 +1359,35 @@ E("u1-vol-unknown",1,["5.6"],2,"gen",function(){
   if(mode===1){
     var r=ri(3,9),h=ri(4,14),V=u1r1(Math.PI*r*r*h);
     var q=numq("A cylinder has radius "+r+" cm and volume "+fmt(V)+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h,0.11,
-      "Substitute the known values into \\(V = A_b \\times h\\), where the base area is \\(A_b = \\pi r^2\\), and solve for the height: \\[ \\begin{aligned} "+fmt(V)+" &= \\pi("+r+")^2 \\times h \\\\ h &\\approx \\frac{"+fmt(V)+"}{\\pi("+r+")^2} \\\\ &\\approx "+h+" \\end{aligned} \\] So the height is <b>"+h+" centimetres</b>.",{mode:mode,r:r});
+      "Substitute the known values into \\(V = A_b \\times h\\), where the base area is \\(A_b = \\pi r^2\\), and solve for the height: \\[ \\begin{aligned} "+fmt(V)+" &= \\pi("+r+")^2 \\times h \\\\ h &\\approx \\frac{"+fmt(V)+"}{\\pi("+r+")^2} \\\\ &\\approx "+h+" \\end{aligned} \\] So the height is <b>"+h+" centimetres</b>.",{mode:mode,r:r,shape:"cylinder"});
     q.figure=u1figCyl(r,h,fmt(r)+" cm","?");
     return q;
   }
   if(mode===2){
     var r2=ri(3,10),h2=ri(4,12),V2=u1r1(Math.PI*r2*r2*h2);
     var q=numq("A cylinder has height "+h2+" cm and volume "+fmt(V2)+" cubic centimetres. Determine its radius. Give your answer to the nearest tenth, in centimetres.",r2,0.11,
-      "Substitute the known values into the volume formula \\(V = \\pi r^2 h\\) and solve for the radius: \\[ \\begin{aligned} "+fmt(V2)+" &= \\pi r^2 \\times "+h2+" \\\\ r^2 &\\approx \\frac{"+fmt(V2)+"}{\\pi \\times "+h2+"} \\\\ r &\\approx "+r2+" \\end{aligned} \\] So the radius is <b>"+r2+" centimetres</b>.",{mode:mode,h:h2});
+      "Substitute the known values into the volume formula \\(V = \\pi r^2 h\\) and solve for the radius: \\[ \\begin{aligned} "+fmt(V2)+" &= \\pi r^2 \\times "+h2+" \\\\ r^2 &\\approx \\frac{"+fmt(V2)+"}{\\pi \\times "+h2+"} \\\\ r &\\approx "+r2+" \\end{aligned} \\] So the radius is <b>"+r2+" centimetres</b>.",{mode:mode,h:h2,shape:"cylinder"});
     q.figure=u1figCyl(r2,h2,"?",fmt(h2)+" cm");
     return q;
   }
   if(mode===3){
     var r3=ri(3,9),h3=ri(4,15),V3=u1r1(Math.PI*r3*r3*h3/3);
     var q=numq("A cone has radius "+r3+" cm and volume "+fmt(V3)+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h3,0.11,
-      "Substitute the known values into \\(V = \\frac{1}{3} A_b \\times h\\), where the base area is \\(A_b = \\pi r^2\\), and solve for the height: \\[ \\begin{aligned} "+fmt(V3)+" &= \\frac{1}{3} \\times \\pi("+r3+")^2 \\times h \\\\ h &\\approx \\frac{3 \\times "+fmt(V3)+"}{\\pi("+r3+")^2} \\\\ &\\approx "+h3+" \\end{aligned} \\] So the height is <b>"+h3+" centimetres</b>.",{mode:mode,r:r3});
+      "Substitute the known values into \\(V = \\frac{1}{3} A_b \\times h\\), where the base area is \\(A_b = \\pi r^2\\), and solve for the height: \\[ \\begin{aligned} "+fmt(V3)+" &= \\frac{1}{3} \\times \\pi("+r3+")^2 \\times h \\\\ h &\\approx \\frac{3 \\times "+fmt(V3)+"}{\\pi("+r3+")^2} \\\\ &\\approx "+h3+" \\end{aligned} \\] So the height is <b>"+h3+" centimetres</b>.",{mode:mode,r:r3,shape:"cone"});
     q.figure=u1figCone(r3,h3,{rLab:fmt(r3)+" cm",hLab:"?"});
     return q;
   }
   if(mode===4){
     var a=ri(3,10),b=ri(3,10),c=ri(3,12),V4=a*b*c;
     var q=numq("A rectangular box has length "+a+" cm, width "+b+" cm and volume "+V4+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",c,0.11,
-      "First find the area of the base, \\(A_b = "+a+" \\times "+b+" = "+(a*b)+"\\). Substitute the known values into \\(V = A_b \\times h\\) and solve for the height: \\[ \\begin{aligned} "+V4+" &= "+(a*b)+" \\times h \\\\ h &= \\frac{"+V4+"}{"+(a*b)+"} = "+c+" \\end{aligned} \\] So the height is <b>"+c+" centimetres</b>.",{mode:mode,a:a,b:b});
+      "First find the area of the base, \\(A_b = "+a+" \\times "+b+" = "+(a*b)+"\\). Substitute the known values into \\(V = A_b \\times h\\) and solve for the height: \\[ \\begin{aligned} "+V4+" &= "+(a*b)+" \\times h \\\\ h &= \\frac{"+V4+"}{"+(a*b)+"} = "+c+" \\end{aligned} \\] So the height is <b>"+c+" centimetres</b>.",{mode:mode,a:a,b:b,shape:"prism"});
     q.figure=u1figPrism(a,b,c,fmt(a)+" cm",fmt(b)+" cm","?");
     return q;
   }
   var s=ri(3,9),h5=ri(3,12),V5=s*s*h5/3;
   if(V5!==Math.floor(V5)){h5=h5*3; V5=s*s*h5/3;}
   var q=numq("A square based pyramid has base side "+s+" cm and volume "+fmt(V5)+" cubic centimetres. Determine its height. Give your answer to the nearest tenth, in centimetres.",h5,0.11,
-    "First find the area of the base, \\(A_b = "+s+"^2 = "+(s*s)+"\\). Substitute the known values into \\(V = \\frac{1}{3} A_b \\times h\\) and solve for the height: \\[ \\begin{aligned} "+fmt(V5)+" &= \\frac{1}{3} \\times "+(s*s)+" \\times h \\\\ h &= \\frac{3 \\times "+fmt(V5)+"}{"+(s*s)+"} = "+h5+" \\end{aligned} \\] So the height is <b>"+h5+" centimetres</b>.",{mode:mode,s:s});
+    "First find the area of the base, \\(A_b = "+s+"^2 = "+(s*s)+"\\). Substitute the known values into \\(V = \\frac{1}{3} A_b \\times h\\) and solve for the height: \\[ \\begin{aligned} "+fmt(V5)+" &= \\frac{1}{3} \\times "+(s*s)+" \\times h \\\\ h &= \\frac{3 \\times "+fmt(V5)+"}{"+(s*s)+"} = "+h5+" \\end{aligned} \\] So the height is <b>"+h5+" centimetres</b>.",{mode:mode,s:s,shape:"pyramid"});
   q.figure=u1figPyr(s,h5,{sLab:fmt(s)+" cm",hLab:"?"});
   return q;
 });
@@ -1451,7 +1451,7 @@ E("u1-composite",1,["5.9"],3,"gen",function(){
   if(mode===1){
     var r=ri(3,8),h=ri(6,14),ans=u1r1(Math.PI*r*r*h+2*Math.PI*r*r*r/3);
     var q=numq("A storage silo is a cylinder with a hemispherical top. The cylinder has radius "+r+" cm and height "+h+" cm, and the hemisphere has the same radius. Determine the total volume of the silo. Give your answer to the nearest tenth, in cubic centimetres.",ans,0.11,
-      "Split the solid into a cylinder plus a hemisphere. First find the area of the base, then use it for the cylinder. The hemisphere is half a sphere, so its volume is half the volume of a full sphere: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r+")^2 \\\\ V_{\\text{cylinder}} &= A_b \\times h = \\pi("+r+")^2("+h+") \\\\ V_{\\text{hemisphere}} &= \\frac{1}{2} \\times \\frac{4}{3}\\pi("+r+")^3 \\\\ V &= V_{\\text{cylinder}} + V_{\\text{hemisphere}} \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the total volume is <b>"+fmt(ans)+" cubic centimetres</b>.",{mode:mode,r:r,h:h});
+      "Split the solid into a cylinder plus a hemisphere. First find the area of the base, then use it for the cylinder. The hemisphere is half a sphere, so its volume is half the volume of a full sphere: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r+")^2 \\\\ V_{\\text{cylinder}} &= A_b \\times h = \\pi("+r+")^2("+h+") \\\\ V_{\\text{hemisphere}} &= \\frac{1}{2} \\times \\frac{4}{3}\\pi("+r+")^3 \\\\ V &= V_{\\text{cylinder}} + V_{\\text{hemisphere}} \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the total volume is <b>"+fmt(ans)+" cubic centimetres</b>.",{mode:mode,r:r,h:h,shape:"cylinder and hemisphere"});
     q.figure=u1figSilo(r,h,fmt(r)+" cm",fmt(h)+" cm");
     return q;
   }
@@ -1459,20 +1459,20 @@ E("u1-composite",1,["5.9"],3,"gen",function(){
     var a=ri(4,10),b=ri(3,8),hp=ri(4,10),hq=ri(3,8),ans2=a*b*hp+(a*b*hq)/3;
     if(ans2!==Math.floor(ans2))hq=hq*3,ans2=a*b*hp+(a*b*hq)/3;
     var q=numq("A storage building is a rectangular prism with a pyramid roof. The prism has length "+a+" cm, width "+b+" cm and height "+hp+" cm. The pyramid has the same length and width as its base and height "+hq+" cm. Determine the total volume of the building. Give your answer to the nearest tenth, in cubic centimetres.",u1r1(ans2),0.11,
-      "Split the solid into a prism plus a pyramid on the same base. First find the shared base area: \\[ \\begin{aligned} A_b &= l \\times w = "+a+" \\times "+b+" = "+(a*b)+" \\\\ V &= A_b \\times "+hp+" + \\frac{1}{3} A_b \\times "+hq+" \\\\ &= "+fmt(u1r1(ans2))+" \\end{aligned} \\] So the total volume is <b>"+fmt(u1r1(ans2))+" cubic centimetres</b>.",{mode:mode,a:a,b:b,hp:hp,hq:hq});
+      "Split the solid into a prism plus a pyramid on the same base. First find the shared base area: \\[ \\begin{aligned} A_b &= l \\times w = "+a+" \\times "+b+" = "+(a*b)+" \\\\ V &= A_b \\times "+hp+" + \\frac{1}{3} A_b \\times "+hq+" \\\\ &= "+fmt(u1r1(ans2))+" \\end{aligned} \\] So the total volume is <b>"+fmt(u1r1(ans2))+" cubic centimetres</b>.",{mode:mode,a:a,b:b,hp:hp,hq:hq,shape:"prism and pyramid"});
     q.figure=u1figHouse(a,b,hp,hq,{aLab:fmt(a)+" cm",bLab:fmt(b)+" cm",hpLab:fmt(hp)+" cm",hqLab:fmt(hq)+" cm"});
     return q;
   }
   if(mode===3){
     var r3=ri(3,8),H=ri(8,15),hc=pick([3,6]),ans3=u1r1(Math.PI*r3*r3*H-Math.PI*r3*r3*hc/3);
     var q=numq("A cylindrical block has radius "+r3+" cm and height "+H+" cm. A cone shaped hole with the same radius and height "+hc+" cm is removed from the block. Determine the volume that remains. Give your answer to the nearest tenth, in cubic centimetres.",ans3,0.11,
-      "Subtract the removed cone from the full cylinder. Both parts share the same circular base, so find its area first: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r3+")^2 \\\\ V &= A_b \\times "+H+" - \\frac{1}{3} A_b \\times "+hc+" \\\\ &= \\pi("+r3+")^2("+H+") - \\frac{1}{3}\\pi("+r3+")^2("+hc+") \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the remaining volume is <b>"+fmt(ans3)+" cubic centimetres</b>.",{mode:mode,r:r3,H:H,hc:hc});
+      "Subtract the removed cone from the full cylinder. Both parts share the same circular base, so find its area first: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r3+")^2 \\\\ V &= A_b \\times "+H+" - \\frac{1}{3} A_b \\times "+hc+" \\\\ &= \\pi("+r3+")^2("+H+") - \\frac{1}{3}\\pi("+r3+")^2("+hc+") \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the remaining volume is <b>"+fmt(ans3)+" cubic centimetres</b>.",{mode:mode,r:r3,H:H,hc:hc,shape:"cylinder with cone removed"});
     q.figure=u1figBlock(r3,H,hc,fmt(r3)+" cm",fmt(H)+" cm",fmt(hc)+" cm");
     return q;
   }
   var r4=ri(3,7),h4=pick([6,9,12]),ans4=u1r1(Math.PI*r4*r4*h4/3+2*Math.PI*r4*r4*r4/3);
   var q=numq("A treat is a cone topped with a hemispherical scoop. The cone has radius "+r4+" cm and height "+h4+" cm, and the hemisphere has the same radius. Determine the total volume of the treat. Give your answer to the nearest tenth, in cubic centimetres.",ans4,0.11,
-    "Split the solid into a cone plus a hemisphere. First find the area of the base, then use it for the cone. The hemisphere is half a sphere, so its volume is half the volume of a full sphere: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r4+")^2 \\\\ V_{\\text{cone}} &= \\frac{1}{3} A_b \\times h = \\frac{1}{3}\\pi("+r4+")^2("+h4+") \\\\ V_{\\text{hemisphere}} &= \\frac{1}{2} \\times \\frac{4}{3}\\pi("+r4+")^3 \\\\ V &= V_{\\text{cone}} + V_{\\text{hemisphere}} \\\\ &\\approx "+fmt(ans4)+" \\end{aligned} \\] So the total volume is <b>"+fmt(ans4)+" cubic centimetres</b>.",{mode:mode,r:r4,h:h4});
+    "Split the solid into a cone plus a hemisphere. First find the area of the base, then use it for the cone. The hemisphere is half a sphere, so its volume is half the volume of a full sphere: \\[ \\begin{aligned} A_b &= \\pi r^2 = \\pi("+r4+")^2 \\\\ V_{\\text{cone}} &= \\frac{1}{3} A_b \\times h = \\frac{1}{3}\\pi("+r4+")^2("+h4+") \\\\ V_{\\text{hemisphere}} &= \\frac{1}{2} \\times \\frac{4}{3}\\pi("+r4+")^3 \\\\ V &= V_{\\text{cone}} + V_{\\text{hemisphere}} \\\\ &\\approx "+fmt(ans4)+" \\end{aligned} \\] So the total volume is <b>"+fmt(ans4)+" cubic centimetres</b>.",{mode:mode,r:r4,h:h4,shape:"cone and hemisphere"});
   q.figure=u1figTreat(r4,h4,fmt(r4)+" cm",fmt(h4)+" cm");
   return q;
 });
@@ -1517,27 +1517,27 @@ E("u1-composite-sa",1,["5.9"],3,"gen",function(){
   if(mode===1){
     var r=ri(3,8),h=ri(6,14),ans=u1r1(2*Math.PI*r*h+2*Math.PI*r*r);
     var q=numq("A silo is a cylinder with a hemispherical top. The cylinder has radius "+r+" cm and height "+h+" cm, and the hemisphere has the same radius. The silo sits on the ground and is painted on all outside surfaces except the bottom. Determine the area painted. Give your answer to the nearest tenth, in square centimetres.",ans,0.11,
-      "Only the curved wall of the cylinder and the curved surface of the hemisphere are painted. The flat circle where they join is inside the silo, and the bottom is not painted: \\[ \\begin{aligned} SA &= 2\\pi r h + 2\\pi r^2 \\\\ &= 2\\pi("+r+")("+h+") + 2\\pi("+r+")^2 \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the area painted is <b>"+fmt(ans)+" square centimetres</b>.",{mode:mode,r:r,h:h});
+      "Only the curved wall of the cylinder and the curved surface of the hemisphere are painted. The flat circle where they join is inside the silo, and the bottom is not painted: \\[ \\begin{aligned} SA &= 2\\pi r h + 2\\pi r^2 \\\\ &= 2\\pi("+r+")("+h+") + 2\\pi("+r+")^2 \\\\ &\\approx "+fmt(ans)+" \\end{aligned} \\] So the area painted is <b>"+fmt(ans)+" square centimetres</b>.",{mode:mode,r:r,h:h,shape:"cylinder and hemisphere"});
     q.figure=u1figSilo(r,h,fmt(r)+" cm",fmt(h)+" cm");
     return q;
   }
   if(mode===2){
     var s=ri(4,10),hp=ri(3,9),l=ri(5,12),ans2=s*s+4*s*hp+2*s*l;
     var q=numq("A solid ornament is a square prism with a square pyramid on top. The prism has base side "+s+" cm and height "+hp+" cm. The pyramid has the same base side and slant height "+l+" cm. Determine the total surface area of the solid. Give your answer to the nearest tenth, in square centimetres.",ans2,0.11,
-      "Count the bottom and the four walls of the prism plus the four triangular faces of the pyramid. The top face of the prism is covered by the pyramid, and the base of the pyramid is inside the solid, so neither is counted: \\[ \\begin{aligned} SA &= s^2 + 4sh + 2sl \\\\ &= "+s+"^2 + 4("+s+")("+hp+") + 2("+s+")("+l+") \\\\ &= "+ans2+" \\end{aligned} \\] So the total surface area is <b>"+ans2+" square centimetres</b>.",{mode:mode,s:s,hp:hp,l:l});
+      "Count the bottom and the four walls of the prism plus the four triangular faces of the pyramid. The top face of the prism is covered by the pyramid, and the base of the pyramid is inside the solid, so neither is counted: \\[ \\begin{aligned} SA &= s^2 + 4sh + 2sl \\\\ &= "+s+"^2 + 4("+s+")("+hp+") + 2("+s+")("+l+") \\\\ &= "+ans2+" \\end{aligned} \\] So the total surface area is <b>"+ans2+" square centimetres</b>.",{mode:mode,s:s,hp:hp,l:l,shape:"prism and pyramid"});
     q.figure=u1figHouse(s,s,hp,Math.sqrt(Math.max(l*l-(s/2)*(s/2),0.25)),{aLab:fmt(s)+" cm",hpLab:fmt(hp)+" cm",lLab:fmt(l)+" cm"});
     return q;
   }
   if(mode===3){
     var r3=ri(3,9),h3=ri(5,13),ans3=u1r1(Math.PI*r3*r3+2*Math.PI*r3*h3);
     var q=numq("An open top cylindrical bin has radius "+r3+" cm and height "+h3+" cm. Sheet metal is used for the bottom and the curved side only. Determine the area of sheet metal used. Give your answer to the nearest tenth, in square centimetres.",ans3,0.11,
-      "Count the circular bottom plus the curved side. There is no lid, so no top circle is counted: \\[ \\begin{aligned} SA &= \\pi r^2 + 2\\pi r h \\\\ &= \\pi("+r3+")^2 + 2\\pi("+r3+")("+h3+") \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the area used is <b>"+fmt(ans3)+" square centimetres</b>.",{mode:mode,r:r3,h:h3});
+      "Count the circular bottom plus the curved side. There is no lid, so no top circle is counted: \\[ \\begin{aligned} SA &= \\pi r^2 + 2\\pi r h \\\\ &= \\pi("+r3+")^2 + 2\\pi("+r3+")("+h3+") \\\\ &\\approx "+fmt(ans3)+" \\end{aligned} \\] So the area used is <b>"+fmt(ans3)+" square centimetres</b>.",{mode:mode,r:r3,h:h3,shape:"cylinder"});
     q.figure=u1figCyl(r3,h3,fmt(r3)+" cm",fmt(h3)+" cm");
     return q;
   }
   var r4=ri(3,8),h4=ri(5,12),l4=r4+ri(3,7),ans4=u1r1(Math.PI*r4*r4+2*Math.PI*r4*h4+Math.PI*r4*l4);
   var q=numq("A solid tower ornament is a cylinder with a cone roof on top. The cylinder has radius "+r4+" cm and height "+h4+" cm. The cone has the same radius and slant height "+l4+" cm. Determine the total surface area of the solid. Give your answer to the nearest tenth, in square centimetres.",ans4,0.11,
-    "Count the bottom circle and curved wall of the cylinder plus the lateral area of the cone. The top circle of the cylinder is covered by the cone, and the base of the cone is inside the solid, so neither is counted: \\[ \\begin{aligned} SA &= \\pi r^2 + 2\\pi r h + \\pi r l \\\\ &= \\pi("+r4+")^2 + 2\\pi("+r4+")("+h4+") + \\pi("+r4+")("+l4+") \\\\ &\\approx "+fmt(ans4)+" \\end{aligned} \\] So the total surface area is <b>"+fmt(ans4)+" square centimetres</b>.",{mode:mode,r:r4,h:h4,l:l4});
+    "Count the bottom circle and curved wall of the cylinder plus the lateral area of the cone. The top circle of the cylinder is covered by the cone, and the base of the cone is inside the solid, so neither is counted: \\[ \\begin{aligned} SA &= \\pi r^2 + 2\\pi r h + \\pi r l \\\\ &= \\pi("+r4+")^2 + 2\\pi("+r4+")("+h4+") + \\pi("+r4+")("+l4+") \\\\ &\\approx "+fmt(ans4)+" \\end{aligned} \\] So the total surface area is <b>"+fmt(ans4)+" square centimetres</b>.",{mode:mode,r:r4,h:h4,l:l4,shape:"cylinder and cone"});
   q.figure=u1figTower(r4,h4,l4,fmt(r4)+" cm",fmt(h4)+" cm",fmt(l4)+" cm");
   return q;
 });
@@ -8406,7 +8406,7 @@ E("u1-sa-choice",1,["5.2"],2,"gen",function(){
       sol="The surface area is the two circular ends plus the curved side: \\[ 2\\pi r^2 + 2\\pi r h = 2(3.14)("+r+")("+r+" + "+hh+") = "+fmt(ans)+" \\] The surface area is <b>"+fmt(ans)+" square centimetres</b>.";
     }
   }while(!u1setOk([fmt(ans)].concat(ds))&&tries<90);
-  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,ans:ans});
+  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,ans:ans,shape:(mode===1)?"prism":"cylinder"});
   if(mode===1)q.figure=u1figPrism(l,w,h,fmt(l)+" cm",fmt(w)+" cm",fmt(h)+" cm");
   else q.figure=u1figCyl(r,hh,fmt(r)+" cm",fmt(hh)+" cm");
   return q;
@@ -8437,7 +8437,7 @@ E("u1-vol-choice",1,["5.4"],2,"gen",function(){
       sol="A pyramid is a pointed solid, so \\(V = \\frac{1}{3} A_b \\times h\\) with \\(A_b = "+s+"^2\\): \\[ V = \\frac{1}{3} \\times "+(s*s)+" \\times "+h3+" = "+ans+" \\] The volume is <b>"+ans+" cubic centimetres</b>.";
     }
   }while(!u1setOk([fmt(ans)].concat(ds))&&tries<90);
-  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,ans:ans});
+  var q=mcq(prompt,fmt(ans),balDp(fmt(ans),ds),sol,{mode:mode,ans:ans,shape:(mode===1)?"cylinder":(mode===2)?"cone":"pyramid"});
   if(mode===1)q.figure=u1figCyl(r,h,fmt(r)+" cm",fmt(h)+" cm");
   else if(mode===2)q.figure=u1figCone(r2,h2,{rLab:fmt(r2)+" cm",hLab:fmt(h2)+" cm"});
   else q.figure=u1figPyr(s,h3,{sLab:fmt(s)+" cm",hLab:fmt(h3)+" cm"});
