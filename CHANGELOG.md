@@ -39,6 +39,10 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 - Set codes for large sets now open properly. Entering a code for a set built from hand-picked or adopted questions used to end at the same "URI Too Long" error, because opening the code still loaded the set's full address in the browser. The app now loads the set from the code registry directly, without the long address ever being requested, and the QR code on a printed large set carries the short code address too. Codes already handed out work as they are.
 - Copying a teacher or student link for a large set in Advanced Tools no longer produces a link so long that servers refuse it (the "URI Too Long" error). Sets built from hand-picked or adopted questions carry their full text in the link and could run to tens of thousands of characters. When a set's link passes the safe length, the buttons now save the set under a six character set code instead, the same registry printed set codes use, and copy the code with its instructions: students type the code on the Review Apps home page to open the exact set. Smaller sets still copy the direct link, unchanged.
 
+### Fixed
+
+- A printed sheet set opened from its QR code or short link could land on a blank course page instead of the set. The registry found the set, but the app then stopped on the set's sheet settings before dealing the questions. Sets opened by code, QR code or link now deal properly, including sets that started as printable sheets.
+
 ### Changed
 
 - Copying a link for a large set now copies a short link. A set too large for its full link used to be copied as a set code with typing instructions; it is now copied as a short link that opens the exact set, and the set code still works on the home page as a backup. While a set opened from a link is loading, an "Opening your set" banner shows at the top of the page, and if a link's code cannot be found the banner says so, instead of leaving a blank course page.

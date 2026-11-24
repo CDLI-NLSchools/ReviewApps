@@ -8691,17 +8691,17 @@ function applyURL(){
   else if(p.get("preset")==="final"){state.units=(window.__COURSE&&window.__COURSE.presets.final)?window.__COURSE.presets.final.units.slice():[];touched=true;state.midCap=false;state.finalCap=!!(window.__COURSE&&window.__COURSE.presets.final&&window.__COURSE.presets.final.cap);if(window.__COURSE&&window.__COURSE.presets.final&&window.__COURSE.presets.final.mix)hidCtl.mix=window.__COURSE.presets.final.mix.slice();}
   else if(p.get("unit")){state.units=p.get("unit").split(",").map(Number).filter(function(u){return UNITS[u];});touched=true;}
   if(p.get("indicator")){state.inds=p.get("indicator").split(",").map(function(x){return x.trim();});touched=true;}
-  if(p.get("count"))$("countIn").value=p.get("count");
+  if(p.get("count")&&$("countIn"))$("countIn").value=p.get("count");
   if(p.get("omc")!==null||p.get("ofi")!==null){ONLINE_SPLIT=true;if(p.get("omc")!==null&&$("oMcIn"))$("oMcIn").value=p.get("omc");if(p.get("ofi")!==null&&$("oFiIn"))$("oFiIn").value=p.get("ofi");if($("countIn")&&$("oMcIn")&&$("oFiIn"))$("countIn").value=(Math.max(0,Math.min(60,+$("oMcIn").value||0)))+(Math.max(0,Math.min(60,+$("oFiIn").value||0)));}
   else if(p.get("count")!==null)ONLINE_SPLIT=false;
-  if(p.get("mc")!==null)$("mcCountIn").value=p.get("mc");
-  if(p.get("nc")!==null)$("ncCountIn").value=p.get("nc");
+  if(p.get("mc")!==null&&$("mcCountIn"))$("mcCountIn").value=p.get("mc");
+  if(p.get("nc")!==null&&$("ncCountIn"))$("ncCountIn").value=p.get("nc");
   if(p.get("txmc")!==null&&$("testXMcIn"))$("testXMcIn").value=p.get("txmc");
   if(p.get("txcr")!==null&&$("testXCrIn"))$("testXCrIn").value=p.get("txcr");
   if(p.get("bm")==="0"){hidCtl.bm="off";if($("bmIn"))$("bmIn").value="off";}
-  if(p.get("key")==="0")$("keyChk").checked=false;
+  if(p.get("key")==="0"&&$("keyChk"))$("keyChk").checked=false;
   if(p.get("scode")==="0"&&$("codeChk"))$("codeChk").checked=false;
-  if(p.get("order"))$("orderIn").value=p.get("order");
+  if(p.get("order")&&$("orderIn"))$("orderIn").value=p.get("order");
   if(p.get("wsmc")!==null&&$("wsMcIn"))$("wsMcIn").value=p.get("wsmc");
   else if(p.get("ws")!==null&&$("wsMcIn"))$("wsMcIn").value=p.get("ws");
   if(p.get("wscr")!==null&&$("wsCrIn"))$("wsCrIn").value=p.get("wscr");
