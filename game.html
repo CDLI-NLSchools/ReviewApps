@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Review Apps Game (pilot)</title>
+<title>Review Rally: Formula Fun</title>
 <link rel="icon" href="favicon.jpg">
 <link rel="stylesheet" href="katex/katex.min.css">
 <style>
@@ -54,11 +54,24 @@
   table{border-collapse:collapse;width:100%;margin:8px 0;}
   th,td{border-bottom:1px solid #e0e6ee;padding:7px 9px;text-align:left;}
   th{color:#52617a;font-weight:600;}
-  .podium{display:flex;gap:14px;justify-content:center;align-items:flex-end;margin:18px 0;}
-  .pod{text-align:center;background:#eef2f7;border-radius:14px;padding:14px 18px;min-width:130px;}
-  .pod.first{background:#fdf3d7;border:2px solid #d9a400;}
-  .pod .av{font-size:2.6rem;}
-  .pod .nm{font-weight:700;font-size:1.15rem;}
+  .podium{display:flex;gap:14px;justify-content:center;align-items:flex-end;margin:18px 0;flex-wrap:wrap;}
+  .podcar{text-align:center;background:#eef2f7;border-radius:14px;padding:12px 14px 14px;min-width:216px;animation:rollin .7s ease-out both;}
+  .podcar.first{background:#fdf3d7;border:2px solid #d9a400;}
+  .podcar .nm{font-weight:700;font-size:1.15rem;margin-top:4px;}
+  .carwrap{position:relative;width:210px;max-width:100%;margin:10px auto 0;}
+  .carwrap svg{width:100%;height:auto;display:block;}
+  .driver{position:absolute;left:44%;top:-16px;transform:translateX(-50%);font-size:2.1rem;line-height:1;}
+  @keyframes rollin{from{transform:translateX(-70px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+  .checkers{height:16px;border-radius:4px;margin:10px 0 6px;border:1px solid #c4cedd;background:repeating-conic-gradient(#1c2430 0% 25%, #ffffff 0% 50%);background-size:16px 16px;}
+  .lights{display:flex;gap:18px;justify-content:center;margin:30px 0 12px;}
+  .lights.small{gap:8px;margin:0;}
+  .lamp{width:64px;height:64px;border-radius:50%;background:#2b3442;border:3px solid #141a22;}
+  .lights.small .lamp{width:20px;height:20px;border-width:2px;}
+  .lamp.red{background:#e0342b;box-shadow:0 0 22px rgba(224,52,43,.55);}
+  .lamp.green{background:#2fae4e;box-shadow:0 0 22px rgba(47,174,78,.55);}
+  .lightsmsg{text-align:center;font-size:1.4rem;font-weight:700;min-height:1.6em;margin:6px 0;}
+  .lightsout{display:flex;align-items:center;gap:10px;font-weight:800;color:#1e7d46;font-size:1.1rem;margin:2px 0 8px;pointer-events:none;animation:lofade 1.8s ease forwards;}
+  @keyframes lofade{0%,65%{opacity:1;}100%{opacity:0;}}
   .avatars{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;}
   .avatars button{font-size:1.7rem;padding:8px 12px;background:#fff;border:2px solid #c4cedd;border-radius:12px;}
   .avatars button.sel{border-color:#31435f;background:#dbe7ff;}
@@ -78,8 +91,9 @@
 </head>
 <body>
 <main>
-  <h1>Review Apps Game <span style="font-size:.8rem;vertical-align:middle;background:#a86a00;color:#fff;border-radius:6px;padding:2px 8px;">PILOT</span></h1>
-  <p class="sub">A whole-class game played from the Review Apps question banks. The teacher hosts on the board; students join on their own devices with the room code.</p>
+  <h1>Review Rally <span style="font-size:.8rem;vertical-align:middle;background:#a86a00;color:#fff;border-radius:6px;padding:2px 8px;">PILOT</span></h1>
+  <p class="sub">Formula Fun: a whole-class game played from the Review Apps question banks. The teacher hosts on the board; students join on their own devices with the room code.</p>
+  <div class="checkers" aria-hidden="true"></div>
 
   <!-- ============ HOME ============ -->
   <section id="homeView">
@@ -191,7 +205,7 @@
   </section>
 
   <footer>
-    Review Apps Game is a pilot built on the Review Apps question banks. Students play under generated names; no student accounts are created and no real names are entered. Rooms are temporary and are deleted when the teacher ends the game. A student who wants their results recorded can share them at the end with their class ID number, which only their teacher can match to them.
+    Review Rally is a pilot game built on the Review Apps question banks. Students play under generated names; no student accounts are created and no real names are entered. Rooms are temporary and are deleted when the teacher ends the game. A student who wants their results recorded can share them at the end with their class ID number, which only their teacher can match to them.
   </footer>
 </main>
 
@@ -203,7 +217,7 @@
 <script>
 "use strict";
 /* =====================================================================
-   Review Apps Game (pilot), November 2026.
+   Review Rally (the Review Apps game mode, pilot), November 2026.
    A standalone page: it loads the same courses.js registry and bank
    files as the Review Apps shell and never touches index.html.
 
@@ -317,6 +331,62 @@ function download(name, text, type) {
   setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 400);
 }
 
+/* ---------------- racing theme (Review Rally, November 25, 2026) ----------------
+   Every question opens with a start-lights phase: three red lamps
+   light one by one (600 ms apart), a short hold, then green. The
+   room record carries phase "lights" then "live", lightsAt (when
+   the lamps started) and startedAt (the green moment). The question
+   timer and the speed-bonus window both run from startedAt, so the
+   lights cost nobody any answering time. */
+var LIGHTS_MS = 2500;
+var CHECKERS = '<div class="checkers" aria-hidden="true"></div>';
+function lampsHtml(lit, green, small) {
+  var s = '<div class="lights' + (small ? " small" : "") + '">';
+  for (var i = 0; i < 3; i++) s += '<span class="lamp' + (green ? " green" : (i < lit ? " red" : "")) + '"></span>';
+  return s + "</div>";
+}
+function litCount(msToGreen) {
+  if (msToGreen <= 0) return 3;
+  var el = LIGHTS_MS - msToGreen;
+  return Math.max(0, Math.min(3, Math.floor(el / 600) + 1));
+}
+function lightsOutHtml() {
+  return '<div class="lightsout">' + lampsHtml(3, true, true) + "<span>Lights out!</span></div>";
+}
+/* A vintage open-top racecar, drawn inline: long bonnet, open
+   cockpit, big spoked wheels, a number roundel. The driver's face
+   is the player's emoji, laid over the cockpit by CSS. */
+function carSVG(color, rank) {
+  function wheel(cx) {
+    var s = '<circle cx="' + cx + '" cy="84" r="20" fill="#171b21" stroke="#0b0d10" stroke-width="2"/>' +
+      '<circle cx="' + cx + '" cy="84" r="11" fill="#cfd6de" stroke="#6b7684" stroke-width="1.5"/>';
+    for (var a = 0; a < 360; a += 60) {
+      var rad = a * Math.PI / 180;
+      s += '<line x1="' + cx + '" y1="84" x2="' + (cx + 10 * Math.cos(rad)).toFixed(1) + '" y2="' + (84 + 10 * Math.sin(rad)).toFixed(1) + '" stroke="#6b7684" stroke-width="2"/>';
+    }
+    return s + '<circle cx="' + cx + '" cy="84" r="3.5" fill="#31435f"/>';
+  }
+  return '<svg viewBox="0 0 240 110" role="img" aria-label="Vintage racecar">' +
+    '<path d="M16 84 C10 68 20 55 42 50 L88 46 C94 36 112 36 118 46 L176 44 C202 44 220 56 224 72 C225 80 220 86 210 86 L30 86 C22 86 17 85 16 84 Z" fill="' + color + '" stroke="rgba(0,0,0,.3)" stroke-width="1.5"/>' +
+    '<ellipse cx="103" cy="45" rx="16" ry="6" fill="#141a22"/>' +
+    '<path d="M119 44 L127 29 L133 29 L129 45 Z" fill="#bcd6ea" opacity=".9"/>' +
+    '<path d="M148 66 L224 71" stroke="#9aa5b1" stroke-width="4" stroke-linecap="round"/>' +
+    '<circle cx="66" cy="64" r="11" fill="#ffffff" stroke="#31435f" stroke-width="1.5"/>' +
+    '<text x="66" y="69" text-anchor="middle" font-size="13" font-weight="700" fill="#31435f">' + rank + "</text>" +
+    '<circle cx="215" cy="57" r="4" fill="#f5d76e" stroke="#a86a00"/>' +
+    wheel(56) + wheel(184) +
+    "</svg>";
+}
+function podiumCar(r, i, full) {
+  var colors = ["#c99700", "#8a97a5", "#a9713f"];
+  return '<div class="podcar' + (i === 0 ? " first" : "") + '" style="animation-delay:' + (i * 0.35).toFixed(2) + 's">' +
+    '<div class="carwrap"><span class="driver">' + esc(r.avatar || "🙂") + "</span>" + carSVG(colors[i] || "#5b7a99", i + 1) + "</div>" +
+    '<div class="nm">' + esc(r.name || "Player") + "</div>" +
+    "<div>" + r.score + (full ? " points" : "") + "</div>" +
+    (full ? "<div>#" + (i + 1) + "</div>" : "") +
+    "</div>";
+}
+
 /* ---------------- names and avatars ---------------- */
 var NAME_A = ["Swift", "Brave", "Quiet", "Merry", "Bold", "Clever", "Gentle", "Lucky", "Sunny", "Cosmic", "Amber", "Velvet", "Rapid", "Noble", "Jolly", "Keen", "Calm", "Bright", "Wild", "Happy", "Proud", "Silent", "Golden", "Silver", "Crimson", "Azure", "Emerald", "Patient", "Mighty", "Witty"];
 var NAME_B = ["Fox", "Otter", "Puffin", "Moose", "Falcon", "Badger", "Lynx", "Heron", "Wolf", "Bear", "Orca", "Raven", "Hare", "Seal", "Goose", "Trout", "Eagle", "Vole", "Crane", "Finch", "Marten", "Beaver", "Caribou", "Narwhal", "Plovers", "Sparrow", "Walrus", "Mink", "Osprey", "Loon"];
@@ -416,6 +486,7 @@ var Host = {
   settings: null, questions: [], dealt: [], usedPrompts: {},
   answers: {}, expected: {}, scores: {}, perQ: [], timerInt: null,
   cur: -1, phase: "setup", mastery: null, reviewList: [],
+  lightsInt: null, currentStartedAt: 0,
 
   setup: function () {
     var sel = $("courseSel");
@@ -603,13 +674,20 @@ var Host = {
     this.expected = {};
     this.playersList().forEach(function (v) { self.expected[v._pid] = 1; });
     this.answers = {};
-    var startedAt = Relay.now();
+    /* The question opens in the start-lights phase. startedAt is
+       the green moment, LIGHTS_MS after the lamps start, and the
+       deadline hangs off it, so the timer and the speed window run
+       from green, exactly as they ran from publish before. */
+    var lightsAt = Relay.now();
+    var startedAt = lightsAt + LIGHTS_MS;
+    this.currentStartedAt = startedAt;
     Relay.update("rooms/" + this.code, {
-      state: "q", qn: qn, question: payload,
-      startedAt: startedAt, deadline: startedAt + s.timerSec * 1000,
+      state: "q", phase: "lights", qn: qn, question: payload,
+      lightsAt: lightsAt, startedAt: startedAt, deadline: startedAt + s.timerSec * 1000,
       correct: null, reveal: null
     });
-    this.renderBoardQuestion();
+    this.renderBoardLights();
+    this.startLights();
     if (this.unAnswers) this.unAnswers();
     this.unAnswers = Relay.listen("rooms/" + this.code + "/answers/" + qn, function (a) {
       self.answers = a || {};
@@ -625,8 +703,37 @@ var Host = {
     tick();
   },
   currentDeadline: function () { return this.room && this.room.deadline ? this.room.deadline : 0; },
+  renderBoardLights: function () {
+    var p = this.currentPayload, s = this.settings;
+    var head = s.mode === "mastery"
+      ? "Mastering indicator " + esc(p.masteryCode || "") + " · Question " + p.n
+      : "Question " + p.n + " of " + p.total;
+    $("hostBoard").innerHTML = CHECKERS +
+      "<h2>" + head + ' <span class="sub" id="answeredCount"></span></h2>' +
+      '<div id="boardLights">' + lampsHtml(0, false) + "</div>" +
+      '<p class="lightsmsg">Get ready…</p>' +
+      '<div class="players" id="boardPlayers"></div>';
+    this.renderBoardPlayers();
+  },
+  startLights: function () {
+    if (this.lightsInt) clearInterval(this.lightsInt);
+    var self = this;
+    var step = function () {
+      var left = self.currentStartedAt - Relay.now();
+      var el = $("boardLights");
+      if (el) el.innerHTML = lampsHtml(litCount(left), false);
+      if (left <= 0) {
+        clearInterval(self.lightsInt); self.lightsInt = null;
+        Relay.update("rooms/" + self.code, { phase: "live" });
+        self.renderBoardQuestion();
+      }
+    };
+    step();
+    this.lightsInt = setInterval(step, 120);
+  },
   checkAllAnswered: function () {
     if (this.phase !== "playing" || !this.room || this.room.state !== "q") return;
+    if (this.room.phase === "lights") return; /* nobody can have answered yet */
     var now = Relay.now();
     var players = (this.room.players) || {};
     var waiting = 0;
@@ -641,6 +748,7 @@ var Host = {
   closeQuestion: function () {
     if (!this.room || this.room.state !== "q") return;
     if (this.timerInt) { clearTimeout(this.timerInt); this.timerInt = null; }
+    if (this.lightsInt) { clearInterval(this.lightsInt); this.lightsInt = null; }
     var s = this.settings, dealt = this.currentDealt, q = dealt.q;
     var startedAt = this.room.startedAt, deadline = this.room.deadline, windowMs = Math.max(1, deadline - startedAt);
     var split = q.options.map(function () { return 0; });
@@ -715,8 +823,9 @@ var Host = {
     var head = s.mode === "mastery"
       ? "Mastering indicator " + esc(p.masteryCode || "") + " · Question " + p.n
       : "Question " + p.n + " of " + p.total;
-    $("hostBoard").innerHTML =
+    $("hostBoard").innerHTML = CHECKERS +
       "<h2>" + head + ' <span class="sub" id="answeredCount"></span></h2>' +
+      lightsOutHtml() +
       '<div class="timerbar"><div id="timerFill"></div></div>' +
       '<div class="rowflex"><span class="bigstat" id="timerText"></span>' +
       '<button type="button" class="alt" id="addTimeBtn">+15 seconds</button>' +
@@ -758,7 +867,7 @@ var Host = {
     var head = s.mode === "mastery"
       ? "Indicator " + esc((rec.indicators || []).join(", ")) + ": " + pct + "% correct"
       : "Question " + rec.n + ": " + pct + "% correct";
-    $("hostBoard").innerHTML =
+    $("hostBoard").innerHTML = CHECKERS +
       "<h2>" + head + "</h2>" +
       '<div class="boardq"><div class="qprompt">' + rec.prompt + "</div>" +
       '<div class="opts">' + rec.options.map(function (o, i) {
@@ -829,14 +938,14 @@ var Host = {
     var missedQs = this.perQ.filter(function (r) { return r.answered && r.right < r.answered; })
       .sort(function (a, b) { return (a.right / a.answered) - (b.right / b.answered); }).slice(0, 3);
     this.reviewList = missedQs;
-    var html = "<h2>Game over: " + esc(s.courseName) + "</h2>";
+    var html = CHECKERS + "<h2>Game over: " + esc(s.courseName) + "</h2>";
     if (s.mode === "mastery" && this.mastery) {
       html += "<h2>Indicators</h2><p>" + this.mastery.map(function (m) {
         return '<span class="chip ' + (m.status === "cleared" ? "done" : "open") + '">' + esc(m.code) + (m.status === "cleared" ? " cleared" : " not yet") + "</span>";
       }).join("") + "</p>";
     } else {
       html += '<div class="podium">' + board.slice(0, 3).map(function (r, i) {
-        return '<div class="pod' + (i === 0 ? " first" : "") + '"><div class="av">' + esc(r.avatar) + '</div><div class="nm">' + esc(r.name) + '</div><div>' + r.score + " points</div><div>#" + (i + 1) + "</div></div>";
+        return podiumCar(r, i, true);
       }).join("") + "</div>";
     }
     html += "<h2>All players</h2><table><tr><th>Rank</th><th>Player</th><th>Score</th><th>Correct</th></tr>" +
@@ -888,7 +997,7 @@ var Host = {
   },
   downloadCsv: function (board) {
     var s = this.settings, L = [];
-    L.push("Review Apps Game results");
+    L.push("Review Rally results");
     L.push("Course," + csvq(s.courseName));
     L.push("Mode," + (s.mode === "mastery" ? "Mastery" : "Showcase"));
     L.push("Session code," + this.code);
@@ -965,7 +1074,7 @@ var RESULTS_FORM = {
 var Play = {
   code: null, pid: null, room: null, unlisten: null, hbInt: null,
   name: "", avatar: AVATARS[0], myAnswers: {}, myDetail: {}, shared: false,
-  lastState: "", lastQn: -1, timerInt: null,
+  lastState: "", lastQn: -1, timerInt: null, lightsInt: null, _lightsFor: -1,
 
   beginJoin: function (code) {
     var self = this;
@@ -1027,6 +1136,7 @@ var Play = {
       if (this.hbInt) clearInterval(this.hbInt);
       return;
     }
+    if (room.state !== "q") this.stopLights();
     if (room.state === "lobby") this.renderLobby(room);
     else if (room.state === "q") this.renderQuestion(room);
     else if (room.state === "reveal") this.renderReveal(room);
@@ -1048,10 +1158,46 @@ var Play = {
       '<p><span style="font-size:2rem;">' + esc(this.avatar) + '</span> <span class="myname">' + esc(this.name) + "</span></p>" +
       '<p><span id="lobbyCountP">' + Object.keys(room.players || {}).length + "</span> players in the room. Waiting for your teacher to start…</p>";
   },
+  renderLights: function (room) {
+    var q = room.question || {};
+    var head = room.mode === "mastery" ? "Mastering " + esc(q.masteryCode || "") : "Question " + (room.qn + 1) + (room.total ? " of " + room.total : "");
+    $("playMain").innerHTML = "<h2>" + head + "</h2>" +
+      '<div id="playLights">' + lampsHtml(0, false) + "</div>" +
+      '<p class="lightsmsg">Get ready…</p>' +
+      "<p class='sub'>Answers open when the lights go out.</p>";
+    this.startLightsWatch();
+  },
+  startLightsWatch: function () {
+    this.stopLights();
+    var self = this;
+    var step = function () {
+      if (!self.room || self.room.state !== "q") { self.stopLights(); return; }
+      var left = (self.room.startedAt || 0) - Relay.now();
+      var el = $("playLights");
+      if (el) el.innerHTML = lampsHtml(litCount(left), false);
+      if (left <= 0) { self.stopLights(); self.lastState = ""; self.renderQuestion(self.room); }
+    };
+    step();
+    this.lightsInt = setInterval(step, 120);
+  },
+  stopLights: function () {
+    if (this.lightsInt) { clearInterval(this.lightsInt); this.lightsInt = null; }
+  },
   renderQuestion: function (room) {
     var qn = room.qn;
+    /* Start-lights phase: no answer buttons exist yet, so nothing
+       can be submitted until green. The phase flips when the host
+       writes "live", or when the green moment (startedAt) arrives,
+       whichever reaches this screen first. */
+    var inLights = room.phase === "lights" && Relay.now() < (room.startedAt || 0);
+    if (inLights) {
+      if (this._lightsFor !== qn) { this._lightsFor = qn; this.renderLights(room); }
+      return;
+    }
+    var wasLights = this._lightsFor === qn;
+    if (wasLights) { this._lightsFor = -1; this.stopLights(); }
     var mine = ((room.answers || {})[qn] || {})[this.pid];
-    if (this.lastState === "q" && this.lastQn === qn) {
+    if (this.lastState === "q" && this.lastQn === qn && !wasLights) {
       if (mine && !this.myAnswers[qn]) { this.myAnswers[qn] = mine.c; this.lockOptions(room); }
       return;
     }
@@ -1059,7 +1205,7 @@ var Play = {
     if (mine) this.myAnswers[qn] = mine.c;
     var q = room.question || {};
     var head = room.mode === "mastery" ? "Mastering " + esc(q.masteryCode || "") : "Question " + (qn + 1) + (room.total ? " of " + room.total : "");
-    var html = "<h2>" + head + "</h2>" +
+    var html = "<h2>" + head + "</h2>" + lightsOutHtml() +
       '<div class="timerbar"><div id="pTimerFill"></div></div><p class="bigstat" id="pTimerText"></p>';
     if (room.showStem) html += '<div class="qprompt">' + (q.prompt || "") + "</div>" + (q.figure ? '<div class="fig">' + q.figure + "</div>" : "");
     else html += "<p class='sub'>Look at the board for the question, then pick your answer here.</p>";
@@ -1158,7 +1304,7 @@ var Play = {
       }).join("") + "</p>";
     } else {
       html += '<div class="podium">' + top.map(function (r, i) {
-        return '<div class="pod' + (i === 0 ? " first" : "") + '"><div class="av">' + esc(r.avatar || "🙂") + '</div><div class="nm">' + esc(r.name || "Player") + '</div><div>' + r.score + "</div></div>";
+        return podiumCar(r, i, false);
       }).join("") + "</div>";
     }
     html += "<p class='bigstat'>Your score: <b>" + (res.score != null ? res.score : (players[this.pid] || {}).score || 0) + "</b>" +
