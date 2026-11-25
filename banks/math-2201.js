@@ -13072,14 +13072,16 @@ E("u3-discriminant-nature",3,["4.7"],2,"gen",function(){
     a=1;b=ri(-4,4);c=Math.floor(b*b/4)+ri(1,6);
   }
   D=b*b-4*a*c;
-  var nature=mode===0?"two different real roots":(mode===1?"one repeated real root":"no real roots");
-  var key="\\(D = "+D+"\\); "+nature;
-  var others=["two different real roots","one repeated real root","no real roots"].filter(function(x){return x!==nature;});
-  var wrongD=D===0?4:-D;
-  return mcq("For the equation "+"\\("+quadB(a,b,c)+" = 0\\)"+", what is the discriminant, and what does it say about the roots?",
-    key,
-    ["\\(D = "+D+"\\); "+others[0],"\\(D = "+D+"\\); "+others[1],"\\(D = "+wrongD+"\\); "+nature],
-    "\\(D = b^2 - 4ac = ("+b+")^2 - 4 \\times "+a+" \\times "+c+" = "+(b*b)+" - "+(4*a*c)+" = "+D+"\\). "+(mode===0?"Since \\(D > 0\\), the equation has two different real roots.":(mode===1?"Since \\(D = 0\\), the equation has one repeated real root.":"Since \\(D < 0\\), the equation has no real roots (its graph never crosses the x-axis).")),
+  // Reworded Nov 25, 2026 on Jason's ruling: the stem no longer asks for "the discriminant"
+  // (not Math 2201 terminology); it asks how the roots can be described, and the fourth
+  // option is the impossible one-real-one-non-real pairing.
+  var nature=mode===0?"Two different real roots":(mode===1?"One equal real root":"No real roots");
+  var others=["Two different real roots","One equal real root","No real roots","One real root and one non-real root"].filter(function(x){return x!==nature;});
+  var prod=4*a*c, cs=c<0?"("+c+")":c;
+  return mcq("For the equation "+"\\("+quadB(a,b,c)+" = 0\\)"+", how can we describe the roots of the equation?",
+    nature,
+    others,
+    "The value under the square root in the quadratic formula is \\(b^2 - 4ac = ("+b+")^2 - 4 \\times "+a+" \\times "+cs+" = "+(b*b)+(prod<0?" + "+(-prod):" - "+prod)+" = "+D+"\\). "+(mode===0?"Since this value is positive, its square root is a real number, and the formula gives two different values. The equation has <b>two different real roots</b>.":(mode===1?"Since this value is zero, its square root is 0, and the formula gives the same value twice. The equation has <b>one equal real root</b>.":"Since this value is negative, its square root is not a real number, so the formula gives no real values. The equation has <b>no real roots</b>.")),
     {a:a,b:b,c:c,D:D,mode:mode});
 });
 E("u3-root-difference",3,["4.6"],3,"gen",function(){
