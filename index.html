@@ -4502,6 +4502,38 @@ function tNumbersOnly(e,curQ,wantType,avoid,salt){
   }
   return null;
 }
+/* Another version (Jason, November 25, 2026): the relaxed sibling of
+   tNumbersOnly. Same seeded stream walk, same cycling and stamping,
+   but any distinct instance of the entry qualifies, whatever changed
+   (numbers, scenario or ask). The slot type must still match. */
+function tAnotherVersion(e,curQ,wantType,avoid,salt){
+  if(!e||!curQ)return null;
+  var curCanon=canonQ(curQ);
+  var seen={},foundCur=false,firstAlt=null,answer=null;
+  var stamp=function(cand,n,i){cand._tuid="u"+(++_tUid);cand._ts={n:n,i:i,t:cand.type,raw:null};return cand;};
+  tStreamWalk(e,wantType,salt,function(cand,n,i){
+    var cn=canonQ(cand);
+    if(seen[cn])return true;
+    seen[cn]=1;
+    if(cand.type!==curQ.type)return true;
+    if(cn!==curCanon&&avoid&&avoid[cn])return true;
+    if(foundCur){answer=stamp(cand,n,i);return false;}
+    if(cn===curCanon)foundCur=true;
+    else if(!firstAlt)firstAlt=stamp(cand,n,i);
+    return true;
+  });
+  if(answer)return answer;
+  if(firstAlt)return firstAlt;
+  var myAvoid={},k;
+  for(k in avoid)myAvoid[k]=1;
+  myAvoid[curCanon]=1;
+  for(var tries=0;tries<50;tries++){
+    var cand2=tFreezeSlot(e,wantType,myAvoid,salt);
+    if(!cand2)return null;
+    if(cand2.type===curQ.type&&canonQ(cand2)!==curCanon)return cand2;
+  }
+  return null;
+}
 /* After a bank pick, take the teacher back to the slot they were working
    on (Jason, Nov 11, 2026): the picker sits away from the question, below
    the set in the online view and at the foot of the panel in the exam and
@@ -5700,7 +5732,7 @@ function tQPromptHtml(q){
 }
 function tctlHtml(i){
   if(!TEACHER||!T||T.view!=="online")return "";
-  return '<div class="tctl"><span class="tlab">Teacher:</span><button type="button" class="alt" data-tnew="'+i+'">New numbers</button><button type="button" class="alt" data-tswap="'+i+'">Replace (random)</button><button type="button" class="alt" data-tpick="'+i+'">Pick from bank</button><button type="button" class="alt" data-trem="'+i+'">Remove</button>'+tMoveHtml(i,i,current.length)+'<span class="hint tqstatus" data-tqstatus="'+i+'" role="status"></span></div>';
+  return '<div class="tctl"><span class="tlab">Teacher:</span><button type="button" class="alt" data-tnew="'+i+'">New numbers</button><button type="button" class="alt" data-tver="'+i+'">Another version</button><button type="button" class="alt" data-tswap="'+i+'">Replace (random)</button><button type="button" class="alt" data-tpick="'+i+'">Pick from bank</button><button type="button" class="alt" data-trem="'+i+'">Remove</button>'+tMoveHtml(i,i,current.length)+'<span class="hint tqstatus" data-tqstatus="'+i+'" role="status"></span></div>';
 }
 function tBarHtml(){
   if(!TEACHER||!T||T.view!=="online")return "";
@@ -5711,6 +5743,7 @@ function tWireOnline(){
   if(!TEACHER||!T||T.view!=="online")return;
   var box=$("session");if(!box)return;
   Array.prototype.forEach.call(box.querySelectorAll("[data-tnew]"),function(b){b.addEventListener("click",function(){tOpOnline("new",+b.getAttribute("data-tnew"));});});
+  Array.prototype.forEach.call(box.querySelectorAll("[data-tver]"),function(b){b.addEventListener("click",function(){tOpOnline("ver",+b.getAttribute("data-tver"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-tswap]"),function(b){b.addEventListener("click",function(){tOpOnline("swap",+b.getAttribute("data-tswap"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-tpick]"),function(b){b.addEventListener("click",function(){tPickOnline(+b.getAttribute("data-tpick"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-trem]"),function(b){b.addEventListener("click",function(){tOpOnline("remove",+b.getAttribute("data-trem"));});});
@@ -5773,6 +5806,7 @@ function tOpOnline(op,i,entryId,pickedQ){
   }
   var e=q._entry,avoid=tAvoidAll(current);
   if(op==="new"){var nq=tNumbersOnly(e,q,q.type,avoid,T.salt);if(!nq){tQStatus(i,"Question "+(i+1)+" can't just change its numbers. Try swap, or pick from the bank.");return;}current[i]=nq;T.edited=true;tAfterOnlineEdit();return;}
+  if(op==="ver"){var vq=tAnotherVersion(e,q,q.type,avoid,T.salt);if(!vq){tQStatus(i,"Question "+(i+1)+" has only one version. Try swap, or pick from the bank.");return;}current[i]=vq;T.edited=true;tAfterOnlineEdit();return;}
   if(op==="swap"){
     var cands=tSwapCands(e,q.type,tScopePool());
     if(!cands.length){tOnlineStatus("No other question of this kind is available in the current scope to swap in.");return;}
@@ -5814,7 +5848,7 @@ function tExamPanelHtml(){
   var ex=examState.ex;
   function row(section,it,i){
     var q=it.q,e=q._entry;
-    return '<li><b>'+(section==="sr"?"A":"B")+(i+1)+".</b> Unit "+e.unit+" \u00B7 "+e.indicators.join(", ")+" \u00B7 Level "+e.level+(section==="cr"?(" \u00B7 "+it.marks+" marks"):"")+' <span class="tid">'+e.id+'</span> <button type="button" class="alt" data-tnew="'+section+":"+i+'">New numbers</button><button type="button" class="alt" data-tswap="'+section+":"+i+'">Replace (random)</button><button type="button" class="alt" data-tpick="'+section+":"+i+'">Pick from bank</button><button type="button" class="alt" data-trem="'+section+":"+i+'">Remove</button>'+tFlipHtml(section,it,i)+tMoveHtml(section+":"+i,i,section==="sr"?ex.srItems.length:ex.crItems.length)+tQPromptHtml(q)+'<span class="hint tqstatus" data-tqstatus="'+section+":"+i+'" role="status"></span></li>';
+    return '<li><b>'+(section==="sr"?"A":"B")+(i+1)+".</b> Unit "+e.unit+" \u00B7 "+e.indicators.join(", ")+" \u00B7 Level "+e.level+(section==="cr"?(" \u00B7 "+it.marks+" marks"):"")+' <span class="tid">'+e.id+'</span> <button type="button" class="alt" data-tnew="'+section+":"+i+'">New numbers</button><button type="button" class="alt" data-tver="'+section+":"+i+'">Another version</button><button type="button" class="alt" data-tswap="'+section+":"+i+'">Replace (random)</button><button type="button" class="alt" data-tpick="'+section+":"+i+'">Pick from bank</button><button type="button" class="alt" data-trem="'+section+":"+i+'">Remove</button>'+tFlipHtml(section,it,i)+tMoveHtml(section+":"+i,i,section==="sr"?ex.srItems.length:ex.crItems.length)+tQPromptHtml(q)+'<span class="hint tqstatus" data-tqstatus="'+section+":"+i+'" role="status"></span></li>';
   }
   return '<div class="tpanel" id="tExamPanel"><b>Teacher tools: edit this paper</b>'
    +'<p class="hint">Changes update the paper, the answer key and the totals at once. These controls and the free text editor (Edit the exam) are alternatives: once free text editing is on, the question controls, set links and the Brightspace download pause for this paper, because they work from the question set rather than edited text. Print, Word and Copy below always use the paper exactly as shown.</p>'
@@ -5836,6 +5870,7 @@ function tWireExam(){
   var box=$("session");if(!box)return;
   function wire(attr,fn){Array.prototype.forEach.call(box.querySelectorAll("["+attr+"]"),function(b){b.addEventListener("click",function(){var v=b.getAttribute(attr).split(":");fn(v[0],+v[1]);});});}
   wire("data-tnew",function(sec,i){tOpExam(sec,"new",i);});
+  wire("data-tver",function(sec,i){tOpExam(sec,"ver",i);});
   wire("data-tswap",function(sec,i){tOpExam(sec,"swap",i);});
   wire("data-trem",function(sec,i){tOpExam(sec,"remove",i);});
   wire("data-tflip",function(sec,i){tOpExam(sec,"flip",i);});
@@ -5882,6 +5917,7 @@ function tOpExam(section,op,i,entryId,pickedQ){
   var avoid=tAvoidAll(tExamAllQ());
   var wantType=section==="sr"?"mc":it.q.type;
   if(op==="new"){var nq=tNumbersOnly(it.q._entry,it.q,wantType,avoid,T.salt);if(!nq){renderExam();tQStatus(section+":"+i,"Question "+(section==="sr"?"A":"B")+(i+1)+" can't just change its numbers. Try swap, or pick from the bank.");return;}it.q=nq;T.edited=true;renderExam();return;}
+  if(op==="ver"){var vq=tAnotherVersion(it.q._entry,it.q,wantType,avoid,T.salt);if(!vq){renderExam();tQStatus(section+":"+i,"Question "+(section==="sr"?"A":"B")+(i+1)+" has only one version. Try swap, or pick from the bank.");return;}it.q=vq;T.edited=true;renderExam();return;}
   if(op==="swap"){
     var cands=section==="sr"?tScopePool().filter(function(e){return e.id!==it.q._entry.id&&tCanMake(e,"mc");}):tCrPool().filter(function(e){return e.id!==it.q._entry.id;});
     if(!cands.length){renderExam();var st=$("tExamStatus");if(st)st.textContent="No other question is available in the current scope to swap in.";return;}
@@ -5922,7 +5958,7 @@ function tAddExamEntry(section,id,pickedQ){
 function tSheetPanelHtml(){
   if(!TEACHER||!T||T.view!=="sheet"||!sheetState)return "";
   function row(q,i){var e=q._entry;
-    return '<li><b>'+(i+1)+'.</b> '+(q.type==="mc"?"Multiple choice":"Constructed response")+" \u00B7 Unit "+e.unit+" \u00B7 "+e.indicators.join(", ")+" \u00B7 Level "+e.level+' <span class="tid">'+e.id+'</span> <button type="button" class="alt" data-tnew="'+i+'">New numbers</button><button type="button" class="alt" data-tswap="'+i+'">Replace (random)</button><button type="button" class="alt" data-tpick="'+i+'">Pick from bank</button><button type="button" class="alt" data-trem="'+i+'">Remove</button>'+tMoveHtml(i,i,sheetState.items.length)+tQPromptHtml(q)+'<span class="hint tqstatus" data-tqstatus="'+i+'" role="status"></span></li>';}
+    return '<li><b>'+(i+1)+'.</b> '+(q.type==="mc"?"Multiple choice":"Constructed response")+" \u00B7 Unit "+e.unit+" \u00B7 "+e.indicators.join(", ")+" \u00B7 Level "+e.level+' <span class="tid">'+e.id+'</span> <button type="button" class="alt" data-tnew="'+i+'">New numbers</button><button type="button" class="alt" data-tver="'+i+'">Another version</button><button type="button" class="alt" data-tswap="'+i+'">Replace (random)</button><button type="button" class="alt" data-tpick="'+i+'">Pick from bank</button><button type="button" class="alt" data-trem="'+i+'">Remove</button>'+tMoveHtml(i,i,sheetState.items.length)+tQPromptHtml(q)+'<span class="hint tqstatus" data-tqstatus="'+i+'" role="status"></span></li>';}
   return '<div class="tpanel" id="tSheetPanel"><b>Teacher tools: edit this sheet</b>'
    +'<p class="hint">Changes update the sheet and its answer key at once. These controls and the free text editor (Edit the sheet) are alternatives: once free text editing is on, the question controls and set links pause for this sheet, because they work from the question set rather than edited text. Print, Word and Copy below always use the sheet exactly as shown.</p>'
    +'<p class="hint" id="tPanelNote" hidden>Free text editing is on for this sheet, so the question controls are paused. Make a new sheet to use them again.</p>'
@@ -5935,6 +5971,7 @@ function tWireSheet(){
   if(!TEACHER||!T||T.view!=="sheet")return;
   var box=$("session");if(!box)return;
   Array.prototype.forEach.call(box.querySelectorAll("[data-tnew]"),function(b){b.addEventListener("click",function(){tOpSheet("new",+b.getAttribute("data-tnew"));});});
+  Array.prototype.forEach.call(box.querySelectorAll("[data-tver]"),function(b){b.addEventListener("click",function(){tOpSheet("ver",+b.getAttribute("data-tver"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-tswap]"),function(b){b.addEventListener("click",function(){tOpSheet("swap",+b.getAttribute("data-tswap"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-tpick]"),function(b){b.addEventListener("click",function(){tPickSheet(+b.getAttribute("data-tpick"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-trem]"),function(b){b.addEventListener("click",function(){tOpSheet("remove",+b.getAttribute("data-trem"));});});
@@ -5960,6 +5997,7 @@ function tOpSheet(op,i,entryId,pickedQ){
   }
   var avoid=tAvoidAll(items);
   if(op==="new"){var nq=tNumbersOnly(q._entry,q,q.type,avoid,T.salt);if(!nq){tQStatus(i,"Question "+(i+1)+" can't just change its numbers. Try swap, or pick from the bank.");return;}items[i]=nq;T.edited=true;renderSheet();return;}
+  if(op==="ver"){var vq=tAnotherVersion(q._entry,q,q.type,avoid,T.salt);if(!vq){tQStatus(i,"Question "+(i+1)+" has only one version. Try swap, or pick from the bank.");return;}items[i]=vq;T.edited=true;renderSheet();return;}
   if(op==="swap"){
     var cands=tSwapCands(q._entry,q.type,tScopePool());
     if(!cands.length){tSheetStatus("No other question of this kind is available in the current scope to swap in.");return;}
