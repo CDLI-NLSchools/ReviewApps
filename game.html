@@ -789,7 +789,19 @@ var Host = {
     });
     if (s.mode === "mastery" && this.mastery) this.mastery.forEach(function (m) { if (m.status !== "cleared") classMissed[m.code] = 1; });
     var classCodes = Object.keys(classMissed).slice(0, 6);
-    updates.classPractice = practiceLink(s.courseId, classCodes, s.units);
+    /* The practice link needs the units of the questions that carried
+       each missed code (app units, which do not always match the code
+       numbers), or the Review Apps builder drops the codes. */
+    var codeUnit = {};
+    this.perQ.forEach(function (rec) {
+      (rec.indicators || []).forEach(function (c) { if (codeUnit[c] == null) codeUnit[c] = rec.unit; });
+    });
+    var unitsFor = function (codes) {
+      var seen = {}, out = [];
+      codes.forEach(function (c) { var u = codeUnit[c]; if (u != null && !seen[u]) { seen[u] = 1; out.push(u); } });
+      return out.length ? out : s.units;
+    };
+    updates.classPractice = practiceLink(s.courseId, classCodes, unitsFor(classCodes));
     var self = this;
     board.forEach(function (r) {
       var missed = {}, right = 0, total = 0;
@@ -803,7 +815,7 @@ var Host = {
       updates["results/" + r.pid] = {
         score: r.score, rank: r.rank, right: right, total: total,
         missed: missedCodes,
-        practice: practiceLink(s.courseId, missedCodes.slice(0, 6), s.units)
+        practice: practiceLink(s.courseId, missedCodes.slice(0, 6), unitsFor(missedCodes))
       };
     });
     Relay.update("rooms/" + this.code, updates);
@@ -925,7 +937,16 @@ function csvq(v) {
 }
 function practiceLink(courseId, codes, units) {
   var base = "https://cdli-nlschools.github.io/ReviewApps/?course=" + encodeURIComponent(courseId);
-  if (codes && codes.length) return base + "&indicator=" + encodeURIComponent(codes.join(",")) + "&count=10";
+  if (codes && codes.length) {
+    /* The units must travel with the codes. The Review Apps builder
+       only renders indicator checkboxes for units already selected,
+       so an indicator-only link arrives with its codes unselected
+       and an empty pool, and Start does nothing (field report,
+       Nov 25, 2026). With the units present, the codes land selected
+       and the practice set starts on its own when the link opens. */
+    var u = (units && units.length) ? "&unit=" + encodeURIComponent(units.join(",")) : "";
+    return base + u + "&indicator=" + encodeURIComponent(codes.join(",")) + "&count=10";
+  }
   if (units && units.length) return base + "&unit=" + encodeURIComponent(units.join(",")) + "&count=10";
   return base + "&count=10";
 }
