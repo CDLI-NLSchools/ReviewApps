@@ -634,7 +634,7 @@ E("u1-context-work",1,["3.16"],2,"gen",function(){
     "Work rates add. In one hour "+ctx.p[0]+" does \\(\\frac{1}{"+a+"}\\) of the job and "+ctx.p[1]+" does \\(\\frac{1}{"+b+"}\\). Together: \\[ \\begin{aligned} \\frac{1}{"+a+"} + \\frac{1}{"+b+"} &= \\frac{"+(a+b)+"}{"+(a*b)+"} \\\\ \\text{time} &= \\frac{"+(a*b)+"}{"+(a+b)+"} = "+fmt(t)+" \\end{aligned} \\] The combined rate is the job per hour, so the whole job takes "+fmt(t)+" hours. The time together is <b>"+fmt(t)+" hours</b>, less than either time alone, as it should be.",
     {a:a,b:b,t:t});
 });
-E("u1-context-wind",1,["3.16"],3,"gen",function(){
+E("u1-context-wind",1,["3.16"],2,"gen",function(){
   var plane=Math.random()<0.5,v,w,t,d1,d2;
   if(plane){v=pick([150,180,200,220,240,260,300]);w=pick([10,20,25,30,40]);t=pick([2,2.5,3]);}
   else{v=pick([12,15,18,20,24,30]);w=pick([2,3,4,5,6]);t=pick([2,3,4]);}
@@ -647,7 +647,7 @@ E("u1-context-wind",1,["3.16"],3,"gen",function(){
     "Let the still-air speed be \\(v\\). Equal times give \\(\\frac{"+d1+"}{v - "+w+"} = \\frac{"+d2+"}{v + "+w+"}\\). Cross-multiplying and collecting the \\(v\\) terms: \\[ \\begin{aligned} "+d1+"(v + "+w+") &= "+d2+"(v - "+w+") \\\\ "+d1+"v + "+(d1*w)+" &= "+d2+"v - "+(d2*w)+" \\\\ "+(d2-d1)+"v &= "+(w*(d1+d2))+" \\\\ v &= "+v+" \\end{aligned} \\] The speed is <b>\\(v = "+v+"\\) km/h</b>.",
     {v:v,w:w,d1:d1,d2:d2});
 });
-E("u1-context-cost",1,["3.16"],3,"gen",function(){
+E("u1-context-cost",1,["3.16"],2,"gen",function(){
   var n,k,s1,C,e,t=0;
   do{n=ri(18,48);k=ri(2,9);s1=ri(15,40);C=n*s1;t++;}
   while((C%(n-k)!==0||C/(n-k)-s1<2)&&t<200);
@@ -910,7 +910,7 @@ E("u2-reverse-intercepts",2,["3.18"],3,"gen",function(){
     "The intercepts give \\(f(x) = a"+linF(r1)+linF(r2)+linF(r3)+"\\). Use the y-intercept to solve for \\(a\\): \\[ \\begin{aligned} f(0) &= a("+(-r1)+")("+(-r2)+")("+(-r3)+") \\\\ "+(a*(-r1)*(-r2)*(-r3)/a)+"a &= "+Y+" \\\\ a &= "+a+" \\end{aligned} \\] Then \\(f("+x0+") = "+a+"("+ (x0-r1) +")("+(x0-r2)+")("+(x0-r3)+") = "+fv+"\\). The value is <b>"+fv+"</b>.",
     {r1:r1,r2:r2,r3:r3,a:a,x0:x0});
 });
-E("u2-model-decision",2,["3.22"],3,"var",varset([
+E("u2-model-decision",2,["3.22"],2,"var",varset([
   function(){return mcq("Weekly attendance at a new arena, in hundreds, was recorded over five weeks. "+tblHTML([0,1,2,3,4],[5,8,17,38,77],"Week","Attendance")+" Which statement best describes a polynomial model for the data, and the predicted attendance in week 5?",
     "A cubic model fits; predicted attendance is 140 (hundreds)",
     ["A quadratic model fits; predicted attendance is 80 (hundreds)","A linear model fits; predicted attendance is 95 (hundreds)","A cubic model fits; predicted attendance is 131 (hundreds)"],
@@ -939,7 +939,7 @@ E("u2-recover-and-predict-cr",2,["3.20","3.22"],2,"gen",function(){
     "Substitute \\(x = "+x0+"\\): \\("+cube+"a + ("+rest+") = "+v0+"\\), so \\("+cube+"a = "+(v0-rest)+" = "+(a*cube)+"\\), giving \\(a = "+a+"\\). The model is \\(f(x) = "+u2polyLead(u2lead(a),b,c,d)+"\\). Evaluating at \\(x = "+t+"\\): \\(f("+t+") = "+a+"("+t+")^3"+u2tm(b,"("+t+")^2")+u2tm(c,"("+t+")")+u2tm(d,"")+" = \\)<b>"+ans+"</b>.",
     {a:a,x0:x0,t:t});
 });
-E("u2-correct-the-claim-cr",2,["3.17"],3,"var",varset([
+E("u2-correct-the-claim-cr",2,["3.17"],2,"var",varset([
   function(){
     var a=pick([-1,-2]), b=ri(-4,4), c=ri(-5,5), d=ri(-6,6);
     return mcq("A student looks at the cubic \\(f(x) = "+u2polyLead(u2lead(a),b,c,d)+"\\) and claims that as \\(x \\to \\infty\\), \\(f(x) \\to \\infty\\) as well. Which statement correctly describes the end behaviour of \\(f\\)?",
@@ -1299,7 +1299,7 @@ E("u3-build-equation",3,["7.5"],2,"gen",function(){
     {M:M,m:m,P:P});
   return q;
 });
-E("u3-graph-full-equation",3,["7.2","7.5"],3,"gen",function(){
+E("u3-graph-full-equation",3,["7.2","7.5"],2,"gen",function(){
   var a=pick([2,3,4]),c=pick([30,45,60,90,120]),d=pick([-3,-2,-1,1,2,3]);
   var fn=sinFn(a,"sin",1,c,d);
   var q=mcq("Which equation, in degrees, matches the graphed sinusoidal function?",
@@ -1344,7 +1344,7 @@ E("u3-data-equation",3,["7.6"],2,"gen",function(){
     (fam==="sin"?"The depth starts at the midline value "+d+" and rises to "+(d+a)+", the sine pattern starting at its midline.":"The depth starts at its maximum "+(d+a)+" and falls, the cosine pattern starting at a peak.")+" The midline is "+d+", the amplitude is "+a+", and the cycle takes "+per+" h, so \\(b = \\frac{360}{"+per+"} = "+b+"\\) with the cycle measured in degrees. The model is \\("+eqFor(a,fam,b,d)+"\\).",
     {a:a,d:d,b:b,fam:fam}); q.figure=fig; return q;
 });
-E("u3-tide-predict",3,["7.7"],3,"gen",function(){
+E("u3-tide-predict",3,["7.7"],2,"gen",function(){
   var H=pick([3.6,4.2,4.8,5.4]),L=pick([0.4,0.6,0.8,1.2]);
   var h1=pick([1,2,3]),off=pick([0,3,6,9]),cycles=pick([1,2]);
   var t=h1+6+12*cycles+off,ans=(off===0?L:(off===6?H:(H+L)/2));
@@ -1353,7 +1353,7 @@ E("u3-tide-predict",3,["7.7"],3,"gen",function(){
     "Work out where "+t+":00 falls in the cycle. Low tide is at "+(h1+6)+":00 and the pattern repeats every 12 hours, so lows also occur at "+(h1+6+12)+":00 and "+(h1+6+24)+":00, and highs 6 hours after each low. "+(off===0?"The time "+t+":00 lands exactly on a low tide.":(off===6?"The time "+t+":00 lands exactly on a high tide.":"The time "+t+":00 lands halfway between a high and a low, on the midline, whose height is the average \\(\\frac{"+H+" + "+L+"}{2}\\)."))+" The height is <b>"+fmt(Math.round(ans*100)/100)+" m</b>.",
     {H:H,L:L,t:t,off:off});
 });
-E("u3-temp-model",3,["7.7"],3,"var",varset([
+E("u3-temp-model",3,["7.7"],2,"var",varset([
   function(){return numq("The temperature in Gander over a day is modelled by \\(T(t) = 6 \\sin 15^\\circ(t - 9) + 14\\), where \\(t\\) is the hour of the day. At what hour does the temperature first reach its daily maximum?",
     15,0.01,
     "The maximum occurs when the sine factor first equals 1, at an angle of 90°: \\(15(t - 9) = 90\\) gives \\(t - 9 = 6\\), so \\(t = 15\\). The temperature first peaks at <b>15:00</b> (3 PM), at 20°C.",{});},
@@ -1806,7 +1806,7 @@ E("u4-compound-model",4,["4.9"],2,"gen",function(){
     "In \\(A = P(1 + i)^{nt}\\), the coefficient of \\(t\\) in the exponent counts the compounding periods per year: here it is "+n+", so interest is compounded "+n+" times a year, "+(n===2?"semi-annually":(n===4?"quarterly":"monthly"))+". (The per-period rate \\(i = "+istr+"\\) agrees: it is the "+r+"% annual rate divided by "+n+".)",
     {fam:fam,ask:ask,r:r,n:n});
 });
-E("u4-app-decision",4,["4.5"],3,"var",varset([
+E("u4-app-decision",4,["4.5"],2,"var",varset([
   function(){return mcq("A town's population is recorded every five years: "+tblHTML([0,5,10],[120,360,1080],"Year","Population")+" Which statement best models the data and predicts the population in year 15?",
     "Exponential model P(t) = 120(3)^(t/5); year 15 population is 3240",
     ["Linear model P(t) = 120 + 96t; year 15 population is 1560","Exponential model P(t) = 120(2)^(t/5); year 15 population is 960","Exponential model P(t) = 360(3)^(t/5); year 15 population is 9720"],
@@ -2282,7 +2282,7 @@ E("u5-solve-with-logs",5,["4.8"],2,"gen",function(){
     "Take logarithms of both sides; the exponent here is \\(\\frac{x}{2}\\): \\[ \\begin{aligned} "+b+"^{\\frac{x}{2}} &= "+c+" \\\\ \\frac{x}{2} \\log "+b+" &= \\log "+c+" \\\\ x &= "+FR("2\\log "+c,"\\log "+b)+" \\end{aligned} \\] Solving for \\(x\\) doubles the logarithm ratio; halving it instead is the second distractor's error.",
     {shape:shape,b:b,c:c});
 });
-E("u5-two-bases",5,["4.8"],3,"gen",function(){
+E("u5-two-bases",5,["4.8"],2,"gen",function(){
   var shape=Math.random()<0.45?"twoexp":"coeff";
   if(shape==="twoexp"){
     var pr=pick([[3,2],[5,2],[5,3],[4,2],[10,2],[10,3]]),b1=pr[0],b2=pr[1],s=pick([1,2]);
@@ -2327,7 +2327,7 @@ E("u5-growth-time",5,["4.9"],2,"gen",function(){
     "Model the amount as \\(P(t) = "+A2+" \\times \\left(\\frac{1}{2}\\right)^{t/"+k2+"}\\) and set it equal to "+T2+": \\[ \\begin{aligned} "+A2+" \\times \\left(\\frac{1}{2}\\right)^{t/"+k2+"} &= "+T2+" \\\\ \\left(\\frac{1}{2}\\right)^{t/"+k2+"} &= "+FR("1",""+Math.pow(2,m2))+" \\\\ \\frac{t}{"+k2+"} &= "+m2+" \\\\ t &= "+(m2*k2)+" \\end{aligned} \\] The amount must halve "+m2+" times, and each halving takes one half-life.",
     {m:m2,k:k2});
 });
-E("u5-catch-up",5,["4.9"],3,"gen",function(){
+E("u5-catch-up",5,["4.9"],2,"gen",function(){
   var f=pick([2,3]),k=pick([2,3,4]),s=pick([30,40,50,60,100,120,200,250,300,500]),B0=s*Math.pow(f,k);
   var ctx=pick([
     {pre:"Two bacteria colonies grow in identical tanks. Colony A starts with ",o:"Colony B",thing:" cells",us:"hour",up:"hours"},
@@ -2800,7 +2800,7 @@ E("u6-credit-fees",6,["1.13"],2,"gen",function(){
     "A rate is only part of a card's cost. Add each card's charges for the year: \\[ \\begin{aligned} \\text{Card A} &= "+fmtF(cA,2)+" \\\\ \\text{Card B} &= "+fmtF(B0*rb/100,2)+" + "+fmtF(fee,2)+" = "+fmtF(cB,2)+" \\end{aligned} \\] "+winner+" costs less, by "+mon(Math.abs(cA-cB))+". The annual fee can wipe out a lower rate's advantage, which is why the last option is a trap.",
     {B0:B0,ra:ra,rb:rb});
 });
-E("u6-deferred-offer",6,["1.13"],3,"gen",function(){
+E("u6-deferred-offer",6,["1.13"],2,"gen",function(){
   var P=pick([600,750,800,900,1100,1200,1500,1800,2000,2400]),r=pick([15,18,20,21,24,28]);
   var item=pick(["sofa","dining set","television","mattress","appliance package"]),nm=pick(["Taylor","Jordan","Casey","Riley","Alex"]);
   var I=P*r/100,offer="A store sells a "+item+" for "+mon(P)+" with a \"pay nothing for 12 months\" offer. The fine print says that if the full price is not paid by the end of month 12, simple interest at "+r+"% per year is charged on the <b>full original price</b>, back to the purchase date. ";
@@ -2855,7 +2855,7 @@ E("u6-rent-buy-lease",6,["1.15"],2,"var",varset([
     ["Leasing, by $1,320","Buying, by $2,680","They cost exactly the same"],
     "Buying really costs \\(26000 - 11000 = 15000\\) dollars once the resale value is counted. Leasing costs \\(340 \\times 48 = 16320\\) dollars. Buying costs less by \\(16320 - 15000 = 1320\\) dollars, and the buyer owns the car at the end as well.",{});}
 ]));
-E("u6-justify-decision",6,["1.16"],3,"var",varset([
+E("u6-justify-decision",6,["1.16"],2,"var",varset([
   function(){return mcq("Maya, a nurse, takes a 9-month work contract in a town where she knows no one, and expects to move back home afterwards. She needs a place to live. Which choice is <b>most advantageous</b> for her?",
     "Rent an apartment, because costs of buying and selling a home are hard to recover in a short stay",
     ["Buy a house, because her monthly mortgage payment would be lower than the rent for a similar place","Buy a house, because each payment she makes would build equity instead of going to a landlord","Take a 5-year lease on a house, because a longer lease usually locks in a lower monthly rental rate"],
@@ -3248,7 +3248,7 @@ E("u7-error-identify",7,["2.6"],2,"var",varset([
     ["The student is right; subsets must have the same number of elements, so a smaller set can never be a subset","The error is that A is actually the empty set, because it contains no element that also belongs to B","The error is that 8 is not an element of A, because it appears only at the end of the list for B"],
     "Subset is about membership, not size: B is a subset of A whenever every element of B appears in A. Here 2, 4 and 8 all appear in A, so B is a (proper) subset of A, and its smaller size is exactly what makes it proper.",{});}
 ]));
-E("u7-error-correct",7,["2.6"],3,"gen",function(){
+E("u7-error-correct",7,["2.6"],2,"gen",function(){
   var c=pick(U7SURVEY),r=u7regions(),kind=pick(["union","none","aonly"]);
   if(kind==="none")r.none=r.both+ri(0,8);
   var nA=r.aO+r.both,nB=r.bO+r.both,union=r.aO+r.both+r.bO,total=union+r.none;
@@ -3327,7 +3327,7 @@ E("u7-deduction-mc",7,["2.7","2.1"],3,"var",varset([
       {sc:"impossible-data"});
   }
 ]));
-E("u7-exactly-two-cr",7,["2.5"],3,"gen",function(){
+E("u7-exactly-two-cr",7,["2.5"],2,"gen",function(){
   var CTX=[
     {A:"play soccer",B:"play hockey",C:"swim competitively"},
     {A:"take art",B:"take music",C:"study a second language"},
@@ -3549,7 +3549,7 @@ function enumNums(D,L,pred,unitFixed){
   rec(0,[],0,null);return count;
 }
 function rangeDigits(a,b){var D=[];for(var i=a;i<=b;i++)D.push(i);return D;}
-E("u8-fcp-restricted",8,["9.19"],3,"gen",function(){
+E("u8-fcp-restricted",8,["9.19"],2,"gen",function(){
   var T=pick(["digitsNoZero","digitsZero","mult5","plate","pin","code","people"]);
   var J=" Justification for Level 3: the restriction changes the stage counts or forces a case split, so the counting has to be restructured before any multiplication.";
   if(T==="digitsNoZero"){
@@ -3605,7 +3605,7 @@ E("u8-fcp-restricted",8,["9.19"],3,"gen",function(){
   return numq(np+" people are arranging themselves in a line. In how many arrangements is one particular person <b>not</b> at either end?",
     valpp,0.001,"Place the restricted person first: they have "+(np-2)+" allowed positions (any except the two ends). The other "+(np-1)+" people then arrange freely in \\("+(np-1)+"! = "+fact(np-1)+"\\) ways. Total: \\("+(np-2)+" \\times "+fact(np-1)+" = "+valpp+"\\)."+J,{T:T,n:np});
 });
-E("u8-fcp-cases",8,["9.19"],3,"gen",function(){
+E("u8-fcp-cases",8,["9.19"],2,"gen",function(){
   var T=pick(["either","startletter","mixed"]);
   var J=" Justification for Level 3: choosing between multiplying (choices in sequence) and adding (either/or cases) at each step is a structural decision, not a formula recall.";
   if(T==="either"){
@@ -3768,7 +3768,7 @@ E("u8-perm-r",8,["9.24"],2,"gen",function(){
     nPr(ctx.n,ctx.r),0.001,"Order matters and no one can hold two positions, so this is a permutation: \\[ \\begin{aligned} _{"+ctx.n+"}P_{"+ctx.r+"} &= "+prod.join(" \\times ")+" \\\\ &= "+nPr(ctx.n,ctx.r)+" \\end{aligned} \\] The multiplication stops after "+ctx.r+" factors, one for each position filled.",{n:ctx.n,r:ctx.r});
 });
 
-E("u8-together-apart",8,["9.24"],3,"gen",function(){
+E("u8-together-apart",8,["9.24"],2,"gen",function(){
   var n=pick([5,6,7]),together=Math.random()<0.5;
   var names=shuffle(["Alex","Blair","Casey","Devon","Emery","Finley","Harper"].slice()).slice(0,2);
   var blockVal=fact(n-1)*2,total=fact(n);
@@ -3896,7 +3896,7 @@ E("u8-comb-two-group",8,["9.30"],2,"gen",function(){
   return numq(ctx.w,
     nCr(g1,a)*nCr(g2,b),0.001,"The two choices are independent, so multiply the combinations: \\[ \\begin{aligned} \\binom{"+g1+"}{"+a+"} \\times \\binom{"+g2+"}{"+b+"} &= "+nCr(g1,a)+" \\times "+nCr(g2,b)+" \\\\ &= "+(nCr(g1,a)*nCr(g2,b))+" \\end{aligned} \\] Order within each chosen group does not matter, which is why both factors are combinations.",{g1:g1,a:a,g2:g2,b:b});
 });
-E("u8-committee-atleast",8,["9.30"],3,"gen",function(){
+E("u8-committee-atleast",8,["9.30"],2,"gen",function(){
   var shape=pick(["atleast","include"]);
   var n=pick([8,9,10,11,12,13]),r=pick([3,4,5]),s=pick([2,3,4]);
   while(n-s<r){s--;}
@@ -3992,7 +3992,7 @@ E("u8-pathways",8,["9.30"],2,"gen",function(){
 });
 
 /* --- pathways in context (9.30): the blocked grid, and the grid hidden in a story (L3) --- */
-E("u8-pathways-context",8,["9.30"],3,"gen",function(){
+E("u8-pathways-context",8,["9.30"],2,"gen",function(){
   var J=" Justification for Level 3: nothing in the diagram names an operation; a route first has to be recoded as a sequence of moves, and any point the route must use or avoid restructures the count.";
   var arm=pick(["blocked","context","ctxwp"]);
   if(arm==="blocked"){
@@ -4609,7 +4609,7 @@ E("u9-odds-context",9,["9.5"],2,"gen",function(){
     ["The odds in favour of a win are "+ratioStr(l,w)+", corresponding to a probability of "+MV(prob),"The odds in favour of a win are "+odds+", corresponding to a probability of "+MV(frN(w,l)),"The odds in favour of a win are "+odds+", corresponding to a probability of "+MV(frN(l,w+l))],
     "From the record: favourable outcomes "+w+", unfavourable "+l+", so the odds in favour are "+odds+" (part to part). The matching probability uses the whole: \\("+prob+"\\) (part to whole). The record is being used as an experimental estimate, which is how odds in sports reporting are usually produced. Justification for Level 3: both representations must be produced from the record and kept consistent with each other.",{w:w,l:l});
 });
-E("u9-prob-perm-context",9,["9.28"],3,"gen",function(){
+E("u9-prob-perm-context",9,["9.28"],2,"gen",function(){
   var n=pick([4,5,6]),shape=pick(["first","adjacent","notadjacent","together3","exact"]);
   var people=pick(["friends","students","singers","teammates","dancers","cousins"]);
   var corr,sol,pool;
@@ -4656,7 +4656,7 @@ E("u9-prob-comb-hard",9,["9.32","9.30"],2,"gen",function(){
     "If neither of them is chosen, all "+r+" members come from the other "+(n-2)+" "+setting.p+": \\(\\binom{"+(n-2)+"}{"+r+"} = "+favour+"\\) favourable groups out of \\(\\binom{"+n+"}{"+r+"} = "+tot+"\\) equally likely groups, giving \\("+frN(favour,tot)+"\\). The first distractor is the opposite event (at least one of them is chosen). Justification for Level 3: the favourable set has to be rebuilt around the exclusion before the probability ratio can be formed.",
     {n:n,r:r});
 });
-E("u9-prob-comb-context",9,["9.32","9.30"],3,"gen",function(){
+E("u9-prob-comb-context",9,["9.32","9.30"],2,"gen",function(){
   var shape=pick(["exactly","atleast","all"]);
   var g=pick([4,5,6,7,8]),b=pick([4,5,6,7,8]),t=g+b;
   if(shape==="atleast"&&b<3)b=5;if(shape==="all"&&g<3)g=5;

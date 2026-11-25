@@ -750,7 +750,7 @@ E("u1-multiplicity-statements",1,["3.10"],2,"gen",function(){
 });
 
 /* ---------- 3.2 and 3.3: diagnose a synthetic division sign error (L3) ---------- */
-E("u1-error-synthetic",1,["3.2","3.3"],3,"gen",function(){
+E("u1-error-synthetic",1,["3.2","3.3"],2,"gen",function(){
   var att=0, cf, a, R, SR, c0;
   while(att<200){
     att++;
@@ -771,7 +771,7 @@ E("u1-error-synthetic",1,["3.2","3.3"],3,"gen",function(){
 });
 
 /* ---------- 3.12: modelling with polynomial functions (L3, var) ---------- */
-E("u1-modelling",1,["3.12"],3,"var",varset([
+E("u1-modelling",1,["3.12"],2,"var",varset([
   function(){
     return mcq("An open-top box is made from a rectangular sheet of cardboard that is 36 cm long and 24 cm wide. A square of side \\(x\\) cm is cut from each corner and the sides are folded up. Which expression gives the <b>volume</b>, in cubic centimetres, of the box?",
       "\\(x(36 - 2x)(24 - 2x)\\)",
@@ -1084,7 +1084,7 @@ E("u2-inv-domran",2,["4.7"],1,"gen",function(){
     "Forming the inverse swaps \\(x\\) and \\(y\\) in every point, so the domain and range trade places: the inverse has domain \\("+c+" \\leq x \\leq "+d+"\\) (the old range) and range \\("+a+" \\leq y \\leq "+b+"\\) (the old domain). The endpoints themselves do not change.",
     {a:a,b:b,c:c,d:d});
 });
-E("u2-inv-restrict",2,["4.8","4.1"],3,"var",varset([
+E("u2-inv-restrict",2,["4.8","4.1"],2,"var",varset([
   function(){var q=mcq("The function \\(f(x) = (x - 3)^2 + 2\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
     "\\(x \\geq 3\\)",
     ["\\(x \\geq 2\\)","\\(x \\leq 4\\)","No restriction is needed"],
@@ -1440,7 +1440,7 @@ E("u2-refl-yx",2,["4.46","4.47"],3,"var",varset([
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: one Level 3 CR entry (3 marks, opens the 6 pick with the existing 3-mark entry) and two Level 2 CR entries (3 and 2 marks). ---------- */
 /* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
-E("u2-find-stretch-cr",2,["4.17","4.24"],3,"gen",function(){
+E("u2-find-stretch-cr",2,["4.17","4.24"],2,"gen",function(){
   var h=pick([-3,-2,-1,1,2,3]), u=ri(-4,4), v=pick([-6,-5,-4,-3,-2,2,3,4,5,6]), a=pick([-3,-2,2,3]), k=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
   var X=u+h, Y=a*v+k;
   var hs=h>0?"x - "+h:"x + "+(-h), ks=k>0?" + "+k:" - "+(-k);
@@ -1719,7 +1719,7 @@ E("u3-graphical-solve",3,["4.26"],2,"gen",function(){
   return q;
 });
 
-E("u3-two-methods",3,["4.26"],3,"gen",function(){
+E("u3-two-methods",3,["4.26"],2,"gen",function(){
   var a=ri(2,12),c=pick([2,3,4,5,6]),t=0;
   while(c*c<=a&&t<60){c=pick([2,3,4,5,6]);t++;}
   var s=c*c-a,pair=pick([["Ava","Liam"],["Noah","Emma"],["Lucas","Mia"],["Ella","Owen"]]);
@@ -2647,7 +2647,7 @@ E("u4-error-analysis", 4, ["7.37"], 3, "var", varset([
 ]));
 
 /* ---- 7.10, 7.12: combine a circle equation with a quadrant and one coordinate ---- */
-E("u4-circle-point-reasoning", 4, ["7.10", "7.12"], 3, "gen", function () {
+E("u4-circle-point-reasoning", 4, ["7.10", "7.12"], 2, "gen", function () {
   var trip = pick([[5, 3, 4], [13, 5, 12], [17, 8, 15], [25, 7, 24], [29, 20, 21], [41, 9, 40], [15, 9, 12], [10, 6, 8], [20, 12, 16]]);
   var R = trip[0], a = trip[1], b = trip[2];
   var quad = ri(1, 4);
@@ -2690,7 +2690,7 @@ E("u4-arc-compare", 4, ["7.9", "7.3"], 2, "gen", function () {
 });
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: one Level 3 CR entry (3 marks, opens the 6 pick with the existing 3-mark entry) and one Level 2 CR entry (3 marks, makes the 9-mark remainder reachable). ---------- */
-E("u4-repair-solution-cr",4,["7.37"],3,"var",varset([
+E("u4-repair-solution-cr",4,["7.37"],2,"var",varset([
   function(){
     return mcq("A student solves \\(\\sin x = \\frac{1}{2}\\) for \\(0 \\leq x < 2\\pi\\) and stops after writing \\(x = \\frac{\\pi}{6}\\), the value returned by the inverse sine key. What is the <b>complete</b> solution?",
       "\\(\\{\\frac{\\pi}{6}, \\frac{5\\pi}{6}\\}\\)",
@@ -3273,7 +3273,7 @@ E("u5-general-solution",5,["7.38"],2,"gen",function(){
 function u5ModEq(fnName,D,A,trig,bDeg,sign){
   return "\\("+fnName+"(t) = "+D+(sign<0?" - ":" + ")+(A===1?"":A)+"\\"+trig+"("+bDeg+"^\\circ t)\\)";
 }
-E("u5-model-build",5,["7.31"],3,"gen",function(){
+E("u5-model-build",5,["7.31"],2,"gen",function(){
   var ctx=pick(["tide","wheel","buoy","temp"]),ask=pick(["equation","value"]);
   var A,D,P,b,fnName,unit,thing,startMax,stemEq,stemVal,tVal,tLab;
   if(ctx==="tide"){
@@ -3326,7 +3326,7 @@ E("u5-model-conditions",5,["7.29","7.30"],2,"gen",function(){
     "A period of "+P+" forces \\(b = \\frac{360}{"+P+"} = "+b+"\\), which rules out the options with \\("+(2*b)+"x\\). A range of "+lo+" to "+hi+" forces amplitude \\(\\frac{"+hi+" - "+lo+"}{2} = "+A+"\\) and midline \\(\\frac{"+hi+" + "+lo+"}{2} = "+D+"\\), which rules out the option with amplitude "+(A+1)+". The function that satisfies both conditions is <b>"+corr+"</b>.",
     {P:P,A:A,lo:lo,trig:trig});
 });
-E("u5-graph-problem",5,["7.29"],3,"gen",function(){
+E("u5-graph-problem",5,["7.29"],2,"gen",function(){
   var scen=pick(["tide","wheel","temp"]);
   var A=pick([2,3,4]),D=pick([6,8,10]),form=pick([1,-1,0]);
   var P,unit,thing,fn,xLab;
@@ -4659,7 +4659,7 @@ E("u6-why-insufficient", 6, ["7.46"], 3, "gen", function () {
 });
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: two Level 3 CR entries (3 and 2 marks). The unit had a single Level 3 CR entry, so only one Level 3 pick path existed. ---------- */
-E("u6-lost-solutions-cr",6,["7.37"],3,"var",varset([
+E("u6-lost-solutions-cr",6,["7.37"],2,"var",varset([
   function(){
     return mcq("A student solves \\(\\sin x \\cos x = \\cos x\\) for \\(0 \\leq x < 2\\pi\\) by dividing both sides by \\(\\cos x\\), obtaining \\(\\sin x = 1\\) and the single solution \\(x = \\frac{\\pi}{2}\\). Dividing by an expression that can equal zero loses solutions. What is the <b>complete</b> solution?",
       "\\(\\{\\frac{\\pi}{2}, \\frac{3\\pi}{2}\\}\\)",
@@ -5769,7 +5769,7 @@ E("u7-characteristics",7,["4.48"],1,"gen",function(){
     return q;
 });
 
-E("u7-compare-models",7,["4.30"],3,"gen",function(){
+E("u7-compare-models",7,["4.30"],2,"gen",function(){
   var fam=pick(["growth","growth","decay","after"]);
   if(fam==="growth"||fam==="after"){
     var pr=pick([[2,4],[2,6],[3,6],[3,9],[2,8],[4,8]]);
@@ -5837,7 +5837,7 @@ E("u7-model-from-data",7,["4.30"],2,"gen",function(){
     "The starting value is \\("+A0+"\\) (at \\(t = 0\\)), and each value is the previous one multiplied by \\("+fStr+"\\): the ratios are all \\("+fStr+"\\). A constant ratio means an exponential model, <b>"+corrM+"</b>. The option with a \\(t\\) added on is linear and fits only the first step.",{ask:ask,f:f,A0:A0});
 });
 
-E("u7-traits-match-cr",7,["4.48"],3,"gen",function(){
+E("u7-traits-match-cr",7,["4.48"],2,"gen",function(){
   var fam=pick(["decay","growth"]);
   var a=pick([2,3,4,5,6,8]);
   var bp=fam==="decay"?pick([[1,2],[1,3],[2,3],[1,4],[3,4],[2,5],[3,5]]):pick([[2,1],[3,1],[4,1],[3,2],[4,3],[5,2],[5,3]]);
@@ -6390,7 +6390,7 @@ E("u8-transformed-log-features",8,["4.39","4.49"],1,"gen",function(){
     {ask:ask, b:b});q.figure=u8tlogFig(b,a,h,k);return q;
 });
 
-E("u8-model-log",8,["4.30"],3,"var",varset([
+E("u8-model-log",8,["4.30"],2,"var",varset([
   function(){
     return mcq("A bacteria culture starts with \\(300\\) cells and the population doubles every \\(4\\) hours. Which function gives the time \\(t\\), in hours, needed for the culture to reach \\(N\\) cells?",
       "\\(t = 4\\log_{2}\\left(\\frac{N}{300}\\right)\\)",
@@ -6528,7 +6528,7 @@ E("u8-inverse-graph",8,["4.37"],1,"gen",function(){
     {mode:mode, c:c4, p:p});if(c4<=3)q.figure=u8invSVG(c4);return q;
 });
 
-E("u8-laws-error",8,["1.6","1.7"],3,"gen",function(){
+E("u8-laws-error",8,["1.6","1.7"],2,"gen",function(){
   if (Math.random() < 0.6){
     var b = pick([2,3,5,10]);
     var VS = pick([["x","y"],["a","b"],["m","n"],["p","q"]]);
@@ -7212,7 +7212,7 @@ E("u9-identical-elements",9,["9.9"],1,"gen",function(){
 });
 
 /* ---------- 9.10: permutations with constraints (L3) ---------- */
-E("u9-perm-constraints",9,["9.10"],3,"gen",function(){
+E("u9-perm-constraints",9,["9.10"],2,"gen",function(){
   var names=shuffle(["Maya","Liam","Noah","Ava","Ethan","Zoe","Owen","Ruby","Eli","Nora","Sam","Ivy"]);
   var A=names[0], B=names[1], C=names[2];
   var mode=pick(["together","apart","first","ends","together3"]);
@@ -7568,7 +7568,7 @@ E("u9-pathways",9,["9.12"],2,"gen",function(){
 });
 
 /* ---------- 9.12: pathways in context, the blocked grid and the grid hidden in a story (L3) ---------- */
-E("u9-pathways-context",9,["9.12"],3,"gen",function(){
+E("u9-pathways-context",9,["9.12"],2,"gen",function(){
   var arm=pick(["blocked","context","ctxwp"]);
   if(arm==="blocked"){
     var m3=ri(3,6),n3=ri(3,6),bx=ri(1,m3-1),by=ri(1,n3-1);
