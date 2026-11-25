@@ -5691,6 +5691,7 @@ function tRebuildFromURL(){
       T={view:"exam",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),includePK:anyPK,examCap:scopeCap(s.units||[])},edited:edited,textEdited:false,picker:null};}
     if(!TEACHER&&SHUFFLE_OPTS){srItems.forEach(function(it){it.q=shufQ(it.q);});crItems.forEach(function(it){it.q=shufQ(it.q);});}
     renderExam();
+    var _sbE=$("session");if(_sbE)_sbE.scrollIntoView({behavior:scrollBehavior()});
     return true;
   }
   if(view==="s"){
@@ -5703,6 +5704,7 @@ function tRebuildFromURL(){
     if(TEACHER)T={view:"sheet",salt:salt,scope:{units:s.units.slice(),inds:s.inds.slice(),midCap:!!s.midCap,finalCap:!!s.finalCap},edited:edited,textEdited:false,picker:null};
     if(!TEACHER&&SHUFFLE_OPTS)sheetState.items=sheetState.items.map(shufQ);
     renderSheet();
+    var _sbS=$("session");if(_sbS)_sbS.scrollIntoView({behavior:scrollBehavior()});
     return true;
   }
   return false;
