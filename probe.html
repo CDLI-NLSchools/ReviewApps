@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review Apps game service check</title>
+<style>
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:0;background:#f6f7f9;color:#1c2430;}
+  main{max-width:640px;margin:0 auto;padding:24px 18px 48px;}
+  h1{font-size:1.45rem;margin:8px 0 4px;}
+  p.lede{margin:0 0 18px;color:#45536a;}
+  #verdict{border-radius:12px;padding:18px;font-size:1.12rem;line-height:1.45;border:2px solid #b9c2cf;background:#fff;}
+  #verdict.pass{border-color:#1e7d46;background:#eafaf0;}
+  #verdict.fail{border-color:#b3261e;background:#fdecea;}
+  #verdict.wait{border-color:#a86a00;background:#fff7e6;}
+  #verdict b{display:block;font-size:1.3rem;margin-bottom:4px;}
+  ol#steps{list-style:none;padding:0;margin:20px 0;}
+  ol#steps li{background:#fff;border:1px solid #d5dce6;border-radius:10px;padding:10px 14px;margin:0 0 8px;display:flex;gap:10px;align-items:baseline;}
+  ol#steps .mark{font-weight:700;width:1.2em;text-align:center;flex:none;}
+  li.working .mark{color:#a86a00;} li.done .mark{color:#1e7d46;} li.bad .mark{color:#b3261e;} li.idle{opacity:.55;}
+  li .ms{margin-left:auto;color:#68778e;font-size:.85rem;flex:none;}
+  #details{white-space:pre-wrap;word-break:break-word;background:#0f1722;color:#d7e0ec;border-radius:10px;padding:12px 14px;font-size:.82rem;line-height:1.5;min-height:3em;}
+  .row{display:flex;gap:10px;margin:16px 0;}
+  button{font:inherit;padding:10px 16px;border-radius:10px;border:1px solid #31435f;background:#31435f;color:#fff;cursor:pointer;}
+  button.alt{background:#fff;color:#31435f;}
+  footer{color:#68778e;font-size:.85rem;margin-top:22px;line-height:1.5;}
+</style>
+</head>
+<body>
+<main>
+  <h1>Review Apps game service check</h1>
+  <p class="lede">This page tests whether the network you are on right now can run the Review Apps game mode. It takes about ten seconds. It checks that this browser can reach the game service, send a test answer up, hear it come back live, and clean up after itself.</p>
+
+  <div id="verdict" class="wait"><b>Starting the check…</b><span id="verdictText">One moment.</span></div>
+
+  <ol id="steps">
+    <li id="s0" class="idle"><span class="mark">○</span><span>Connection details are in place</span><span class="ms"></span></li>
+    <li id="s1" class="idle"><span class="mark">○</span><span>The browser can reach the game service</span><span class="ms"></span></li>
+    <li id="s2" class="idle"><span class="mark">○</span><span>A test answer travels up and comes back live</span><span class="ms"></span></li>
+    <li id="s3" class="idle"><span class="mark">○</span><span>The test record cleans itself up</span><span class="ms"></span></li>
+  </ol>
+
+  <div class="row">
+    <button type="button" id="copyBtn">Copy the results</button>
+    <button type="button" id="againBtn" class="alt">Run the check again</button>
+  </div>
+
+  <div id="details">Details will appear here.</div>
+
+  <footer>Part of the Review Apps game mode pilot, November 2026. This page collects nothing about you. The single test record it writes is deleted at the end of the check. If the check fails, copy the results and send them to Jason.</footer>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+"use strict";
+/* Connection details for the pilot Firebase project. These are public
+   identifiers for the web app, not passwords; the database rules are what
+   protect the data. Filled in from the Firebase console (project settings),
+   November 2026. */
+var firebaseConfig = {
+  apiKey: "PASTE_API_KEY",
+  authDomain: "PASTE_AUTH_DOMAIN",
+  databaseURL: "PASTE_DATABASE_URL",
+  projectId: "PASTE_PROJECT_ID",
+  appId: "PASTE_APP_ID"
+};
+
+var $ = function (id) { return document.getElementById(id); };
+var lines = [];
+function log(s) { lines.push(s); $("details").textContent = lines.join("\n"); }
+function setStep(i, state, ms) {
+  var li = $("s" + i); if (!li) return;
+  li.className = state;
+  li.querySelector(".mark").textContent = state === "done" ? "✓" : state === "bad" ? "✗" : state === "working" ? "…" : "○";
+  if (typeof ms === "number") li.querySelector(".ms").textContent = ms + " ms";
+}
+function verdict(kind, head, text) {
+  var v = $("verdict"); v.className = kind;
+  v.querySelector("b").textContent = head;
+  $("verdictText").textContent = text;
+}
+function rand(n) {
+  var s = "", hex = "0123456789abcdef";
+  try {
+    var a = new Uint8Array(n); (window.crypto || window.msCrypto).getRandomValues(a);
+    for (var i = 0; i < n; i++) s += hex[a[i] % 16];
+  } catch (e) { for (var j = 0; j < n; j++) s += hex[Math.floor(Math.random() * 16)]; }
+  return s;
+}
+function configured() {
+  var keys = ["apiKey", "authDomain", "databaseURL", "projectId", "appId"];
+  for (var i = 0; i < keys.length; i++) {
+    var v = firebaseConfig[keys[i]];
+    if (!v || String(v).indexOf("PASTE") === 0) return false;
+  }
+  return true;
+}
+function fail(stage, head, text, err) {
+  setStep(stage, "bad");
+  verdict("fail", head, text);
+  log("FAILED at step " + stage + (err ? ": " + (err.message || err) : ""));
+  log("Finished: " + new Date().toString());
+}
+function run() {
+  lines = [];
+  [0, 1, 2, 3].forEach(function (i) { setStep(i, "idle"); $("s" + i).querySelector(".ms").textContent = ""; });
+  log("Review Apps game service check");
+  log("Started: " + new Date().toString());
+  log("Browser: " + navigator.userAgent);
+  verdict("wait", "Running the check…", "Watching each step below.");
+
+  if (!configured()) {
+    setStep(0, "bad");
+    verdict("wait", "Not connected yet", "This page is waiting for the Firebase connection details. Once the pilot project exists and its details are added here, the check will run on its own. Nothing is wrong with this network; the check simply cannot start yet.");
+    log("The Firebase connection details have not been added to this page yet.");
+    return;
+  }
+  setStep(0, "done");
+
+  if (typeof firebase === "undefined" || !firebase.database) {
+    fail(1, "The game tools could not be loaded", "The Firebase tools themselves did not arrive. This network likely blocks Google's script servers (gstatic.com), which the game needs before it can do anything else.", "firebase SDK missing");
+    return;
+  }
+
+  var t0 = Date.now();
+  var app;
+  try { app = firebase.initializeApp(firebaseConfig, "probe" + rand(4)); }
+  catch (e) { fail(1, "The check could not start", "The connection details were rejected. Whoever set the page up needs the exact wording below.", e); return; }
+  var db = firebase.database(app);
+
+  setStep(1, "working");
+  var connected = false;
+  var connRef = db.ref(".info/connected");
+  var connTimer = setTimeout(function () {
+    if (!connected) fail(1, "This network cannot reach the game service", "The browser could not open a connection to Firebase. A school network that blocks firebaseio.com will stop the game mode in that school, and this is the result that shows it.", "connection timed out after 15 seconds");
+  }, 15000);
+  connRef.on("value", function (snap) {
+    if (snap.val() !== true || connected) return;
+    connected = true;
+    clearTimeout(connTimer);
+    var ms1 = Date.now() - t0;
+    setStep(1, "done", ms1);
+    log("Connected in " + ms1 + " ms.");
+    roundTrip(db, t0);
+  });
+}
+
+function roundTrip(db, t0) {
+  setStep(2, "working");
+  var id = rand(12), token = rand(16);
+  var ref = db.ref("probes/" + id);
+  var t1 = Date.now(), settled = false;
+  var timer = setTimeout(function () {
+    if (settled) return; settled = true;
+    try { ref.off(); } catch (e) {}
+    fail(2, "The live channel did not get through", "A connection opened, but a test answer could not make the round trip. The game depends on answers arriving live on the teacher's screen, so this network would not run it.", "no live delivery within 15 seconds");
+  }, 15000);
+  ref.on("value", function (snap) {
+    var v = snap.val();
+    if (!v || v.token !== token || settled) return;
+    settled = true;
+    clearTimeout(timer);
+    var ms2 = Date.now() - t1;
+    setStep(2, "done", ms2);
+    log("The test answer came back live in " + ms2 + " ms.");
+    try { ref.off(); } catch (e) {}
+    cleanup(ref, t0);
+  }, function (err) {
+    if (settled) return; settled = true; clearTimeout(timer);
+    fail(2, "The live channel did not get through", "A connection opened, but listening for the test answer was refused. The wording below says why.", err);
+  });
+  ref.set({ token: token, ts: Date.now() }).catch(function (err) {
+    if (settled) return; settled = true; clearTimeout(timer);
+    fail(2, "The test answer could not be sent", "The browser connected, but writing the test answer was refused. The database rules or the network are in the way; the wording below says which the service reported.", err);
+  });
+}
+
+function cleanup(ref, t0) {
+  setStep(3, "working");
+  var t3 = Date.now();
+  ref.remove().then(function () {
+    setStep(3, "done", Date.now() - t3);
+    verdict("pass", "This network can run the game", "The service was reached, a test answer travelled up and came back live, and the test record cleaned itself up. Total time: " + (Date.now() - t0) + " ms. Send a copy of the results if you were asked to.");
+    log("Cleaned up. Total: " + (Date.now() - t0) + " ms.");
+    log("Finished: " + new Date().toString());
+    log("RESULT: PASS");
+  }).catch(function (err) {
+    setStep(3, "bad");
+    verdict("pass", "This network can run the game", "Everything the game needs worked. One small thing: the test record could not delete itself, so a single harmless record was left in the pilot database, where it can be removed by hand.");
+    log("Cleanup failed: " + (err.message || err));
+    log("RESULT: PASS (with a cleanup warning)");
+  });
+}
+
+$("copyBtn").addEventListener("click", function () {
+  var text = lines.join("\n");
+  function done() { $("copyBtn").textContent = "Copied"; setTimeout(function () { $("copyBtn").textContent = "Copy the results"; }, 2000); }
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done);
+  else {
+    var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta);
+    ta.select(); try { document.execCommand("copy"); } catch (e) {} document.body.removeChild(ta); done();
+  }
+});
+$("againBtn").addEventListener("click", run);
+run();
+</script>
+</body>
+</html>
