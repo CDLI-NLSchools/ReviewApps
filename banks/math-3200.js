@@ -737,7 +737,7 @@ E("u1-sketch-features",1,["3.11"],2,"gen",function(){
 });
 
 /* ---------- 3.10: multiplicity statements from factored form (L3) ---------- */
-E("u1-multiplicity-statements",1,["3.10"],3,"gen",function(){
+E("u1-multiplicity-statements",1,["3.10"],2,"gen",function(){
   var pair=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,2), p=pair[0], qq=pair[1];
   var a=pick([1,-1]);
   var TOUCH="touches the x-axis and turns around", FLAT="flattens out and then crosses the x-axis", CROSS="crosses the x-axis";
@@ -800,7 +800,7 @@ E("u1-modelling",1,["3.12"],3,"var",varset([
 ]));
 
 /* ---------- 3.13: equation of a cubic from its graph (L3) ---------- */
-E("u1-equation-from-graph",1,["3.13"],3,"gen",function(){
+E("u1-equation-from-graph",1,["3.13"],2,"gen",function(){
   var att=0, roots, a, cf, y0, flipRoot;
   while(att<200){
     att++;
@@ -1733,7 +1733,7 @@ E("u3-two-methods",3,["4.26"],3,"gen",function(){
     {a:a,c:c});
 });
 
-E("u3-recover-f-value",3,["4.12"],3,"gen",function(){
+E("u3-recover-f-value",3,["4.12"],2,"gen",function(){
   var p=ri(-6,2),q=ri(p+2,8),side=pick([0,1]),off=ri(1,6),m=pick([3,4,5,6,7,8]);
   var tv=(side===0)?p-off:q+off;
   return mcq("For a certain function \\(f\\), the graph of \\(g(x) = \\sqrt{f(x)}\\) is defined for \\(x \\leq "+p+"\\) or \\(x \\geq "+q+"\\), and \\(g("+tv+") = "+m+"\\). What is the value of \\(f("+tv+")\\)?",
@@ -1760,7 +1760,7 @@ E("u3-intercept-statement",3,["4.25"],1,"gen",function(){
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: two Level 3 CR entries (2 and 3 marks) and two Level 2 CR entries (3 and 2 marks). The unit had a single Level 3 CR entry and an all-2-mark Level 2 pool. ---------- */
 function u3facS(r){ return r===0?"x":(r>0?"(x - "+r+")":"(x + "+(-r)+")"); }
-E("u3-domain-from-quadratic-cr",3,["4.9"],3,"gen",function(){
+E("u3-domain-from-quadratic-cr",3,["4.9"],2,"gen",function(){
   var p=ri(-6,2), q=p+ri(2,6), B=-(p+q), C=p*q;
   var fs="x^2";
   if(B!==0) fs+=(B>0?" + ":" - ")+(Math.abs(B)===1?"x":Math.abs(B)+"x");
@@ -2668,7 +2668,7 @@ E("u4-circle-point-reasoning", 4, ["7.10", "7.12"], 3, "gen", function () {
 });
 
 /* ---- 7.9, 7.3: compare arcs, transferring between degrees and radians ---- */
-E("u4-arc-compare", 4, ["7.9", "7.3"], 3, "gen", function () {
+E("u4-arc-compare", 4, ["7.9", "7.3"], 2, "gen", function () {
   if (Math.random() < 0.5) {
     var thA = ri(7, 26) / 10, degB = ri(35, 160), radB = degB * Math.PI / 180;
     while (Math.abs(thA - radB) < 0.12) { degB = ri(35, 160); radB = degB * Math.PI / 180; }
@@ -3311,7 +3311,7 @@ E("u5-model-build",5,["7.31"],3,"gen",function(){
     "Build the model first: midline "+D+", amplitude "+A+", starting at a "+(startMax?"maximum":"minimum")+", so \\("+fnName+"(t) = "+D+" "+(sign<0?"-":"+")+" "+A+"\\cos("+b+"^\\circ t)\\). Then \\[ \\begin{aligned} "+fnName+"("+fmt(tv)+") &= "+D+" "+(sign<0?"-":"+")+" "+A+"\\cos("+(360*tFrac)+"^\\circ) \\\\ &= "+D+" "+(sign<0?"-":"+")+" "+A+"("+fmt(cosv)+") \\\\ &= "+fmt(val)+" \\end{aligned} \\] The "+tLab+" is <b>"+fmt(val)+" "+unit+"</b>.",
     {ctx:ctx,A:A,D:D,P:P,ask:ask,tv:tv});
 });
-E("u5-model-conditions",5,["7.29","7.30"],3,"gen",function(){
+E("u5-model-conditions",5,["7.29","7.30"],2,"gen",function(){
   var frame=pick([
     {what:"the height, in centimetres, of a piston in an engine as it pumps",per:"seconds"},
     {what:"the depth of water, in metres, at a dock as the tide comes and goes",per:"hours"},
@@ -5712,7 +5712,7 @@ E("u7-compare-models",7,["4.30"],3,"gen",function(){
     {fam:fam,QA:QA,QB:QB,k:k3});
 });
 
-E("u7-model-from-data",7,["4.30"],3,"gen",function(){
+E("u7-model-from-data",7,["4.30"],2,"gen",function(){
   var spec=pick([
     {f:[2,1],A0s:[15,25,40,60,90,120,200],ctx:"A researcher counts the bacteria in a dish.",unit:"bacteria",tu:"hours"},
     {f:[3,1],A0s:[4,6,9,12,20,30,50],ctx:"A scientist records the number of fruit flies in a jar.",unit:"fruit flies",tu:"days"},
@@ -6373,7 +6373,7 @@ E("u8-extraneous",8,["4.33"],3,"gen",function(){
     sol, {mode:mode, b:T.b});
 });
 
-E("u8-inverse-graph",8,["4.37"],3,"gen",function(){
+E("u8-inverse-graph",8,["4.37"],1,"gen",function(){
   var mode = pick(["exp2log","log2exp","reflect","swap","intercepts"]);
   if (mode === "reflect"){
     var c = pick([2,3]);
@@ -7170,7 +7170,7 @@ E("u9-perm-constraints",9,["9.10"],3,"gen",function(){
 });
 
 /* ---------- 9.11: permutation or combination (L3) ---------- */
-E("u9-perm-or-comb",9,["9.11"],3,"gen",function(){
+E("u9-perm-or-comb",9,["9.11"],2,"gen",function(){
   var mode=pick(["values","values","expr","pair"]);
   var pScen=[
     {t:"Gold and silver medals are awarded to the top 2 finishers in a field of {n} skiers",r:2},
@@ -7409,7 +7409,7 @@ E("u9-two-group-cr",9,["9.12"],2,"gen",function(){
     "The two choices are independent, so multiply the two combination counts: \\[ \\binom{"+n1+"}{"+a+"} \\times \\binom{"+n2+"}{"+b+"} = "+c1+" \\times "+c2+" = "+u9big(ans)+" \\] So the count is <b>"+u9big(ans)+"</b>.",
     {n1:n1,a:a,n2:n2,b:b});
 });
-E("u9-not-adjacent-cr",9,["9.10"],3,"gen",function(){
+E("u9-not-adjacent-cr",9,["9.10"],2,"gen",function(){
   var CTX=[
     function(n){ return n+" friends line up for a photo. In how many arrangements do two particular friends, Ava and Ben, <b>not</b> stand next to each other?"; },
     function(n){ return n+" different books are arranged in a row on a shelf. In how many arrangements are two particular books <b>not</b> placed side by side?"; },

@@ -620,7 +620,7 @@ E("u1-extraneous",1,["3.15"],2,"var",varset([
     ["Both are solutions, because both satisfy the multiplied-out equation \\(x^2 = x\\), and multiplying both sides by \\((x - 1)\\) does not change the solution set","Only \\(x = 1\\) is a solution, because \\(x = 0\\) makes a numerator 0, and a value that makes a numerator 0 must be rejected if it is to count as a solution","Neither is a solution, because an equation with a fraction on each side can never be solved by multiplying out, so values obtained that way never count"],
     "Multiplying by \\((x - 1)\\) gives \\(x^2 = x\\), with roots 0 and 1. Checking in the original equation: \\(x = 0\\) gives \\(0 = 0\\), which works, but \\(x = 1\\) divides by zero. A numerator of 0 is fine; a denominator of 0 is not.",{});}
 ]));
-E("u1-context-work",1,["3.16"],3,"gen",function(){
+E("u1-context-work",1,["3.16"],2,"gen",function(){
   var combos=[[3,6],[4,12],[6,12],[5,20],[8,24],[10,15],[9,18],[12,12],[15,30],[20,30],[6,6],[4,4],[7,7],[14,14]];
   var pr=pick(combos),a=pr[0],b=pr[1],t=a*b/(a+b);
   var ctx=pick([
@@ -658,7 +658,7 @@ E("u1-context-cost",1,["3.16"],3,"gen",function(){
     "Let \\(n\\) be the number who first signed up. The cost condition gives: \\[ \\begin{aligned} \\frac{"+C+"}{n - "+k+"} - \\frac{"+C+"}{n} &= "+e+" \\\\ \\frac{"+(C*k)+"}{n(n - "+k+")} &= "+e+" \\\\ n(n - "+k+") &= "+(C*k/e)+" \\end{aligned} \\] Trying the factor pair: \\("+n+" \\times "+went+" = "+(C*k/e)+"\\), so \\(n = "+n+"\\). The number who actually went is <b>"+went+"</b>.",
     {C:C,n:n,k:k,e:e});
 });
-E("u1-two-step-simplify",1,["3.12"],3,"gen",function(){
+E("u1-two-step-simplify",1,["3.12"],2,"gen",function(){
   var s=ri(2,6),t=ri(-6,6),k=ri(2,5),tr=0;
   while((t===0||t===s||t===-s)&&tr<60){t=ri(-6,6);tr++;}
   var numQuad=quadS(1,0,-s*s);
@@ -929,7 +929,7 @@ E("u2-model-decision",2,["3.22"],3,"var",varset([
 function u2lead(a){ return a===1?"x^3":a===-1?"-x^3":a+"x^3"; }
 function u2tm(v,p){ if(v===0) return ""; var m=Math.abs(v); var core=p? (m===1? p : m+p) : ""+m; return (v>0?" + ":" - ")+core; }
 function u2polyLead(lead,b,c,d){ return lead+u2tm(b,"x^2")+u2tm(c,"x")+u2tm(d,""); }
-E("u2-recover-and-predict-cr",2,["3.20","3.22"],3,"gen",function(){
+E("u2-recover-and-predict-cr",2,["3.20","3.22"],2,"gen",function(){
   var a=pick([2,3,-2,-3]), b=ri(-4,4), c=ri(-5,5), d=ri(-6,6), x0=pick([2,3]);
   var t=pick([1,4,-1,5]); if(t===x0) t=t+2;
   function P(x){ return a*x*x*x + b*x*x + c*x + d; }
@@ -1820,7 +1820,7 @@ E("u4-app-decision",4,["4.5"],3,"var",varset([
     ["Exponential model M(t) = 5(4)^t; mass at 4 h is 320 g","Exponential model M(t) = 20(4)^t; mass at 4 h is 5120 g","Linear model M(t) = 5 + 37.5t; mass at 4 h is 155 g"],
     "The ratio is constant: 20 / 5 = 4 and 80 / 20 = 4, so M(t) = 5(4)^t with the initial mass 5 g (not 20 g, the value at t = 1). At t = 4: 5 x 256 = 1280 g.",{});}
 ]));
-E("u4-reverse-half-life",4,["4.9"],3,"gen",function(){
+E("u4-reverse-half-life",4,["4.9"],2,"gen",function(){
   var R=pick([5,10,15,20,25,40]),kk=pick([2,3,4]),h=pick([3,4,5,6,8,10,12]);
   var A0=R*Math.pow(2,kk),t=h*kk;
   var chain=[],cur=A0;for(var ci=0;ci<=kk;ci++){chain.push(cur);cur/=2;}
@@ -1830,7 +1830,7 @@ E("u4-reverse-half-life",4,["4.9"],3,"gen",function(){
     "First count the halvings: "+A0+" to "+R+" is a factor of "+Math.pow(2,kk)+", which is "+kk+" halvings ("+chain.join(" \\(\\to\\) ")+"). Those "+kk+" half-lives took "+t+" "+ctx.u+", so one half-life is \\(\\frac{"+t+"}{"+kk+"} = "+h+"\\) "+ctx.u+". The extra step is counting the halvings before dividing.",
     {R:R,kk:kk,h:h});
 });
-E("u4-find-base",4,["4.13"],3,"gen",function(){
+E("u4-find-base",4,["4.13"],2,"gen",function(){
   var useFrac=Math.random()<0.3;
   var kk,a,b,v,bdisp,ratioDisp;
   if(useFrac){var den=pick([2,3]);b=1/den;kk=2;a=(den===2?pick([8,12,18,24,36,40]):pick([18,36,45,63,90]));v=a*Math.pow(b,kk);
@@ -1842,7 +1842,7 @@ E("u4-find-base",4,["4.13"],3,"gen",function(){
     "From \\(f(0)\\), \\(a = "+a+"\\) (the starting value). Then \\(f("+kk+")\\) gives: \\[ \\begin{aligned} b^{"+kk+"} &= \\frac{"+fmt(v)+"}{"+a+"} = "+ratioDisp+" \\\\ b &= "+bdisp+" \\end{aligned} \\] Recognizing the perfect power (\\("+ratioDisp+" = \\left("+bdisp+"\\right)^{"+kk+"}\\)) is the key step; no logarithm is needed.",
     {kk:kk,a:a,b:b});
 });
-E("u4-compare-models",4,["4.13"],3,"gen",function(){
+E("u4-compare-models",4,["4.13"],1,"gen",function(){
   var t=pick([3,4]),a1,a2,b1,b2,V1,V2,tries=0;
   do{a1=pick([40,60,100,150,200,300,500,750]);a2=pick([40,60,100,150,200,300,500,750]);b1=pick([2,3]);b2=pick([2,3]);
     V1=a1*Math.pow(b1,t);V2=a2*Math.pow(b2,t);tries++;}
@@ -2144,7 +2144,7 @@ E("u5-simplify-eval",5,["1.4"],2,"gen",function(){
     {shape:shape,b:bb,A:AA,k:kk});
 });
 var U5SC=null;
-E("u5-solve-condense",5,["1.4"],3,"gen",function(){
+E("u5-solve-condense",5,["1.4"],2,"gen",function(){
   if(!U5SC){
     U5SC=[];
     [2,3,4,5,6,10].forEach(function(b){
@@ -2726,7 +2726,7 @@ var U6CC=[
   {at:"compound interest at 15% compounded annually for 2 years",af:Math.pow(1.15,2),bt:"simple interest at 16% for 2 years",bf:1+0.16*2},
   {at:"compound interest at 4% compounded semi-annually for 3 years",af:Math.pow(1.02,6),bt:"simple interest at 4.25% for 3 years",bf:1+0.0425*3}
 ];
-E("u6-compare-costs",6,["1.9"],3,"gen",function(){
+E("u6-compare-costs",6,["1.9"],2,"gen",function(){
   var sc=pick(U6CC),P=pick([1000,1500,2000,2500,3000,4000,5000]);
   var IA=P*(sc.af-1),IB=P*(sc.bf-1),winner=IA<IB?"Loan A":"Loan B",save=Math.abs(IA-IB);
   return mcq("A borrower needs "+mon(P)+". Loan A charges "+sc.at+". Loan B charges "+sc.bt+". Which loan costs <b>less</b> in total interest?",
@@ -2870,7 +2870,7 @@ E("u6-justify-decision",6,["1.16"],3,"var",varset([
     "Leasing trades ownership for exactly what Devon's circumstances call for: a current-model vehicle for his clients, fixed monthly costs for his business budget, and a vehicle that is always under warranty. Buying and keeping a vehicle long term is cheaper per year but leaves him with an aging vehicle and repair bills. Justification for Level 3: the best option depends on the stated priorities, not on the lowest headline cost.",{});}
 ]));
 /* --- cost and benefits (1.17) --- */
-E("u6-cost-benefit",6,["1.17"],3,"gen",function(){
+E("u6-cost-benefit",6,["1.17"],2,"gen",function(){
   var ctx=pick([
     {item:"a high-efficiency furnace",saves:"on heating bills"},
     {item:"a heat pump",saves:"on energy bills"},
@@ -3349,7 +3349,7 @@ E("u7-exactly-two-cr",7,["2.5"],3,"gen",function(){
     "Work set by set, removing both pairwise overlaps and adding back the all-three group, which was removed twice: only \\(A\\): \\("+nA+" - "+pAB+" - "+pAC+" + "+abc+" = "+onlyA+"\\); only \\(B\\): \\("+nB+" - "+pAB+" - "+pBC+" + "+abc+" = "+onlyB+"\\); only \\(C\\): \\("+nC+" - "+pAC+" - "+pBC+" + "+abc+" = "+onlyC+"\\). The total in exactly one set is \\("+onlyA+" + "+onlyB+" + "+onlyC+" = \\)<b>"+(onlyA+onlyB+onlyC)+"</b>.",
     {target:target}); q.figure=venn3("","","","","","","","","A","B","C"); return q;
 });
-E("u7-relations-count-cr",7,["2.1","2.4"],3,"gen",function(){
+E("u7-relations-count-cr",7,["2.1","2.4"],2,"gen",function(){
   var nB=ri(12,30), nA=ri(10,30), U=nA+nB, nC=ri(3,nB-4), ans=nB-nC;
   return numq("Sets \\(A\\) and \\(B\\) are disjoint, with \\(n(A \\cup B) = "+U+"\\) and \\(n(A) = "+nA+"\\). Set \\(C\\) is a subset of \\(B\\), and \\(n(C) = "+nC+"\\). How many elements are in \\(B\\) but not in \\(C\\)?",
     ans,0.001,
@@ -4473,7 +4473,7 @@ E("u9-nonme-prob",9,["9.10"],2,"gen",function(){
     Math.round((union/tot)*1000)/1000,0.002,
     "The "+o+" students who do both sit inside both counts, so subtract the overlap once: \\[ \\begin{aligned} P(A \\cup B) &= \\frac{"+a+"}{"+tot+"} + \\frac{"+b+"}{"+tot+"} - \\frac{"+o+"}{"+tot+"} \\\\ &= \\frac{"+union+"}{"+tot+"} \\approx "+fmt(union/tot,3)+" \\end{aligned} \\]",{T:T});
 });
-E("u9-me-or-not",9,["9.10"],3,"gen",function(){
+E("u9-me-or-not",9,["9.10"],2,"gen",function(){
   var T=pick(["ranksuit","redrank","evenmult4","tworanks","dieodd3","dieprime5","survey"]);
   var J=" Justification for Level 3: the formula cannot be chosen until the overlap between the events has been analyzed; adding blindly is the trap.";
   if(T==="ranksuit"){var rk2=pick(["king","queen","jack","ace"]),su=pick(["heart","diamond","club","spade"]);
@@ -4599,7 +4599,7 @@ E("u9-create-solve-game",9,["9.15"],3,"gen",function(){
     "With replacement the draws are independent, so the probability is the square of the single-draw probability: \\(\\left(\\frac{"+correct2[0]+"}{"+correct2[1]+"}\\right)^2 = "+frN(correct2[0]*correct2[0],correct2[1]*correct2[1])+"\\), exactly the target. Justification for Level 3: the design runs backwards from a target probability, and spotting that the target must be a perfect square of the single-draw probability is the key insight.",{r:correct2[0],t:correct2[1],wr:1});
 });
 /* --- odds in context (9.5), permutations (9.28), combinations (9.32) --- */
-E("u9-odds-context",9,["9.5"],3,"gen",function(){
+E("u9-odds-context",9,["9.5"],2,"gen",function(){
   var sport=pick(["hockey team","baseball team","curling team","soccer team"]);
   var N=pick([20,25,30,40]),w=pick([6,7,8,9,10,11,12,13,14,15,16,17,18,22,24,26,28]);if(w>=N)w=N-6;
   var l=N-w;if(w===l)w+=2,l-=2;
@@ -4645,7 +4645,7 @@ E("u9-prob-comb",9,["9.32","9.30"],2,"gen",function(){
     "Count combinations: there are \\(\\binom{"+a+"}{2} = "+nCr(a,2)+"\\) ways to draw two "+ctx.g1+" and \\(\\binom{"+t+"}{2} = "+nCr(t,2)+"\\) ways to draw any two, so the probability is \\("+frN(nCr(a,2),nCr(t,2))+"\\). The first two distractors come from mishandling the second draw (keeping the full pool of "+t+" for it, or treating the draws as independent with replacement); the last counts the wrong colour.",
     {a:a,b:b});
 });
-E("u9-prob-comb-hard",9,["9.32","9.30"],3,"gen",function(){
+E("u9-prob-comb-hard",9,["9.32","9.30"],2,"gen",function(){
   var n=pick([8,9,10,11,12]),r=pick([3,4]);while(n-2<r)n++;
   var tot=nCr(n,r),favour=nCr(n-2,r);
   var setting=pick([{g:"committee",p:"club members"},{g:"team",p:"players trying out"},{g:"project group",p:"students"}]);
@@ -4672,7 +4672,7 @@ E("u9-prob-comb-context",9,["9.32","9.30"],3,"gen",function(){
     pick3Frac(corr,pool),
     sol+" Justification for Level 3: the favourable set must be counted with combinations under a composition condition before the ratio can be formed.",{shape:shape,g:g,b:b});
 });
-E("u9-compare-games",9,["9.13"],3,"gen",function(){
+E("u9-compare-games",9,["9.13"],2,"gen",function(){
   var gamesA=[
     {aDesc:"flipping a coin and rolling a die, winning with a head and an even number",pa:0.25},
     {aDesc:"flipping a coin and rolling a die, winning with a head and a number greater than 4",pa:1/6},
@@ -6168,7 +6168,7 @@ E("u6-pk-discount-then-tax",6,["1.6"], 2, "gen", function () {
   var sol = "Apply the discount first, then add HST of 15% to the sale price: \\[ \\begin{aligned} \\text{sale price} &= " + fmtF(P, 2) + " \\times " + fmt(1 - d / 100, 2) + " = " + fmtF(sale, 2) + " \\\\ \\text{final price} &= " + fmtF(sale, 2) + " \\times 1.15 = " + fmtF(fin, 2) + " \\end{aligned} \\] So the final price is <b>$" + fmtF(fin, 2) + "</b>.";
   return numq("A " + item + " is priced at $" + fmtF(P, 2) + ". It is on sale for " + d + "% off. HST of 15% is then added to the sale price. What is the final price, in dollars?", fin, 0.01, sol, { mode: "disc-tax", p: P, d: d });
 }, ["Combined percents act one after the other, and the second percent acts on the new amount.", "First take the discount off the full price to get the sale price."]);
-E("u6-pk-percent-change",6,["1.6"], 3, "gen", function () {
+E("u6-pk-percent-change",6,["1.6"], 1, "gen", function () {
   var inc = Math.random() < 0.5;
   var c = inc ? pick([5, 10, 15, 20, 25, 30, 40, 50, 60, 80, 100]) : pick([5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 80]);
   var O = pick([40, 60, 80, 100, 120, 160, 200, 240, 300, 400, 500]);
