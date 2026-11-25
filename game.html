@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review Apps Game (pilot)</title>
+<link rel="icon" href="favicon.jpg">
+<link rel="stylesheet" href="katex/katex.min.css">
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:0;background:#f2f4f7;color:#1c2430;}
+  main{max-width:1060px;margin:0 auto;padding:20px 16px 56px;}
+  h1{font-size:1.5rem;margin:6px 0 2px;}
+  h2{font-size:1.2rem;margin:18px 0 8px;}
+  .sub{color:#52617a;margin:0 0 14px;}
+  .card{background:#fff;border:1px solid #d5dce6;border-radius:14px;padding:18px;margin:0 0 16px;}
+  .hidden{display:none !important;}
+  button{font:inherit;padding:10px 18px;border-radius:10px;border:1px solid #31435f;background:#31435f;color:#fff;cursor:pointer;}
+  button.alt{background:#fff;color:#31435f;}
+  button.good{background:#1e7d46;border-color:#1e7d46;}
+  button.danger{background:#fff;color:#b3261e;border-color:#b3261e;}
+  button:disabled{opacity:.45;cursor:default;}
+  button.big{font-size:1.15rem;padding:14px 22px;}
+  input[type=text],input[type=number],select{font:inherit;padding:10px 12px;border:1px solid #aeb9c9;border-radius:10px;background:#fff;}
+  label.f{display:block;margin:12px 0 4px;font-weight:600;}
+  .checks{display:flex;flex-wrap:wrap;gap:8px 16px;margin:6px 0;}
+  .checks label{font-weight:400;display:flex;gap:6px;align-items:center;background:#eef2f7;border-radius:8px;padding:6px 10px;}
+  .code{font-size:3.2rem;font-weight:800;letter-spacing:.18em;text-align:center;margin:6px 0;}
+  .joinline{text-align:center;color:#52617a;}
+  .players{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;}
+  .player{display:flex;align-items:center;gap:8px;background:#eef2f7;border-radius:999px;padding:6px 12px 6px 8px;font-size:1.05rem;}
+  .player .av{font-size:1.5rem;}
+  .player.stale{opacity:.45;}
+  .player button{padding:2px 9px;border-radius:999px;font-size:.85rem;}
+  .qprompt{font-size:1.45rem;line-height:1.5;margin:10px 0;}
+  .qprompt .katex{font-size:1.06em;}
+  .fig{margin:10px 0;text-align:center;}
+  .fig svg{max-width:100%;height:auto;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+  @media (max-width:640px){.opts{grid-template-columns:1fr;}}
+  .opt{border:2px solid #c4cedd;border-radius:12px;padding:16px;font-size:1.2rem;background:#fff;text-align:left;color:#1c2430;width:100%;}
+  .opt .tag{font-weight:800;margin-right:10px;color:#31435f;}
+  button.opt{cursor:pointer;}
+  button.opt:hover:not(:disabled){border-color:#31435f;}
+  button.opt.picked{border-color:#31435f;background:#dbe7ff;}
+  .opt.correct{border-color:#1e7d46;background:#eafaf0;}
+  .opt.wrongpick{border-color:#b3261e;background:#fdecea;}
+  .opt .split{float:right;font-weight:700;color:#52617a;}
+  .timerbar{height:14px;background:#e3e9f1;border-radius:999px;overflow:hidden;margin:10px 0;}
+  .timerbar div{height:100%;background:#31435f;transition:width .25s linear;}
+  .timerbar div.low{background:#b3261e;}
+  .bigstat{font-size:1.25rem;}
+  .boardq .qprompt{font-size:1.7rem;}
+  table{border-collapse:collapse;width:100%;margin:8px 0;}
+  th,td{border-bottom:1px solid #e0e6ee;padding:7px 9px;text-align:left;}
+  th{color:#52617a;font-weight:600;}
+  .podium{display:flex;gap:14px;justify-content:center;align-items:flex-end;margin:18px 0;}
+  .pod{text-align:center;background:#eef2f7;border-radius:14px;padding:14px 18px;min-width:130px;}
+  .pod.first{background:#fdf3d7;border:2px solid #d9a400;}
+  .pod .av{font-size:2.6rem;}
+  .pod .nm{font-weight:700;font-size:1.15rem;}
+  .avatars{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;}
+  .avatars button{font-size:1.7rem;padding:8px 12px;background:#fff;border:2px solid #c4cedd;border-radius:12px;}
+  .avatars button.sel{border-color:#31435f;background:#dbe7ff;}
+  .myname{font-size:1.6rem;font-weight:700;}
+  .note{background:#fff7e6;border:1px solid #e3c98a;border-radius:10px;padding:12px 14px;}
+  .err{background:#fdecea;border:1px solid #e5a19c;border-radius:10px;padding:12px 14px;}
+  .ok{background:#eafaf0;border:1px solid #9fd4b2;border-radius:10px;padding:12px 14px;}
+  .rowflex{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .meter{height:16px;background:#e3e9f1;border-radius:999px;overflow:hidden;}
+  .meter div{height:100%;background:#1e7d46;}
+  .chip{display:inline-block;border-radius:999px;padding:4px 12px;background:#eef2f7;margin:3px 4px 3px 0;}
+  .chip.done{background:#eafaf0;border:1px solid #1e7d46;}
+  .chip.open{background:#fff7e6;border:1px solid #a86a00;}
+  footer{color:#68778e;font-size:.88rem;line-height:1.55;margin-top:26px;}
+  a{color:#2456a6;}
+</style>
+</head>
+<body>
+<main>
+  <h1>Review Apps Game <span style="font-size:.8rem;vertical-align:middle;background:#a86a00;color:#fff;border-radius:6px;padding:2px 8px;">PILOT</span></h1>
+  <p class="sub">A whole-class game played from the Review Apps question banks. The teacher hosts on the board; students join on their own devices with the room code.</p>
+
+  <!-- ============ HOME ============ -->
+  <section id="homeView">
+    <div class="card">
+      <h2>Host a game (teachers)</h2>
+      <p>Set up a room, put the code on the board, and present the questions. Students answer on their devices; you see the class results live.</p>
+      <button type="button" class="big" id="goHost">Host a game</button>
+    </div>
+    <div class="card">
+      <h2>Join a game (students)</h2>
+      <p>Enter the code your teacher has on the board.</p>
+      <div class="rowflex">
+        <input type="text" id="joinCodeInput" placeholder="Room code" maxlength="6" style="text-transform:uppercase;font-size:1.3rem;letter-spacing:.15em;width:220px;">
+        <button type="button" class="big" id="goJoin">Join</button>
+      </div>
+      <p id="homeMsg"></p>
+    </div>
+  </section>
+
+  <!-- ============ HOST ============ -->
+  <section id="hostView" class="hidden">
+    <div class="card" id="hostSetup">
+      <h2>Game setup</h2>
+      <div id="preflight" class="note">Checking the connection to the game service…</div>
+      <label class="f" for="courseSel">Course</label>
+      <select id="courseSel"></select>
+      <label class="f">Mode</label>
+      <div class="checks" id="modeChecks">
+        <label><input type="radio" name="mode" value="showcase" checked> Showcase (points race)</label>
+        <label><input type="radio" name="mode" value="mastery"> Mastery (the class clears each indicator together)</label>
+      </div>
+      <label class="f">Units</label>
+      <div class="checks" id="unitChecks"></div>
+      <div id="masterySetup" class="hidden">
+        <label class="f">Indicators to master (from the units above)</label>
+        <div class="checks" id="indChecks"></div>
+        <label class="f" for="thresholdSel">Class threshold</label>
+        <select id="thresholdSel">
+          <option value="0.7">70% of the class correct</option>
+          <option value="0.8">80% of the class correct</option>
+          <option value="0.9" selected>90% of the class correct</option>
+        </select>
+        <p class="sub">An indicator counts as cleared when the class average over its last three questions reaches the threshold. At most eight questions per indicator.</p>
+      </div>
+      <label class="f">Levels</label>
+      <div class="checks" id="levelChecks">
+        <label><input type="checkbox" value="1" checked> Level 1</label>
+        <label><input type="checkbox" value="2" checked> Level 2</label>
+        <label><input type="checkbox" value="3" checked> Level 3</label>
+      </div>
+      <div id="countRow">
+        <label class="f" for="countSel">Questions</label>
+        <select id="countSel">
+          <option>5</option><option>8</option><option selected>10</option><option>15</option><option>20</option>
+        </select>
+      </div>
+      <label class="f" for="timerSel">Time per question</label>
+      <select id="timerSel">
+        <option value="20">20 seconds</option>
+        <option value="30" selected>30 seconds</option>
+        <option value="45">45 seconds</option>
+        <option value="60">60 seconds</option>
+      </select>
+      <div class="checks" style="margin-top:12px;">
+        <label><input type="checkbox" id="stemToggle"> Show the question text on student devices too</label>
+        <label><input type="checkbox" id="pkToggle"> Include prior knowledge questions</label>
+      </div>
+      <p id="setupMsg"></p>
+      <div class="rowflex">
+        <button type="button" class="big good" id="createRoomBtn" disabled>Create the room</button>
+        <button type="button" class="alt" id="hostBack">Back</button>
+      </div>
+    </div>
+
+    <div class="card hidden" id="hostLobby">
+      <h2>Join with this code</h2>
+      <div class="code" id="roomCodeBig"></div>
+      <p class="joinline">Open <b>cdli-nlschools.github.io/ReviewApps/game.html</b> and tap Join, or scan: students enter the code, get a game name, and pick an avatar.</p>
+      <h2>Players (<span id="lobbyCount">0</span>)</h2>
+      <div class="players" id="lobbyPlayers"></div>
+      <p id="lobbyMsg"></p>
+      <div class="rowflex">
+        <button type="button" class="big good" id="startGameBtn" disabled>Start the game</button>
+        <button type="button" class="danger" id="cancelRoomBtn">Cancel the room</button>
+      </div>
+    </div>
+
+    <div class="card hidden" id="hostBoard"></div>
+
+    <div class="card hidden" id="hostFinal"></div>
+  </section>
+
+  <!-- ============ STUDENT ============ -->
+  <section id="playView" class="hidden">
+    <div class="card" id="playJoin">
+      <h2>Joining room <span id="playRoomCode"></span></h2>
+      <p>Your game name (the board will show this name):</p>
+      <div class="myname" id="genName"></div>
+      <div class="rowflex"><button type="button" class="alt" id="shuffleName">Shuffle the name</button></div>
+      <label class="f">Pick your avatar</label>
+      <div class="avatars" id="avatarPick"></div>
+      <p id="playJoinMsg"></p>
+      <div class="rowflex">
+        <button type="button" class="big good" id="joinBtn">Join the game</button>
+        <button type="button" class="alt" id="playBack">Back</button>
+      </div>
+    </div>
+    <div class="card hidden" id="playMain"></div>
+  </section>
+
+  <footer>
+    Review Apps Game is a pilot built on the Review Apps question banks. Students play under generated names; no student accounts are created and no real names are entered. Rooms are temporary and are deleted when the teacher ends the game. A student who wants their results recorded can share them at the end with their class ID number, which only their teacher can match to them.
+  </footer>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="katex/katex.min.js"></script>
+<script src="katex/contrib/auto-render.min.js"></script>
+<script src="courses.js"></script>
+<script>
+"use strict";
+/* =====================================================================
+   Review Apps Game (pilot), November 2026.
+   A standalone page: it loads the same courses.js registry and bank
+   files as the Review Apps shell and never touches index.html.
+
+   PORTABILITY SEAM: every call to the realtime service goes through
+   the Relay object below. The rest of the page (host, student, dealing,
+   scoring, CSV) uses only Relay's plain interface: init, test, create,
+   read, write, update, listen, answer, heartbeat, remove, close.
+   Moving to another service means rewriting Relay and nothing else.
+   ===================================================================== */
+var firebaseConfig = {
+  apiKey: "AIzaSyCruOBvuhF5QbknXgpBb12rqlcZh68-KYg",
+  authDomain: "cdli-review-apps-game.firebaseapp.com",
+  databaseURL: "https://cdli-review-apps-game-default-rtdb.firebaseio.com",
+  projectId: "cdli-review-apps-game",
+  appId: "1:346444647207:web:ab5d57e944cba49cda3702"
+};
+
+var Relay = (function () {
+  var db = null, offset = 0;
+  function init() {
+    if (db) return true;
+    if (typeof firebase === "undefined" || !firebase.database) return false;
+    var app = firebase.initializeApp(firebaseConfig, "game" + Math.random().toString(36).slice(2, 8));
+    db = firebase.database(app);
+    db.ref(".info/serverTimeOffset").on("value", function (s) { offset = s.val() || 0; });
+    return true;
+  }
+  function now() { return Date.now() + offset; }
+  function ref(path) { if (!db) init(); return db.ref(path); }
+  /* The probe test: connect, write a record, hear it back live, delete it. */
+  function test() {
+    return new Promise(function (resolve, reject) {
+      if (!init()) { reject(new Error("The game tools could not be loaded (gstatic.com may be blocked).")); return; }
+      var id = "t" + Math.random().toString(36).slice(2, 12), token = Math.random().toString(36).slice(2, 12);
+      var pref = db.ref("probes/" + id), done = false;
+      var connTimer = setTimeout(function () { if (!done) { done = true; reject(new Error("Could not connect to the game service.")); } }, 15000);
+      db.ref(".info/connected").on("value", function (snap) {
+        if (snap.val() !== true || done) return;
+        clearTimeout(connTimer);
+        var rt = setTimeout(function () { if (!done) { done = true; reject(new Error("Connected, but the live channel did not deliver.")); } }, 15000);
+        pref.on("value", function (s2) {
+          var v = s2.val();
+          if (!v || v.token !== token || done) return;
+          done = true; clearTimeout(rt);
+          pref.off(); pref.remove();
+          resolve(true);
+        });
+        pref.set({ token: token, ts: Date.now() }).catch(function (e) { if (!done) { done = true; clearTimeout(rt); reject(e); } });
+      });
+    });
+  }
+  return {
+    init: init, now: now, test: test,
+    create: function (path, data) { return ref(path).set(data); },
+    write: function (path, data) { return ref(path).set(data); },
+    update: function (path, data) { return ref(path).update(data); },
+    read: function (path) { return ref(path).once("value").then(function (s) { return s.val(); }); },
+    listen: function (path, cb) { var r = ref(path); r.on("value", function (s) { cb(s.val()); }); return function () { r.off(); }; },
+    answer: function (code, qn, pid, choice) {
+      return ref("rooms/" + code + "/answers/" + qn + "/" + pid).set({ c: choice, ts: firebase.database.ServerValue.TIMESTAMP });
+    },
+    heartbeat: function (code, pid) {
+      var r = ref("rooms/" + code + "/players/" + pid);
+      r.update({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
+      r.onDisconnect().update({ gone: true });
+    },
+    remove: function (path) { return ref(path).remove(); },
+    TIMESTAMP: function () { return firebase.database.ServerValue.TIMESTAMP; }
+  };
+})();
+
+/* ---------------- small utilities ---------------- */
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+function randStr(n, alphabet) {
+  var a = alphabet || "ABCDEFGHJKMNPQRSTUVWXYZ23456789", s = "";
+  for (var i = 0; i < n; i++) s += a[Math.floor(Math.random() * a.length)];
+  return s;
+}
+function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function mathIn(el) {
+  if (!el || !window.renderMathInElement) return;
+  try { renderMathInElement(el, { delimiters: [{ left: "\\(", right: "\\)", display: false }, { left: "\\[", right: "\\]", display: true }], throwOnError: false }); } catch (e) {}
+}
+function stripHtml(html) {
+  var d = document.createElement("div"); d.innerHTML = String(html || "");
+  return (d.textContent || "").replace(/\s+/g, " ").trim();
+}
+function plainQ(html) {
+  var s = String(html || "").replace(/\\\(([\s\S]*?)\\\)/g, "$1").replace(/\\\[([\s\S]*?)\\\]/g, "$1");
+  var SYM = { circ: "°", angle: "angle ", triangle: "triangle ", to: "->", times: "x", div: "/", leq: "<=", geq: ">=", neq: "!=", pi: "pi" };
+  s = s.replace(/\\frac\{([^{}]*)\}\{([^{}]*)\}/g, "($1)/($2)").replace(/\\sqrt\{([^{}]*)\}/g, "sqrt($1)")
+       .replace(/\\(circ|angle|triangle|to|times|div|leq|geq|neq|pi)\b/g, function (m, w) { return SYM[w] || w; })
+       .replace(/\\[a-zA-Z]+/g, "").replace(/[{}]/g, "");
+  return stripHtml(s);
+}
+function stampFile(d) {
+  function p(n) { return (n < 10 ? "0" : "") + n; }
+  return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()) + " " + p(d.getHours()) + p(d.getMinutes());
+}
+function download(name, text, type) {
+  var blob = new Blob([text], { type: type || "text/plain" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+}
+
+/* ---------------- names and avatars ---------------- */
+var NAME_A = ["Swift", "Brave", "Quiet", "Merry", "Bold", "Clever", "Gentle", "Lucky", "Sunny", "Cosmic", "Amber", "Velvet", "Rapid", "Noble", "Jolly", "Keen", "Calm", "Bright", "Wild", "Happy", "Proud", "Silent", "Golden", "Silver", "Crimson", "Azure", "Emerald", "Patient", "Mighty", "Witty"];
+var NAME_B = ["Fox", "Otter", "Puffin", "Moose", "Falcon", "Badger", "Lynx", "Heron", "Wolf", "Bear", "Orca", "Raven", "Hare", "Seal", "Goose", "Trout", "Eagle", "Vole", "Crane", "Finch", "Marten", "Beaver", "Caribou", "Narwhal", "Plovers", "Sparrow", "Walrus", "Mink", "Osprey", "Loon"];
+var AVATARS = ["🦊", "🐼", "🦉", "🐙", "🦄", "🐳", "🦁", "🐸", "🐯", "🐰", "🦋", "🚀"];
+function genName(taken) {
+  for (var i = 0; i < 60; i++) {
+    var n = NAME_A[Math.floor(Math.random() * NAME_A.length)] + " " + NAME_B[Math.floor(Math.random() * NAME_B.length)] + " " + (2 + Math.floor(Math.random() * 98));
+    if (!taken || !taken[n]) return n;
+  }
+  return "Player " + randStr(4);
+}
+
+/* ---------------- course and bank loading ---------------- */
+var COURSE = null, BANK = null;
+/* The bank files register through helper functions the shell itself
+   defines (E, varset, the figure library), so the banks cannot load
+   standalone. The game therefore runs the shell, unchanged, in a hidden
+   frame purely as its question engine, and deals from that frame's
+   BANK. Nothing in index.html is modified; if the game page is ever
+   deleted, the shell is exactly as it was. */
+function loadCourse(courseId) {
+  return new Promise(function (resolve, reject) {
+    COURSE = window.COURSES[courseId];
+    if (!COURSE) { reject(new Error("Unknown course")); return; }
+    if (BANK && window.__gameBankFor === courseId) { resolve(BANK); return; }
+    var ifr = $("engineFrame");
+    if (!ifr) {
+      ifr = document.createElement("iframe");
+      ifr.id = "engineFrame";
+      ifr.style.cssText = "position:absolute;width:0;height:0;border:0;visibility:hidden;";
+      document.body.appendChild(ifr);
+    }
+    var tries = 0, done = false;
+    function check() {
+      if (done) return;
+      var w = null;
+      try { w = ifr.contentWindow; } catch (e) {}
+      if (w && w.BANK && w.BANK.length && w.__COURSE && w.__COURSE.id === courseId) {
+        done = true; BANK = w.BANK; window.__gameBankFor = courseId; resolve(BANK); return;
+      }
+      if (++tries > 200) { done = true; reject(new Error("The question bank did not load.")); return; }
+      setTimeout(check, 200);
+    }
+    ifr.src = "index.html?course=" + encodeURIComponent(courseId);
+    check();
+  });
+}
+function isPK(e) {
+  if (e.pkFlag) return true;
+  return (e.indicators || []).some(function (c) { return /^PK\./.test(c) || c === "PK"; });
+}
+function scopeEntries(units, levels, includePK) {
+  return (BANK || []).filter(function (e) {
+    if (units && units.indexOf(e.unit) < 0) return false;
+    if (levels && levels.indexOf(e.level) < 0) return false;
+    if (!includePK && isPK(e)) return false;
+    return true;
+  });
+}
+/* Deal one fresh multiple choice question from a pool of entries.
+   Tries entries in random order; a question counts when it is multiple
+   choice with at least three options and its text is not already used. */
+function dealMC(pool, usedPrompts, wantIndicator) {
+  var order = shuffle(pool.slice());
+  for (var i = 0; i < order.length; i++) {
+    var e = order[i];
+    if (wantIndicator && (e.indicators || []).indexOf(wantIndicator) < 0) continue;
+    for (var k = 0; k < 24; k++) {
+      var q = null;
+      try { q = e.gen(); } catch (err) { break; }
+      if (!q || q.type !== "mc" || !q.options || q.options.length < 3) continue;
+      var key = stripHtml(q.prompt).slice(0, 140);
+      if (usedPrompts[key]) continue;
+      usedPrompts[key] = 1;
+      return { entry: e, q: q };
+    }
+  }
+  return null;
+}
+function questionPayload(dealt) {
+  var q = dealt.q;
+  return {
+    prompt: q.prompt || "", figure: q.figure || "",
+    options: q.options.slice(),
+    entryId: dealt.entry.id, unit: dealt.entry.unit,
+    indicators: (dealt.entry.indicators || []).slice(), level: dealt.entry.level
+  };
+}
+</script>
+<script>
+"use strict";
+/* =====================================================================
+   HOST (the teacher's screen is also the board)
+   ===================================================================== */
+var Host = {
+  code: null, room: null, unlisten: null, unAnswers: null,
+  settings: null, questions: [], dealt: [], usedPrompts: {},
+  answers: {}, expected: {}, scores: {}, perQ: [], timerInt: null,
+  cur: -1, phase: "setup", mastery: null, reviewList: [],
+
+  setup: function () {
+    var sel = $("courseSel");
+    var ids = Object.keys(window.COURSES).sort(function (a, b) { return window.COURSES[a].shortName < window.COURSES[b].shortName ? -1 : 1; });
+    sel.innerHTML = ids.map(function (id) { return '<option value="' + id + '">' + esc(window.COURSES[id].shortName) + "</option>"; }).join("");
+    sel.value = "math-2201";
+    var self = this;
+    sel.addEventListener("change", function () { self.courseChanged(); });
+    document.querySelectorAll('input[name="mode"]').forEach(function (r) {
+      r.addEventListener("change", function () { self.modeChanged(); });
+    });
+    $("createRoomBtn").addEventListener("click", function () { self.createRoom(); });
+    $("cancelRoomBtn").addEventListener("click", function () { self.cancelRoom(); });
+    $("startGameBtn").addEventListener("click", function () { self.startGame(); });
+    Relay.test().then(function () {
+      $("preflight").className = "ok";
+      $("preflight").textContent = "Connected to the game service. This network can host a game.";
+      Host._pfOk = true; Host._maybeEnable();
+    }).catch(function (e) {
+      $("preflight").className = "err";
+      $("preflight").textContent = "This network cannot reach the game service, so a game cannot be hosted from here. (" + (e.message || e) + ") The projected practice set with mini-whiteboards, or a waterfall chat in a virtual class, is the fallback for today.";
+    });
+    this.courseChanged();
+  },
+  modeChanged: function () {
+    var m = document.querySelector('input[name="mode"]:checked').value;
+    $("masterySetup").classList.toggle("hidden", m !== "mastery");
+    $("countRow").classList.toggle("hidden", m === "mastery");
+    if (m === "mastery") this.fillIndicators();
+  },
+  _maybeEnable: function () {
+    if (this._pfOk && this._bankOk) $("createRoomBtn").disabled = false;
+  },
+  courseChanged: function () {
+    var self = this;
+    var cid = $("courseSel").value;
+    this._bankOk = false;
+    $("createRoomBtn").disabled = true;
+    $("setupMsg").textContent = "Loading the question bank…";
+    loadCourse(cid).then(function () {
+      self._bankOk = true; self._maybeEnable();
+      var units = COURSE.units || {};
+      $("unitChecks").innerHTML = Object.keys(units).map(function (u) {
+        return '<label><input type="checkbox" value="' + u + '" checked> Unit ' + u + ": " + esc(units[u]) + "</label>";
+      }).join("");
+      $("unitChecks").querySelectorAll("input").forEach(function (cb) { cb.addEventListener("change", function () { self.fillIndicators(); }); });
+      $("setupMsg").textContent = "";
+      self.fillIndicators();
+    }).catch(function (e) { $("setupMsg").textContent = e.message; });
+  },
+  fillIndicators: function () {
+    if (document.querySelector('input[name="mode"]:checked').value !== "mastery") return;
+    var units = this.selectedUnits(), levels = this.selectedLevels();
+    var pool = scopeEntries(units, levels, $("pkToggle").checked);
+    var counts = {};
+    pool.forEach(function (e) { (e.indicators || []).forEach(function (c) { if (!/^PK\./.test(c)) counts[c] = (counts[c] || 0) + 1; }); });
+    var codes = Object.keys(counts).sort();
+    $("indChecks").innerHTML = codes.map(function (c) {
+      var text = (COURSE.indicators || {})[c] || "";
+      return '<label title="' + esc(text) + '"><input type="checkbox" value="' + esc(c) + '"> ' + esc(c) + " (" + counts[c] + ")</label>";
+    }).join("") || '<span class="sub">No indicators in the selected units.</span>';
+  },
+  selectedUnits: function () { return Array.prototype.map.call($("unitChecks").querySelectorAll("input:checked"), function (cb) { return +cb.value; }); },
+  selectedLevels: function () { return Array.prototype.map.call($("levelChecks").querySelectorAll("input:checked"), function (cb) { return +cb.value; }); },
+  selectedIndicators: function () { return Array.prototype.map.call($("indChecks").querySelectorAll("input:checked"), function (cb) { return cb.value; }); },
+
+  createRoom: function () {
+    var self = this;
+    var units = this.selectedUnits(), levels = this.selectedLevels();
+    if (!units.length) { $("setupMsg").textContent = "Pick at least one unit."; return; }
+    var mode = document.querySelector('input[name="mode"]:checked').value;
+    var settings = {
+      mode: mode, courseId: COURSE.id, courseName: COURSE.shortName,
+      units: units, levels: levels, includePK: $("pkToggle").checked,
+      timerSec: +$("timerSel").value, showStem: $("stemToggle").checked,
+      count: +$("countSel").value,
+      threshold: +$("thresholdSel").value,
+      indicators: this.selectedIndicators()
+    };
+    if (mode === "mastery" && !settings.indicators.length) { $("setupMsg").textContent = "Pick at least one indicator to master."; return; }
+    var pool = scopeEntries(units, levels, settings.includePK);
+    var mcPool = pool.filter(function (e) { return e.kind !== "text"; });
+    if (mode === "showcase") {
+      this.usedPrompts = {}; this.dealt = [];
+      var guard = 0;
+      while (this.dealt.length < settings.count && guard < settings.count * 3) {
+        guard++;
+        var d = dealMC(pool, this.usedPrompts, null);
+        if (!d) break;
+        this.dealt.push(d);
+      }
+      if (this.dealt.length < Math.min(3, settings.count)) { $("setupMsg").textContent = "That scope holds only " + this.dealt.length + " multiple choice questions. Widen the units or levels."; return; }
+      settings.count = this.dealt.length;
+    }
+    this.settings = settings;
+    var code = randStr(6);
+    this.code = code;
+    var roomData = {
+      created: Relay.TIMESTAMP(), state: "lobby", courseId: settings.courseId,
+      courseName: settings.courseName, mode: mode, timerSec: settings.timerSec,
+      showStem: settings.showStem, total: mode === "showcase" ? settings.count : 0,
+      players: {}, answers: {}
+    };
+    if (mode === "mastery") {
+      this.mastery = settings.indicators.map(function (c) { return { code: c, asked: 0, acc: [], status: "working" }; });
+      roomData.mastery = this.mastery.map(function (m) { return { code: m.code, status: m.status, asked: 0 }; });
+    }
+    $("createRoomBtn").disabled = true;
+    Relay.create("rooms/" + code, roomData).then(function () {
+      self.phase = "lobby";
+      $("hostSetup").classList.add("hidden");
+      $("hostLobby").classList.remove("hidden");
+      $("roomCodeBig").textContent = code;
+      self.unlisten = Relay.listen("rooms/" + code, function (room) { self.onRoom(room); });
+    }).catch(function (e) {
+      $("createRoomBtn").disabled = false;
+      $("setupMsg").textContent = "The room could not be created: " + (e.message || e);
+    });
+  },
+  onRoom: function (room) {
+    this.room = room;
+    if (this.phase === "lobby") this.renderLobby();
+    if (this.phase === "playing") this.renderBoardPlayers();
+  },
+  playersList: function () {
+    var p = (this.room && this.room.players) || {};
+    return Object.keys(p).map(function (pid) { var v = p[pid]; v._pid = pid; return v; })
+      .filter(function (v) { return !v.removed; })
+      .sort(function (a, b) { return (a.name || "") < (b.name || "") ? -1 : 1; });
+  },
+  renderLobby: function () {
+    var list = this.playersList();
+    var now = Relay.now();
+    $("lobbyCount").textContent = list.length;
+    $("lobbyPlayers").innerHTML = list.map(function (v) {
+      var stale = v.gone || (v.lastSeen && now - v.lastSeen > 30000);
+      return '<span class="player' + (stale ? " stale" : "") + '"><span class="av">' + esc(v.avatar || "🙂") + "</span>" + esc(v.name || "Player") +
+        ' <button type="button" data-remove="' + v._pid + '">Remove</button></span>';
+    }).join("") || '<span class="sub">No one has joined yet.</span>';
+    $("lobbyPlayers").querySelectorAll("[data-remove]").forEach(function (b) {
+      b.addEventListener("click", function () { Relay.update("rooms/" + Host.code + "/players/" + b.getAttribute("data-remove"), { removed: true }); });
+    });
+    $("startGameBtn").disabled = list.length < 1;
+    $("lobbyMsg").textContent = list.length ? "" : "The Start button wakes up when the first student joins.";
+  },
+  cancelRoom: function () {
+    if (this.unlisten) this.unlisten();
+    if (this.code) Relay.remove("rooms/" + this.code);
+    location.reload();
+  },
+  startGame: function () {
+    this.phase = "playing";
+    this.scores = {}; this.perQ = []; this.cur = -1;
+    this.playersList().forEach(function (v) { Host.scores[v._pid] = 0; });
+    $("hostLobby").classList.add("hidden");
+    $("hostBoard").classList.remove("hidden");
+    this.nextQuestion();
+  },
+  masteryCurrent: function () {
+    if (!this.mastery) return null;
+    for (var i = 0; i < this.mastery.length; i++) if (this.mastery[i].status === "working") return this.mastery[i];
+    return null;
+  },
+  nextQuestion: function () {
+    var self = this;
+    var s = this.settings;
+    if (s.mode === "mastery") {
+      var m = this.masteryCurrent();
+      if (!m) { this.finishGame(); return; }
+      var pool = scopeEntries(s.units, s.levels, s.includePK);
+      var d = dealMC(pool, this.usedPrompts, m.code) || dealMC(pool, {}, m.code);
+      if (!d) { m.status = "out"; this.publishMastery(); this.nextQuestion(); return; }
+      this.currentDealt = d; m.asked++;
+    } else {
+      this.cur++;
+      if (this.cur >= this.dealt.length) { this.finishGame(); return; }
+      this.currentDealt = this.dealt[this.cur];
+    }
+    var payload = questionPayload(this.currentDealt);
+    var qn = this.perQ.length;
+    payload.n = qn + 1;
+    payload.total = s.mode === "showcase" ? s.count : 0;
+    if (s.mode === "mastery") payload.masteryCode = this.masteryCurrent() ? this.masteryCurrent().code : "";
+    this.currentPayload = payload;
+    this.expected = {};
+    this.playersList().forEach(function (v) { self.expected[v._pid] = 1; });
+    this.answers = {};
+    var startedAt = Relay.now();
+    Relay.update("rooms/" + this.code, {
+      state: "q", qn: qn, question: payload,
+      startedAt: startedAt, deadline: startedAt + s.timerSec * 1000,
+      correct: null, reveal: null
+    });
+    this.renderBoardQuestion();
+    if (this.unAnswers) this.unAnswers();
+    this.unAnswers = Relay.listen("rooms/" + this.code + "/answers/" + qn, function (a) {
+      self.answers = a || {};
+      self.checkAllAnswered();
+      self.renderBoardPlayers();
+    });
+    var tick = function () {
+      var left = self.currentDeadline() - Relay.now();
+      self.renderTimer(left);
+      if (left <= 0) { self.closeQuestion(); return; }
+      self.timerInt = setTimeout(tick, 200);
+    };
+    tick();
+  },
+  currentDeadline: function () { return this.room && this.room.deadline ? this.room.deadline : 0; },
+  checkAllAnswered: function () {
+    if (this.phase !== "playing" || !this.room || this.room.state !== "q") return;
+    var now = Relay.now();
+    var players = (this.room.players) || {};
+    var waiting = 0;
+    for (var pid in this.expected) {
+      var pv = players[pid];
+      var stale = !pv || pv.removed || pv.gone || (pv.lastSeen && now - pv.lastSeen > 30000);
+      if (stale) { delete this.expected[pid]; continue; }
+      if (!this.answers[pid]) waiting++;
+    }
+    if (waiting === 0 && Object.keys(this.expected).length >= 0) this.closeQuestion();
+  },
+  closeQuestion: function () {
+    if (!this.room || this.room.state !== "q") return;
+    if (this.timerInt) { clearTimeout(this.timerInt); this.timerInt = null; }
+    var s = this.settings, dealt = this.currentDealt, q = dealt.q;
+    var startedAt = this.room.startedAt, deadline = this.room.deadline, windowMs = Math.max(1, deadline - startedAt);
+    var split = q.options.map(function () { return 0; });
+    var points = {}, rightCount = 0, answered = 0;
+    var perPlayer = {};
+    for (var pid in this.answers) {
+      var a = this.answers[pid];
+      if (!a || typeof a.c !== "number") continue;
+      answered++;
+      if (a.c >= 0 && a.c < split.length) split[a.c]++;
+      var ok = a.c === q.correct;
+      if (ok) rightCount++;
+      var pts = 0;
+      if (ok) {
+        if (s.mode === "mastery") pts = 100;
+        else { var frac = Math.max(0, Math.min(1, (deadline - (a.ts || deadline)) / windowMs)); pts = 600 + Math.round(400 * frac); }
+      }
+      points[pid] = pts;
+      this.scores[pid] = (this.scores[pid] || 0) + pts;
+      perPlayer[pid] = { c: a.c, ok: ok, pts: pts };
+    }
+    var rec = {
+      n: this.perQ.length + 1, entryId: dealt.entry.id, unit: dealt.entry.unit,
+      indicators: (dealt.entry.indicators || []).slice(), level: dealt.entry.level,
+      prompt: q.prompt, options: q.options.slice(), correct: q.correct,
+      split: split, answered: answered, right: rightCount, perPlayer: perPlayer
+    };
+    this.perQ.push(rec);
+    if (s.mode === "mastery") {
+      var m = this.masteryCurrent();
+      if (m) {
+        var acc = answered ? rightCount / answered : 0;
+        m.acc.push(acc);
+        var last3 = m.acc.slice(-3);
+        var avg = last3.reduce(function (x, y) { return x + y; }, 0) / last3.length;
+        if (m.asked >= 3 && avg >= s.threshold) m.status = "cleared";
+        else if (m.asked >= 8) m.status = "notyet";
+        this.publishMastery();
+      }
+    }
+    var scoreUpdates = {};
+    for (var pid2 in this.scores) scoreUpdates["players/" + pid2 + "/score"] = this.scores[pid2];
+    scoreUpdates.state = "reveal";
+    scoreUpdates.correct = q.correct;
+    scoreUpdates.reveal = { split: split, points: points, solution: q.solution || "", right: rightCount, answered: answered };
+    Relay.update("rooms/" + this.code, scoreUpdates);
+    this.renderBoardReveal(rec);
+  },
+  publishMastery: function () {
+    Relay.update("rooms/" + this.code, { mastery: this.mastery.map(function (m) { return { code: m.code, status: m.status, asked: m.asked }; }) });
+  },
+  leaderboard: function (n) {
+    var players = (this.room && this.room.players) || {};
+    var rows = Object.keys(this.scores).map(function (pid) {
+      return { pid: pid, name: (players[pid] || {}).name || "Player", avatar: (players[pid] || {}).avatar || "🙂", score: this.scores[pid] || 0 };
+    }, this).filter(function (r) { return !(players[r.pid] || {}).removed; });
+    rows.sort(function (a, b) { return b.score - a.score; });
+    rows.forEach(function (r, i) { r.rank = i + 1; });
+    return n ? rows.slice(0, n) : rows;
+  },
+  renderTimer: function (left) {
+    var bar = $("timerFill"), txt = $("timerText");
+    if (!bar) return;
+    var total = this.settings.timerSec * 1000;
+    var pct = Math.max(0, Math.min(100, left / total * 100));
+    bar.style.width = pct + "%";
+    bar.className = left < 6000 ? "low" : "";
+    if (txt) txt.textContent = Math.max(0, Math.ceil(left / 1000)) + "s";
+  },
+  renderBoardQuestion: function () {
+    var p = this.currentPayload, s = this.settings;
+    var head = s.mode === "mastery"
+      ? "Mastering indicator " + esc(p.masteryCode || "") + " · Question " + p.n
+      : "Question " + p.n + " of " + p.total;
+    $("hostBoard").innerHTML =
+      "<h2>" + head + ' <span class="sub" id="answeredCount"></span></h2>' +
+      '<div class="timerbar"><div id="timerFill"></div></div>' +
+      '<div class="rowflex"><span class="bigstat" id="timerText"></span>' +
+      '<button type="button" class="alt" id="addTimeBtn">+15 seconds</button>' +
+      '<button type="button" id="endQBtn">End the question</button></div>' +
+      '<div class="boardq"><div class="qprompt">' + p.prompt + "</div>" +
+      (p.figure ? '<div class="fig">' + p.figure + "</div>" : "") +
+      '<div class="opts">' + p.options.map(function (o, i) {
+        return '<div class="opt"><span class="tag">' + "ABCD"[i] + "</span>" + o + "</div>";
+      }).join("") + "</div></div>" +
+      '<div class="players" id="boardPlayers"></div>';
+    mathIn($("hostBoard"));
+    var self = this;
+    $("addTimeBtn").addEventListener("click", function () {
+      Relay.update("rooms/" + self.code, { deadline: self.currentDeadline() + 15000 });
+    });
+    $("endQBtn").addEventListener("click", function () { self.closeQuestion(); });
+    this.renderBoardPlayers();
+  },
+  renderBoardPlayers: function () {
+    var el = $("boardPlayers");
+    if (!el || !this.room) return;
+    var now = Relay.now();
+    var players = this.playersList();
+    el.innerHTML = players.map(function (v) {
+      var stale = v.gone || (v.lastSeen && now - v.lastSeen > 30000);
+      var answered = Host.room.state === "q" && Host.answers && Host.answers[v._pid];
+      return '<span class="player' + (stale ? " stale" : "") + '"><span class="av">' + esc(v.avatar || "🙂") + "</span>" + esc(v.name || "Player") + (answered ? " ✓" : "") + "</span>";
+    }).join("");
+    var ac = $("answeredCount");
+    if (ac && this.room.state === "q") {
+      var n = Object.keys(this.answers || {}).length;
+      ac.textContent = "· " + n + " of " + players.length + " answered";
+    }
+  },
+  renderBoardReveal: function (rec) {
+    var s = this.settings;
+    var top = this.leaderboard(5);
+    var pct = rec.answered ? Math.round(rec.right / rec.answered * 100) : 0;
+    var head = s.mode === "mastery"
+      ? "Indicator " + esc((rec.indicators || []).join(", ")) + ": " + pct + "% correct"
+      : "Question " + rec.n + ": " + pct + "% correct";
+    $("hostBoard").innerHTML =
+      "<h2>" + head + "</h2>" +
+      '<div class="boardq"><div class="qprompt">' + rec.prompt + "</div>" +
+      '<div class="opts">' + rec.options.map(function (o, i) {
+        var cls = i === rec.correct ? "opt correct" : "opt";
+        return '<div class="' + cls + '"><span class="tag">' + "ABCD"[i] + '</span>' + o + '<span class="split">' + (rec.split[i] || 0) + "</span></div>";
+      }).join("") + "</div></div>" +
+      (rec.solution ? '<div class="card" style="background:#f7faf7;"><b>Solution.</b> <span id="solSpan">' + rec.solution + "</span></div>" : "") +
+      "<h2>Top five</h2>" +
+      "<table>" + top.map(function (r) { return "<tr><td>" + r.rank + '</td><td><span style="font-size:1.3rem;">' + esc(r.avatar) + "</span> " + esc(r.name) + "</td><td>" + r.score + "</td></tr>"; }).join("") + "</table>" +
+      '<div class="rowflex"><button type="button" class="big good" id="nextQBtn">' + (this.isLast() ? "Finish the game" : "Next question") + "</button></div>";
+    mathIn($("hostBoard"));
+    var self = this;
+    $("nextQBtn").addEventListener("click", function () { self.nextQuestion(); });
+  },
+  isLast: function () {
+    if (this.settings.mode === "mastery") return !this.masteryCurrent();
+    return this.cur >= this.dealt.length - 1;
+  },
+  finishGame: function () {
+    var s = this.settings;
+    var board = this.leaderboard(0);
+    var players = (this.room && this.room.players) || {};
+    var updates = { state: "final" };
+    var classMissed = {};
+    this.perQ.forEach(function (rec) {
+      var acc = rec.answered ? rec.right / rec.answered : 1;
+      if (acc < 0.7) (rec.indicators || []).forEach(function (c) { classMissed[c] = 1; });
+    });
+    if (s.mode === "mastery" && this.mastery) this.mastery.forEach(function (m) { if (m.status !== "cleared") classMissed[m.code] = 1; });
+    var classCodes = Object.keys(classMissed).slice(0, 6);
+    updates.classPractice = practiceLink(s.courseId, classCodes, s.units);
+    var self = this;
+    board.forEach(function (r) {
+      var missed = {}, right = 0, total = 0;
+      self.perQ.forEach(function (rec) {
+        var pp = rec.perPlayer[r.pid];
+        if (!pp) return;
+        total++;
+        if (pp.ok) right++; else (rec.indicators || []).forEach(function (c) { missed[c] = 1; });
+      });
+      var missedCodes = Object.keys(missed);
+      updates["results/" + r.pid] = {
+        score: r.score, rank: r.rank, right: right, total: total,
+        missed: missedCodes,
+        practice: practiceLink(s.courseId, missedCodes.slice(0, 6), s.units)
+      };
+    });
+    Relay.update("rooms/" + this.code, updates);
+    this.renderFinal(board, classCodes);
+  },
+  renderFinal: function (board, classCodes) {
+    $("hostBoard").classList.add("hidden");
+    var el = $("hostFinal");
+    el.classList.remove("hidden");
+    var s = this.settings;
+    var missedQs = this.perQ.filter(function (r) { return r.answered && r.right < r.answered; })
+      .sort(function (a, b) { return (a.right / a.answered) - (b.right / b.answered); }).slice(0, 3);
+    this.reviewList = missedQs;
+    var html = "<h2>Game over: " + esc(s.courseName) + "</h2>";
+    if (s.mode === "mastery" && this.mastery) {
+      html += "<h2>Indicators</h2><p>" + this.mastery.map(function (m) {
+        return '<span class="chip ' + (m.status === "cleared" ? "done" : "open") + '">' + esc(m.code) + (m.status === "cleared" ? " cleared" : " not yet") + "</span>";
+      }).join("") + "</p>";
+    } else {
+      html += '<div class="podium">' + board.slice(0, 3).map(function (r, i) {
+        return '<div class="pod' + (i === 0 ? " first" : "") + '"><div class="av">' + esc(r.avatar) + '</div><div class="nm">' + esc(r.name) + '</div><div>' + r.score + " points</div><div>#" + (i + 1) + "</div></div>";
+      }).join("") + "</div>";
+    }
+    html += "<h2>All players</h2><table><tr><th>Rank</th><th>Player</th><th>Score</th><th>Correct</th></tr>" +
+      board.map(function (r) {
+        var right = 0, total = 0;
+        Host.perQ.forEach(function (rec) { var pp = rec.perPlayer[r.pid]; if (pp) { total++; if (pp.ok) right++; } });
+        return "<tr><td>" + r.rank + "</td><td>" + esc(r.avatar) + " " + esc(r.name) + "</td><td>" + r.score + "</td><td>" + right + " of " + total + "</td></tr>";
+      }).join("") + "</table>";
+    if (missedQs.length) {
+      html += "<h2>Review the most-missed questions</h2><div class='rowflex'>" + missedQs.map(function (r, i) {
+        return '<button type="button" class="alt" data-review="' + i + '">Question ' + r.n + " (" + Math.round(r.right / Math.max(1, r.answered) * 100) + "% correct)</button>";
+      }).join("") + "</div><div id='reviewSlot'></div>";
+    }
+    html += "<h2>Results</h2><div class='rowflex'>" +
+      '<button type="button" class="good" id="csvBtn">Download the results (CSV)</button>' +
+      '<button type="button" class="danger" id="endRoomBtn">End the game and delete the room</button></div>' +
+      "<p class='sub'>Students who want their results recorded can share them from their own screen now, with their class ID. The room code for the shared results sheet is <b>" + esc(this.code) + "</b>. Keep this page open until sharing is done, then end the game.</p>";
+    el.innerHTML = html;
+    var self = this;
+    el.querySelectorAll("[data-review]").forEach(function (b) {
+      b.addEventListener("click", function () { self.showReview(+b.getAttribute("data-review")); });
+    });
+    $("csvBtn").addEventListener("click", function () { self.downloadCsv(board); });
+    $("endRoomBtn").addEventListener("click", function () {
+      if (self.unlisten) self.unlisten();
+      Relay.remove("rooms/" + self.code);
+      el.innerHTML = "<h2>Room closed</h2><p>The room and its data are deleted. Thanks for playing.</p><button type='button' onclick='location.reload()'>Back to the start</button>";
+    });
+  },
+  showReview: function (i) {
+    var rec = this.reviewList[i];
+    if (!rec) return;
+    Relay.update("rooms/" + this.code, {
+      state: "review",
+      review: { prompt: rec.prompt, options: rec.options, correct: rec.correct, solution: rec.solution || "" }
+    });
+    var slot = $("reviewSlot");
+    slot.innerHTML = '<div class="boardq"><div class="qprompt">' + rec.prompt + "</div>" +
+      '<div class="opts">' + rec.options.map(function (o, j) {
+        return '<div class="opt' + (j === rec.correct ? " correct" : "") + '"><span class="tag">' + "ABCD"[j] + "</span>" + o + "</div>";
+      }).join("") + "</div>" +
+      (rec.solution ? "<p><b>Solution.</b> " + rec.solution + "</p>" : "") +
+      '<button type="button" class="alt" id="reviewBack">Back to the results</button></div>';
+    mathIn(slot);
+    $("reviewBack").addEventListener("click", function () {
+      Relay.update("rooms/" + Host.code, { state: "final" });
+      slot.innerHTML = "";
+    });
+  },
+  downloadCsv: function (board) {
+    var s = this.settings, L = [];
+    L.push("Review Apps Game results");
+    L.push("Course," + csvq(s.courseName));
+    L.push("Mode," + (s.mode === "mastery" ? "Mastery" : "Showcase"));
+    L.push("Session code," + this.code);
+    L.push("Date," + new Date().toString());
+    L.push("");
+    L.push("STUDENTS");
+    L.push("Rank,Player,Score,Correct,Answered");
+    board.forEach(function (r) {
+      var right = 0, total = 0;
+      Host.perQ.forEach(function (rec) { var pp = rec.perPlayer[r.pid]; if (pp) { total++; if (pp.ok) right++; } });
+      L.push([r.rank, csvq(r.name), r.score, right, total].join(","));
+    });
+    L.push("");
+    L.push("QUESTIONS");
+    L.push("Number,Indicators,Level,Unit,Answered,Correct,Percent correct,Option split,Question");
+    this.perQ.forEach(function (rec) {
+      var pct = rec.answered ? Math.round(rec.right / rec.answered * 100) : "";
+      L.push([rec.n, csvq((rec.indicators || []).join(" ")), rec.level, rec.unit, rec.answered, rec.right, pct, csvq(rec.split.join(" / ")), csvq(plainQ(rec.prompt))].join(","));
+    });
+    L.push("");
+    L.push("INDICATORS");
+    L.push("Indicator,Questions,Answers,Correct,Percent correct,Needs attention");
+    var agg = {};
+    this.perQ.forEach(function (rec) {
+      (rec.indicators || []).forEach(function (c) {
+        agg[c] = agg[c] || { q: 0, a: 0, r: 0 };
+        agg[c].q++; agg[c].a += rec.answered; agg[c].r += rec.right;
+      });
+    });
+    Object.keys(agg).sort().forEach(function (c) {
+      var a = agg[c], pct = a.a ? Math.round(a.r / a.a * 100) : "";
+      L.push([c, a.q, a.a, a.r, pct, (a.a && pct < 60) ? "YES" : ""].join(","));
+    });
+    if (s.mode === "mastery" && this.mastery) {
+      L.push("");
+      L.push("MASTERY");
+      L.push("Indicator,Questions asked,Status");
+      this.mastery.forEach(function (m) { L.push([m.code, m.asked, m.status === "cleared" ? "Cleared" : "Not yet"].join(",")); });
+    }
+    download(s.courseName + " game results - " + stampFile(new Date()) + ".csv", L.join("\r\n"), "text/csv");
+  }
+};
+function csvq(v) {
+  v = String(v == null ? "" : v);
+  return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+}
+function practiceLink(courseId, codes, units) {
+  var base = "https://cdli-nlschools.github.io/ReviewApps/?course=" + encodeURIComponent(courseId);
+  if (codes && codes.length) return base + "&indicator=" + encodeURIComponent(codes.join(",")) + "&count=10";
+  if (units && units.length) return base + "&unit=" + encodeURIComponent(units.join(",")) + "&count=10";
+  return base + "&count=10";
+}
+</script>
+<script>
+"use strict";
+/* =====================================================================
+   STUDENT
+   ===================================================================== */
+var RESULTS_FORM = {
+  url: "https://docs.google.com/forms/d/e/1FAIpQLSf79dNyq1EZibZFz7wcXQZwllRuEuw6_ztS7XhWLrKVEaTkDQ/formResponse",
+  session: "entry.141155685", classId: "entry.18897826", player: "entry.426649630",
+  course: "entry.1652923396", score: "entry.1353424501", result: "entry.877301654",
+  missed: "entry.142178108", detail: "entry.835101603"
+};
+var Play = {
+  code: null, pid: null, room: null, unlisten: null, hbInt: null,
+  name: "", avatar: AVATARS[0], myAnswers: {}, myDetail: {}, shared: false,
+  lastState: "", lastQn: -1, timerInt: null,
+
+  beginJoin: function (code) {
+    var self = this;
+    this.code = code;
+    Relay.read("rooms/" + code).then(function (room) {
+      if (!room) { $("homeMsg").textContent = "That room does not exist. Check the code on the board."; return; }
+      if (room.state !== "lobby") { $("homeMsg").textContent = "That game has already started. Ask your teacher about joining the next one."; return; }
+      $("homeView").classList.add("hidden");
+      $("playView").classList.remove("hidden");
+      $("playRoomCode").textContent = code;
+      var saved = null;
+      try { saved = JSON.parse(sessionStorage.getItem("gameJoin:" + code) || "null"); } catch (e) {}
+      var taken = {};
+      Object.keys(room.players || {}).forEach(function (pid) { taken[(room.players[pid] || {}).name] = 1; });
+      self.name = (saved && saved.name) || genName(taken);
+      self.avatar = (saved && saved.avatar) || AVATARS[Math.floor(Math.random() * AVATARS.length)];
+      self.pid = (saved && saved.pid) || ("p" + randStr(10, "abcdefghijklmnopqrstuvwxyz0123456789"));
+      $("genName").textContent = self.name;
+      $("avatarPick").innerHTML = AVATARS.map(function (a) {
+        return '<button type="button" data-av="' + a + '"' + (a === self.avatar ? ' class="sel"' : "") + ">" + a + "</button>";
+      }).join("");
+      $("avatarPick").querySelectorAll("[data-av]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          self.avatar = b.getAttribute("data-av");
+          $("avatarPick").querySelectorAll("button").forEach(function (x) { x.classList.toggle("sel", x === b); });
+        });
+      });
+      $("shuffleName").onclick = function () {
+        var t2 = {};
+        Object.keys((Play.room || room).players || {}).forEach(function (pid) { t2[((Play.room || room).players[pid] || {}).name] = 1; });
+        self.name = genName(t2);
+        $("genName").textContent = self.name;
+      };
+    }).catch(function (e) { $("homeMsg").textContent = "Could not reach the game service: " + (e.message || e); });
+  },
+  join: function () {
+    var self = this;
+    var data = { name: this.name, avatar: this.avatar, joined: Relay.TIMESTAMP(), lastSeen: Relay.TIMESTAMP(), score: 0 };
+    Relay.create("rooms/" + this.code + "/players/" + this.pid, data).then(function () {
+      try { sessionStorage.setItem("gameJoin:" + self.code, JSON.stringify({ pid: self.pid, name: self.name, avatar: self.avatar })); } catch (e) {}
+      Relay.heartbeat(self.code, self.pid);
+      self.hbInt = setInterval(function () { Relay.heartbeat(self.code, self.pid); }, 8000);
+      $("playJoin").classList.add("hidden");
+      $("playMain").classList.remove("hidden");
+      self.unlisten = Relay.listen("rooms/" + self.code, function (room) { self.onRoom(room); });
+    }).catch(function (e) { $("playJoinMsg").textContent = "Joining failed: " + (e.message || e); });
+  },
+  onRoom: function (room) {
+    this.room = room;
+    var main = $("playMain");
+    if (!room) {
+      main.innerHTML = "<h2>The game has ended</h2><p>Your teacher has closed the room. Thanks for playing.</p>";
+      if (this.hbInt) clearInterval(this.hbInt);
+      return;
+    }
+    var me = (room.players || {})[this.pid];
+    if (me && me.removed) {
+      main.innerHTML = "<h2>You were removed from the game</h2><p>Your teacher removed your name from the room. If that was a mistake, refresh the page and join again.</p>";
+      if (this.hbInt) clearInterval(this.hbInt);
+      return;
+    }
+    if (room.state === "lobby") this.renderLobby(room);
+    else if (room.state === "q") this.renderQuestion(room);
+    else if (room.state === "reveal") this.renderReveal(room);
+    else if (room.state === "review") this.renderReview(room);
+    else if (room.state === "final") this.renderFinal(room);
+  },
+  myRank: function (room) {
+    var players = room.players || {};
+    var rows = Object.keys(players).filter(function (pid) { return !players[pid].removed; })
+      .map(function (pid) { return { pid: pid, score: players[pid].score || 0 }; });
+    rows.sort(function (a, b) { return b.score - a.score; });
+    for (var i = 0; i < rows.length; i++) if (rows[i].pid === this.pid) return { rank: i + 1, of: rows.length, score: rows[i].score };
+    return { rank: 0, of: rows.length, score: 0 };
+  },
+  renderLobby: function (room) {
+    if (this.lastState === "lobby") { var c = $("lobbyCountP"); if (c) c.textContent = Object.keys(room.players || {}).length; return; }
+    this.lastState = "lobby";
+    $("playMain").innerHTML = "<h2>You are in</h2>" +
+      '<p><span style="font-size:2rem;">' + esc(this.avatar) + '</span> <span class="myname">' + esc(this.name) + "</span></p>" +
+      '<p><span id="lobbyCountP">' + Object.keys(room.players || {}).length + "</span> players in the room. Waiting for your teacher to start…</p>";
+  },
+  renderQuestion: function (room) {
+    var qn = room.qn;
+    var mine = ((room.answers || {})[qn] || {})[this.pid];
+    if (this.lastState === "q" && this.lastQn === qn) {
+      if (mine && !this.myAnswers[qn]) { this.myAnswers[qn] = mine.c; this.lockOptions(room); }
+      return;
+    }
+    this.lastState = "q"; this.lastQn = qn;
+    if (mine) this.myAnswers[qn] = mine.c;
+    var q = room.question || {};
+    var head = room.mode === "mastery" ? "Mastering " + esc(q.masteryCode || "") : "Question " + (qn + 1) + (room.total ? " of " + room.total : "");
+    var html = "<h2>" + head + "</h2>" +
+      '<div class="timerbar"><div id="pTimerFill"></div></div><p class="bigstat" id="pTimerText"></p>';
+    if (room.showStem) html += '<div class="qprompt">' + (q.prompt || "") + "</div>" + (q.figure ? '<div class="fig">' + q.figure + "</div>" : "");
+    else html += "<p class='sub'>Look at the board for the question, then pick your answer here.</p>";
+    html += '<div class="opts">' + (q.options || []).map(function (o, i) {
+      return '<button type="button" class="opt" data-choice="' + i + '"><span class="tag">' + "ABCD"[i] + "</span>" + o + "</button>";
+    }).join("") + "</div><p id='ansMsg'></p>";
+    $("playMain").innerHTML = html;
+    mathIn($("playMain"));
+    var self = this;
+    $("playMain").querySelectorAll("[data-choice]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var c = +b.getAttribute("data-choice");
+        self.myAnswers[qn] = c;
+        self.lockOptions(room);
+        $("ansMsg").textContent = "Answer in. Waiting for everyone else…";
+        Relay.answer(self.code, qn, self.pid, c).catch(function () {
+          $("ansMsg").textContent = "That answer did not get through. Tell your teacher.";
+        });
+      });
+    });
+    if (mine) this.lockOptions(room);
+    this.startCountdown(room);
+  },
+  lockOptions: function (room) {
+    var qn = room.qn, mine = this.myAnswers[qn];
+    $("playMain").querySelectorAll("[data-choice]").forEach(function (b) {
+      b.disabled = true;
+      if (+b.getAttribute("data-choice") === mine) b.classList.add("picked");
+    });
+    var m = $("ansMsg");
+    if (m && mine != null) m.textContent = "Answer in. Waiting for everyone else…";
+  },
+  startCountdown: function (room) {
+    if (this.timerInt) clearInterval(this.timerInt);
+    var self = this;
+    var tick = function () {
+      var fill = $("pTimerFill"), txt = $("pTimerText");
+      if (!fill || !self.room || self.room.state !== "q") { clearInterval(self.timerInt); return; }
+      var left = (self.room.deadline || 0) - Relay.now();
+      var total = (self.room.timerSec || 30) * 1000;
+      fill.style.width = Math.max(0, Math.min(100, left / total * 100)) + "%";
+      fill.className = left < 6000 ? "low" : "";
+      if (txt) txt.textContent = Math.max(0, Math.ceil(left / 1000)) + "s";
+      if (left <= 0) {
+        clearInterval(self.timerInt);
+        $("playMain").querySelectorAll("[data-choice]").forEach(function (b) { b.disabled = true; });
+        var m = $("ansMsg"); if (m) m.textContent = "Time. Waiting for the results…";
+      }
+    };
+    tick();
+    this.timerInt = setInterval(tick, 200);
+  },
+  renderReveal: function (room) {
+    if (this.lastState === "reveal" && this.lastQn === room.qn) return;
+    this.lastState = "reveal"; this.lastQn = room.qn;
+    if (this.timerInt) clearInterval(this.timerInt);
+    var qn = room.qn, mine = this.myAnswers[qn];
+    var q = room.question || {};
+    var ok = mine != null && mine === room.correct;
+    var pts = ((room.reveal || {}).points || {})[this.pid] || 0;
+    var rk = this.myRank(room);
+    this.myDetail[qn] = { indicators: q.indicators || [], ok: !!ok };
+    var html = "<h2>" + (mine == null ? "No answer that time" : ok ? "Correct" : "Not this time") + "</h2>";
+    if (mine != null) html += '<p class="bigstat">+' + pts + " points</p>";
+    html += "<p>The correct answer was <b>" + "ABCD"[room.correct] + "</b>: " + (q.options || [])[room.correct] + "</p>";
+    html += "<p>Your score: <b>" + rk.score + "</b> · Rank: <b>" + rk.rank + " of " + rk.of + "</b></p>";
+    html += "<p class='sub'>The board shows how the class split. Worked solutions come at the end and in your practice set.</p>";
+    $("playMain").innerHTML = html;
+    mathIn($("playMain"));
+  },
+  renderReview: function (room) {
+    if (this.lastState === "review") return;
+    this.lastState = "review";
+    var r = room.review || {};
+    $("playMain").innerHTML = "<h2>Reviewing a most-missed question</h2>" +
+      '<div class="qprompt">' + (r.prompt || "") + "</div>" +
+      '<div class="opts">' + (r.options || []).map(function (o, i) {
+        return '<div class="opt' + (i === r.correct ? " correct" : "") + '"><span class="tag">' + "ABCD"[i] + "</span>" + o + "</div>";
+      }).join("") + "</div>" +
+      (r.solution ? "<p><b>Solution.</b> " + r.solution + "</p>" : "");
+    mathIn($("playMain"));
+  },
+  renderFinal: function (room) {
+    if (this.lastState === "final") return;
+    this.lastState = "final";
+    if (this.timerInt) clearInterval(this.timerInt);
+    var res = (room.results || {})[this.pid] || {};
+    var players = room.players || {};
+    var top = Object.keys(players).filter(function (pid) { return !players[pid].removed; })
+      .map(function (pid) { return { name: players[pid].name, avatar: players[pid].avatar, score: players[pid].score || 0 }; })
+      .sort(function (a, b) { return b.score - a.score; }).slice(0, 3);
+    var html = "<h2>Game over</h2>";
+    if (room.mode === "mastery" && room.mastery) {
+      html += "<p>" + room.mastery.map(function (m) {
+        return '<span class="chip ' + (m.status === "cleared" ? "done" : "open") + '">' + esc(m.code) + (m.status === "cleared" ? " cleared" : " not yet") + "</span>";
+      }).join("") + "</p>";
+    } else {
+      html += '<div class="podium">' + top.map(function (r, i) {
+        return '<div class="pod' + (i === 0 ? " first" : "") + '"><div class="av">' + esc(r.avatar || "🙂") + '</div><div class="nm">' + esc(r.name || "Player") + '</div><div>' + r.score + "</div></div>";
+      }).join("") + "</div>";
+    }
+    html += "<p class='bigstat'>Your score: <b>" + (res.score != null ? res.score : (players[this.pid] || {}).score || 0) + "</b>" +
+      (res.right != null ? " · " + res.right + " correct of " + res.total : "") + "</p>";
+    if (res.missed && res.missed.length) html += "<p>Indicators to practise: <b>" + esc(res.missed.join(", ")) + "</b></p>";
+    html += '<div class="card" style="margin-top:14px;"><h2>Share your results</h2>' +
+      "<p>If your teacher gave you a class ID number, enter it here. Your results go to your teacher's sheet under that number only, never your name, and you get a practice set aimed at the indicators you missed.</p>" +
+      '<div id="shareZone">' +
+      '<div class="rowflex"><input type="text" id="classIdInput" placeholder="Class ID number" inputmode="numeric" style="font-size:1.2rem;width:200px;">' +
+      '<button type="button" id="shareBtn">Share my results</button></div>' +
+      '<p id="shareMsg"></p></div></div>';
+    html += '<div class="card"><h2>Keep practising</h2><p>' +
+      '<a id="practiceLink" href="' + esc(room.classPractice || "#") + '" target="_blank" rel="noopener">Practise what the class missed</a>' +
+      " (opens the Review Apps). If you share your results above, this becomes a set aimed at your own misses.</p></div>";
+    $("playMain").innerHTML = html;
+    var self = this;
+    $("shareBtn").addEventListener("click", function () { self.share(res, room); });
+  },
+  share: function (res, room) {
+    var input = $("classIdInput"), msg = $("shareMsg");
+    var cid = (input.value || "").trim();
+    if (!cid) { msg.textContent = "Enter your class ID number first."; return; }
+    if (!this._confirmId || this._confirmId !== cid) {
+      this._confirmId = cid;
+      msg.innerHTML = "Check the number: <b>" + esc(cid) + "</b>. If that is your class ID, tap Share again to send it.";
+      return;
+    }
+    var self = this;
+    var detail = Object.keys(this.myDetail).sort(function (a, b) { return a - b; }).map(function (qn) {
+      var d = self.myDetail[qn];
+      return "Q" + (+qn + 1) + " [" + (d.indicators || []).join(" ") + "] " + (d.ok ? "right" : "wrong");
+    }).join("; ");
+    var body = new URLSearchParams();
+    body.set(RESULTS_FORM.session, this.code);
+    body.set(RESULTS_FORM.classId, cid);
+    body.set(RESULTS_FORM.player, this.name);
+    body.set(RESULTS_FORM.course, room.courseName || "");
+    body.set(RESULTS_FORM.score, String(res.score != null ? res.score : ""));
+    body.set(RESULTS_FORM.result, (res.right != null ? res.right + " correct of " + res.total : ""));
+    body.set(RESULTS_FORM.missed, (res.missed || []).join(", "));
+    body.set(RESULTS_FORM.detail, detail);
+    $("shareBtn").disabled = true;
+    fetch(RESULTS_FORM.url, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString() })
+      .then(function () {
+        self.shared = true;
+        $("shareZone").innerHTML = '<p class="ok">Shared. Your results are on your teacher\'s sheet under class ID <b>' + esc(cid) + "</b>.</p>" +
+          (res.practice ? '<p>Your practice set: <a href="' + esc(res.practice) + '" target="_blank" rel="noopener">Practise your missed indicators</a></p>' : "");
+      })
+      .catch(function () {
+        $("shareBtn").disabled = false;
+        msg.textContent = "Sharing did not get through. Check your connection and try again.";
+      });
+  }
+};
+
+/* ---------------- home wiring ---------------- */
+(function () {
+  var hostStarted = false;
+  $("goHost").addEventListener("click", function () {
+    $("homeView").classList.add("hidden");
+    $("hostView").classList.remove("hidden");
+    if (!hostStarted) { hostStarted = true; Host.setup(); }
+  });
+  $("hostBack").addEventListener("click", function () { location.reload(); });
+  $("playBack").addEventListener("click", function () { location.reload(); });
+  $("goJoin").addEventListener("click", function () {
+    var code = ($("joinCodeInput").value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (code.length !== 6) { $("homeMsg").textContent = "The code is six characters, from the board."; return; }
+    if (!Relay.init()) { $("homeMsg").textContent = "The game tools could not be loaded on this network."; return; }
+    Play.beginJoin(code);
+  });
+  $("joinBtn").addEventListener("click", function () { Play.join(); });
+  var pre = new URLSearchParams(location.search).get("code");
+  if (pre) $("joinCodeInput").value = pre.toUpperCase();
+})();
+</script>
