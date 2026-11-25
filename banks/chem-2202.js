@@ -2019,6 +2019,12 @@ E("u1-510-mc-stoich-use",1,["5.10"],1,"var",varset([
 // BIMODAL: u2-48=b
 // BIMODAL: u2-49=b
 // BIMODAL: u2-50=a
+// 6.11 forces rebuild, November 25, 2026: the six rebuilt entries are registered
+// bimodal so they can serve Section B stripped; u2-52 is class a (subscript-free
+// formula key), the other five are class b (prose keys, self-check).
+// BIMODAL: u2-51=b
+// BIMODAL: u2-52=a
+// BIMODAL: u2-53=b
 // BIMODAL: u2-54=b
 // BIMODAL: u2-55=b
 // BIMODAL: u2-57=a
@@ -2031,6 +2037,9 @@ E("u1-510-mc-stoich-use",1,["5.10"],1,"var",varset([
 // BIMODAL: u2-66=a
 // BIMODAL: u2-67=b
 // BIMODAL: u2-69=b
+// BIMODAL: u2-72=b
+// BIMODAL: u2-73=b
+// BIMODAL: u2-74=b
 // BIMODAL: u2-75=b
 // BIMODAL: u2-76=a
 // BIMODAL: u2-78=a
@@ -3323,18 +3332,23 @@ E("u2-50", 2, ["6.10"], 3, "gen", function () {
   return mcq("Which solvent will dissolve " + su.f + ", a " + (su.pol ? "polar" : "nonpolar") + " substance, most readily?", correctSv, ds2, "Choose a solvent of the same type as the solute, so that solute to solvent attractions can replace the attractions broken during dissolving. " + su.f + " is " + (su.pol ? "polar" : "nonpolar") + ", and of the options only " + correctSv + " is of the matching type, following the rule that like dissolves like.", { solute: su.f, solvent: correctSv });
 });
 
-// 6.11 Solubility from the data sheet rules table
-/* Reworked Nov 24, 2026 (Jason's ruling, on teacher feedback): the
-   eight 6.11 entries were molar-solubility calculations, but the
-   course treats this outcome through the Solubility Rules table
-   given on the Chemistry Data Sheet, which classes an ionic
-   compound as high solubility when more than 0.1 mol/L dissolves
-   in water at 25 °C and low solubility when less does. The
-   replacements ask students to class compounds from that table.
-   Every class in SOL611 is the table's own call, including its
-   trap cases: sulfides of Group IIA ions and hydroxides of Sr2+
-   and Ba2+ are high, and CaSO4 and Ag2SO4 are low. Fluorides are
-   absent because the table has no fluoride column. */
+// 6.11 Solubility of ionic compounds: forces of attraction
+/* Reworked Nov 24, 2026 as data sheet rules questions, then rebuilt
+   Nov 25, 2026 (Jason's ruling, on the teacher's second round of
+   feedback): reading the Solubility Rules table to class a compound
+   is the Unit 1 skill (indicator 5.6, covered by the u1-56 family),
+   while 6.11 in Unit 2 is read through forces of attraction: an
+   ionic compound dissolves when the attractions between its ions
+   and water overcome the attractions between the ions themselves,
+   and doubly charged ions attract each other far more strongly
+   than singly charged ones. The eight entries below reason that
+   way. SOL611 is kept as the factual backbone: every compound's
+   class in it is the data sheet table's own call, including its
+   trap cases (sulfides of Group IIA ions and hydroxides of Sr2+
+   and Ba2+ are high; CaSO4 and Ag2SO4 are low), and every key
+   below agrees with it. Fluorides are absent because the table
+   has no fluoride column. The molar-solubility calculations that
+   originally filled these slots were ruled offside on Nov 24. */
 var SOL611 = [
   ["NaCl", 1, "halide", "compounds of Group IA ions are all high solubility, and sodium is a Group IA ion"],
   ["KCl", 1, "halide", "compounds of Group IA ions are all high solubility, and potassium is a Group IA ion"],
@@ -3406,37 +3420,66 @@ function sol611count(set, hi) { return set.filter(function (c) { return (c[1] ==
 function sol611sig(set) { return set.map(function (c) { return c[0]; }).join("|"); }
 function sol611row(f) { for (var i = 0; i < SOL611.length; i++) { if (SOL611[i][0] === f) return SOL611[i]; } return null; }
 
+// LEVEL: 2 - a same-anion pair, one high and one low solubility; choose the statement that explains the difference from the ion charges (6.11 forces rebuild, Nov 25, 2026)
 E("u2-51", 2, ["6.11"], 2, "gen", function () {
-  var set = sol611mix(4, ri(1, 3));
-  var n = sol611count(set, false);
-  return numq("According to the Solubility Rules table on the Chemistry Data Sheet, an ionic compound has high solubility in water at 25 °C if more than 0.1 mol/L dissolves, and low solubility if less than 0.1 mol/L dissolves. Of the compounds " + sol611names(set) + ", how many have low solubility?",
-    n, 0,
-    "Class each compound from its ions. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have low solubility.",
-    { set: sol611sig(set) });
+  var pairs = [
+    { hi: "Na₂CO₃", hiN: "sodium carbonate", lo: "CaCO₃", loN: "calcium carbonate", anN: "carbonate", hiCat: "Na⁺", loCat: "Ca²⁺", anIon: "CO₃²⁻" },
+    { hi: "Na₂CO₃", hiN: "sodium carbonate", lo: "MgCO₃", loN: "magnesium carbonate", anN: "carbonate", hiCat: "Na⁺", loCat: "Mg²⁺", anIon: "CO₃²⁻" },
+    { hi: "(NH₄)₂CO₃", hiN: "ammonium carbonate", lo: "BaCO₃", loN: "barium carbonate", anN: "carbonate", hiCat: "NH₄⁺", loCat: "Ba²⁺", anIon: "CO₃²⁻" },
+    { hi: "Na₂SO₄", hiN: "sodium sulfate", lo: "CaSO₄", loN: "calcium sulfate", anN: "sulfate", hiCat: "Na⁺", loCat: "Ca²⁺", anIon: "SO₄²⁻" },
+    { hi: "K₂SO₄", hiN: "potassium sulfate", lo: "BaSO₄", loN: "barium sulfate", anN: "sulfate", hiCat: "K⁺", loCat: "Ba²⁺", anIon: "SO₄²⁻" },
+    { hi: "(NH₄)₂SO₄", hiN: "ammonium sulfate", lo: "SrSO₄", loN: "strontium sulfate", anN: "sulfate", hiCat: "NH₄⁺", loCat: "Sr²⁺", anIon: "SO₄²⁻" },
+    { hi: "NaOH", hiN: "sodium hydroxide", lo: "Mg(OH)₂", loN: "magnesium hydroxide", anN: "hydroxide", hiCat: "Na⁺", loCat: "Mg²⁺", anIon: "OH⁻" },
+    { hi: "KOH", hiN: "potassium hydroxide", lo: "Zn(OH)₂", loN: "zinc hydroxide", anN: "hydroxide", hiCat: "K⁺", loCat: "Zn²⁺", anIon: "OH⁻" },
+    { hi: "K₂S", hiN: "potassium sulfide", lo: "ZnS", loN: "zinc sulfide", anN: "sulfide", hiCat: "K⁺", loCat: "Zn²⁺", anIon: "S²⁻" },
+    { hi: "K₂S", hiN: "potassium sulfide", lo: "PbS", loN: "lead sulfide", anN: "sulfide", hiCat: "K⁺", loCat: "Pb²⁺", anIon: "S²⁻" }
+  ];
+  function cap1(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  var p = pick(pairs);
+  var correct = "The " + p.loCat + " ions attract the " + p.anIon + " ions much more strongly than the " + p.hiCat + " ions do, because " + p.loCat + " carries a 2+ charge while " + p.hiCat + " carries only a 1+ charge, so water cannot pull the " + p.loN + " lattice apart";
+  var ds = [
+    "The " + p.hiCat + " ions attract the " + p.anIon + " ions much more strongly than the " + p.loCat + " ions do, so " + p.hiN + " is the compound that should stay solid while " + p.loN + " is the one that dissolves",
+    cap1(p.loN) + " is held together by covalent bonds between its atoms rather than by attractions between ions, and water cannot break covalent bonds, so it stays as a solid",
+    "The two compounds have much the same attractions between their ions, and " + p.loN + " would dissolve to the same extent if the mixture were stirred harder and left standing for longer"
+  ];
+  return mcq(cap1(p.hiN) + ", " + p.hi + ", has high solubility in water, but " + p.loN + ", " + p.lo + ", has low solubility. Both compounds contain " + p.anN + " ions. Which statement best explains the difference?",
+    correct, ds,
+    "Compare the attractions inside each solid. In " + p.hiN + " the cation is " + p.hiCat + ", carrying a single charge, and the attractions between the ions and water are enough to pull its lattice apart. In " + p.loN + " the cation is " + p.loCat + ", carrying two charges, so it attracts the " + p.anIon + " ions far more strongly, and the attractions between the ions and water cannot overcome those attractions. The Solubility Rules table classes " + p.hi + " as high solubility and " + p.lo + " as low, matching this. The explanation is <b>" + correct + "</b>.",
+    { pair: p.hi + "|" + p.lo });
 });
-
+// LEVEL: 2 - judge from the ion charges which one compound of four has low solubility; the key pairs doubly charged ions, the others pair singly charged ions. The key pool is the subscript-free doubly charged lows, so the bimodal written form accepts what a student types plainly (6.11 forces rebuild, Nov 25, 2026)
 E("u2-52", 2, ["6.11"], 2, "gen", function () {
-  var set = sol611mix(4, ri(1, 3));
-  var n = sol611count(set, true);
-  return numq("Use the Solubility Rules table on the Chemistry Data Sheet, which classes an ionic compound as high solubility when more than 0.1 mol/L dissolves in water at 25 °C and low solubility when less dissolves. Of the compounds " + sol611names(set) + ", how many have high solubility?",
-    n, 0,
-    "Class each compound from its ions. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have high solubility.",
-    { set: sol611sig(set) });
+  var hiPool = ["NaCl", "KCl", "LiCl", "KBr", "NaBr", "KI", "NaI", "NaNO₃", "KNO₃", "NH₄Cl", "NaOH", "KOH"];
+  var loPool = ["ZnS", "PbS", "CuS", "FeS"];
+  var key = pick(loPool);
+  var wrongs = shuffle(hiPool.slice()).slice(0, 3);
+  return mcq("Doubly charged ions attract each other much more strongly than singly charged ions do. Judging from the charges on their ions, which compound would you predict to have low solubility in water?",
+    key, wrongs,
+    "In " + key + " both ions carry more than a single charge, so the ions attract each other strongly and the attractions between the ions and water cannot pull the lattice apart. The other three compounds pair singly charged ions, whose lattice water can pull apart. The prediction agrees with the Solubility Rules table, which classes " + key + " as low solubility and the other three as high. The compound is <b>" + key + "</b>.",
+    { key: key, set: wrongs.join("|") });
 });
-
+// LEVEL: 3 - two solutions are mixed and one product precipitates; explain from the forces why that product precipitates and the other stays dissolved (6.11 forces rebuild, Nov 25, 2026)
 E("u2-53", 2, ["6.11"], 3, "gen", function () {
-  var pairs = [["AgNO₃", "AgCl"], ["AgNO₃", "Ag₂SO₄"], ["CaS", "CaSO₄"], ["CaCl₂", "CaCO₃"], ["Ba(OH)₂", "BaSO₄"], ["Na₂CO₃", "CaCO₃"], ["K₂S", "ZnS"], ["NaOH", "Mg(OH)₂"], ["CuSO₄", "CuS"], ["(NH₄)₂CO₃", "BaCO₃"]];
-  var pr = pick(pairs);
-  var rest = SOL611.filter(function (c) { return pr.indexOf(c[0]) < 0; });
-  var others = shuffle(sol611take(rest.filter(function (c) { return c[1] === 0; }), ri(1, 2)).concat(sol611take(rest.filter(function (c) { return c[1] === 1; }), 2)));
-  others = others.slice(0, 4);
-  while (others.length < 4) { var extra = pick(rest); if (pr.indexOf(extra[0]) < 0 && others.indexOf(extra) < 0) others.push(extra); }
-  var set = shuffle([sol611row(pr[0]), sol611row(pr[1])].concat(others));
-  var n = sol611count(set, false);
-  return numq("Equal samples of six ionic compounds are stirred into separate beakers of water at 25 °C. The compounds are " + sol611names(set) + ". A compound with low solubility on the Solubility Rules table (less than 0.1 mol/L) will mostly stay undissolved. In how many of the beakers will the compound have low solubility?",
-    n, 0,
-    "Class each compound from its ions, watching for the pair that shares an ion but is classed differently. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have low solubility.",
-    { set: sol611sig(set) });
+  var sc = [
+    { aN: "calcium chloride", aF: "CaCl₂", bN: "sodium carbonate", bF: "Na₂CO₃", pN: "calcium carbonate", pF: "CaCO₃", oN: "sodium chloride", oF: "NaCl", pCat: "Ca²⁺", pAn: "CO₃²⁻" },
+    { aN: "barium chloride", aF: "BaCl₂", bN: "sodium sulfate", bF: "Na₂SO₄", pN: "barium sulfate", pF: "BaSO₄", oN: "sodium chloride", oF: "NaCl", pCat: "Ba²⁺", pAn: "SO₄²⁻" },
+    { aN: "zinc chloride", aF: "ZnCl₂", bN: "potassium sulfide", bF: "K₂S", pN: "zinc sulfide", pF: "ZnS", oN: "potassium chloride", oF: "KCl", pCat: "Zn²⁺", pAn: "S²⁻" },
+    { aN: "lead nitrate", aF: "Pb(NO₃)₂", bN: "potassium sulfide", bF: "K₂S", pN: "lead sulfide", pF: "PbS", oN: "potassium nitrate", oF: "KNO₃", pCat: "Pb²⁺", pAn: "S²⁻" },
+    { aN: "magnesium chloride", aF: "MgCl₂", bN: "sodium carbonate", bF: "Na₂CO₃", pN: "magnesium carbonate", pF: "MgCO₃", oN: "sodium chloride", oF: "NaCl", pCat: "Mg²⁺", pAn: "CO₃²⁻" },
+    { aN: "calcium chloride", aF: "CaCl₂", bN: "sodium sulfate", bF: "Na₂SO₄", pN: "calcium sulfate", pF: "CaSO₄", oN: "sodium chloride", oF: "NaCl", pCat: "Ca²⁺", pAn: "SO₄²⁻" }
+  ];
+  function cap1(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  var s = pick(sc);
+  var correct = "The " + s.pCat + " and " + s.pAn + " ions attract each other too strongly for the attractions with water to pull them apart, while the ions in " + s.oN + " are pulled apart and surrounded by water";
+  var ds = [
+    "The particles of " + s.pN + " are much heavier than the particles of " + s.oN + ", so they sink to the bottom of the beaker and collect there as a solid instead of staying spread through the water",
+    "The ions that come together as " + s.pN + " lose their charges when the two solutions mix, and particles without charges can no longer be held spread through the water",
+    "Both products form solids, but the particles of " + s.oN + " are far too small to be seen, so only the " + s.pN + " shows up as a precipitate in the beaker"
+  ];
+  return mcq("A solution of " + s.aN + ", " + s.aF + ", is mixed with a solution of " + s.bN + ", " + s.bF + ". A precipitate of " + s.pN + ", " + s.pF + ", forms, while the other product, " + s.oN + ", " + s.oF + ", stays dissolved. Which statement explains why " + s.pN + " precipitates but " + s.oN + " does not?",
+    correct, ds,
+    "Work from the attractions. In " + s.pN + " the cation is " + s.pCat + " and the anion is " + s.pAn + ": both carry two charges, so they attract each other strongly, the lattice holds together, and the compound has low solubility, as the Solubility Rules table classes " + s.pF + ". In " + s.oN + " the ions carry single charges, water pulls the lattice apart, and it stays dissolved. The explanation is <b>" + correct + "</b>.",
+    { pair: s.aF + "+" + s.bF });
 });
 
 // 6.12 Effect of solutes on the melting point of ice
@@ -3938,43 +3981,77 @@ E("u2-71", 2, ["6.10"], 2, "gen", function () {
     { solute: c.s, dir: c.dir });
 });
 
-// LEVEL: 1 - three compounds classed from the rules table; count the low-solubility ones (6.11 rework, Nov 24, 2026)
+// LEVEL: 1 - one named ionic compound; two asks: which attractions dissolving must overcome, and which attractions form as it dissolves (6.11 forces rebuild, Nov 25, 2026)
 E("u2-72", 2, ["6.11"], 1, "gen", function () {
-  var set = sol611mix(3, pick([1, 2]));
-  var n = sol611count(set, false);
-  return numq("Use the Solubility Rules table on the Chemistry Data Sheet. It classes an ionic compound as high solubility if more than 0.1 mol/L dissolves in water at 25 °C, and low solubility if less than 0.1 mol/L dissolves. Of the compounds " + sol611names(set) + ", how many have low solubility in water at 25 °C?",
-    n, 0,
-    "Class each compound from its ions. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have low solubility.",
-    { set: sol611sig(set) });
-});
-
-// LEVEL: 2 - four compounds from one anion family, where the family's listed exception cations decide the count (6.11 rework, Nov 24, 2026)
-E("u2-73", 2, ["6.11"], 2, "gen", function () {
-  var fams = [
-    { tag: "sulfate", label: "sulfates" },
-    { tag: "halide", label: "halides (chlorides, bromides or iodides)" },
-    { tag: "hydroxide", label: "hydroxides" }
+  var compounds = ["sodium chloride", "potassium chloride", "sodium nitrate", "potassium nitrate", "calcium chloride", "magnesium sulfate", "ammonium chloride", "sodium sulfate", "potassium sulfate", "lithium chloride", "sodium bromide", "magnesium chloride", "sodium hydroxide", "zinc chloride", "copper sulfate"];
+  var c = pick(compounds);
+  var q = ri(0, 1);
+  function cap1(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  if (q === 0) {
+    var correct = "The attractions between the ions in the solid";
+    var ds = [
+      "The covalent bonds inside each water molecule",
+      "The attractions between the water and the container",
+      "The attractions between the ions and the air above the water"
+    ];
+    return mcq(cap1(c) + " dissolves in water when the attractions between its ions and the water molecules are strong enough to overcome which attractions?",
+      correct, ds,
+      "Dissolving an ionic compound means pulling its ions out of the solid lattice and surrounding them with water. The attractions that have to be overcome are the ones holding the lattice together, the attractions between the ions in the solid. The covalent bonds inside the water molecules stay intact. The attractions are <b>" + correct + "</b>.",
+      { compound: c, ask: q });
+  }
+  var correct2 = "Attractions between the separated ions and the water molecules around them";
+  var ds2 = [
+    "Covalent bonds between the separated ions and the water molecules",
+    "Attractions between the separated ions and the glass of the beaker",
+    "Attractions between the water molecules and the air above the water"
   ];
-  var fam = pick(fams);
-  var inFam = SOL611.filter(function (c) { return c[2] === fam.tag; });
-  var set = shuffle(sol611take(inFam.filter(function (c) { return c[1] === 0; }), 2).concat(sol611take(inFam.filter(function (c) { return c[1] === 1; }), 2)));
-  var n = sol611count(set, false);
-  return numq("All four of these compounds are " + fam.label + ": " + sol611names(set) + ". According to the Solubility Rules table on the Chemistry Data Sheet, how many of them have low solubility in water at 25 °C (less than 0.1 mol/L)?",
-    n, 0,
-    "Within one family, the cation decides. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have low solubility.",
-    { set: sol611sig(set), fam: fam.tag });
+  return mcq("As " + c + " dissolves in water, its ions are pulled out of the solid and surrounded by water molecules. Which attractions form as this happens?",
+    correct2, ds2,
+    "Water molecules cluster around each separated ion, with their charged ends pointing at it, and that clustering is held by attractions between the ions and the water molecules. No covalent bonds form between the ions and the water, and the beaker and the air play no part. The attractions are <b>" + correct2 + "</b>.",
+    { compound: c, ask: q });
 });
-
-// LEVEL: 2 - five compounds drawn from the table's trap cases, where a first guess often classes them wrong; count the high-solubility ones (6.11 rework, Nov 24, 2026)
+// LEVEL: 2 - four statements each pair a compound with a solubility class and a reason; only one statement is right in both halves (6.11 forces rebuild, Nov 25, 2026)
+E("u2-73", 2, ["6.11"], 2, "gen", function () {
+  var lows = [
+    { f: "CaCO₃", n: "calcium carbonate", cat: "Ca²⁺" }, { f: "MgCO₃", n: "magnesium carbonate", cat: "Mg²⁺" },
+    { f: "BaSO₄", n: "barium sulfate", cat: "Ba²⁺" }, { f: "CaSO₄", n: "calcium sulfate", cat: "Ca²⁺" },
+    { f: "ZnS", n: "zinc sulfide", cat: "Zn²⁺" }, { f: "PbS", n: "lead sulfide", cat: "Pb²⁺" },
+    { f: "Mg(OH)₂", n: "magnesium hydroxide", cat: "Mg²⁺" }, { f: "Zn(OH)₂", n: "zinc hydroxide", cat: "Zn²⁺" }
+  ];
+  var highs = [
+    { f: "NaCl", n: "sodium chloride" }, { f: "KNO₃", n: "potassium nitrate" }, { f: "NaOH", n: "sodium hydroxide" },
+    { f: "KCl", n: "potassium chloride" }, { f: "NaNO₃", n: "sodium nitrate" }, { f: "NH₄Cl", n: "ammonium chloride" }
+  ];
+  function cap1(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  var ls = shuffle(lows.slice());
+  var hs = shuffle(highs.slice());
+  var L = ls[0], L2 = ls[1], H1 = hs[0], H2 = hs[1];
+  var correct = cap1(L.n) + ", " + L.f + ", has low solubility, because its " + L.cat + " cations attract the anions strongly, and the attractions with water cannot pull its lattice apart";
+  var ds = [
+    cap1(H1.n) + ", " + H1.f + ", has low solubility, because its ions attract each other too strongly for the attractions with water to pull its lattice apart",
+    cap1(L2.n) + ", " + L2.f + ", has high solubility, because its " + L2.cat + " cations attract the anions only weakly, so water pulls its lattice apart easily",
+    cap1(H2.n) + ", " + H2.f + ", has high solubility, because its ions carry double charges that make them attract the water molecules especially strongly"
+  ];
+  return mcq("Which statement about solubility and attractions is correct?",
+    correct, ds,
+    "Check each statement against the charges and the Solubility Rules table. " + cap1(L.n) + " is classed low solubility: its cation is " + L.cat + ", doubly charged, so the attractions inside its lattice are strong. " + cap1(H1.n) + " is classed high solubility, not low. " + cap1(L2.n) + " is classed low, not high, and a doubly charged cation attracts anions strongly, not weakly. " + cap1(H2.n) + " is classed high, but its ions carry single charges, not double charges. The correct statement is <b>" + correct + "</b>.",
+    { lo: L.f, lo2: L2.f, hi: H1.f + "|" + H2.f });
+});
+// LEVEL: 2 - one low-solubility compound; choose why the attractions with water lose the contest against the attractions in the solid (6.11 forces rebuild, Nov 25, 2026)
 E("u2-74", 2, ["6.11"], 2, "gen", function () {
-  var traps = ["AgNO₃", "CaS", "MgS", "Ba(OH)₂", "Sr(OH)₂", "(NH₄)₂CO₃", "Na₂CO₃", "CaSO₄", "Ag₂SO₄", "CH₃COOAg", "CuCl", "AgCl"].map(sol611row);
-  var set = shuffle(sol611take(traps.filter(function (c) { return c[1] === 0; }), ri(2, 3)).concat(sol611take(traps.filter(function (c) { return c[1] === 1; }), 2)));
-  set = set.slice(0, 5);
-  var n = sol611count(set, true);
-  return numq("Some of these compounds are not classed the way a first guess might suggest. According to the Solubility Rules table on the Chemistry Data Sheet, how many of the compounds " + sol611names(set) + " have high solubility in water at 25 °C (more than 0.1 mol/L)?",
-    n, 0,
-    "Class each compound from its ions, not from how familiar it looks. " + sol611why(set) + " So <b>" + n + "</b> of the compounds have high solubility.",
-    { set: sol611sig(set) });
+  var lows = ["AgCl", "PbCl₂", "BaSO₄", "CaCO₃", "ZnS", "Mg(OH)₂", "CuS", "Ag₂SO₄", "FeS", "CaSO₄"];
+  var f = pick(lows);
+  var row = sol611row(f);
+  var correct = "The attractions between the ions in the solid are stronger than the attractions between the ions and the water, so water pulls only a few ions away";
+  var ds = [
+    "The ions in the solid lose their charges as soon as they touch water, so there is nothing left for the water molecules to attract",
+    "The solid is held together by covalent bonds between the ions, and the attractions with water cannot break covalent bonds",
+    "The water molecules attract each other so strongly that none of them are free to attract the ions at the surface of the solid"
+  ];
+  return mcq(f + " has low solubility in water, even though water molecules do attract its ions. Which statement explains why so little of it dissolves?",
+    correct, ds,
+    "Two sets of attractions compete for the ions. Water does attract them, but in " + f + " the attractions between the ions in the solid are stronger, so the lattice mostly holds together: " + f + " has low solubility, because " + row[3] + ". The explanation is <b>" + correct + "</b>.",
+    { f: f });
 });
 
 // LEVEL: 1 - one rehearsed idea (more dissolved particles means a lower melting point) read off two concentrations of the same solute
@@ -4083,31 +4160,33 @@ E("u2-78", 2, ["6.13"], 1, "gen", function () {
 });
 
 /* The two multiple-choice 6.11 entries (Nov 20, 2026 tranche,
-   reworked Nov 24, 2026 with the rest of 6.11): single-compound
-   classification from the data sheet Solubility Rules table. The
-   key in each is a formula with no subscript digits, so the
-   bimodal written form accepts what a student types plainly. */
+   reworked Nov 24, 2026 as data sheet rules questions, rebuilt
+   Nov 25, 2026 as forces-of-attraction questions with the rest
+   of 6.11): the key in each is a formula with no subscript
+   digits, so the bimodal written form accepts what a student
+   types plainly. */
+// LEVEL: 2 - one low-solubility compound whose ions both carry two charges, against three singly charged high-solubility compounds; the stem gives the forces reason (6.11 forces rebuild, Nov 25, 2026)
 E("u2-611-mc-from-mass", 2, ["6.11"], 2, "gen", function () {
-  var lowsf = ["AgCl", "AgBr", "AgI", "PbS", "CuS", "FeS", "ZnS"];
+  var lowsf = ["ZnS", "PbS", "CuS", "FeS"];
   var hisf = ["NaCl", "KCl", "LiCl", "KBr", "NaBr", "KI", "NaI"];
   var key = sol611row(pick(lowsf));
   var wrongs = sol611take(hisf, 3);
   var wrows = wrongs.map(sol611row);
-  return mcq("According to the Solubility Rules table on the Chemistry Data Sheet, which of the following compounds has low solubility in water at 25 °C (less than 0.1 mol/L)?",
+  return mcq("Which compound has low solubility in water because the attractions between its ions are too strong for the attractions between the ions and the water molecules to overcome?",
     key[0], wrongs,
-    key[0] + " has low solubility, because " + key[3] + ". The others are all high solubility: " + sol611why(wrows) + " The compound with low solubility is <b>" + key[0] + "</b>.",
+    "In " + key[0] + " the cation and the anion both carry two charges, so the ions attract each other strongly and the lattice holds together: " + key[0] + " has low solubility, because " + key[3] + ". The others pair singly charged ions and are all high solubility: " + sol611why(wrows) + " The compound is <b>" + key[0] + "</b>.",
     { set: key[0] + "|" + wrongs.join("|") });
 });
-
+// LEVEL: 2 - one high-solubility compound of singly charged ions, against three low-solubility compounds of doubly charged ions; the stem gives the forces reason (6.11 forces rebuild, Nov 25, 2026)
 E("u2-611-mc-mass-dissolved", 2, ["6.11"], 2, "gen", function () {
   var hisf = ["NaCl", "KCl", "LiCl", "KBr", "NaBr", "KI", "NaI"];
-  var lowopts = ["BaSO₄", "CaCO₃", "PbCl₂", "Mg(OH)₂", "CaSO₄", "Fe(OH)₃", "Ag₂SO₄"];
+  var lowopts = ["ZnS", "PbS", "CuS", "FeS", "CaCO₃", "BaSO₄", "MgCO₃"];
   var key = sol611row(pick(hisf));
   var wrongs = sol611take(lowopts, 3);
   var wrows = wrongs.map(sol611row);
-  return mcq("According to the Solubility Rules table on the Chemistry Data Sheet, which of the following compounds has high solubility in water at 25 °C (more than 0.1 mol/L)?",
+  return mcq("Which compound dissolves readily in water because the attractions between its ions are weak enough for the attractions between the ions and the water molecules to overcome them?",
     key[0], wrongs,
-    key[0] + " has high solubility, because " + key[3] + ". The others are all low solubility: " + sol611why(wrows) + " The compound with high solubility is <b>" + key[0] + "</b>.",
+    "The ions in " + key[0] + " carry single charges, so their attractions for each other are weak enough for the attractions with water to pull the lattice apart: " + key[0] + " has high solubility, because " + key[3] + ". The others pair doubly charged ions and are all low solubility: " + sol611why(wrows) + " The compound is <b>" + key[0] + "</b>.",
     { set: key[0] + "|" + wrongs.join("|") });
 });
 
@@ -5455,4 +5534,4 @@ window.__BANK_CRMARKS={"br-b1-ion-electrons":2,"br-b1-isotopes-def":2,"br-b1-neu
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"br-b1-isotopes-def":"a","br-b2-why-not-whole":"b","br-b3-binary-name":"a","br-b3-molecular-poly":"a","u1-51-acids-hydrates":"a","u1-51-formula-to-name":"a","u1-51-mc-correct-formula":"a","u1-51-name-to-formula":"a","u1-510-application-idea":"b","u1-510-application-reasoning":"b","u1-510-mc-stoich-use":"b","u1-52-mc-mass-moles":"a","u1-52-mc-mass-volume-stp":"a","u1-52-mc-molar-mass":"a","u1-52-mc-moles-particles":"a","u1-53-evaporation":"b","u1-53-identify-type":"a","u1-53-observations":"b","u1-54-add-solvent-or-solute":"a","u1-54-two-changes":"b","u1-54-what-stays-constant":"b","u1-55-compare-solubility-data":"a","u1-55-explain-variation":"b","u1-55-like-dissolves-like":"a","u1-55-polarity-prediction":"a","u1-55-temperature-effects":"b","u1-56-precipitate-ions":"a","u1-56-precipitate-or-soluble":"a","u1-56-solubility-rule":"a","u1-56-which-mixture-precipitates":"a","u1-57-balance-then-ratio":"a","u1-57-identify-ratio":"a","u1-57-moles-mcq":"a","u1-58-mc-limiting":"a","u1-58-mc-mass-mass":"a","u1-58-mc-mole-ratio":"a","u1-59-maximize-yield":"b","u1-59-why-yield-is-low":"b","u2-01":"a","u2-04":"a","u2-06":"a","u2-09":"a","u2-10":"a","u2-11":"a","u2-13":"a","u2-14":"a","u2-15":"a","u2-17":"b","u2-19":"b","u2-20":"a","u2-21":"a","u2-22":"a","u2-24":"a","u2-30":"a","u2-31":"a","u2-32":"a","u2-34":"a","u2-35":"b","u2-36":"a","u2-37":"b","u2-39":"b","u2-40":"b","u2-41":"b","u2-42":"b","u2-43":"a","u2-47":"a","u2-48":"b","u2-49":"b","u2-50":"a","u2-54":"b","u2-55":"b","u2-57":"a","u2-58":"b","u2-59":"a","u2-60":"b","u2-61":"a","u2-611-mc-from-mass":"a","u2-611-mc-mass-dissolved":"a","u2-64":"a","u2-65":"a","u2-66":"a","u2-67":"b","u2-69":"b","u2-75":"b","u2-76":"a","u2-78":"a","u3-71-bond-types":"a","u3-71-carbon-bonds":"a","u3-71-catenation":"a","u3-71-why-many-var":"b","u3-72-classify-pair":"a","u3-72-family-from-group":"a","u3-72-family-from-name":"a","u3-72-family-from-structure":"a","u3-72-formula-family":"a","u3-72-saturation":"a","u3-73-mc-name-unsaturated-branch":"a","u3-73-name-alkane":"a","u3-73-name-unsaturated":"a","u3-74-def":"a","u3-74-evaluate-claim":"b","u3-74-which-pair":"a","u3-75-aromatic-or-aliphatic":"a","u3-75-benzene-basics":"a","u3-75-benzene-compare":"a","u3-75-name-derivative":"a","u3-76-ester-naming":"a","u3-76-group-id":"a","u3-76-name-derivative":"a","u3-77-addition-product":"a","u3-77-combustion-equation":"a","u3-77-cracking":"a","u3-77-esterification":"a","u3-77-reaction-analysis":"a","u3-78-add-or-cond":"a","u3-78-natural-or-synthetic":"a","u3-78-polymer-from-monomer":"a","u3-78-polymer-uses-var":"a"};
+window.__BANK_BIMODAL={"br-b1-isotopes-def":"a","br-b2-why-not-whole":"b","br-b3-binary-name":"a","br-b3-molecular-poly":"a","u1-51-acids-hydrates":"a","u1-51-formula-to-name":"a","u1-51-mc-correct-formula":"a","u1-51-name-to-formula":"a","u1-510-application-idea":"b","u1-510-application-reasoning":"b","u1-510-mc-stoich-use":"b","u1-52-mc-mass-moles":"a","u1-52-mc-mass-volume-stp":"a","u1-52-mc-molar-mass":"a","u1-52-mc-moles-particles":"a","u1-53-evaporation":"b","u1-53-identify-type":"a","u1-53-observations":"b","u1-54-add-solvent-or-solute":"a","u1-54-two-changes":"b","u1-54-what-stays-constant":"b","u1-55-compare-solubility-data":"a","u1-55-explain-variation":"b","u1-55-like-dissolves-like":"a","u1-55-polarity-prediction":"a","u1-55-temperature-effects":"b","u1-56-precipitate-ions":"a","u1-56-precipitate-or-soluble":"a","u1-56-solubility-rule":"a","u1-56-which-mixture-precipitates":"a","u1-57-balance-then-ratio":"a","u1-57-identify-ratio":"a","u1-57-moles-mcq":"a","u1-58-mc-limiting":"a","u1-58-mc-mass-mass":"a","u1-58-mc-mole-ratio":"a","u1-59-maximize-yield":"b","u1-59-why-yield-is-low":"b","u2-01":"a","u2-04":"a","u2-06":"a","u2-09":"a","u2-10":"a","u2-11":"a","u2-13":"a","u2-14":"a","u2-15":"a","u2-17":"b","u2-19":"b","u2-20":"a","u2-21":"a","u2-22":"a","u2-24":"a","u2-30":"a","u2-31":"a","u2-32":"a","u2-34":"a","u2-35":"b","u2-36":"a","u2-37":"b","u2-39":"b","u2-40":"b","u2-41":"b","u2-42":"b","u2-43":"a","u2-47":"a","u2-48":"b","u2-49":"b","u2-50":"a","u2-51":"b","u2-52":"a","u2-53":"b","u2-54":"b","u2-55":"b","u2-57":"a","u2-58":"b","u2-59":"a","u2-60":"b","u2-61":"a","u2-611-mc-from-mass":"a","u2-611-mc-mass-dissolved":"a","u2-64":"a","u2-65":"a","u2-66":"a","u2-67":"b","u2-69":"b","u2-72":"b","u2-73":"b","u2-74":"b","u2-75":"b","u2-76":"a","u2-78":"a","u3-71-bond-types":"a","u3-71-carbon-bonds":"a","u3-71-catenation":"a","u3-71-why-many-var":"b","u3-72-classify-pair":"a","u3-72-family-from-group":"a","u3-72-family-from-name":"a","u3-72-family-from-structure":"a","u3-72-formula-family":"a","u3-72-saturation":"a","u3-73-mc-name-unsaturated-branch":"a","u3-73-name-alkane":"a","u3-73-name-unsaturated":"a","u3-74-def":"a","u3-74-evaluate-claim":"b","u3-74-which-pair":"a","u3-75-aromatic-or-aliphatic":"a","u3-75-benzene-basics":"a","u3-75-benzene-compare":"a","u3-75-name-derivative":"a","u3-76-ester-naming":"a","u3-76-group-id":"a","u3-76-name-derivative":"a","u3-77-addition-product":"a","u3-77-combustion-equation":"a","u3-77-cracking":"a","u3-77-esterification":"a","u3-77-reaction-analysis":"a","u3-78-add-or-cond":"a","u3-78-natural-or-synthetic":"a","u3-78-polymer-from-monomer":"a","u3-78-polymer-uses-var":"a"};
