@@ -4433,10 +4433,11 @@ E("u6-error-analysis", 6, ["7.37"], 3, "gen", function () {
     var missing = full.filter(function (d) { return student.indexOf(d) < 0; });
     var key = "Dividing by \\(\\" + base + " " + v + "\\) discards the solutions of \\(\\" + base + " " + v + " = 0\\): " + u6setStr(missing, rad) + " are also solutions";
     /* Presentation changed November 25, 2026 on Jason's direction: the student's work is
-       shown step by step as a displayed chain instead of being narrated in prose. The
-       silent division is the jump from the first line to the second. Same in cancelTan. */
+       shown step by step as a displayed chain instead of being narrated in prose, and the
+       division itself is written in as its own step line, so the faulty operation is
+       explicit and the question is why it is wrong. Same in cancelTan. */
     var inner = a + "\\" + other + " " + v + (b > 0 ? " - " + b : " + " + (-b));
-    var steps = "\\[ \\begin{aligned} \\" + base + " " + v + "(" + inner + ") &= 0 \\\\ " + inner + " &= 0 \\\\ " + a + "\\" + other + " " + v + " &= " + b + " \\\\ \\" + other + " " + v + " &= " + u6fr(b, a) + " \\\\ " + v + " &= " + u6setStr(student, rad).replace(/\\\(|\\\)/g, "") + " \\end{aligned} \\]";
+    var steps = "\\[ \\begin{aligned} \\" + base + " " + v + "(" + inner + ") &= 0 \\\\ \\frac{\\" + base + " " + v + "(" + inner + ")}{\\" + base + " " + v + "} &= \\frac{0}{\\" + base + " " + v + "} \\\\ " + inner + " &= 0 \\\\ " + a + "\\" + other + " " + v + " &= " + b + " \\\\ \\" + other + " " + v + " &= " + u6fr(b, a) + " \\\\ " + v + " &= " + u6setStr(student, rad).replace(/\\\(|\\\)/g, "") + " \\end{aligned} \\]";
     return mcq("A student solves \\(" + eqn + "\\) for " + dom + " and writes:" + steps + "What is the error in this solution?",
       key,
       ["The reported values do not satisfy the equation when they are substituted back into it",
@@ -4454,7 +4455,7 @@ E("u6-error-analysis", 6, ["7.37"], 3, "gen", function () {
     var student2 = u6sols("tan", kv[0]);
     var missing2 = full2.filter(function (d) { return student2.indexOf(d) < 0; });
     var key2 = "Cancelling \\(\\tan " + v + "\\) discards the solutions of \\(\\tan " + v + " = 0\\): " + u6setStr(missing2, rad) + " are also solutions";
-    var steps2 = "\\[ \\begin{aligned} \\tan^2 " + v + " &= " + coef + "\\tan " + v + " \\\\ \\tan " + v + " &= " + kv[1] + " \\\\ " + v + " &= " + u6setStr(student2, rad).replace(/\\\(|\\\)/g, "") + " \\end{aligned} \\]";
+    var steps2 = "\\[ \\begin{aligned} \\tan^2 " + v + " &= " + coef + "\\tan " + v + " \\\\ \\frac{\\tan^2 " + v + "}{\\tan " + v + "} &= \\frac{" + coef + "\\tan " + v + "}{\\tan " + v + "} \\\\ \\tan " + v + " &= " + kv[1] + " \\\\ " + v + " &= " + u6setStr(student2, rad).replace(/\\\(|\\\)/g, "") + " \\end{aligned} \\]";
     return mcq("A student solves \\(" + eqn2 + "\\) for " + dom + " and writes:" + steps2 + "What is the error in this solution?",
       key2,
       ["The reported values do not satisfy the equation when substituted back into it",
