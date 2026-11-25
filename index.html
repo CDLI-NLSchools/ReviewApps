@@ -6836,7 +6836,7 @@ function composeExam(units,inds,includePK,plan){
       if(crA.length!==crWantA||((ut.trioCr||ut.sextetCr)&&crMarksA!==crTargetA))shortA=true;
     } else shortA=true;
     crA.sort(function(a,b){return a.q._entry.level-b.q._entry.level;});
-    return {srItems:srA,crItems:crA,srMarks:srA.length,crMarks:crMarksA,l3Marks:l3A,total:srA.length+crMarksA,single:true,short:shortA};
+    return {srItems:srA,crItems:crA,srMarks:srA.length,crMarks:crMarksA,l3Marks:l3A,total:srA.length+crMarksA,single:true,short:shortA,levelsTgt:null,crL3Win:null};
   }
   var parts;
   /* Test scope (owner ruling, Nov 19, 2026): the plan part
@@ -7086,6 +7086,16 @@ function composeExam(units,inds,includePK,plan){
   }
   function drawAll(combo){
     var seen={},srItems=[],crItems=[],short=false;
+    /* The blueprint Level 3 ceiling for this paper, when the parts
+       carry level totals (November 25, 2026): the selected-response
+       top-up below respects it, so a band shortfall is carried by
+       Level 1 or Level 2 rather than by dealing Level 3 past the
+       blueprint's share. l3Dealt counts the written set's committed
+       Level 3 marks (the chosen options) plus every Level 3 selected
+       response dealt so far. */
+    var scopeL3Tgt=null;
+    if(parts.every(function(p){return !!p.levels;})){scopeL3Tgt=0;parts.forEach(function(p){scopeL3Tgt+=p.levels[2];});}
+    function l3Dealt(){var t=0;srItems.forEach(function(it){if(it.q._entry.level===3)t+=1;});combo.opts.forEach(function(o){o.items.forEach(function(x){if(x.e.level===3)t+=x.marks;});});return t;}
     var indCount={},reservedCR={};
     function indTake(e){var k=indKeyOf(e);if(k)indCount[k]=(indCount[k]||0)+1;}
     function indRoom(part,e){if(!part.indCap)return true;var k=indKeyOf(e);if(!k)return true;return (indCount[k]||0)<part.indCap;}
@@ -7224,7 +7234,7 @@ function composeExam(units,inds,includePK,plan){
       var miss=0;for(var L=1;L<=3;L++){miss+=takeSR(L,plan[L-1]);}
       if(miss>0){
         var allC=ppool.filter(function(e){return probeType(e)==="mc"&&(!bmSRoff||!bimodalClass(e))&&(!testScope||!claimedCR[e.id]);});var triedT={},guard2=0;
-        while(miss>0&&guard2++<900&&allC.length){allC=allC.filter(function(e){return indRoom(part,e);});if(!allC.length)break;var eB=pickFresh(allC,triedT);triedT[eB.id]=(triedT[eB.id]||0)+1;var qb=genFrom(eB);var cb=canonQ(qb);if(qb.type!=="mc"||seen[cb])continue;seen[cb]=1;srItems.push({q:qb,marks:1});indTake(eB);noteDealt(eB);miss--;}
+        while(miss>0&&guard2++<900&&allC.length){allC=allC.filter(function(e){return indRoom(part,e);});if(!allC.length)break;var pickC=allC;if(scopeL3Tgt!==null&&l3Dealt()>=scopeL3Tgt){var under=allC.filter(function(e){return e.level<3;});if(under.length)pickC=under;}var eB=pickFresh(pickC,triedT);triedT[eB.id]=(triedT[eB.id]||0)+1;var qb=genFrom(eB);var cb=canonQ(qb);if(qb.type!=="mc"||seen[cb])continue;seen[cb]=1;srItems.push({q:qb,marks:1});indTake(eB);noteDealt(eB);miss--;}
       }
       if(miss>0)short=true;
       var cp=crPoolFor(part);
@@ -7273,33 +7283,75 @@ function composeExam(units,inds,includePK,plan){
     var crMarks=crItems.reduce(function(a,it){return a+it.marks;},0);
     var l3Marks=crItems.filter(function(it){return it.q._entry.level===3;}).reduce(function(a,it){return a+it.marks;},0);
     var scopedPlan=parts.every(function(p){return !!p.levels;});
-    if(scopedPlan&&combo.scopeDev>0)short=true; // marks filled but the scope level totals are off blueprint: flag it honestly
-    return {srItems:srItems,crItems:crItems,srMarks:srItems.length,crMarks:crMarks,l3Marks:l3Marks,total:srItems.length+crMarks,single:single,short:short,dev:combo.dev,scopeDev:combo.scopeDev||0};
+    /* Level flex (November 25, 2026; Composer-Level-Flex-and-Specs-
+       Table-Spec-2026-11-25.md): scope level totals are ceilings for
+       Level 1 and Level 3, and Level 2 carries any shortfall, so a
+       complete paper whose only deviation is Level 1 or Level 3 under
+       target (Level 2 correspondingly over) is a flexed paper, not a
+       short one. The paper is judged on the levels it actually deals
+       (the Level 3 ceiling below), and every structural short flag
+       above is untouched. The achieved
+       and target level marks are stamped on the result for the table
+       of specifications the paper render appends. */
+    var achLv=[0,0,0];
+    srItems.forEach(function(it){achLv[it.q._entry.level-1]+=1;});
+    crItems.forEach(function(it){achLv[it.q._entry.level-1]+=it.marks;});
+    var tgtLv=null;
+    if(scopedPlan){tgtLv=[0,0,0];parts.forEach(function(p){for(var a5=0;a5<3;a5++)tgtLv[a5]+=p.levels[a5];});}
+    else if(parts.length===1&&parts[0].whole){tgtLv=parts[0].whole.slice();}
+    /* Achieved level drift in either direction is reported, never
+       flagged (refined later on November 25, 2026, after the first
+       flex pass flagged over-delivery and two healthy banks failed
+       their compose gates on ordinary draw drift): same-indicator
+       substitutions in the written draw and the selected-response
+       top-up routinely move a dealt paper a few marks across a
+       level line even when the plan is exact, and the standing
+       contract for that drift is the table of specifications, which
+       prints target against achieved. The Level 3 ceiling operates
+       where it can actually bind: in the plan (planFor scores
+       options and bands against the targets) and in the top-up's
+       preference for under-ceiling levels when a band runs short.
+       A paper is short only when it is structurally short. */
+    var crWin=null;
+    if(parts.length===1&&parts[0].crL3&&parts[0].crL3.length)crWin=[Math.min.apply(null,parts[0].crL3),Math.max.apply(null,parts[0].crL3)];
+    else if(single&&!plan)crWin=[4,6];
+    return {srItems:srItems,crItems:crItems,srMarks:srItems.length,crMarks:crMarks,l3Marks:l3Marks,total:srItems.length+crMarks,single:single,short:short,dev:combo.dev,scopeDev:combo.scopeDev||0,levelsAch:achLv,levelsTgt:tgtLv,crL3Win:crWin};
   }
-  var best=null,bestExact=null;
+  var best=null,bestFlex=null;
   for(var attempt=0;attempt<30;attempt++){
     var combo=chooseCombo();
     if(!combo)break;
     var res=drawAll(combo);
     if(!res.short&&res.total===expectedTotal){
-      /* An exact paper whose Section B Level 3 share misses the
-         course's own preference list (a pooled fallback's crL3) is
-         kept as the fallback, not returned: the standalone pooled
-         composers force one of their listed targets (8, then 9,
-         then 7) whenever the pool can sum to it, so the shell
-         retries for an on-preference paper and settles for the
-         off-preference exact only when none surfaces. Only a
+      /* A complete paper is returned at once only when it is exact
+         (scopeDev 0) and, for a pooled fallback carrying a crL3
+         preference list, its Section B Level 3 share is on the list:
+         the standalone pooled composers force one of their listed
+         targets (8, then 9, then 7) whenever the pool can sum to it,
+         so the shell retries for an on-preference paper and settles
+         for the off-preference one only when none surfaces. Only a
          single pooled part carries crL3, so blueprint scopes and
-         unit tests are untouched. */
-      if(!(parts.length===1&&parts[0].crL3&&parts[0].crL3.indexOf(res.l3Marks)<0))return res;
-      if(!bestExact||res.dev<bestExact.dev)bestExact=res;
+         unit tests are untouched. Under the level flex (November 25,
+         2026) a flexed paper (complete, Level 1 or Level 3 under
+         target, Level 2 carrying the difference) is likewise kept
+         as a candidate rather than returned at once: the remaining
+         attempts still try for an exact paper, and the best
+         candidate wins on the composer's deviation score, which
+         already weighs the scope deviation tenfold. */
+      var crOk=!(parts.length===1&&parts[0].crL3&&parts[0].crL3.indexOf(res.l3Marks)<0);
+      if(crOk&&(res.scopeDev||0)===0)return res;
+      /* Candidates rank on the composer's deviation score alone:
+         it already weighs the scope deviation (tenfold) and the
+         crL3 preference, so an on-preference flexed paper is not
+         demoted below an off-preference exact one. */
+      if(!bestFlex||res.dev<bestFlex.dev)bestFlex=res;
       continue;
     }
     if(!best||res.total>best.total||(res.total===best.total&&res.dev<best.dev))best=res;
   }
-  if(bestExact)return bestExact;
+  if(bestFlex)return bestFlex;
   if(best)return best;
-  return {srItems:[],crItems:[],srMarks:0,crMarks:0,l3Marks:0,total:0,single:single,short:true,dev:0};
+  return {srItems:[],crItems:[],srMarks:0,crMarks:0,l3Marks:0,total:0,single:single,short:true,dev:0,levelsTgt:null,crL3Win:null};
 }
 function testMapList(C,unit,test){
   var tm=(C&&C.testMap)?C.testMap[unit]:null;
@@ -7339,9 +7391,10 @@ function testPlanFor(C,unit,test){
   var n=e.inds.length;
   if(!n)return null;
   if(n===1){
-    return {sr:10,cr:12,topics:e.topics||null};
+    return {sr:13,cr:12,topics:e.topics||null};
   }
-  var sr=Math.min(Math.max(10,5*n),6*n,18);
+  var sr=Math.min(Math.max(13,5*n),6*n,18);
+  if(sr<13)sr=13;
   return {sr:sr,cr:12,topics:e.topics||null};
 }
 function testSelActive(s){
@@ -7484,6 +7537,47 @@ function startExam(){
   renderExam();
   var _sb=$("session");if(_sb)_sb.scrollIntoView({behavior:scrollBehavior()});
 }
+function specsTableHtml(ex){
+  var C=window.__COURSE||{};
+  var units=[],byU={};
+  function addU(u){if(!byU[u]){byU[u]=[0,0,0];units.push(u);}}
+  var indsSeen={};
+  ex.srItems.forEach(function(it){var e=it.q._entry;addU(e.unit);byU[e.unit][e.level-1]+=1;(e.indicators||[]).forEach(function(c){indsSeen[c]=1;});});
+  ex.crItems.forEach(function(it){var e=it.q._entry;addU(e.unit);byU[e.unit][e.level-1]+=it.marks;(e.indicators||[]).forEach(function(c){indsSeen[c]=1;});});
+  if(!units.length)return "";
+  units.sort(function(a,b){return a-b;});
+  var tot=[0,0,0];
+  units.forEach(function(u){for(var i=0;i<3;i++)tot[i]+=byU[u][i];});
+  var grand=tot[0]+tot[1]+tot[2];
+  var cs="border:1px solid #bbb;padding:4px 10px;";
+  var h='<h2 style="font-size:1.05rem;">'+L9("Table of Specifications","Tableau des spécifications")+'</h2>';
+  h+='<table style="border-collapse:collapse;margin:6px 0;font-size:.9rem;"><thead><tr><th style="'+cs+'">'+L9("Unit","Unité")+'</th><th style="'+cs+'">'+L9("Level 1","Niveau 1")+'</th><th style="'+cs+'">'+L9("Level 2","Niveau 2")+'</th><th style="'+cs+'">'+L9("Level 3","Niveau 3")+'</th><th style="'+cs+'">'+L9("Total","Total")+'</th></tr></thead><tbody>';
+  units.forEach(function(u){
+    var nm=(typeof UNITS!=="undefined"&&UNITS[u])?(" "+UNITS[u]):"";
+    h+='<tr><td style="'+cs+'">'+L9("Unit ","Unité ")+u+esc(nm)+'</td><td style="'+cs+'">'+byU[u][0]+'</td><td style="'+cs+'">'+byU[u][1]+'</td><td style="'+cs+'">'+byU[u][2]+'</td><td style="'+cs+'">'+(byU[u][0]+byU[u][1]+byU[u][2])+'</td></tr>';
+  });
+  h+='<tr><td style="'+cs+'"><b>'+L9("Paper total","Total de la copie")+'</b></td><td style="'+cs+'"><b>'+tot[0]+'</b></td><td style="'+cs+'"><b>'+tot[1]+'</b></td><td style="'+cs+'"><b>'+tot[2]+'</b></td><td style="'+cs+'"><b>'+grand+'</b></td></tr>';
+  h+='</tbody></table>';
+  var tgt=ex.levelsTgt;
+  if(tgt){
+    h+='<p style="font-size:.85rem;color:#555;">'+L9("Target mix: Level 1 ","Répartition visée : niveau 1 ")+tgt[0]+L9(", Level 2 ",", niveau 2 ")+tgt[1]+L9(", Level 3 ",", niveau 3 ")+tgt[2]+L9(". This paper: Level 1 ",". Cette copie : niveau 1 ")+tot[0]+L9(", Level 2 ",", niveau 2 ")+tot[1]+L9(", Level 3 ",", niveau 3 ")+tot[2]+'.</p>';
+  }
+  if(ex.crL3Win){
+    var l3cr=0;ex.crItems.forEach(function(it){if(it.q._entry.level===3)l3cr+=it.marks;});
+    h+='<p style="font-size:.85rem;color:#555;">'+L9("Section B Level 3: ","Section B, niveau 3 : ")+l3cr+L9(" marks (window "," points (fenêtre ")+ex.crL3Win[0]+' to '+ex.crL3Win[1]+').</p>';
+  }
+  var scopeInds={};
+  var sUnits=(typeof examState!=="undefined"&&examState&&examState.s&&examState.s.units)?examState.s.units:units;
+  var selInds=(typeof examState!=="undefined"&&examState&&examState.s&&examState.s.inds&&examState.s.inds.length)?examState.s.inds:null;
+  if(selInds)selInds.forEach(function(c){scopeInds[c]=1;});
+  else if(C.unitInd)sUnits.forEach(function(u){(C.unitInd[u]||[]).forEach(function(c){scopeInds[c]=1;});});
+  var nScope=Object.keys(scopeInds).length;
+  if(nScope){
+    var nSeen=0;Object.keys(indsSeen).forEach(function(c){if(scopeInds[c])nSeen++;});
+    h+='<p style="font-size:.85rem;color:#555;">'+L9("Indicators covered: ","Indicateurs couverts : ")+nSeen+' / '+nScope+'.</p>';
+  }
+  return h;
+}
 function renderExam(){
   stopExamTimer();
   var ex=examState.ex,s=examState.s,single=examState.single,wsCrF=examState.wsCrF,scope=examState.scope,title=examState.title;
@@ -7518,6 +7612,7 @@ function renderExam(){
   key+='<h2 style="font-size:1.05rem;">'+L9("Appendix: Section A worked solutions","Annexe : solutions détaillées de la section A")+'</h2><div class="solAppendix">';
   ex.srItems.forEach(function(it,ix){var q=it.q;key+='<div class="solp"><div class="qline"><b>'+(ix+1)+'.</b> <b>('+"ABCD"[q.correct]+')</b> '+stepHTML(q.solution)+'</div></div>';});
   key+='</div>';
+  paper+=specsTableHtml(ex);
   $("printArea").innerHTML=paper;
   $("session").innerHTML='<div class="card"><p>'+(FR9?("Ton "+(single?"test de pratique":"examen de pratique")+" est prêt : "+ex.srItems.length+" questions à réponses choisies et "+ex.crItems.length+" questions à réponses construites, "+lv.total+" points au total. La copie d'examen et le corrigé s'impriment séparément."):("Your "+(single?"practice test":"practice exam")+" is ready: "+ex.srItems.length+" selected-response questions and "+ex.crItems.length+" constructed-response questions, "+lv.total+" marks in total. The exam paper and the answer key print separately."))+'</p>'
     +((T&&T.edited)?'<p class="thinNote">You edited this paper: it now has '+lv.sr+' selected-response marks and '+lv.cr+' constructed-response marks, '+lv.total+' marks in total. The paper, the answer key and the totals all follow the edited set.</p>':((examState.testScope?ex.short:(ex.short||examShortNow(ex)))?'<p class="thinNote">'+(examState.testScope?testShortLine(ex):L9("Heads up: the bank could not fill every exam slot for this selection yet, so this paper runs short of the full blueprint.","Attention : la banque n'a pas encore pu remplir toutes les places de l'examen pour cette sélection, alors cette copie est plus courte que le plan complet."))+'</p>':""))
