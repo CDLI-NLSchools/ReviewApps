@@ -35,6 +35,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Fixed
 
+- Diagrams in a Brightspace export can no longer be replaced by a later import into the same course. Each export names its diagram files with the date, time and a short code unique to that export, so a second import leaves the first set's diagrams exactly as they were. Before this, two imports could share a diagram file name, and the newer import silently replaced the earlier quiz's pictures with its own.
 - The "Teacher: print or edit this set" link on a set opened by code now works for large sets too. It used to load the set's full address and hit the same "URI Too Long" error; it now reaches the print and edit view through a short code address, the same way the set code itself opens.
 - Worked solutions in some factoring and polynomial questions in Mathematics 1201, 2200, 2201, 3200 and 3201 showed two asterisks around the final answer instead of bold type. Those answers now appear in bold, as they were meant to.
 - Set codes for large sets now open properly. Entering a code for a set built from hand-picked or adopted questions used to end at the same "URI Too Long" error, because opening the code still loaded the set's full address in the browser. The app now loads the set from the code registry directly, without the long address ever being requested, and the QR code on a printed large set carries the short code address too. Codes already handed out work as they are.

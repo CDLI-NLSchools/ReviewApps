@@ -8441,6 +8441,8 @@ var BS_QUIZ_FILE="quiz_d2l_"+(window.__COURSE?window.__COURSE.storagePrefix.toUp
 function exportStampFile(d){function p2(n){return (n<10?"0":"")+n;}return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate())+" "+p2(d.getHours())+p2(d.getMinutes());}
 function exportStampTitle(d){var M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];var h=d.getHours(),ap=h<12?"AM":"PM";h=h%12;if(h===0)h=12;var m=d.getMinutes();return M[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear()+", "+h+":"+(m<10?"0":"")+m+" "+ap;}
 var BS_DL_STAMP="";
+var BS_FIG_TAG="";
+function bsMakeFigTag(){var d=new Date();function p2(n){return (n<10?"0":"")+n;}var t=""+d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+"-"+p2(d.getHours())+p2(d.getMinutes());var r="";try{var b=new Uint8Array(2);crypto.getRandomValues(b);for(var i=0;i<b.length;i++){var h=b[i].toString(16);if(h.length<2)h="0"+h;r+=h;}}catch(e){r=("0000"+Math.floor(Math.random()*65536).toString(16)).slice(-4);}return t+"-"+r;}
 function bsQuizTitle(){return BS_QUIZ_TITLE+(BS_DL_STAMP?(" ("+BS_DL_STAMP+")"):"");}
 function bsUuid(){
   var b=new Uint8Array(16);
@@ -8531,7 +8533,7 @@ function bsItemXml(q,poolNo,varNo,pts,st,files,rasterFn){
     promptHtmlP=promptHtmlP.then(function(ph){
       return rasterFn(q.figure).then(function(png){
         if(png&&png.bytes){
-          var fname=(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+"Fig_"+poolNo+"_"+varNo+".png";
+          var fname=(window.__COURSE?window.__COURSE.storagePrefix.toUpperCase():"APP")+"Fig_"+(BS_FIG_TAG?BS_FIG_TAG+"_":"")+poolNo+"_"+varNo+".png";
           files.push({name:fname,data:png.bytes});
           st.figures++;
           return ph+'<p><img src="'+fname+'" alt="'+xescA(bsFigureAlt(q.figure))+'" style="max-width: 100%;" /></p>';
@@ -8620,6 +8622,7 @@ function bsManifestXml(files){
     +'</resource></resources></manifest>';
 }
 function buildBrightspacePackage(items,nVars,rasterFn){
+  BS_FIG_TAG=bsMakeFigTag();
   var st={pools:0,variants:0,figures:0,figInline:0,degraded:0,numToLA:0,mc:0,num:0,la:0};
   var files=[],poolsXml="";
   var chain=Promise.resolve();
