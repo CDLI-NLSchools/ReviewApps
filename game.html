@@ -265,10 +265,15 @@ var Relay = (function () {
     answer: function (code, qn, pid, choice) {
       return ref("rooms/" + code + "/answers/" + qn + "/" + pid).set({ c: choice, ts: firebase.database.ServerValue.TIMESTAMP });
     },
-    heartbeat: function (code, pid) {
+    heartbeat: function (code, pid, first) {
       var r = ref("rooms/" + code + "/players/" + pid);
-      r.update({ lastSeen: firebase.database.ServerValue.TIMESTAMP });
-      r.onDisconnect().update({ gone: true });
+      /* Every heartbeat also clears the gone flag. A phone whose
+         connection blips (screen dimming, network handover) gets marked
+         gone by the disconnect write below; without this clear, the
+         player stayed "gone" forever and the host stopped waiting for
+         their answers, ending questions early for everyone. */
+      r.update({ lastSeen: firebase.database.ServerValue.TIMESTAMP, gone: false });
+      if (first) r.onDisconnect().update({ gone: true });
     },
     remove: function (path) { return ref(path).remove(); },
     TIMESTAMP: function () { return firebase.database.ServerValue.TIMESTAMP; }
@@ -977,10 +982,10 @@ var Play = {
   },
   join: function () {
     var self = this;
-    var data = { name: this.name, avatar: this.avatar, joined: Relay.TIMESTAMP(), lastSeen: Relay.TIMESTAMP(), score: 0 };
+    var data = { name: this.name, avatar: this.avatar, joined: Relay.TIMESTAMP(), lastSeen: Relay.TIMESTAMP(), score: 0, gone: false };
     Relay.create("rooms/" + this.code + "/players/" + this.pid, data).then(function () {
       try { sessionStorage.setItem("gameJoin:" + self.code, JSON.stringify({ pid: self.pid, name: self.name, avatar: self.avatar })); } catch (e) {}
-      Relay.heartbeat(self.code, self.pid);
+      Relay.heartbeat(self.code, self.pid, true);
       self.hbInt = setInterval(function () { Relay.heartbeat(self.code, self.pid); }, 8000);
       $("playJoin").classList.add("hidden");
       $("playMain").classList.remove("hidden");
