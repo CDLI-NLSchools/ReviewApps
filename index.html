@@ -3934,7 +3934,7 @@ function tGateStudentUI(){
   if(xm)hidCtl.txmc=xm.value;
   if(xc)hidCtl.txcr=xc.value;
   if(TEACHER)return;
-  ["mcCountIn","ncCountIn","lv1","lv2","lv3","pkChk","enrChk","bmIn","testXMcIn","testXCrIn"].forEach(function(id){
+  ["lv1","lv2","lv3","pkChk","enrChk","bmIn","testXMcIn","testXCrIn"].forEach(function(id){
     var el=$(id);if(!el)return;
     var lab=(el.closest?el.closest("label"):null)||el;
     if(lab.parentNode)lab.parentNode.removeChild(lab);
