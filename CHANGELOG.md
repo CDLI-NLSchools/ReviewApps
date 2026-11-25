@@ -6,6 +6,7 @@ All notable changes to the CDLI Review Apps are listed here, newest first. The n
 
 ### Added
 
+- Teacher downloads now carry the date and time they were made. The Brightspace, Kahoot and Blooket files are named with the date and time (for example, "Math 2201 for Brightspace - 2026-11-25 0918.zip"), and the title of a Brightspace quiz made from a set carries the same date and time, so a teacher who imports several sets into one course can tell the quizzes apart and sort the files.
 - Registered the STSE outcomes in Physics 2204 and 3204, Chemistry 2202 and 3202, Biology 2201 and 3201, and Science 1206.
 - Mathematics 2201: practice added for ten more curriculum indicators, including proof, scale diagrams, rates and parallel line construction, completing coverage of all 91 outcomes.
 - Mathematics 2201: practice questions added for ten more curriculum indicators, completing the radical, reasoning, angle and proportional reasoning outcomes.
