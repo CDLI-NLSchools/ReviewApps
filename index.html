@@ -8256,6 +8256,8 @@ function downloadWordFile(statusEl){
    Only multiple choice questions export; constructed-response questions
    are counted and reported in the status line, never sent. */
 var GAME_TIME={1:20,2:30,3:60};
+var SUBMAP={"0":"\u2080","1":"\u2081","2":"\u2082","3":"\u2083","4":"\u2084","5":"\u2085","6":"\u2086","7":"\u2087","8":"\u2088","9":"\u2089","+":"\u208A","-":"\u208B","n":"\u2099","x":"\u2093","a":"\u2090","e":"\u2094","h":"\u2095","k":"\u2096","l":"\u2097","m":"\u2098","o":"\u2092","p":"\u209A","s":"\u209B","t":"\u209C","i":"\u1D62","j":"\u2C7C","r":"\u1D63","u":"\u1D64","v":"\u1D65"};
+var WORDCMDS={"sin":1,"cos":1,"tan":1,"sec":1,"csc":1,"cot":1,"arcsin":1,"arccos":1,"arctan":1,"sinh":1,"cosh":1,"tanh":1,"log":1,"ln":1,"lim":1,"min":1,"max":1,"exp":1,"det":1,"deg":1,"gcd":1,"sup":1,"inf":1};
 var SUPMAP={"0":"\u2070","1":"\u00B9","2":"\u00B2","3":"\u00B3","4":"\u2074","5":"\u2075","6":"\u2076","7":"\u2077","8":"\u2078","9":"\u2079","-":"\u207B","+":"\u207A","n":"\u207F","x":"\u02E3"};
 function texGroup(s,i){
   var depth=0;
@@ -8286,12 +8288,14 @@ function texToPlain(s){
           out+=simple?(num+"/"+den):("("+num+")/("+den+")");
           continue;
         }
+        if(cmd==="binom"){var gb1=texArg(s,i);i=gb1[1];var gb2=texArg(s,i);i=gb2[1];out+="("+texToPlain(gb1[0])+" choose "+texToPlain(gb2[0])+")";continue;}
         if(cmd==="sqrt"){var gs=texArg(s,i);i=gs[1];var inner=texToPlain(gs[0]);out+=(/^[0-9.]+$/.test(inner)?"\u221A"+inner:"\u221A("+inner+")");continue;}
         if(cmd==="text"||cmd==="mathrm"||cmd==="operatorname"){var gt=texArg(s,i);i=gt[1];out+=gt[0];continue;}
         if(cmd==="overline"){var go=texArg(s,i);i=go[1];out+=texToPlain(go[0])+"\u0305";continue;}
         if(cmd==="begin"||cmd==="end"){var gb=texArg(s,i);i=gb[1];continue;}
-        var sym={"times":"\u00D7","div":"\u00F7","pi":"\u03C0","ne":"\u2260","neq":"\u2260","le":"\u2264","leq":"\u2264","ge":"\u2265","geq":"\u2265","cdot":"\u00B7","pm":"\u00B1","approx":"\u2248","infty":"\u221E","alpha":"\u03B1","beta":"\u03B2","theta":"\u03B8","Delta":"\u0394"}[cmd];
+        var sym={"times":"\u00D7","div":"\u00F7","pi":"\u03C0","ne":"\u2260","neq":"\u2260","le":"\u2264","leq":"\u2264","ge":"\u2265","geq":"\u2265","cdot":"\u00B7","pm":"\u00B1","approx":"\u2248","infty":"\u221E","alpha":"\u03B1","beta":"\u03B2","theta":"\u03B8","Delta":"\u0394","circ":"\u00B0","angle":"\u2220","triangle":"\u25B3","square":"\u25A1","to":"\u2192","rightarrow":"\u2192","leftarrow":"\u2190","Rightarrow":"\u21D2","mid":"|","int":"\u222B","ldots":"\u2026","cdots":"\u2026","in":"\u2208","cap":"\u2229","cup":"\u222A","cong":"\u2245","perp":"\u22A5","parallel":"\u2225","emptyset":"\u2205","prime":"\u2032","mp":"\u2213","phi":"\u03C6","lambda":"\u03BB","mu":"\u03BC","sigma":"\u03C3","gamma":"\u03B3","delta":"\u03B4","epsilon":"\u03B5","omega":"\u03C9","Omega":"\u03A9","Sigma":"\u03A3","exists":"\u2203","forall":"\u2200"}[cmd];
         if(sym!==undefined){out+=sym;continue;}
+        if(WORDCMDS[cmd]){out+=cmd;continue;}
         continue;
       }
       var nx=s[i+1];
@@ -8303,7 +8307,9 @@ function texToPlain(s){
     if(ch==="^"){
       var sup;
       if(s[i+1]==="{"){var gh=texGroup(s,i+1);sup=gh[0];i=gh[1];}
+      else if(s[i+1]==="\\"){var ga=texArg(s,i+1);sup=ga[0];i=ga[1];}
       else{sup=s[i+1]||"";i+=2;}
+      var supPlain=texToPlain(sup);if(sup.indexOf("\\")>=0&&supPlain.length===1&&!/^[0-9a-zA-Z]$/.test(supPlain)){out+=supPlain;continue;}
       var mapped="",okMap=sup.length>0;
       for(var k=0;k<sup.length;k++){var sm=SUPMAP[sup[k]];if(!sm){okMap=false;break;}mapped+=sm;}
       out+=okMap?mapped:("^("+texToPlain(sup)+")");
@@ -8313,7 +8319,7 @@ function texToPlain(s){
       var sub;
       if(s[i+1]==="{"){var gu=texGroup(s,i+1);sub=gu[0];i=gu[1];}
       else{sub=s[i+1]||"";i+=2;}
-      out+=texToPlain(sub);
+      var subMapped="",subOk=sub.length>0;for(var k2=0;k2<sub.length;k2++){var sm2=SUBMAP[sub[k2]];if(!sm2){subOk=false;break;}subMapped+=sm2;}out+=(subOk?subMapped:texToPlain(sub));
       continue;
     }
     if(ch==="{"){var gc=texGroup(s,i);out+=texToPlain(gc[0]);i=gc[1];continue;}
@@ -8330,7 +8336,7 @@ function exportText(h){
   s=s.replace(/\\\(([\s\S]*?)\\\)/g,function(_,t){return " "+texToPlain(t)+" ";});
   s=s.replace(/<br\s*\/?>/gi," ").replace(/<[^>]+>/g," ");
   s=s.replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,"\"").replace(/&#39;|&apos;/g,"'").replace(/&nbsp;/g," ");
-  return s.replace(/\s+/g," ").trim();
+  return s.replace(/\s+/g," ").replace(/\s+([.,;:!?])/g,"$1").replace(/\s+\)/g,")").replace(/\(\s+/g,"(").trim();
 }
 function gameRows(items){
   var rows=[],leftOut=0;
