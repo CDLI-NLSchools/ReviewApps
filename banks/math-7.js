@@ -1163,6 +1163,10 @@ function u3gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}retu
 function u3simp(n,d){var g=u3gcd(n,d);return [n/g,d/g];}
 function u3fr(n,d){var s=u3simp(n,d);return "\\("+FR(s[0],s[1])+"\\)";}
 function u3isRep(n,d){var s=u3simp(n,d),x=s[1];while(x%2===0)x/=2;while(x%5===0)x/=5;return x>1;}
+/* Repetend length of n/d (November 26, 2026, ruling 6 on audit finding B7):
+   0 when the decimal terminates, otherwise the multiplicative order of 10
+   modulo the denominator with its factors 2 and 5 stripped. */
+function u3repLen(n,d){var s=u3simp(n,d),x=s[1];while(x%2===0)x/=2;while(x%5===0)x/=5;if(x===1)return 0;var r=1,len=0;do{r=(r*10)%x;len++;}while(r!==1&&len<100);return len;}
 function u3decStr(v){return "0."+v+"...";}
 function u3repStr(n,d){
   if(d===9)return "0."+n+""+n+""+n+"...";
@@ -1431,14 +1435,14 @@ E("u3-match-decimals", 3, ["3.9","3.11"], 2, "var", varset([
     {t:"\\("+FR(4,11)+"\\) = 0.3636...", fb:"Yes: 4 divided by 11 gives 0.3636..., with 36 repeating."},
     [{t:"\\("+FR(2,11)+"\\) = 0.211", fb:"2/11 = 0.1818...: check by dividing."},
      {t:"\\("+FR(5,9)+"\\) = 0.59", fb:"5/9 = 0.555...: check by dividing."},
-     {t:"\\("+FR(3,7)+"\\) = 0.37", fb:"3/7 = 0.428571...: check by dividing."}],
-    "Divide each numerator by its denominator: 2/11 = 0.1818..., 4/11 = 0.3636..., 5/9 = 0.555..., 3/7 = 0.428571.... Only <b>4/11 = 0.3636...</b> matches.", {s:4}); },
+     {t:"\\("+FR(5,11)+"\\) = 0.511", fb:"5/11 = 0.4545...: check by dividing."}],
+    "Divide each numerator by its denominator: 2/11 = 0.1818..., 4/11 = 0.3636..., 5/9 = 0.555..., 5/11 = 0.4545.... Only <b>4/11 = 0.3636...</b> matches.", {s:4}); },
   function(){ return mcq("Which matching of a fraction to its decimal is correct?",
     {t:"\\("+FR(5,6)+"\\) = 0.8333...", fb:"Yes: 5 divided by 6 gives 0.8333..., with 3 repeating."},
     [{t:"\\("+FR(4,9)+"\\) = 0.49", fb:"4/9 = 0.444...: the digits of the fraction are not its decimal."},
      {t:"\\("+FR(7,12)+"\\) = 0.712", fb:"7/12 = 0.58333...: check by dividing."},
-     {t:"\\("+FR(2,7)+"\\) = 0.27", fb:"2/7 = 0.285714...: check by dividing."}],
-    "Divide each numerator by its denominator: 5/6 = 0.8333..., 4/9 = 0.444..., 7/12 = 0.58333..., 2/7 = 0.285714.... Only <b>5/6 = 0.8333...</b> matches.", {s:5}); },
+     {t:"\\("+FR(7,11)+"\\) = 0.711", fb:"7/11 = 0.6363...: check by dividing."}],
+    "Divide each numerator by its denominator: 5/6 = 0.8333..., 4/9 = 0.444..., 7/12 = 0.58333..., 7/11 = 0.6363.... Only <b>5/6 = 0.8333...</b> matches.", {s:5}); },
   function(){ return mcq("Which matching of a fraction to its decimal is correct?",
     {t:"\\("+FR(1,9)+"\\) = 0.111...", fb:"Yes: 1 divided by 9 gives 0.111..., repeating."},
     [{t:"\\("+FR(3,10)+"\\) = 0.31", fb:"3/10 = 0.3 exactly: check the place values."},
@@ -1449,10 +1453,14 @@ E("u3-match-decimals", 3, ["3.9","3.11"], 2, "var", varset([
 
 E("u3-sort-repeat-term", 3, ["3.10","3.11"], 2, "gen", function(){
   var wantRep=ri(0,1)===0, guard=0;
+  /* Constraint, November 26, 2026 (ruling 6 on audit finding B7): the guide
+     limits assessed repeating decimals to 1 or 2 repeating digits, so a
+     repeating draw is accepted only when its repetend length is 1 or 2. */
   function drawFrac(rep){
     for(var t=0;t<300;t++){
       var d=ri(3,40), n=ri(1,d-1);
-      if(u3isRep(n,d)===rep)return [n,d];
+      if(rep){ if(u3isRep(n,d)&&u3repLen(n,d)<=2)return [n,d]; }
+      else if(!u3isRep(n,d))return [n,d];
     }
     return rep?[1,3]:[1,4];
   }
@@ -1689,16 +1697,26 @@ E("u3-frontend-prod-quot", 3, ["6.2","6.3"], 2, "gen", function(){
 }, ["Front-end estimation uses the leading digits to judge the size of the answer.", "Start by multiplying or dividing just the front-end whole numbers."]);
 
 E("u3-div-decimals", 3, ["6.8"], 1, "gen", function(){
+  /* Fix, November 26, 2026 (dealt-quality item noted in the Math 7 guide
+     audit): the decimal-divisor mode used to borrow the count contexts
+     below, dealing nonsense such as "cut into 0.6 equal pieces". A decimal
+     divisor is a size, not a count, so that mode now has its own contexts
+     and a whole-number count answer; the whole-number-divisor mode and its
+     three contexts are unchanged. */
   var ctxs=[
     {s:"A rope %D m long is cut into %V equal pieces. How long is each piece, in metres?"},
     {s:"A group pays $%D for a van rental, split equally among %V friends. How much does each friend pay?"},
     {s:"A jug holds %D L of juice, poured equally into %V bottles. How many litres are in each bottle?"}
   ];
+  var decCtxs=[
+    {s:"A rope %D m long is cut into pieces that are each %V m long. How many pieces are cut?"},
+    {s:"A jug holds %D L of juice. It is poured into bottles that each hold %V L. How many bottles are filled?"}
+  ];
   var useDecDiv=ri(0,1)===0;
   var dv=useDecDiv?ri(3,9)/10:ri(3,9);
-  var q=ri(125,2400)/100;
+  var q=useDecDiv?ri(4,30):ri(125,2400)/100;
   var dvd=q*dv;
-  var c=pick(ctxs);
+  var c=pick(useDecDiv?decCtxs:ctxs);
   var prompt=c.s.replace("%D",fmt(dvd,3)).replace("%V",fmt(dv,1));
   var money=c.s.indexOf("$")>=0;
   var pool=[q*10,q/10,q+dv,q- dv];
@@ -4010,9 +4028,10 @@ E("u7-two-event-pct-cr",7,["12.4","12.5","12.7"],1,"gen",function(){
   else if(fam==="twospin"){var s3=pick([3,4,5]);var k3=ri(1,s3);fav=1;total=s3*s3;desc="a "+s3+"-section spinner is spun twice, and the outcome is section "+k3+" both times";}
   else {var t=ri(2,8);fav=t<=7?t-1:13-t;total=36;desc="two dice are rolled, and the outcome is a total of "+t;}
   var pct=fav/total*100;
+  var pctR=Math.round(pct*100)/100; /* Nov 26, 2026: the solution prints the pre-rounded percent, matching the key (a dealt-quality fix from the Math 7 guide audit). */
   return numq(opener+", "+desc+". What is the theoretical probability of this outcome, as a percent?",
     Math.round(pct*100)/100,0.02,
-    "The combined sample space has "+total+" equally likely outcomes, and "+fav+" of them match. \\[ \\begin{aligned} P &= "+FR(fav,total)+" \\\\ &= "+fmt(pct)+"\\% \\end{aligned} \\] The probability is <b>"+fmt(pct)+"%</b>.",
+    "The combined sample space has "+total+" equally likely outcomes, and "+fav+" of them match. \\[ \\begin{aligned} P &= "+FR(fav,total)+" \\\\ &= "+fmt(pctR,2)+"\\% \\end{aligned} \\] The probability is <b>"+fmt(pctR,2)+"%</b>.",
     {mode:"pct",total:total,fav:fav});
 },["List the combined sample space size first: multiply the outcomes of each event.","Start by counting all combined outcomes, then the matching ones."]);
 E("u7-sample-space",7,["12.3","12.4"],1,"gen",function(){
@@ -4756,19 +4775,13 @@ E("u8-construct-verify",8,["10.13","10.14","10.15"],3,"var",varset([
 // CRMARKS: u2-gap-chain-target-cr=2
 // CRMARKS: u2-gap-missing-start-cr=2
 // CRMARKS: u2-gap-mean-target-cr=3
-// CRMARKS: u2-gap-order-ops-cr=3
 // CRMARKS: u2-gap-round-trip-cr=3
 // CRMARKS: u3-gap-discount-total-cr=2
-// CRMARKS: u3-gap-tickets-left-cr=2
-// CRMARKS: u3-gap-decimal-fraction-cr=3
 // CRMARKS: u3-gap-compare-difference-cr=3
 // CRMARKS: u4-gap-area-diameter-cr=2
 // CRMARKS: u4-gap-rect-minus-circle-cr=2
 // CRMARKS: u4-gap-revolutions-cr=3
-// CRMARKS: u5-gap-recipe-total-cr=2
 // CRMARKS: u5-gap-sub-mixed-dec-cr=2
-// CRMARKS: u5-gap-grams-cr=3
-// CRMARKS: u5-gap-frac-of-frac-cr=3
 // CRMARKS: u6-gap-two-step-cr=2
 // CRMARKS: u6-gap-both-sides-cr=2
 // CRMARKS: u6-gap-divide-form-cr=3
@@ -4777,15 +4790,21 @@ E("u8-construct-verify",8,["10.13","10.14","10.15"],3,"var",varset([
 // CRMARKS: u7-gap-median-range-cr2=2
 // CRMARKS: u7-gap-joint-pct-cr=3
 // CRMARKS: u7-gap-expected-pct-cr=3
-// CRMARKS: u8-gap-angle-chain-cr=2
-// CRMARKS: u8-gap-pythagoras-cr=2
 // CRMARKS: u8-gap-rotate-cr=3
 // CRMARKS: u8-gap-grid-area-cr=3
-// CRMARKS: u8-gap-parallel-angle-cr=3
-// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
-// CRMARKS: u2-gap-order-ops-sr=2
-// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
-// BIMODAL: u2-gap-order-ops-sr=a
+/* Removals, November 26, 2026 (Jason's rulings on the Math 7 guide audit,
+   Guide-Audit-Math-7-2026-11-26.md). Ten entries removed, with their
+   CRMARKS lines (and, for u2-gap-order-ops-sr, its BIMODAL line):
+   - Ruling 1 (drop; audit B2, a genuine misfit): u8-gap-pythagoras-cr.
+   - Ruling 2 (audit B1; considered for the Grade 8 bank and found
+     already covered there by bank-u2.js items 11, 12 and 14 under
+     indicator 6.27, so nothing was ported): u2-gap-order-ops-cr,
+     u2-gap-order-ops-sr.
+   - Ruling 4 (misfits; audit B5, the fraction multiplication family):
+     u3-gap-tickets-left-cr, u3-gap-decimal-fraction-cr,
+     u5-gap-recipe-total-cr, u5-gap-grams-cr, u5-gap-frac-of-frac-cr.
+   - Ruling 5 (misfits; audit B6): u8-gap-angle-chain-cr,
+     u8-gap-parallel-angle-cr. */
 /* ===== Pool-gap fill, November 9, 2026 ===== */
 /* New Level 2 entries added to close the unit-test CR remainder gaps.
    Every CR entry below always returns numq(...). */
@@ -4853,35 +4872,12 @@ E("u2-gap-mean-target-cr", 2, ["6.29"], 2, "gen", function(){
     {vals:vals,m:m});
 }, ["The mean is only the first step; the question also asks for the distance from a target value.", "Start by adding the four temperatures, watching the signs."]);
 
-E("u2-gap-order-ops-cr", 2, ["6.29"], 2, "gen", function(){
-  var r=pick([2,3,4,5]), q0=ri(2,9), diff=r*q0, p=ri(5,20), qq=p-diff, s=ri(2,12);
-  var ans=-q0+s;
-  return numq("Evaluate \\(("+p+" - "+u2Sg(qq)+") \\div ("+(-r)+") + "+s+"\\). Show the order of operations you follow.", ans, 0,
-    "Do the brackets first, then the division, then the addition. \\[ \\begin{aligned} ("+p+" - "+u2Sg(qq)+") \\div ("+(-r)+") + "+s+" &= "+diff+" \\div ("+(-r)+") + "+s+" \\\\ &= "+(-q0)+" + "+s+" \\\\ &= "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
-    {p:p,qq:qq,r:r,s:s});
-}, ["Follow the order of operations: brackets, then division, then addition, and watch the sign when dividing by a negative.", "Start by evaluating the brackets."]);
-
 E("u2-gap-round-trip-cr", 2, ["6.26","6.28"], 2, "gen", function(){
   var p1=-ri(2,15), p2=ri(2,18), dist=p2-p1, ans=2*dist;
   return numq("An elevator starts on floor "+p1+" and travels up to floor "+p2+", then returns to floor "+p1+". How many floors does the elevator travel in total? Show your work.", ans, 0,
     "The one-way distance is the difference of the two positions, and the return trip covers the same distance again. \\[ \\begin{aligned} \\text{one way} &= "+p2+" - "+u2Sg(p1)+" = "+dist+" \\\\ \\text{total} &= 2 \\times "+dist+" = "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
     {p1:p1,p2:p2});
 }, ["Find the one-way distance between the two signed positions first; the round trip is that distance twice.", "Start by subtracting the lower floor number from the higher one."]);
-
-E("u2-gap-order-ops-sr", 2, ["6.29"], 2, "gen", function(){
-  var a=ri(8,17), b=ri(2,a-3), c=ri(2,5), d=ri(2,10);
-  var base=a-b, ans=base*(-c)+d;
-  var signErr=base*c+d, orderErr=a+b*c+d, arithErr=ans+pick([2,-2,c+1]);
-  var cands=[signErr,orderErr,arithErr]; var seen={}; seen[String(ans)]=1; var ds=[];
-  var fbs={}; fbs[String(signErr)]="That keeps the size but drops the negative sign on the multiplier."; fbs[String(orderErr)]="That multiplies before doing the brackets; the brackets come first."; fbs[String(arithErr)]="That has the right method but an arithmetic slip in the final steps.";
-  cands.forEach(function(z){ if(!seen[String(z)]&&ds.length<3){ seen[String(z)]=1; ds.push({t:String(z), fb:fbs[String(z)]||"Check the brackets and the sign of the product."}); } });
-  var g=2; while(ds.length<3){ var z=ans+g; if(!seen[String(z)]){ seen[String(z)]=1; ds.push({t:String(z), fb:"Check the brackets first, then the sign of the product."}); } g++; }
-  return mcq("What is \\(("+a+" - "+b+") \\times ("+(-c)+") + "+d+"\\)?",
-    {t:String(ans), fb:"Correct: the brackets give "+base+", the product is "+(base*(-c))+", and adding "+d+" gives "+ans+"."},
-    ds,
-    "Do the brackets first, then multiply, then add. \\[ \\begin{aligned} ("+a+" - "+b+") \\times ("+(-c)+") + "+d+" &= "+base+" \\times ("+(-c)+") + "+d+" \\\\ &= "+(base*(-c))+" + "+d+" \\\\ &= "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
-    {a:a,b:b,c:c,d:d});
-}, ["Do the brackets first, then the multiplication, then the addition.", "Start by evaluating the brackets."]);
 
 /* --- Unit 3 pool-gap fill --- */
 E("u3-gap-discount-total-cr", 3, ["6.12","6.11"], 2, "gen", function(){
@@ -4892,22 +4888,6 @@ E("u3-gap-discount-total-cr", 3, ["6.12","6.11"], 2, "gen", function(){
     "Find the discount amount first, then subtract it from the price. \\[ \\begin{aligned} \\text{discount} &= "+p+"\\% \\text{ of } "+P+" = "+disc+" \\\\ \\text{amount paid} &= "+P+" - "+disc+" = "+ans+" \\end{aligned} \\] The answer is <b>$"+ans+"</b>.",
     {P:P,p:p});
 }, ["Find the percent amount first; the amount paid is what remains after it is taken off.", "Start by calculating the discount in dollars."]);
-
-E("u3-gap-tickets-left-cr", 3, ["6.9"], 2, "gen", function(){
-  var pr=pick([[1,3],[2,3],[1,4],[3,4],[1,6],[5,6],[1,8],[3,8],[5,8],[7,8],[2,5],[3,5]]);
-  var n=pr[0], d=pr[1], T=d*ri(6,14), part=T*n/d, ans=T-part;
-  return numq("A school prints "+T+" raffle tickets. In the morning, \\("+FR(n,d)+"\\) of the tickets are sold. How many tickets are left to sell? Show your work.", ans, 0,
-    "Find how many tickets were sold first, then take that away from the total. \\[ \\begin{aligned} \\text{sold} &= "+FR(n,d)+" \\text{ of } "+T+" = "+part+" \\\\ \\text{left} &= "+T+" - "+part+" = "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
-    {n:n,d:d,T:T});
-}, ["Find the part that was sold first; what is left is the complement of that part.", "Start by finding the fraction of the total tickets."]);
-
-E("u3-gap-decimal-fraction-cr", 3, ["3.12"], 2, "gen", function(){
-  var pr=pick([[1,2],[1,4],[3,4],[1,5],[2,5],[3,5],[4,5],[1,8],[3,8],[5,8]]);
-  var n=pr[0], d=pr[1], dec=n/d, Q=d*ri(6,14), ans=Q*n/d;
-  return numq("Write "+fmt(dec,3)+" as a fraction in lowest terms, then find that fraction of "+Q+" kilograms. Give the final amount, in kilograms. Show your work.", ans, 0,
-    "As a fraction, \\("+fmt(dec,3)+" = "+FR(n,d)+"\\) in lowest terms. Apply that fraction to the quantity. \\[ \\begin{aligned} "+FR(n,d)+" \\text{ of } "+Q+" &= "+Q+" \\div "+d+" \\times "+n+" \\\\ &= "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
-    {n:n,d:d,Q:Q});
-}, ["Convert the decimal to a fraction first; only then can you apply it to the quantity.", "Start by writing the decimal as a fraction over 10, 100 or 1000 and reducing it."]);
 
 E("u3-gap-compare-difference-cr", 3, ["3.5","3.3"], 2, "gen", function(){
   var pr=pick([[3,4],[5,8],[7,8],[2,5],[4,5],[9,10],[3,5],[1,4],[7,10],[3,8]]);
@@ -4945,14 +4925,6 @@ E("u4-gap-revolutions-cr", 4, ["9.7","9.10"], 2, "gen", function(){
 }, ["One turn of the wheel covers one circumference; find that distance first, then scale it up and convert units.", "Start by using the radius to find the circumference."]);
 
 /* --- Unit 5 pool-gap fill --- */
-E("u5-gap-recipe-total-cr", 5, ["6.23","6.17"], 2, "gen", function(){
-  var N=ri(5,15), f=pick([2,3]), ing=pick(["flour","sugar","rolled oats"]);
-  var ans=(1+f)*N/4;
-  return numq("A recipe uses "+u5M(N,4)+" cups of "+ing+" for one batch. A cook makes one batch, and then a second batch that is "+f+" times as large. How many cups of "+ing+" are used in all? Give your answer as a decimal number of cups. Show your work.", ans, 0.01,
-    "Find the amount for the large batch first, then add the two batches. \\[ \\begin{aligned} \\text{second batch} &= "+f+" \\times "+u5disp(N,4)+" = "+u5disp(f*N,4)+" \\\\ \\text{total} &= "+u5disp(N,4)+" + "+u5disp(f*N,4)+" = "+u5disp((1+f)*N,4)+" = "+fmt(ans,2)+" \\end{aligned} \\] The answer is <b>"+fmt(ans,2)+"</b>.",
-    {N:N,f:f});
-}, ["Scale the recipe amount for the second batch first; the total combines both batches.", "Start by multiplying the one-batch amount by the scale factor."]);
-
 E("u5-gap-sub-mixed-dec-cr", 5, ["6.21","6.19"], 2, "gen", function(){
   var mode=pick(["q","e"]); var d, w1, n1, w2, n2;
   if(mode==="q"){ d=4; w1=ri(4,7); n1=pick([1,2]); w2=ri(1,3); n2=3; }
@@ -4962,22 +4934,6 @@ E("u5-gap-sub-mixed-dec-cr", 5, ["6.21","6.19"], 2, "gen", function(){
     "The fraction part being subtracted is larger, so borrow 1 whole from the whole-number part first. \\[ \\begin{aligned} "+u5disp(startN,d)+" - "+u5disp(subN,d)+" &= "+u5disp(startN-subN,d)+" \\\\ &= "+fmt(ans,3)+" \\end{aligned} \\] The answer is <b>"+fmt(ans,3)+"</b>.",
     {mode:mode,startN:startN,subN:subN,d:d});
 }, ["Compare the fraction parts first; here the subtraction needs borrowing from the whole-number part.", "Start by rewriting the first mixed number with one whole borrowed into its fraction part."]);
-
-E("u5-gap-grams-cr", 5, ["6.23"], 2, "gen", function(){
-  var pr=pick([[3,4],[5,8],[3,8],[7,8],[2,5],[4,5],[3,5],[1,2]]);
-  var n=pr[0], d=pr[1], M=ri(2,6), grams=M*1000, ans=grams*n/d; var item=pick(["flour","sugar","rice flour","cocoa powder"]);
-  return numq("A bag of "+item+" has a mass of "+M+" kilograms. A baker uses \\("+FR(n,d)+"\\) of the bag. How many grams of "+item+" does the baker use? Show your work.", ans, 0,
-    "Convert the mass to grams first, then take the fraction of that amount. \\[ \\begin{aligned} "+M+" \\text{ kg} &= "+grams+" \\text{ g} \\\\ "+FR(n,d)+" \\text{ of } "+grams+" &= "+grams+" \\div "+d+" \\times "+n+" = "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
-    {n:n,d:d,M:M});
-}, ["Change the unit first so the final answer comes out in grams, then find the fraction of the converted amount.", "Start by multiplying the kilograms by 1000."]);
-
-E("u5-gap-frac-of-frac-cr", 5, ["6.23","6.22"], 2, "gen", function(){
-  var p1=pick([[1,2],[1,3],[2,3],[1,4],[3,4]]), p2=pick([[1,2],[1,4],[2,3],[3,4],[1,5],[2,5]]);
-  var base=p1[1]*p2[1], Q=base*ri(4,9), step1=Q*p1[0]/p1[1], ans=step1*p2[0]/p2[1];
-  return numq("A school prints "+Q+" pages for a booklet project. Of those pages, \\("+FR(p1[0],p1[1])+"\\) are set aside for booklets. Of the pages set aside, \\("+FR(p2[0],p2[1])+"\\) are printed in colour. How many pages are printed in colour? Show your work.", ans, 0,
-    "Take the first fraction of the total, then take the second fraction of that result. \\[ \\begin{aligned} \\text{set aside} &= "+FR(p1[0],p1[1])+" \\text{ of } "+Q+" = "+step1+" \\\\ \\text{colour} &= "+FR(p2[0],p2[1])+" \\text{ of } "+step1+" = "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
-    {Q:Q,step1:step1});
-}, ["Work in stages: the second fraction acts on the result of the first fraction, not on the original total.", "Start by finding the first fraction of the total pages."]);
 
 /* --- Unit 6 pool-gap fill --- */
 E("u6-gap-two-step-cr", 6, ["8.14"], 2, "gen", function(){
@@ -5046,22 +5002,6 @@ E("u7-gap-expected-pct-cr", 7, ["12.6","12.7"], 2, "gen", function(){
 }, ["An expected count applies the long-run percent to the actual number of trials.", "Start by finding what one percent of the trials is, or by writing the percent as a decimal."]);
 
 /* --- Unit 8 pool-gap fill --- */
-E("u8-gap-angle-chain-cr", 8, ["10.1"], 2, "gen", function(){
-  var B=0,C=0,D=0,third=0,g=0;
-  while(g++<200){ B=ri(35,120); C=180-B; D=ri(15,60); third=180-C-D; if(third>=10) break; }
-  var q=numq("Angle P sits on a straight line with an angle of "+B+" degrees, so angle P and the "+B+" degree angle are supplementary. Angle P is one angle of a triangle whose second angle is "+D+" degrees. Find the third angle of the triangle, in degrees. Show your work.", third, 0,
-    "Find angle P from the straight line first, then use the triangle angle sum. \\[ \\begin{aligned} P &= 180 - "+B+" = "+C+" \\\\ \\text{third angle} &= 180 - "+C+" - "+D+" = "+third+" \\end{aligned} \\] The answer is <b>"+third+"</b>.",
-    {B:B,D:D}); q.figure=triAngSVG(C,D,third,{L:["","",""],ang:["P",D+"°","?"]}); return q;
-}, ["Two angle facts are chained here: use the straight-line fact first, then feed its result into the triangle.", "Start by finding the supplementary angle on the straight line."]);
-
-E("u8-gap-pythagoras-cr", 8, ["10.19"], 2, "gen", function(){
-  var s=ri(1,3), ox=ri(-4,2), oy=ri(-3,3);
-  var A=[ox,oy], B=[ox+3*s,oy], Cc=[ox+3*s,oy+4*s], hyp=5*s;
-  var q=numq("Points A "+u8pair(A[0],A[1])+", B "+u8pair(B[0],B[1])+" and C "+u8pair(Cc[0],Cc[1])+" form a right triangle with the right angle at B. Find the length of the hypotenuse AC. Show your work.", hyp, 0,
-    "Count the legs from the coordinate differences first, then use the Pythagorean relationship. \\[ \\begin{aligned} AB &= "+(3*s)+", \\quad BC = "+(4*s)+" \\\\ AC^2 &= "+(3*s)+"^2 + "+(4*s)+"^2 = "+(25*s*s)+" \\\\ AC &= "+hyp+" \\end{aligned} \\] The answer is <b>"+hyp+"</b>.",
-    {s:s}); q.figure=figWideGrid([{x:A[0],y:A[1],label:"A"},{x:B[0],y:B[1],label:"B"},{x:Cc[0],y:Cc[1],label:"C"}],[[A,B,Cc]],null); return q;
-}, ["Get the two leg lengths from the coordinates first; the hypotenuse comes from combining them.", "Start by finding how far apart the points are horizontally and vertically."]);
-
 E("u8-gap-rotate-cr", 8, ["10.20","10.12"], 2, "gen", function(){
   var x=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), y=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
   var cw=Math.random()<0.5;
@@ -5080,14 +5020,6 @@ E("u8-gap-grid-area-cr", 8, ["10.9"], 2, "gen", function(){
     "Combine the half squares into whole squares first, then multiply by the area of one square. \\[ \\begin{aligned} \\text{squares} &= "+F+" + "+H+" \\div 2 = "+units+" \\\\ \\text{area of one square} &= "+s+" \\times "+s+" = "+(s*s)+" \\\\ \\text{area} &= "+units+" \\times "+(s*s)+" = "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
     {F:F,H:H,s:s}); q.figure=figGridArea(F,H); return q;
 }, ["Turn the half squares into whole-square equivalents first, then apply the scale of one square.", "Start by pairing the half squares into whole squares."]);
-
-E("u8-gap-parallel-angle-cr", 8, ["10.1"], 2, "gen", function(){
-  var A=0,B=0,third=0,g=0;
-  while(g++<200){ A=ri(40,110); B=ri(20,60); third=180-A-B; if(third>=10) break; }
-  var q=numq("Two parallel lines are cut by a transversal. One angle formed is "+A+" degrees, and an alternate interior angle equal to it forms one angle of a triangle. A second angle of the triangle is "+B+" degrees. Find the third angle of the triangle, in degrees. Show your work.", third, 0,
-    "Alternate interior angles formed by parallel lines are equal, so the triangle angle is "+A+" degrees; then use the triangle angle sum. \\[ \\begin{aligned} \\text{third angle} &= 180 - "+A+" - "+B+" = "+third+" \\end{aligned} \\] The answer is <b>"+third+"</b>.",
-    {A:A,B:B}); q.figure=triAngSVG(A,B,third,{L:["","",""],ang:[A+"°",B+"°","?"]}); return q;
-}, ["Use the parallel-line angle relationship first to get the triangle angle, then the triangle angle sum.", "Start by stating the size of the alternate interior angle."]);
 
 /* ----- bank-pk.js ----- */
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
@@ -9055,13 +8987,13 @@ BANK.forEach(function (e) {
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-carroll-cell":2,"u1-describe-graph":3,"u1-divisibility-why":2,"u1-environment-pattern":3,"u1-evaluate-cr":2,"u1-evaluate-expression":2,"u1-factor-list":2,"u1-factors-count-cr":3,"u1-far-term-cr":3,"u1-gap-budget-compare-cr":3,"u1-gap-divisible-count-cr":2,"u1-gap-solve-count-cr":2,"u1-gap-two-terms-cr":3,"u1-graph-conclusion":3,"u1-graph-relation":3,"u1-identify-parts":2,"u1-match-graph-panel":2,"u1-parts-in-equation":2,"u1-pattern-equation":3,"u1-pattern-expression":3,"u1-pk-div-2digit":2,"u1-pk-div-exact":2,"u1-pk-div-related":2,"u1-pk-div-remainder":2,"u1-pk-div-zeros":2,"u1-pk-fact-division":2,"u1-pk-fact-halving":2,"u1-pk-fact-onemore":2,"u1-pk-fact-recall":2,"u1-pk-fact-skip":2,"u1-pk-fq-between":2,"u1-pk-fq-coord":2,"u1-pk-fq-move":2,"u1-pk-fq-read":2,"u1-pk-fq-which":2,"u1-pk-mult-2by1":2,"u1-pk-mult-2by2":2,"u1-pk-mult-3by1":2,"u1-pk-mult-3by2":2,"u1-pk-mult-zeros":2,"u1-pk-multiples-first":2,"u1-pk-multiples-problem":2,"u1-pk-ooo-basic":2,"u1-pk-ooo-brackets":2,"u1-pk-ooo-chain":2,"u1-pk-ooo-division":2,"u1-pk-ooo-why":2,"u1-pk-pattern-missing":2,"u1-pk-pattern-rule":2,"u1-pk-sort-carroll-read":2,"u1-pk-sort-carroll-total":2,"u1-pk-sort-venn-place":2,"u1-pk-sort-venn-read":2,"u1-pk-tg-bar":2,"u1-pk-tg-compare":2,"u1-pk-tg-line":2,"u1-pk-tg-picto":2,"u1-pk-tg-table":2,"u1-relation-context":3,"u1-solve-812-cr":3,"u1-table-missing":2,"u1-table-value-cr":3,"u1-venn-overlap":2,"u2-add-basic":2,"u2-add-context":2,"u2-add-cr":3,"u2-add-numberline":2,"u2-error-spot":3,"u2-gap-chain-target-cr":2,"u2-gap-mean-target-cr":3,"u2-gap-missing-start-cr":2,"u2-gap-order-ops-cr":3,"u2-gap-order-ops-sr":2,"u2-gap-round-trip-cr":3,"u2-missing-addend-cr":3,"u2-mixed-chain":2,"u2-numberline-cr":3,"u2-opposites-zero":2,"u2-pk-add-regroup":2,"u2-pk-add-three":2,"u2-pk-addsub-large":2,"u2-pk-below-debt":2,"u2-pk-below-line":2,"u2-pk-below-temp":2,"u2-pk-order-below":2,"u2-pk-order-line":2,"u2-pk-order-missing":2,"u2-pk-sub-line":2,"u2-pk-sub-regroup":2,"u2-problem-cr":3,"u2-problem-two-step":2,"u2-sub-basic":2,"u2-sub-cr":2,"u2-sub-numberline":2,"u2-subtract-negative":2,"u3-add-sub-decimals":2,"u3-cr-add-sub":3,"u3-cr-div":2,"u3-cr-mult":3,"u3-cr-order-ops":3,"u3-cr-percent":3,"u3-cr-repeating-frac":2,"u3-decimal-to-fraction":2,"u3-div-decimals":2,"u3-frac-to-decimal":2,"u3-frontend-prod-quot":2,"u3-frontend-sum":2,"u3-gap-compare-difference-cr":3,"u3-gap-decimal-fraction-cr":3,"u3-gap-discount-total-cr":2,"u3-gap-tickets-left-cr":2,"u3-misplaced":2,"u3-mult-decimals":2,"u3-numberline-mixed":2,"u3-numberline-place":2,"u3-order-mixed":2,"u3-order-ops-dec":3,"u3-percent-convert":2,"u3-percent-of":2,"u3-pk-dpv-digit-value":2,"u3-pk-dpv-expanded":2,"u3-pk-dpv-place-name":2,"u3-pk-dpv-round-hundredth":2,"u3-pk-dpv-round-tenth":2,"u3-pk-equiv-divide":2,"u3-pk-equiv-missing":2,"u3-pk-equiv-target":2,"u3-pk-est-add":2,"u3-pk-est-difference":2,"u3-pk-est-money":2,"u3-pk-est-product":2,"u3-pk-fad-line":2,"u3-pk-fad-to-decimal":2,"u3-pk-fad-to-fraction":2,"u3-pk-fracrep-bar":2,"u3-pk-fracrep-circle":2,"u3-pk-fracrep-line":2,"u3-pk-fracrep-pick":2,"u3-pk-fracrep-set":2,"u3-pk-pct-decimal":2,"u3-pk-pct-fraction":2,"u3-pk-pct-grid":2,"u3-pk-pct-pick":2,"u3-reasonableness":2,"u3-repeating-predict":2,"u3-repeating-to-fraction":3,"u3-tax-total":3,"u3-tech-multdiv":3,"u4-area-circle":2,"u4-area-parallelogram":2,"u4-area-triangle":2,"u4-central-angles":2,"u4-circ-approx":2,"u4-circle-context":3,"u4-circumference":2,"u4-cr-area-circle":3,"u4-cr-area-mix":3,"u4-cr-circumference":3,"u4-cr-composite":3,"u4-cr-graph-quantity":2,"u4-draw-circle":2,"u4-estimate-circle-area":2,"u4-gap-area-diameter-cr":2,"u4-gap-rect-minus-circle-cr":2,"u4-gap-revolutions-cr":3,"u4-graph-attributes":2,"u4-graph-create":3,"u4-graph-media":3,"u4-graph-quantities":2,"u4-graph-read":2,"u4-para-from-rect":2,"u4-pi-ratio":2,"u4-pk-angle-full-turn":2,"u4-pk-angle-right-count":2,"u4-pk-circle-centre":2,"u4-pk-circle-diameter":2,"u4-pk-circle-pick":2,"u4-pk-circle-radius":2,"u4-pk-dec-mult-near3":2,"u4-pk-dec-mult-whole":2,"u4-pk-dec-square-decimal":2,"u4-pk-dec-square-whole":2,"u4-pk-perim-missing-polygon":2,"u4-pk-perim-missing-side":2,"u4-pk-perim-pentagon":2,"u4-pk-perim-rect":2,"u4-pk-perim-square":2,"u4-pk-protractor-acute":2,"u4-pk-protractor-five":2,"u4-pk-protractor-left":2,"u4-pk-protractor-obtuse":2,"u4-pk-protractor-supplement":2,"u4-pk-rect-area":2,"u4-pk-rect-area-context":2,"u4-pk-rect-decimals":2,"u4-pk-rect-missing-side":2,"u4-pk-rect-square":2,"u4-pk-rect-square-decimal":2,"u4-pk-ruler-cm":2,"u4-pk-ruler-cm-decimal":2,"u4-pk-ruler-difference":2,"u4-pk-ruler-half":2,"u4-pk-ruler-mm":2,"u4-pk-ruler-unit-choice":2,"u4-radius-diameter":2,"u4-triangle-from":2,"u5-add-like":2,"u5-add-mixed":2,"u5-add-model-total":2,"u5-add-unlike":2,"u5-common-denominator":2,"u5-gap-frac-of-frac-cr":3,"u5-gap-grams-cr":3,"u5-gap-recipe-total-cr":2,"u5-gap-sub-mixed-dec-cr":2,"u5-mixed-multistep":3,"u5-model-add-figure":2,"u5-model-sub-equation":2,"u5-model-sub-figure":2,"u5-pk-equiv-divide":2,"u5-pk-equiv-target":2,"u5-pk-mixed-from-improper":2,"u5-pk-mixed-slices":2,"u5-pk-mixed-to-improper":2,"u5-pk-mixed-which":2,"u5-problem-add":3,"u5-problem-sub-mixed":2,"u5-simplify-fraction":2,"u5-simplify-solution":3,"u5-sub-like":2,"u5-sub-mixed":2,"u5-sub-mixed-borrow":3,"u5-sub-unlike":2,"u5-sub-write-equation":2,"u5-three-fractions":3,"u6-balance-figure":2,"u6-gap-both-sides-cr":2,"u6-gap-check-diff-cr":3,"u6-gap-divide-form-cr":3,"u6-gap-two-step-cr":2,"u6-inspection-trial":2,"u6-model-problem":3,"u6-model-solve-cr":3,"u6-one-step-balance":2,"u6-one-step-problem":2,"u6-one-step-problem-cr":3,"u6-pk-balance-change":2,"u6-pk-balance-value":2,"u6-pk-subst-brackets":2,"u6-pk-subst-simple":2,"u6-pk-subst-table":2,"u6-preservation-next":2,"u6-preservation-problem-cr":2,"u6-problem-two-step-cr":3,"u6-solve-challenge-cr":3,"u6-solve-other-forms":2,"u6-solve-two-step-plus":2,"u6-substitute-check":2,"u6-two-step-context":3,"u6-verify-error":3,"u6-verify-one-step":3,"u6-verify-two-step":3,"u6-visual-steps":2,"u7-bar-graph":2,"u7-central-problem-cr":3,"u7-choose-measure":2,"u7-circle-graph":2,"u7-exp-vs-theor":2,"u7-expected-count-cr":3,"u7-gap-expected-pct-cr":3,"u7-gap-joint-pct-cr":3,"u7-gap-median-range-cr2":2,"u7-gap-missing-mean-cr":2,"u7-line-graph":2,"u7-mean-basic":2,"u7-median-mode":2,"u7-median-range-cr":3,"u7-missing-value-cr":3,"u7-outlier-find":2,"u7-outlier-judge":3,"u7-outlier-measure-choice":3,"u7-pk-average-decimals":2,"u7-pk-average-money":2,"u7-pk-average-set":2,"u7-pk-average-small":2,"u7-pk-average-whole":2,"u7-pk-list-count":2,"u7-pk-list-missing":2,"u7-pk-list-outfits":2,"u7-pk-order-below":2,"u7-pk-order-line":2,"u7-pk-prob-bag":2,"u7-pk-prob-die":2,"u7-pk-prob-percent-bag":2,"u7-pk-prob-spinner":2,"u7-pk-prob-words":2,"u7-pk-tg-bar":2,"u7-pk-tg-line":2,"u7-pk-tg-table":2,"u7-prob-basic":2,"u7-range-basic":2,"u7-sample-space":2,"u7-two-event-pct-cr":2,"u7-two-events-prob":2,"u8-axes-origin":2,"u8-bisector-cr":3,"u8-bisector-env":2,"u8-bisector-reason":2,"u8-complete-shape":2,"u8-construct-verify":3,"u8-distance-cr":3,"u8-draw-reason":2,"u8-gap-angle-chain-cr":2,"u8-gap-grid-area-cr":3,"u8-gap-parallel-angle-cr":3,"u8-gap-pythagoras-cr":2,"u8-gap-rotate-cr":3,"u8-grid-scale":2,"u8-move-describe":2,"u8-parallel-perp-id":2,"u8-pk-angle-benchmark":2,"u8-pk-angle-classify":2,"u8-pk-angle-complementary":2,"u8-pk-angle-supplementary":2,"u8-pk-axes-name":2,"u8-pk-axes-on-axis":2,"u8-pk-axes-origin-point":2,"u8-pk-fq-coord":2,"u8-pk-fq-move":2,"u8-pk-fq-read":2,"u8-pk-fq-which":2,"u8-pk-protractor-acute":2,"u8-pk-protractor-five":2,"u8-pk-protractor-obtuse":2,"u8-pk-trans-describe":2,"u8-pk-trans-identify-flip":2,"u8-pk-trans-identify-slide":2,"u8-pk-trans-identify-turn":2,"u8-plot-point":2,"u8-read-point":2,"u8-reflect-point":2,"u8-shape-vertices":2,"u8-successive-cr":2,"u8-transform-cr":3,"u8-transform-describe":2,"u8-transform-image":3,"u8-translate-cr":3};
+window.__BANK_CRMARKS={"u1-carroll-cell":2,"u1-describe-graph":3,"u1-divisibility-why":2,"u1-environment-pattern":3,"u1-evaluate-cr":2,"u1-evaluate-expression":2,"u1-factor-list":2,"u1-factors-count-cr":3,"u1-far-term-cr":3,"u1-gap-budget-compare-cr":3,"u1-gap-divisible-count-cr":2,"u1-gap-solve-count-cr":2,"u1-gap-two-terms-cr":3,"u1-graph-conclusion":3,"u1-graph-relation":3,"u1-identify-parts":2,"u1-match-graph-panel":2,"u1-parts-in-equation":2,"u1-pattern-equation":3,"u1-pattern-expression":3,"u1-pk-div-2digit":2,"u1-pk-div-exact":2,"u1-pk-div-related":2,"u1-pk-div-remainder":2,"u1-pk-div-zeros":2,"u1-pk-fact-division":2,"u1-pk-fact-halving":2,"u1-pk-fact-onemore":2,"u1-pk-fact-recall":2,"u1-pk-fact-skip":2,"u1-pk-fq-between":2,"u1-pk-fq-coord":2,"u1-pk-fq-move":2,"u1-pk-fq-read":2,"u1-pk-fq-which":2,"u1-pk-mult-2by1":2,"u1-pk-mult-2by2":2,"u1-pk-mult-3by1":2,"u1-pk-mult-3by2":2,"u1-pk-mult-zeros":2,"u1-pk-multiples-first":2,"u1-pk-multiples-problem":2,"u1-pk-ooo-basic":2,"u1-pk-ooo-brackets":2,"u1-pk-ooo-chain":2,"u1-pk-ooo-division":2,"u1-pk-ooo-why":2,"u1-pk-pattern-missing":2,"u1-pk-pattern-rule":2,"u1-pk-sort-carroll-read":2,"u1-pk-sort-carroll-total":2,"u1-pk-sort-venn-place":2,"u1-pk-sort-venn-read":2,"u1-pk-tg-bar":2,"u1-pk-tg-compare":2,"u1-pk-tg-line":2,"u1-pk-tg-picto":2,"u1-pk-tg-table":2,"u1-relation-context":3,"u1-solve-812-cr":3,"u1-table-missing":2,"u1-table-value-cr":3,"u1-venn-overlap":2,"u2-add-basic":2,"u2-add-context":2,"u2-add-cr":3,"u2-add-numberline":2,"u2-error-spot":3,"u2-gap-chain-target-cr":2,"u2-gap-mean-target-cr":3,"u2-gap-missing-start-cr":2,"u2-gap-round-trip-cr":3,"u2-missing-addend-cr":3,"u2-mixed-chain":2,"u2-numberline-cr":3,"u2-opposites-zero":2,"u2-pk-add-regroup":2,"u2-pk-add-three":2,"u2-pk-addsub-large":2,"u2-pk-below-debt":2,"u2-pk-below-line":2,"u2-pk-below-temp":2,"u2-pk-order-below":2,"u2-pk-order-line":2,"u2-pk-order-missing":2,"u2-pk-sub-line":2,"u2-pk-sub-regroup":2,"u2-problem-cr":3,"u2-problem-two-step":2,"u2-sub-basic":2,"u2-sub-cr":2,"u2-sub-numberline":2,"u2-subtract-negative":2,"u3-add-sub-decimals":2,"u3-cr-add-sub":3,"u3-cr-div":2,"u3-cr-mult":3,"u3-cr-order-ops":3,"u3-cr-percent":3,"u3-cr-repeating-frac":2,"u3-decimal-to-fraction":2,"u3-div-decimals":2,"u3-frac-to-decimal":2,"u3-frontend-prod-quot":2,"u3-frontend-sum":2,"u3-gap-compare-difference-cr":3,"u3-gap-discount-total-cr":2,"u3-misplaced":2,"u3-mult-decimals":2,"u3-numberline-mixed":2,"u3-numberline-place":2,"u3-order-mixed":2,"u3-order-ops-dec":3,"u3-percent-convert":2,"u3-percent-of":2,"u3-pk-dpv-digit-value":2,"u3-pk-dpv-expanded":2,"u3-pk-dpv-place-name":2,"u3-pk-dpv-round-hundredth":2,"u3-pk-dpv-round-tenth":2,"u3-pk-equiv-divide":2,"u3-pk-equiv-missing":2,"u3-pk-equiv-target":2,"u3-pk-est-add":2,"u3-pk-est-difference":2,"u3-pk-est-money":2,"u3-pk-est-product":2,"u3-pk-fad-line":2,"u3-pk-fad-to-decimal":2,"u3-pk-fad-to-fraction":2,"u3-pk-fracrep-bar":2,"u3-pk-fracrep-circle":2,"u3-pk-fracrep-line":2,"u3-pk-fracrep-pick":2,"u3-pk-fracrep-set":2,"u3-pk-pct-decimal":2,"u3-pk-pct-fraction":2,"u3-pk-pct-grid":2,"u3-pk-pct-pick":2,"u3-reasonableness":2,"u3-repeating-predict":2,"u3-repeating-to-fraction":3,"u3-tax-total":3,"u3-tech-multdiv":3,"u4-area-circle":2,"u4-area-parallelogram":2,"u4-area-triangle":2,"u4-central-angles":2,"u4-circ-approx":2,"u4-circle-context":3,"u4-circumference":2,"u4-cr-area-circle":3,"u4-cr-area-mix":3,"u4-cr-circumference":3,"u4-cr-composite":3,"u4-cr-graph-quantity":2,"u4-draw-circle":2,"u4-estimate-circle-area":2,"u4-gap-area-diameter-cr":2,"u4-gap-rect-minus-circle-cr":2,"u4-gap-revolutions-cr":3,"u4-graph-attributes":2,"u4-graph-create":3,"u4-graph-media":3,"u4-graph-quantities":2,"u4-graph-read":2,"u4-para-from-rect":2,"u4-pi-ratio":2,"u4-pk-angle-full-turn":2,"u4-pk-angle-right-count":2,"u4-pk-circle-centre":2,"u4-pk-circle-diameter":2,"u4-pk-circle-pick":2,"u4-pk-circle-radius":2,"u4-pk-dec-mult-near3":2,"u4-pk-dec-mult-whole":2,"u4-pk-dec-square-decimal":2,"u4-pk-dec-square-whole":2,"u4-pk-perim-missing-polygon":2,"u4-pk-perim-missing-side":2,"u4-pk-perim-pentagon":2,"u4-pk-perim-rect":2,"u4-pk-perim-square":2,"u4-pk-protractor-acute":2,"u4-pk-protractor-five":2,"u4-pk-protractor-left":2,"u4-pk-protractor-obtuse":2,"u4-pk-protractor-supplement":2,"u4-pk-rect-area":2,"u4-pk-rect-area-context":2,"u4-pk-rect-decimals":2,"u4-pk-rect-missing-side":2,"u4-pk-rect-square":2,"u4-pk-rect-square-decimal":2,"u4-pk-ruler-cm":2,"u4-pk-ruler-cm-decimal":2,"u4-pk-ruler-difference":2,"u4-pk-ruler-half":2,"u4-pk-ruler-mm":2,"u4-pk-ruler-unit-choice":2,"u4-radius-diameter":2,"u4-triangle-from":2,"u5-add-like":2,"u5-add-mixed":2,"u5-add-model-total":2,"u5-add-unlike":2,"u5-common-denominator":2,"u5-gap-sub-mixed-dec-cr":2,"u5-mixed-multistep":3,"u5-model-add-figure":2,"u5-model-sub-equation":2,"u5-model-sub-figure":2,"u5-pk-equiv-divide":2,"u5-pk-equiv-target":2,"u5-pk-mixed-from-improper":2,"u5-pk-mixed-slices":2,"u5-pk-mixed-to-improper":2,"u5-pk-mixed-which":2,"u5-problem-add":3,"u5-problem-sub-mixed":2,"u5-simplify-fraction":2,"u5-simplify-solution":3,"u5-sub-like":2,"u5-sub-mixed":2,"u5-sub-mixed-borrow":3,"u5-sub-unlike":2,"u5-sub-write-equation":2,"u5-three-fractions":3,"u6-balance-figure":2,"u6-gap-both-sides-cr":2,"u6-gap-check-diff-cr":3,"u6-gap-divide-form-cr":3,"u6-gap-two-step-cr":2,"u6-inspection-trial":2,"u6-model-problem":3,"u6-model-solve-cr":3,"u6-one-step-balance":2,"u6-one-step-problem":2,"u6-one-step-problem-cr":3,"u6-pk-balance-change":2,"u6-pk-balance-value":2,"u6-pk-subst-brackets":2,"u6-pk-subst-simple":2,"u6-pk-subst-table":2,"u6-preservation-next":2,"u6-preservation-problem-cr":2,"u6-problem-two-step-cr":3,"u6-solve-challenge-cr":3,"u6-solve-other-forms":2,"u6-solve-two-step-plus":2,"u6-substitute-check":2,"u6-two-step-context":3,"u6-verify-error":3,"u6-verify-one-step":3,"u6-verify-two-step":3,"u6-visual-steps":2,"u7-bar-graph":2,"u7-central-problem-cr":3,"u7-choose-measure":2,"u7-circle-graph":2,"u7-exp-vs-theor":2,"u7-expected-count-cr":3,"u7-gap-expected-pct-cr":3,"u7-gap-joint-pct-cr":3,"u7-gap-median-range-cr2":2,"u7-gap-missing-mean-cr":2,"u7-line-graph":2,"u7-mean-basic":2,"u7-median-mode":2,"u7-median-range-cr":3,"u7-missing-value-cr":3,"u7-outlier-find":2,"u7-outlier-judge":3,"u7-outlier-measure-choice":3,"u7-pk-average-decimals":2,"u7-pk-average-money":2,"u7-pk-average-set":2,"u7-pk-average-small":2,"u7-pk-average-whole":2,"u7-pk-list-count":2,"u7-pk-list-missing":2,"u7-pk-list-outfits":2,"u7-pk-order-below":2,"u7-pk-order-line":2,"u7-pk-prob-bag":2,"u7-pk-prob-die":2,"u7-pk-prob-percent-bag":2,"u7-pk-prob-spinner":2,"u7-pk-prob-words":2,"u7-pk-tg-bar":2,"u7-pk-tg-line":2,"u7-pk-tg-table":2,"u7-prob-basic":2,"u7-range-basic":2,"u7-sample-space":2,"u7-two-event-pct-cr":2,"u7-two-events-prob":2,"u8-axes-origin":2,"u8-bisector-cr":3,"u8-bisector-env":2,"u8-bisector-reason":2,"u8-complete-shape":2,"u8-construct-verify":3,"u8-distance-cr":3,"u8-draw-reason":2,"u8-gap-grid-area-cr":3,"u8-gap-rotate-cr":3,"u8-grid-scale":2,"u8-move-describe":2,"u8-parallel-perp-id":2,"u8-pk-angle-benchmark":2,"u8-pk-angle-classify":2,"u8-pk-angle-complementary":2,"u8-pk-angle-supplementary":2,"u8-pk-axes-name":2,"u8-pk-axes-on-axis":2,"u8-pk-axes-origin-point":2,"u8-pk-fq-coord":2,"u8-pk-fq-move":2,"u8-pk-fq-read":2,"u8-pk-fq-which":2,"u8-pk-protractor-acute":2,"u8-pk-protractor-five":2,"u8-pk-protractor-obtuse":2,"u8-pk-trans-describe":2,"u8-pk-trans-identify-flip":2,"u8-pk-trans-identify-slide":2,"u8-pk-trans-identify-turn":2,"u8-plot-point":2,"u8-read-point":2,"u8-reflect-point":2,"u8-shape-vertices":2,"u8-successive-cr":2,"u8-transform-cr":3,"u8-transform-describe":2,"u8-transform-image":3,"u8-translate-cr":3};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-carroll-cell":"a","u1-describe-graph":"b","u1-divisibility-why":"b","u1-environment-pattern":"b","u1-evaluate-expression":"a","u1-factor-list":"a","u1-graph-conclusion":"a","u1-graph-relation":"b","u1-identify-parts":"a","u1-match-graph-panel":"a","u1-parts-in-equation":"a","u1-pattern-equation":"b","u1-pattern-expression":"b","u1-pk-div-2digit":"a","u1-pk-div-exact":"a","u1-pk-div-related":"a","u1-pk-div-remainder":"a","u1-pk-div-zeros":"a","u1-pk-fact-division":"a","u1-pk-fact-halving":"a","u1-pk-fact-onemore":"a","u1-pk-fact-recall":"a","u1-pk-fact-skip":"a","u1-pk-fq-between":"a","u1-pk-fq-coord":"a","u1-pk-fq-move":"a","u1-pk-fq-read":"a","u1-pk-fq-which":"a","u1-pk-mult-2by1":"a","u1-pk-mult-2by2":"a","u1-pk-mult-3by1":"a","u1-pk-mult-3by2":"a","u1-pk-mult-zeros":"a","u1-pk-multiples-first":"a","u1-pk-multiples-problem":"a","u1-pk-ooo-basic":"a","u1-pk-ooo-brackets":"a","u1-pk-ooo-chain":"a","u1-pk-ooo-division":"a","u1-pk-ooo-why":"a","u1-pk-pattern-missing":"a","u1-pk-pattern-rule":"a","u1-pk-sort-carroll-read":"a","u1-pk-sort-carroll-total":"a","u1-pk-sort-venn-place":"a","u1-pk-sort-venn-read":"a","u1-pk-tg-bar":"a","u1-pk-tg-compare":"a","u1-pk-tg-line":"a","u1-pk-tg-picto":"a","u1-pk-tg-table":"a","u1-relation-context":"b","u1-table-missing":"a","u1-venn-overlap":"a","u2-add-basic":"a","u2-add-context":"a","u2-add-numberline":"a","u2-error-spot":"a","u2-gap-order-ops-sr":"a","u2-mixed-chain":"a","u2-opposites-zero":"b","u2-pk-add-regroup":"a","u2-pk-add-three":"a","u2-pk-addsub-large":"a","u2-pk-below-debt":"a","u2-pk-below-line":"a","u2-pk-below-temp":"a","u2-pk-order-below":"a","u2-pk-order-line":"a","u2-pk-order-missing":"a","u2-pk-sub-line":"a","u2-pk-sub-regroup":"a","u2-problem-two-step":"a","u2-sub-basic":"a","u2-sub-numberline":"a","u2-subtract-negative":"a","u3-add-sub-decimals":"a","u3-decimal-to-fraction":"a","u3-div-decimals":"a","u3-frac-to-decimal":"a","u3-frontend-prod-quot":"a","u3-frontend-sum":"a","u3-misplaced":"a","u3-mult-decimals":"a","u3-numberline-mixed":"a","u3-numberline-place":"a","u3-order-mixed":"a","u3-order-ops-dec":"a","u3-percent-convert":"a","u3-percent-of":"a","u3-pk-dpv-digit-value":"a","u3-pk-dpv-expanded":"a","u3-pk-dpv-place-name":"a","u3-pk-dpv-round-hundredth":"a","u3-pk-dpv-round-tenth":"a","u3-pk-equiv-divide":"a","u3-pk-equiv-missing":"a","u3-pk-equiv-target":"a","u3-pk-est-add":"a","u3-pk-est-difference":"a","u3-pk-est-money":"a","u3-pk-est-product":"a","u3-pk-fad-line":"a","u3-pk-fad-to-decimal":"a","u3-pk-fad-to-fraction":"a","u3-pk-fracrep-bar":"a","u3-pk-fracrep-circle":"a","u3-pk-fracrep-line":"a","u3-pk-fracrep-pick":"a","u3-pk-fracrep-set":"a","u3-pk-pct-decimal":"a","u3-pk-pct-fraction":"a","u3-pk-pct-grid":"a","u3-pk-pct-pick":"a","u3-reasonableness":"b","u3-repeating-predict":"a","u3-repeating-to-fraction":"a","u3-tax-total":"a","u3-tech-multdiv":"a","u4-area-circle":"a","u4-area-parallelogram":"a","u4-area-triangle":"a","u4-central-angles":"a","u4-circ-approx":"a","u4-circle-context":"a","u4-circumference":"a","u4-draw-circle":"b","u4-estimate-circle-area":"a","u4-graph-attributes":"a","u4-graph-create":"a","u4-graph-media":"b","u4-graph-quantities":"a","u4-graph-read":"a","u4-para-from-rect":"b","u4-pi-ratio":"a","u4-pk-angle-full-turn":"a","u4-pk-angle-right-count":"a","u4-pk-circle-centre":"a","u4-pk-circle-diameter":"a","u4-pk-circle-pick":"a","u4-pk-circle-radius":"a","u4-pk-dec-mult-near3":"a","u4-pk-dec-mult-whole":"a","u4-pk-dec-square-decimal":"a","u4-pk-dec-square-whole":"a","u4-pk-perim-missing-polygon":"a","u4-pk-perim-missing-side":"a","u4-pk-perim-pentagon":"a","u4-pk-perim-rect":"a","u4-pk-perim-square":"a","u4-pk-protractor-acute":"a","u4-pk-protractor-five":"a","u4-pk-protractor-left":"a","u4-pk-protractor-obtuse":"a","u4-pk-protractor-supplement":"a","u4-pk-rect-area":"a","u4-pk-rect-area-context":"a","u4-pk-rect-decimals":"a","u4-pk-rect-missing-side":"a","u4-pk-rect-square":"a","u4-pk-rect-square-decimal":"a","u4-pk-ruler-cm":"a","u4-pk-ruler-cm-decimal":"a","u4-pk-ruler-difference":"a","u4-pk-ruler-half":"a","u4-pk-ruler-mm":"a","u4-pk-ruler-unit-choice":"a","u4-radius-diameter":"a","u4-triangle-from":"b","u5-add-like":"a","u5-add-mixed":"a","u5-add-model-total":"a","u5-add-unlike":"a","u5-common-denominator":"a","u5-model-add-figure":"a","u5-model-sub-equation":"a","u5-model-sub-figure":"a","u5-pk-equiv-divide":"a","u5-pk-equiv-target":"a","u5-pk-mixed-from-improper":"a","u5-pk-mixed-slices":"a","u5-pk-mixed-to-improper":"a","u5-pk-mixed-which":"a","u5-simplify-fraction":"a","u5-sub-like":"a","u5-sub-mixed":"a","u5-sub-mixed-borrow":"a","u5-sub-unlike":"a","u5-sub-write-equation":"a","u6-balance-figure":"b","u6-inspection-trial":"a","u6-model-problem":"b","u6-one-step-balance":"a","u6-one-step-problem":"a","u6-pk-balance-change":"a","u6-pk-balance-value":"a","u6-pk-subst-brackets":"a","u6-pk-subst-simple":"a","u6-pk-subst-table":"a","u6-preservation-next":"a","u6-solve-other-forms":"a","u6-solve-two-step-plus":"a","u6-substitute-check":"a","u6-two-step-context":"a","u6-verify-error":"a","u6-verify-one-step":"b","u6-verify-two-step":"b","u6-visual-steps":"b","u7-bar-graph":"a","u7-choose-measure":"a","u7-circle-graph":"a","u7-exp-vs-theor":"a","u7-line-graph":"a","u7-mean-basic":"a","u7-median-mode":"a","u7-outlier-find":"a","u7-outlier-judge":"b","u7-outlier-measure-choice":"b","u7-pk-average-decimals":"a","u7-pk-average-money":"a","u7-pk-average-set":"a","u7-pk-average-small":"a","u7-pk-average-whole":"a","u7-pk-list-count":"a","u7-pk-list-missing":"a","u7-pk-list-outfits":"a","u7-pk-order-below":"a","u7-pk-order-line":"a","u7-pk-prob-bag":"a","u7-pk-prob-die":"a","u7-pk-prob-percent-bag":"a","u7-pk-prob-spinner":"a","u7-pk-prob-words":"a","u7-pk-tg-bar":"a","u7-pk-tg-line":"a","u7-pk-tg-table":"a","u7-prob-basic":"a","u7-range-basic":"a","u7-sample-space":"a","u7-two-events-prob":"a","u8-axes-origin":"a","u8-bisector-env":"b","u8-bisector-reason":"a","u8-complete-shape":"a","u8-construct-verify":"b","u8-draw-reason":"b","u8-grid-scale":"a","u8-move-describe":"a","u8-parallel-perp-id":"a","u8-pk-angle-benchmark":"a","u8-pk-angle-classify":"a","u8-pk-angle-complementary":"a","u8-pk-angle-supplementary":"a","u8-pk-axes-name":"a","u8-pk-axes-on-axis":"a","u8-pk-axes-origin-point":"a","u8-pk-fq-coord":"a","u8-pk-fq-move":"a","u8-pk-fq-read":"a","u8-pk-fq-which":"a","u8-pk-protractor-acute":"a","u8-pk-protractor-five":"a","u8-pk-protractor-obtuse":"a","u8-pk-trans-describe":"a","u8-pk-trans-identify-flip":"a","u8-pk-trans-identify-slide":"a","u8-pk-trans-identify-turn":"a","u8-plot-point":"a","u8-read-point":"a","u8-reflect-point":"a","u8-shape-vertices":"a","u8-transform-describe":"a","u8-transform-image":"a"};
+window.__BANK_BIMODAL={"u1-carroll-cell":"a","u1-describe-graph":"b","u1-divisibility-why":"b","u1-environment-pattern":"b","u1-evaluate-expression":"a","u1-factor-list":"a","u1-graph-conclusion":"a","u1-graph-relation":"b","u1-identify-parts":"a","u1-match-graph-panel":"a","u1-parts-in-equation":"a","u1-pattern-equation":"b","u1-pattern-expression":"b","u1-pk-div-2digit":"a","u1-pk-div-exact":"a","u1-pk-div-related":"a","u1-pk-div-remainder":"a","u1-pk-div-zeros":"a","u1-pk-fact-division":"a","u1-pk-fact-halving":"a","u1-pk-fact-onemore":"a","u1-pk-fact-recall":"a","u1-pk-fact-skip":"a","u1-pk-fq-between":"a","u1-pk-fq-coord":"a","u1-pk-fq-move":"a","u1-pk-fq-read":"a","u1-pk-fq-which":"a","u1-pk-mult-2by1":"a","u1-pk-mult-2by2":"a","u1-pk-mult-3by1":"a","u1-pk-mult-3by2":"a","u1-pk-mult-zeros":"a","u1-pk-multiples-first":"a","u1-pk-multiples-problem":"a","u1-pk-ooo-basic":"a","u1-pk-ooo-brackets":"a","u1-pk-ooo-chain":"a","u1-pk-ooo-division":"a","u1-pk-ooo-why":"a","u1-pk-pattern-missing":"a","u1-pk-pattern-rule":"a","u1-pk-sort-carroll-read":"a","u1-pk-sort-carroll-total":"a","u1-pk-sort-venn-place":"a","u1-pk-sort-venn-read":"a","u1-pk-tg-bar":"a","u1-pk-tg-compare":"a","u1-pk-tg-line":"a","u1-pk-tg-picto":"a","u1-pk-tg-table":"a","u1-relation-context":"b","u1-table-missing":"a","u1-venn-overlap":"a","u2-add-basic":"a","u2-add-context":"a","u2-add-numberline":"a","u2-error-spot":"a","u2-mixed-chain":"a","u2-opposites-zero":"b","u2-pk-add-regroup":"a","u2-pk-add-three":"a","u2-pk-addsub-large":"a","u2-pk-below-debt":"a","u2-pk-below-line":"a","u2-pk-below-temp":"a","u2-pk-order-below":"a","u2-pk-order-line":"a","u2-pk-order-missing":"a","u2-pk-sub-line":"a","u2-pk-sub-regroup":"a","u2-problem-two-step":"a","u2-sub-basic":"a","u2-sub-numberline":"a","u2-subtract-negative":"a","u3-add-sub-decimals":"a","u3-decimal-to-fraction":"a","u3-div-decimals":"a","u3-frac-to-decimal":"a","u3-frontend-prod-quot":"a","u3-frontend-sum":"a","u3-misplaced":"a","u3-mult-decimals":"a","u3-numberline-mixed":"a","u3-numberline-place":"a","u3-order-mixed":"a","u3-order-ops-dec":"a","u3-percent-convert":"a","u3-percent-of":"a","u3-pk-dpv-digit-value":"a","u3-pk-dpv-expanded":"a","u3-pk-dpv-place-name":"a","u3-pk-dpv-round-hundredth":"a","u3-pk-dpv-round-tenth":"a","u3-pk-equiv-divide":"a","u3-pk-equiv-missing":"a","u3-pk-equiv-target":"a","u3-pk-est-add":"a","u3-pk-est-difference":"a","u3-pk-est-money":"a","u3-pk-est-product":"a","u3-pk-fad-line":"a","u3-pk-fad-to-decimal":"a","u3-pk-fad-to-fraction":"a","u3-pk-fracrep-bar":"a","u3-pk-fracrep-circle":"a","u3-pk-fracrep-line":"a","u3-pk-fracrep-pick":"a","u3-pk-fracrep-set":"a","u3-pk-pct-decimal":"a","u3-pk-pct-fraction":"a","u3-pk-pct-grid":"a","u3-pk-pct-pick":"a","u3-reasonableness":"b","u3-repeating-predict":"a","u3-repeating-to-fraction":"a","u3-tax-total":"a","u3-tech-multdiv":"a","u4-area-circle":"a","u4-area-parallelogram":"a","u4-area-triangle":"a","u4-central-angles":"a","u4-circ-approx":"a","u4-circle-context":"a","u4-circumference":"a","u4-draw-circle":"b","u4-estimate-circle-area":"a","u4-graph-attributes":"a","u4-graph-create":"a","u4-graph-media":"b","u4-graph-quantities":"a","u4-graph-read":"a","u4-para-from-rect":"b","u4-pi-ratio":"a","u4-pk-angle-full-turn":"a","u4-pk-angle-right-count":"a","u4-pk-circle-centre":"a","u4-pk-circle-diameter":"a","u4-pk-circle-pick":"a","u4-pk-circle-radius":"a","u4-pk-dec-mult-near3":"a","u4-pk-dec-mult-whole":"a","u4-pk-dec-square-decimal":"a","u4-pk-dec-square-whole":"a","u4-pk-perim-missing-polygon":"a","u4-pk-perim-missing-side":"a","u4-pk-perim-pentagon":"a","u4-pk-perim-rect":"a","u4-pk-perim-square":"a","u4-pk-protractor-acute":"a","u4-pk-protractor-five":"a","u4-pk-protractor-left":"a","u4-pk-protractor-obtuse":"a","u4-pk-protractor-supplement":"a","u4-pk-rect-area":"a","u4-pk-rect-area-context":"a","u4-pk-rect-decimals":"a","u4-pk-rect-missing-side":"a","u4-pk-rect-square":"a","u4-pk-rect-square-decimal":"a","u4-pk-ruler-cm":"a","u4-pk-ruler-cm-decimal":"a","u4-pk-ruler-difference":"a","u4-pk-ruler-half":"a","u4-pk-ruler-mm":"a","u4-pk-ruler-unit-choice":"a","u4-radius-diameter":"a","u4-triangle-from":"b","u5-add-like":"a","u5-add-mixed":"a","u5-add-model-total":"a","u5-add-unlike":"a","u5-common-denominator":"a","u5-model-add-figure":"a","u5-model-sub-equation":"a","u5-model-sub-figure":"a","u5-pk-equiv-divide":"a","u5-pk-equiv-target":"a","u5-pk-mixed-from-improper":"a","u5-pk-mixed-slices":"a","u5-pk-mixed-to-improper":"a","u5-pk-mixed-which":"a","u5-simplify-fraction":"a","u5-sub-like":"a","u5-sub-mixed":"a","u5-sub-mixed-borrow":"a","u5-sub-unlike":"a","u5-sub-write-equation":"a","u6-balance-figure":"b","u6-inspection-trial":"a","u6-model-problem":"b","u6-one-step-balance":"a","u6-one-step-problem":"a","u6-pk-balance-change":"a","u6-pk-balance-value":"a","u6-pk-subst-brackets":"a","u6-pk-subst-simple":"a","u6-pk-subst-table":"a","u6-preservation-next":"a","u6-solve-other-forms":"a","u6-solve-two-step-plus":"a","u6-substitute-check":"a","u6-two-step-context":"a","u6-verify-error":"a","u6-verify-one-step":"b","u6-verify-two-step":"b","u6-visual-steps":"b","u7-bar-graph":"a","u7-choose-measure":"a","u7-circle-graph":"a","u7-exp-vs-theor":"a","u7-line-graph":"a","u7-mean-basic":"a","u7-median-mode":"a","u7-outlier-find":"a","u7-outlier-judge":"b","u7-outlier-measure-choice":"b","u7-pk-average-decimals":"a","u7-pk-average-money":"a","u7-pk-average-set":"a","u7-pk-average-small":"a","u7-pk-average-whole":"a","u7-pk-list-count":"a","u7-pk-list-missing":"a","u7-pk-list-outfits":"a","u7-pk-order-below":"a","u7-pk-order-line":"a","u7-pk-prob-bag":"a","u7-pk-prob-die":"a","u7-pk-prob-percent-bag":"a","u7-pk-prob-spinner":"a","u7-pk-prob-words":"a","u7-pk-tg-bar":"a","u7-pk-tg-line":"a","u7-pk-tg-table":"a","u7-prob-basic":"a","u7-range-basic":"a","u7-sample-space":"a","u7-two-events-prob":"a","u8-axes-origin":"a","u8-bisector-env":"b","u8-bisector-reason":"a","u8-complete-shape":"a","u8-construct-verify":"b","u8-draw-reason":"b","u8-grid-scale":"a","u8-move-describe":"a","u8-parallel-perp-id":"a","u8-pk-angle-benchmark":"a","u8-pk-angle-classify":"a","u8-pk-angle-complementary":"a","u8-pk-angle-supplementary":"a","u8-pk-axes-name":"a","u8-pk-axes-on-axis":"a","u8-pk-axes-origin-point":"a","u8-pk-fq-coord":"a","u8-pk-fq-move":"a","u8-pk-fq-read":"a","u8-pk-fq-which":"a","u8-pk-protractor-acute":"a","u8-pk-protractor-five":"a","u8-pk-protractor-obtuse":"a","u8-pk-trans-describe":"a","u8-pk-trans-identify-flip":"a","u8-pk-trans-identify-slide":"a","u8-pk-trans-identify-turn":"a","u8-plot-point":"a","u8-read-point":"a","u8-reflect-point":"a","u8-shape-vertices":"a","u8-transform-describe":"a","u8-transform-image":"a"};
 /* ============ Level basis labels (generated) ============ */
 /* Built by assemble-bank.py from the LEVELBASIS comments at each
    audited entry (November 25, 2026): the criterion that decided
