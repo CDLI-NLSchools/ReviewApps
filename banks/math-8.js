@@ -4597,6 +4597,7 @@ E("u8-around-point-num", 8, ["10.4"], 1, "gen", function () {
 }, ["Angles around a point add to exactly 360 degrees.", "Multiply the interior angle by the number of tiles placed, then compare with 360."]);
 
 // 13. 10.5 L2 gen num, CR 2: the missing angle of an irregular quadrilateral, and tessellating.
+// PK-flagged November 26, 2026 (Jason's D4 ruling; see the flag assignment at the end of this file).
 E("u8-irregular-angle-num", 8, ["10.5"], 1, "gen", function () {
   for (var att = 0; att < 100; att++) {
     var a = ri(55, 130), b = ri(55, 130), c = ri(55, 130);
@@ -4806,6 +4807,20 @@ E("u8-mixed-point-num", 8, ["10.13"], 3, "gen", function () {
   q.figure = fig;
   return q;
 }, ["Angles around a point in a tessellation add to exactly 360 degrees.", "Add the angles already at the point and subtract from 360."]);
+
+/* Prior knowledge flag, November 26, 2026 (Jason's ruling on the Math 8
+   guide audit, finding D4): u8-irregular-angle-num is prior knowledge, not
+   enrichment. The Math 7 guide (MA7.9.13, Focus for Learning) treats "the
+   sum of the angles of any quadrilateral is 360 degrees" as knowledge
+   Grade 7 students build on, so the quadrilateral angle sum this entry
+   rehearses is established Grade 7 knowledge feeding Math 8's tessellation
+   angle work. Its tag stays 10.5, now read as a feeds-into tag under the
+   D5 tightening (the angle sum is the assumed knowledge behind 10.5's
+   "use angle measurements to justify choices" for irregular polygons);
+   as a regular entry it presented that supporting skill as the
+   indicator's own task, which the audit flagged. Flagged the same way
+   the removed mean entries were flagged in bank-fix.js. */
+BANK.forEach(function(e){if(e.id==="u8-irregular-angle-num"){e.pkFlag=true;}});
 
 /* ----- bank-fix.js ----- */
 // Math 8 pool-gap fill additions (November 9, 2026) question bank
@@ -5335,6 +5350,16 @@ E("u8-changed-side-view-gap", 8, ["10.15", "10.9"], 2, "gen", function(){
    since Nov 13, 2026 under the note this comment replaces. */
 
 /* ----- bank-pk.js ----- */
+/* D5 tag tightening, November 26, 2026 (Jason's ruling on the Math 8
+   guide audit, finding D5): every PK entry in this file now carries
+   exactly one indicator tag, naming the first Math 8 indicator whose
+   work assumes the rehearsed skill (the feeds-into tag), or no tag at
+   all where no Math 8 indicator honestly assumes it (general fluency
+   with no single consumer: whole-number add/sub regrouping, integer
+   readiness, common denominators, decimal fluency, range and outlier
+   identification). Coverage counts in the load gate now count regular
+   entries only, so these tags no longer inflate indicator coverage.
+   The pkFor cluster lists in the tables below are unchanged. */
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
 // CRMARKS: u1-pk-divisibility-why=2
 // CRMARKS: u1-pk-factor-list=2
@@ -5767,7 +5792,7 @@ E("u1-pk-carroll-cell", 1, ["5.1"], 1, "gen", function(){
     "Test \\("+n+"\\): "+facts+" So it belongs in the row and column matching those results. The answer is <b>"+cells[idx]+"</b>.",
     {n:n});
 }, ["Run both tests on the number before choosing a cell.", "Start with the test for 5 (the ending digit), then check whether the number is even."]);
-E("u1-pk-square-area", 1, ["9.1"], 1, "gen", function(){
+E("u1-pk-square-area", 1, ["3.19"], 1, "gen", function(){
   var s=ri(3,15), A=s*s;
   var pool=[4*s, 2*s, A+s, s+4];
   var seen={}; seen[String(A)]=1; var ds=[];
@@ -5785,7 +5810,7 @@ E("u1-pk-square-area", 1, ["9.1"], 1, "gen", function(){
     +'</svg>';
   return q;
 }, ["A square is a rectangle with equal length and width, so the rectangle area rule applies.", "Start by multiplying the side length by itself."]);
-E("u2-pk-add-basic", 2, ["6.17"], 1, "gen", function(){
+E("u2-pk-add-basic", 2, ["6.27"], 1, "gen", function(){
   var a=0,b=0,g=0;
   while(g++<200){ a=ri(-9,9); b=ri(-9,9); if(a!==0&&b!==0)break; }
   var ans=a+b;
@@ -5797,7 +5822,7 @@ E("u2-pk-add-basic", 2, ["6.17"], 1, "gen", function(){
     u2SignRuleSol(a,b,"+")+" So \\("+a+" + "+u2Sg(b)+" = "+ans+"\\). The answer is <b>"+ans+"</b>.",
     {a:a,b:b});
 }, ["Look at the signs first: same signs and different signs follow different rules.", "Start by comparing the sizes of the two integers."]);
-E("u2-pk-sub-basic", 2, ["6.17"], 1, "gen", function(){
+E("u2-pk-sub-basic", 2, ["6.27"], 1, "gen", function(){
   var a=ri(-9,9), b=0,g=0;
   while(g++<100){ b=ri(-9,9); if(b!==0)break; }
   var ans=a-b;
@@ -5809,7 +5834,7 @@ E("u2-pk-sub-basic", 2, ["6.17"], 1, "gen", function(){
     u2SignRuleSol(a,b,"-")+" Then \\("+a+" + "+u2Sg(-b)+" = "+ans+"\\). The answer is <b>"+ans+"</b>.",
     {a:a,b:b});
 }, ["Change the subtraction into adding the opposite first.", "Start by flipping the sign of the number being subtracted."]);
-E("u2-pk-add-context", 2, ["6.17"], 1, "gen", function(){
+E("u2-pk-add-context", 2, ["6.27"], 1, "gen", function(){
   var T=pick([
     {pre:"At dawn the temperature is ", mid:" degrees. By noon it ", ch:["rises by ","drops by "], post:" degrees. What is the temperature at noon?", unit:" degrees"},
     {pre:"A diver is ", mid:" m relative to the surface (below is negative). The diver then ", ch:["swims up ","sinks "], post:" m. What is the diver's new position, in metres?", unit:" m"},
@@ -5835,7 +5860,7 @@ E("u2-pk-add-context", 2, ["6.17"], 1, "gen", function(){
     "\\[ \\begin{aligned} \\text{new balance} &= "+a+" - "+mag+" \\\\ &= "+ans2+" \\end{aligned} \\] The answer is <b>$"+ans2+"</b>.",
     {a:a,b:-mag});
 }, ["Turn words like rises, drops, gains and loses into signed numbers first.", "Start by writing the starting value and the signed change as an addition."]);
-E("u2-pk-mixed-chain", 2, ["6.17"], 1, "gen", function(){
+E("u2-pk-mixed-chain", 2, ["6.27"], 1, "gen", function(){
   var a=ri(-9,9), b=ri(-9,9), c=ri(-9,9), g=0;
   while(g++<100&&(b===0||c===0)){ b=ri(-9,9); c=ri(-9,9); }
   var subFirst=pick([true,false]);
@@ -5850,7 +5875,7 @@ E("u2-pk-mixed-chain", 2, ["6.17"], 1, "gen", function(){
     stepTxt+": the result is \\("+ans+"\\). The answer is <b>"+ans+"</b>.",
     {a:a,b:b,c:c});
 }, ["Work left to right, one operation at a time.", "Start by doing the first operation and writing down the running total."]);
-E("u2-pk-missing-start", 2, ["6.17"], 2, "gen", function(){
+E("u2-pk-missing-start", 2, ["6.27"], 2, "gen", function(){
   var a=ri(3,14), b=ri(3,14), e=ri(-8,12), start=e-a+b;
   return numq("A game score changes twice: first it increases by "+a+" points, then it decreases by "+b+" points. The final score is "+e+" points. What was the starting score? Show your work.", start, 0,
     "Undo the two changes in reverse order, starting from the final score. \\[ \\begin{aligned} \\text{start} &= "+e+" + "+b+" - "+a+" \\\\ &= "+start+" \\end{aligned} \\] Check: \\("+start+" + "+a+" - "+b+" = "+e+"\\). The answer is <b>"+start+"</b>.",
@@ -5888,7 +5913,7 @@ E("u2-pk-order-ops-dec", 2, ["6.27"], 3, "gen", function(){
     work+" The answer is <b>"+fmt(ans,3)+"</b>.",
     {tpl:tpl});
 }, ["Follow the order of operations: brackets, then multiply and divide, then add and subtract.", "Start by finding any brackets and doing that part first."]);
-E("u3-pk-add-unlike", 3, ["6.4"], 2, "gen", function(){
+E("u3-pk-add-unlike", 3, ["6.16"], 2, "gen", function(){
   var d1=2,d2=3,a=1,c=1,cnt=0,L=6;
   while(cnt<60){d1=pick([2,3,4,5,6,8,9,10,12]);d2=pick([2,3,4,5,6,8,9,10,12]);if(d1===d2){cnt++;continue;}L=u5lcm(d1,d2);if(L>36){cnt++;continue;}a=ri(1,d1-1);c=ri(1,d2-1);break;}
   if(cnt>=60){d1=4;d2=3;a=1;c=1;L=12;}
@@ -5905,7 +5930,7 @@ E("u3-pk-add-unlike", 3, ["6.4"], 2, "gen", function(){
     u5fopts([N,L],[{p:[a+c,d1+d2],fb:"That adds the tops and the bottoms. Fractions can only be added once they share a denominator."},{p:[a*m1+c,L],fb:"That rewrites only the first fraction over "+L+". The second fraction must be rewritten too."},{p:[a+c*m2,L],fb:"That rewrites only the second fraction over "+L+". The first fraction must be rewritten too."}]),
     sol,{mode:"add-unlike",a:a,d1:d1,c:c,d2:d2});
 }, ["The parts are different sizes, so the fractions need a common denominator first.", "Start by finding the least common multiple of the two denominators."]);
-E("u3-pk-sub-unlike", 3, ["6.4"], 2, "gen", function(){
+E("u3-pk-sub-unlike", 3, ["6.16"], 2, "gen", function(){
   var d1=2,d2=3,a=1,c=1,cnt=0,L=6;
   while(cnt<60){d1=pick([3,4,5,6,8,9,10,12]);d2=pick([2,3,4,5,6,8,10,12]);if(d1===d2){cnt++;continue;}L=u5lcm(d1,d2);if(L>36){cnt++;continue;}a=ri(1,d1-1);c=ri(1,d2-1);if(a*L/d1<=c*L/d2){cnt++;continue;}break;}
   if(cnt>=60){d1=3;d2=4;a=2;c=1;L=12;}
@@ -5922,7 +5947,7 @@ E("u3-pk-sub-unlike", 3, ["6.4"], 2, "gen", function(){
     u5fopts([N,L],[{p:[Math.abs(a-c),Math.abs(d1-d2)|| (d1+d2)],fb:"That subtracts the tops and the bottoms. Fractions can only be subtracted once they share a denominator."},{p:[a*m1-c,L],fb:"That rewrites only the first fraction over "+L+". The second fraction must be rewritten too."},{p:[a*m1+c*m2,L],fb:"That adds the rewritten numerators. The question asks for a difference, so subtract."}]),
     sol,{mode:"sub-unlike",a:a,d1:d1,c:c,d2:d2});
 }, ["The parts are different sizes, so the fractions need a common denominator first.", "Start by rewriting both fractions over the least common multiple of the denominators."]);
-E("u3-pk-add-mixed", 3, ["6.4"], 1, "gen", function(){
+E("u3-pk-add-mixed", 3, ["6.16"], 1, "gen", function(){
   var d=pick([3,4,5,6,8,10,12]);var w1=ri(1,5),w2=ri(1,4);var n1=ri(1,d-1),n2=ri(1,d-1);var cc=0;
   while((u5gcd(n1,d)!==1||u5gcd(n2,d)!==1)&&cc<40){n1=ri(1,d-1);n2=ri(1,d-1);cc++;}
   if(u5gcd(n1,d)!==1||u5gcd(n2,d)!==1){d=5;n1=ri(1,4);n2=ri(1,4);}
@@ -5938,7 +5963,7 @@ E("u3-pk-add-mixed", 3, ["6.4"], 1, "gen", function(){
     u5fopts([N,d],[{p:[W*d+(S%d),d],fb:"That keeps the fraction part below one whole but forgets to regroup the extra whole when the fraction parts add past "+d+"/"+d+"."},{p:[W*2*d+S,2*d],fb:"That adds the denominators of the fraction parts. The parts are the same size, so the denominator stays "+d+"."},{p:[W*d+Math.abs(n1-n2),d],fb:"That subtracts the fraction parts. The question asks for a total, so add them."}]),
     sol,{mode:"add-mixed",w1:w1,n1:n1,w2:w2,n2:n2,d:d});
 }, ["Work with the whole numbers and the fraction parts separately.", "Start by adding the whole numbers, then add the numerators of the fraction parts."]);
-E("u3-pk-sub-mixed", 3, ["6.4"], 1, "gen", function(){
+E("u3-pk-sub-mixed", 3, ["6.16"], 1, "gen", function(){
   var d=pick([3,4,5,6,8,10,12]);var w2=ri(1,3);var w1=w2+ri(1,3);var n2=ri(1,d-2);var n1=n2+ri(1,d-1-n2);var cc=0;
   while((u5gcd(n1,d)!==1||u5gcd(n2,d)!==1)&&cc<40){n2=ri(1,d-2);n1=n2+ri(1,d-1-n2);cc++;}
   if(u5gcd(n1,d)!==1||u5gcd(n2,d)!==1){d=7;n2=ri(1,5);n1=n2+ri(1,6-n2);}
@@ -5954,7 +5979,7 @@ E("u3-pk-sub-mixed", 3, ["6.4"], 1, "gen", function(){
     u5fopts([N,d],[{p:[(w1-w2)*d+(n1+n2),d],fb:"That adds the fraction parts. The question asks how much is left, so subtract the fraction parts too."},{p:[(w1+w2)*d+(n1-n2),d],fb:"That adds the whole numbers. Both the wholes and the fraction parts are subtracted here."},{p:[(w1-w2)*2*d+(n1-n2),2*d],fb:"That changes the denominator. The parts are the same size, so the denominator stays "+d+"." }]),
     sol,{mode:"sub-mixed",w1:w1,n1:n1,w2:w2,n2:n2,d:d});
 }, ["Work with the whole numbers and the fraction parts separately.", "Start by subtracting the whole numbers, then subtract the numerators of the fraction parts."]);
-E("u3-pk-simplify-fraction", 3, ["6.4"], 1, "gen", function(){
+E("u3-pk-simplify-fraction", 3, ["6.8"], 1, "gen", function(){
   var q=pick([3,4,5,6,7,8,9,10,11,12]);var p=ri(1,q-1);var cnt=0;
   while(u5gcd(p,q)!==1&&cnt<40){p=ri(1,q-1);cnt++;}
   if(u5gcd(p,q)!==1){p=1;}
@@ -5970,7 +5995,7 @@ E("u3-pk-simplify-fraction", 3, ["6.4"], 1, "gen", function(){
     u5fopts([p,q],[{p:[p,D],fb:"That divides only the numerator by "+k+". The denominator must be divided by the same factor."},{p:[N,q],fb:"That divides only the denominator by "+k+". The numerator must be divided by the same factor."},{p:[N-k,D-k],fb:"That subtracts "+k+" from the top and bottom. Simplifying means dividing by a common factor, not subtracting."}]),
     sol,{mode:"simplify",p:p,q:q,k:k});
 }, ["Look for the largest number that divides both the numerator and the denominator.", "Start by listing factors of the numerator and the denominator and finding the one they share."]);
-E("u3-pk-common-denominator", 3, ["6.4"], 1, "gen", function(){
+E("u3-pk-common-denominator", 3, [], 1, "gen", function(){
   var pairs=[[2,4],[2,6],[3,6],[4,6],[3,4],[4,8],[5,10],[6,8],[3,8],[4,10],[5,6],[6,10],[8,12],[9,12],[4,12],[3,9],[5,15],[6,9],[8,10],[10,15]];
   var pr=pick(pairs);var d1=pr[0],d2=pr[1];var L=u5lcm(d1,d2);
   var na=pick(u5cop(d1)),nb=pick(u5cop(d2)); /* coprime numerators: u5M reduces for display, so a shared factor would show the student a different fraction than the solution works with */
@@ -5980,7 +6005,7 @@ E("u3-pk-common-denominator", 3, ["6.4"], 1, "gen", function(){
     u5iopts(L,[{v:d1*d2,fb:"That is the product of the denominators. It is a common denominator, but not the least one here."},{v:d1+d2,fb:"That adds the denominators. A common denominator must be a multiple of each denominator."},{v:Math.max(d1,d2),fb:"That is just the larger denominator, and "+Math.min(d1,d2)+" does not divide it evenly here."}]),
     sol,{mode:"lcd",d1:d1,d2:d2});
 }, ["A common denominator is a multiple of both denominators.", "Start by listing the multiples of the larger denominator until you find one the other denominator divides."]);
-E("u3-pk-problem-add", 3, ["6.15"], 2, "gen", function(){
+E("u3-pk-problem-add", 3, ["6.16"], 2, "gen", function(){
   var d1=4,d2=3,a=1,c=1,cnt=0,L=12;
   while(cnt<60){d1=pick([2,3,4,5,6,8,10,12]);d2=pick([2,3,4,5,6,8,10,12]);if(d1===d2){cnt++;continue;}L=u5lcm(d1,d2);if(L>24){cnt++;continue;}a=ri(1,d1-1);c=ri(1,d2-1);break;}
   if(cnt>=60){d1=4;d2=3;a=1;c=1;L=12;}
@@ -5993,7 +6018,7 @@ E("u3-pk-problem-add", 3, ["6.15"], 2, "gen", function(){
   var sol="The amounts are added. Use the common denominator "+L+".\\[ \\begin{aligned} "+FR(a,d1)+" + "+FR(c,d2)+" &= "+FR(a*m1,L)+" + "+FR(c*m2,L)+" \\\\ &= "+FR(N,L)+" \\\\ &= "+u5disp(N,L)+" \\end{aligned} \\] The answer is <b>"+u5M(N,L)+"</b>.";
   return textq(prompt,u5accept(N,L),sol,{mode:"problem-add",a:a,d1:d1,c:c,d2:d2});
 }, ["The question asks for a total, so the two amounts are added.", "Start by finding a common denominator for the two fractions."]);
-E("u4-pk-area-triangle", 4, ["9.4"], 1, "gen", function(){
+E("u4-pk-area-triangle", 4, ["9.3"], 1, "gen", function(){
   var b=ri(6,16), h=ri(4,12), A=b*h/2;
   var fig='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Triangle with base and height labelled">'
     +'<polygon points="55,145 245,145 120,50" fill="'+FIG_SHADE+'" stroke="'+FIG_INK+'" stroke-width="2"/>'
@@ -6016,7 +6041,7 @@ E("u4-pk-area-triangle", 4, ["9.4"], 1, "gen", function(){
   q.figure=fig;
   return q;
 }, ["Area of a triangle is base times height, divided by 2.", "Start by multiplying base by height, then halve the result."]);
-E("u4-pk-area-parallelogram", 4, ["9.4"], 2, "gen", function(){
+E("u4-pk-area-parallelogram", 4, ["9.3"], 2, "gen", function(){
   var b=ri(6,15), h=ri(4,10), s=h+ri(1,4);
   var A=b*h;
   var fig='<svg viewBox="0 0 300 190" width="300" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Parallelogram with base, height and slanted side labelled">'
@@ -6041,7 +6066,7 @@ E("u4-pk-area-parallelogram", 4, ["9.4"], 2, "gen", function(){
   q.figure=fig;
   return q;
 }, ["Area of a parallelogram is base times the perpendicular height.", "Start by finding the height: the dashed line at right angles to the base."]);
-E("u4-pk-area-mix", 4, ["9.4"], 2, "gen", function(){
+E("u4-pk-area-mix", 4, ["9.3"], 2, "gen", function(){
   var b1=ri(6,14), h1=ri(3,9), b2=ri(6,14), h2=pick([4,6,8,10,12]);
   var A1=b1*h1, A2=b2*h2/2, tot=A1+A2;
   var q=numq("A garden is made of a parallelogram plot with base "+b1+" m and height "+h1+" m, joined to a triangular plot with base "+b2+" m and height "+h2+" m. What is the total area of the garden? Give your answer in square metres.",
@@ -6049,7 +6074,7 @@ E("u4-pk-area-mix", 4, ["9.4"], 2, "gen", function(){
     "\\[ \\begin{aligned} A_{\\text{parallelogram}} &= "+b1+" \\times "+h1+" = "+A1+" \\\\ A_{\\text{triangle}} &= "+FR(b2+" \\times "+h2,"2")+" = "+A2+" \\\\ \\text{total} &= "+A1+" + "+A2+" = "+tot+" \\text{ m}^2 \\end{aligned} \\] The answer is <b>"+tot+" m²</b>.",
     {b1:b1, h1:h1, b2:b2, h2:h2}); q.figure=figMix(b1,h1,b2,h2,"m"); return q;
 }, ["Find each plot's area with its own formula, then add.", "Start with the parallelogram: base times height."]);
-E("u4-pk-area-circle", 4, ["9.6"], 2, "gen", function(){
+E("u4-pk-area-circle", 4, ["9.3"], 2, "gen", function(){
   var modeA=ri(0,2);
   if(modeA===2){
     var rs=ri(2,20), As=3.14*rs*rs/2;
@@ -6101,13 +6126,13 @@ E("u4-pk-area-circle", 4, ["9.6"], 2, "gen", function(){
   q2.figure=u4circleFig("d = "+d+" cm","d");
   return q2;
 }, ["Area of a circle is pi times the radius squared.", "Start by making sure you have the radius; halve the diameter if that is what is given."]);
-E("u4-pk-area-diameter", 4, ["9.6"], 2, "gen", function(){
+E("u4-pk-area-diameter", 4, ["9.3"], 2, "gen", function(){
   var r=ri(3,14), d=2*r, area=Math.round(3.14*r*r*100)/100; var item=pick(["A circular rug","A round clock","A circular pizza pan","A round garden bed","A circular table"]);
   var q=numq(item+" has a diameter of "+d+" cm. Find its area, in square centimetres. Use 3.14 for pi. Show your work.", area, 0.1,
     "The radius is half the diameter, and the area uses the radius. \\[ \\begin{aligned} r &= "+d+" \\div 2 = "+r+" \\\\ A &= 3.14 \\times "+r+"^2 = "+fmt(area,2)+" \\end{aligned} \\] The answer is <b>"+fmt(area,2)+"</b>.",
     {r:r,d:d}); q.figure=u4circleFig("d = "+d+" cm","d"); return q;
 }, ["Halve the diameter to get the radius before using the area formula.", "Start by dividing the diameter by 2."]);
-E("u4-pk-add-sub-decimals", 4, ["9.5"], 1, "gen", function(){
+E("u4-pk-add-sub-decimals", 4, [], 1, "gen", function(){
   var ctxs=[
     {add:true, s:"Maya buys a notebook for $%A and a pen for $%B. How much does she spend in total?"},
     {add:true, s:"A trail has two parts: %A km and %B km. What is the total length of the trail?"},
@@ -6143,7 +6168,7 @@ E("u4-pk-add-sub-decimals", 4, ["9.5"], 1, "gen", function(){
     {t:corT, fb:"Yes: lining up the decimal points and working column by column gives this value."},
     ds, sol, {mode:c.add?"add":"sub", A:A, B:B});
 }, ["Line up the decimal points before adding or subtracting.", "Start by rewriting the numbers with the decimal points in one column."]);
-E("u4-pk-mult-decimals", 4, ["9.5"], 1, "gen", function(){
+E("u4-pk-mult-decimals", 4, [], 1, "gen", function(){
   var mode=ri(0,1), ans, prompt, work;
   if(mode===0){
     var p=ri(125,1999)/100, q=ri(12,48);
@@ -6173,7 +6198,7 @@ E("u4-pk-mult-decimals", 4, ["9.5"], 1, "gen", function(){
     work+" Multiply as with whole numbers, then place the decimal point using the total number of decimal places in the factors. The answer is <b>"+corT+"</b>.",
     {mode:mode});
 }, ["Multiply as if the numbers were whole, then place the decimal point.", "Start by estimating the size of the product so a misplaced decimal stands out."]);
-E("u5-pk-percent-convert", 5, ["3.13"], 1, "gen", function(){
+E("u5-pk-percent-convert", 5, ["3.4"], 1, "gen", function(){
   var p=ri(2,98);
   if(ri(0,1)===0){
     var s=u3simp(p,100);
@@ -6206,7 +6231,7 @@ E("u5-pk-percent-convert", 5, ["3.13"], 1, "gen", function(){
     "A percent is out of 100, so \\("+p+"\\% = "+p+" \\div 100 = "+fmt(cor)+"\\). The answer is <b>"+fmt(cor)+"</b>.",
     {mode:"dec", p:p});
 }, ["Percent means out of 100.", "Start by writing the percent over 100, then simplify or divide."]);
-E("u5-pk-percent-of", 5, ["3.13"], 1, "gen", function(){
+E("u5-pk-percent-of", 5, ["3.4"], 1, "gen", function(){
   if(ri(0,1)===0){
     var Ns=[40,50,60,80,90,120,150,200,240,250,300,400];
     var N=pick(Ns), p=pick([5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95]);
@@ -6244,7 +6269,7 @@ E("u5-pk-percent-of", 5, ["3.13"], 1, "gen", function(){
     "\\[ \\begin{aligned} "+FR(Math.round(part*10),N2*10)+" &= "+fmt(k2/100)+" \\\\ &= "+k2+"\\% \\end{aligned} \\] The answer is <b>"+k2+"%</b>.",
     {mode:"find", N:N2, k:k2});
 }, ["Percent of a number: convert the percent to a decimal and multiply.", "Start by writing the percent as a decimal (divide by 100)."]);
-E("u5-pk-discount-total", 5, ["3.14"], 2, "gen", function(){
+E("u5-pk-discount-total", 5, ["6.1"], 2, "gen", function(){
   var P=20*ri(3,12), p=pick([10,15,20,25,30,35,40,45]);
   var disc=P*p/100, ans=P-disc;
   var item=pick(["jacket","bicycle helmet","backpack"]);
@@ -6252,7 +6277,7 @@ E("u5-pk-discount-total", 5, ["3.14"], 2, "gen", function(){
     "Find the discount amount first, then subtract it from the price. \\[ \\begin{aligned} \\text{discount} &= "+p+"\\% \\text{ of } "+P+" = "+disc+" \\\\ \\text{amount paid} &= "+P+" - "+disc+" = "+ans+" \\end{aligned} \\] The answer is <b>$"+ans+"</b>.",
     {P:P,p:p});
 }, ["Find the percent amount first; the amount paid is what remains after it is taken off.", "Start by calculating the discount in dollars."]);
-E("u5-pk-simplify-fraction", 5, ["3.12"], 1, "gen", function(){
+E("u5-pk-simplify-fraction", 5, ["3.4"], 1, "gen", function(){
   var q=pick([3,4,5,6,7,8,9,10,11,12]);var p=ri(1,q-1);var cnt=0;
   while(u5gcd(p,q)!==1&&cnt<40){p=ri(1,q-1);cnt++;}
   if(u5gcd(p,q)!==1){p=1;}
@@ -6268,7 +6293,7 @@ E("u5-pk-simplify-fraction", 5, ["3.12"], 1, "gen", function(){
     u5fopts([p,q],[{p:[p,D],fb:"That divides only the numerator by "+k+". The denominator must be divided by the same factor."},{p:[N,q],fb:"That divides only the denominator by "+k+". The numerator must be divided by the same factor."},{p:[N-k,D-k],fb:"That subtracts "+k+" from the top and bottom. Simplifying means dividing by a common factor, not subtracting."}]),
     sol,{mode:"simplify",p:p,q:q,k:k});
 }, ["Look for the largest number that divides both the numerator and the denominator.", "Start by listing factors of the numerator and the denominator and finding the one they share."]);
-E("u5-pk-simplify-solution", 5, ["3.12"], 1, "gen", function(){
+E("u5-pk-simplify-solution", 5, [], 1, "gen", function(){
   var d=12,a=2,b=4,cnt=0,s=6;
   while(cnt<80){d=pick([6,8,9,10,12,14,15,16,18,20,21,22,24]);a=ri(1,d-2);b=ri(1,d-1-a);s=a+b;if(u5gcd(s,d)>=2)break;cnt++;}
   if(cnt>=80){d=12;a=2;b=4;s=6;}
@@ -6281,7 +6306,7 @@ E("u5-pk-simplify-solution", 5, ["3.12"], 1, "gen", function(){
   var sol="Add the numerators, then simplify by dividing the numerator and the denominator by their common factor "+g+".\\[ \\begin{aligned} "+FR(a,d)+" + "+FR(b,d)+" &= "+FR(s,d)+" \\\\ &= "+u5disp(s,d)+" \\end{aligned} \\] The answer is <b>"+u5M(s,d)+"</b>.";
   return textq(prompt,u5accept(s,d),sol,{mode:"simplify-solution",a:a,b:b,d:d});
 }, ["First add the fractions, then check whether the result can be simplified.", "Start by adding the numerators, since the denominators already match."]);
-E("u5-pk-frac-to-decimal", 5, ["3.11"], 1, "gen", function(){
+E("u5-pk-frac-to-decimal", 5, ["3.4"], 1, "gen", function(){
   var dens=[2,4,5,8,10,20,25,40,50];
   var d=pick(dens), w=ri(0,2), n=ri(1,d-1);
   var v=(w*d+n)/d;
@@ -6301,7 +6326,7 @@ E("u5-pk-frac-to-decimal", 5, ["3.11"], 1, "gen", function(){
     "\\[ \\begin{aligned} "+FR(num,d)+" &= "+num+" \\div "+d+" \\\\ &= "+fmt(v,3)+" \\end{aligned} \\] The answer is <b>"+fmt(v,3)+"</b>.",
     {num:num, d:d});
 }, ["A fraction is a division: numerator divided by denominator.", "Start by dividing the top number by the bottom number."]);
-E("u5-pk-div-decimals", 5, ["6.28"], 1, "gen", function(){
+E("u5-pk-div-decimals", 5, ["6.29"], 1, "gen", function(){
   var ctxs=[
     {s:"A rope %D m long is cut into %V equal pieces. How long is each piece, in metres?"},
     {s:"A group pays $%D for a van rental, split equally among %V friends. How much does each friend pay?"},
@@ -6416,7 +6441,7 @@ E("u6-pk-table-missing", 6, ["7.2"], 1, "gen", function(){
     "Substitute \\(x = "+miss+"\\): \\[ \\begin{aligned} y &= "+a+" \\times "+miss+" + "+b+" \\\\ &= "+val+" \\end{aligned} \\] The answer is <b>"+val+"</b>.",
     {a:a,b:b,miss:miss});
 }, ["Use the relation, or follow the step pattern down the table.", "Start by substituting the missing row's x value into the relation."]);
-E("u6-pk-graph-relation", 6, ["7.3"], 2, "gen", function(){
+E("u6-pk-graph-relation", 6, ["7.1"], 2, "gen", function(){
   var a=0,b=0,g=0; while(g++<200){ a=ri(1,4); b=ri(1,8); if(a!==b)break; }
   var xmax=pick([3,4,5]);
   var pts=[]; for(var gx=0;gx<=xmax;gx++)pts.push([gx,a*gx+b]);
@@ -6446,7 +6471,7 @@ E("u6-pk-read-point", 6, ["7.4"],1,"gen",function(){
   q.figure=u8gridSVG([{x:x,y:y,label:"P"}],null,null);
   return q;
 },["Coordinates are written (x, y): horizontal movement first, then vertical.","Start at the origin and count across, then up or down."]);
-E("u6-pk-evaluate-expression", 6, ["8.5"], 1, "gen", function(){
+E("u6-pk-evaluate-expression", 6, ["7.2"], 1, "gen", function(){
   var a=ri(2,8), b=ri(2,12), x=ri(2,9), sub=pick([true,false]);
   if(sub&&a*x<=b){ b=a*x-1; if(b<1)b=1; }
   var val=sub?a*x-b:a*x+b, v=pick(["x","n","t"]);
@@ -6461,7 +6486,7 @@ E("u6-pk-evaluate-expression", 6, ["8.5"], 1, "gen", function(){
     "\\[ \\begin{aligned} "+u1Expr(a,sub?-b:b,v)+" &= "+a+" \\times "+x+(sub?" - ":" + ")+b+" \\\\ &= "+val+" \\end{aligned} \\] The answer is <b>"+val+"</b>.",
     {a:a,b:b,x:x,sub:sub});
 }, ["Substitute first, then follow the order of operations.", "Start by replacing the variable with the given value everywhere it appears."]);
-E("u7-pk-graph-quantities", 7, ["11.4"], 1, "gen", function(){
+E("u7-pk-graph-quantities", 7, ["11.1"], 1, "gen", function(){
   var g=u4graphData(), idx=ri(0,3), cat=g.cats[idx];
   var T=pick([100,200,300,400]), qty=cat.pct*T/100;
   var ds=g.cats.filter(function(c,i){return i!==idx;}).map(function(c){
@@ -6475,7 +6500,7 @@ E("u7-pk-graph-quantities", 7, ["11.4"], 1, "gen", function(){
   q.figure=u4pieFig(g.cats,false);
   return q;
 }, ["Turn the sector's percent into a count by multiplying it by the total surveyed.", "Start by reading the percent for the category from the legend."]);
-E("u7-pk-range-basic", 7, ["11.1"],1,"gen",function(){
+E("u7-pk-range-basic", 7, [],1,"gen",function(){
   var ctx=pick(["daily high temperatures in degrees","heights of plants in centimetres","race times in seconds","numbers of pets per household","goals scored each week"]);
   var lo=ri(2,10),hi=lo+ri(4,14);var vals=[lo,hi];var n=ri(4,6);for(var i=0;i<n;i++)vals.push(ri(lo,hi));vals=shuffle(vals);
   var r=hi-lo;
@@ -6484,7 +6509,7 @@ E("u7-pk-range-basic", 7, ["11.1"],1,"gen",function(){
   return mcq("A set of "+ctx+" is: "+vals.join(", ")+". What is the range?",{t:String(r),fb:"Yes: "+hi+" minus "+lo+" equals "+r+"."},ds,
     "The largest value is "+hi+" and the smallest is "+lo+". \\[ \\begin{aligned} \\text{range} &= "+hi+" - "+lo+" \\\\ &= "+r+" \\end{aligned} \\] The range is <b>"+r+"</b>.",{mode:"range"});
 },["The range measures spread: largest value minus smallest value.","Start by finding the largest and smallest values in the set."]);
-E("u7-pk-outlier-find", 7, ["11.1"],1,"gen",function(){
+E("u7-pk-outlier-find", 7, [],1,"gen",function(){
   var base=ri(10,30);var cluster=[];for(var i=0;i<5;i++)cluster.push(base+ri(-3,4));
   var high=Math.random()<0.5;var out=high?base+ri(25,45):Math.max(base-ri(18,26),1);
   var vals=shuffle(cluster.concat([out]));
@@ -6497,7 +6522,7 @@ E("u7-pk-outlier-find", 7, ["11.1"],1,"gen",function(){
     {t:String(out),fb:"Yes: "+out+" lies far from the cluster of values near "+base+"."},ds,
     "Most values cluster near "+base+", between "+Math.min.apply(null,cluster)+" and "+Math.max.apply(null,cluster)+". The value "+out+" lies far outside that cluster. The outlier is <b>"+out+"</b>.",{mode:"find"});
 },["An outlier is a value far removed from the main cluster of data.","Start by picturing the values on a number line and looking for a gap."]);
-E("u7-pk-two-event-pct", 7, ["12.2"],1,"gen",function(){
+E("u7-pk-two-event-pct", 7, ["12.1"],1,"gen",function(){
   var fam=pick(["coinspin","coinspin","coindie","twocoin","spindie","twospin","dicesum"]);
   var fav,total,desc;
   var opener=pick(["At a games table","In a class activity","During a board game","At the school fair","In a probability lesson"]);
@@ -6581,14 +6606,14 @@ E("u7-pk-exp-vs-theor", 7, ["12.1"],1,"gen",function(){
     {t:"\\("+cs+"\\)",fb:"Yes: "+obs+" successes out of "+trials+" trials simplifies to "+cs+"."},ds,
     "Experimental probability is successes over trials. \\(P = "+FR(obs,trials)+" = "+cs+"\\). The experimental probability is <b>\\("+cs+"\\)</b>.",{mode:"expfrac"});
 },["Experimental probability comes from results: successes divided by trials.","Start by writing the observed count over the total number of trials."]);
-E("u7-pk-expected-pct", 7, ["12.1"], 2, "gen", function(){
+E("u7-pk-expected-pct", 7, ["12.4"], 2, "gen", function(){
   var p=pick([10,15,20,25,30,40,50,60,75,80]), N=pick([120,160,200,240,300,400]);
   var ans=N*p/100;
   return numq("A spinner lands on red "+p+"% of the time in the long run. The spinner is spun "+N+" times. How many red results should be expected? Show your work.", ans, 0,
     "Change the percent to a fraction of the trials, then apply it to the number of spins. \\[ \\begin{aligned} \\text{expected reds} &= "+p+"\\% \\text{ of } "+N+" \\\\ &= "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
     {p:p,N:N});
 }, ["An expected count applies the long-run percent to the actual number of trials.", "Start by finding what one percent of the trials is, or by writing the percent as a decimal."]);
-E("u8-pk-translate", 8, ["10.13"],1,"gen",function(){
+E("u8-pk-translate", 8, ["10.7"],1,"gen",function(){
   var x=ri(-6,4),y=ri(-6,4);var dx=pick([-4,-3,-2,-1,1,2,3,4]);var dy=pick([-4,-3,-2,-1,1,2,3,4]);
   var nx=x+dx,ny=y+dy;var askX=Math.random()<0.5;
   var ans=askX?nx:ny;
@@ -6596,7 +6621,7 @@ E("u8-pk-translate", 8, ["10.13"],1,"gen",function(){
     ans,0,
     "Apply the translation to each coordinate. \\[ \\begin{aligned} \\text{image} &= ("+x+" + ("+dx+"), "+y+" + ("+dy+")) \\\\ &= "+u8pair(nx,ny)+" \\end{aligned} \\] The "+(askX?"x":"y")+"-coordinate is <b>"+ans+"</b>.",{mode:askX?"tx":"ty"}); q.figure=figWideGrid([{x:x,y:y,label:"P"}],null,null); return q;
 },["A translation adds to the x-coordinate for left or right moves and to the y-coordinate for up or down moves.","Start by working out how the asked coordinate changes."]);
-E("u8-pk-reflect-point", 8, ["10.13"],1,"gen",function(){
+E("u8-pk-reflect-point", 8, ["10.7"],1,"gen",function(){
   var x=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);var y=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
   var overX=Math.random()<0.5;var axis=overX?"x-axis":"y-axis";
   var img=overX?[x,-y]:[-x,y];var other=overX?[-x,y]:[x,-y];
@@ -6609,7 +6634,7 @@ E("u8-pk-reflect-point", 8, ["10.13"],1,"gen",function(){
   q.figure=u8gridSVG([{x:x,y:y,label:"P"}],null,null);
   return q;
 },["Reflection across the x-axis flips the y sign; across the y-axis flips the x sign.","Start by deciding which coordinate changes sign for the named axis."]);
-E("u8-pk-transform-describe", 8, ["10.13"],1,"gen",function(){
+E("u8-pk-transform-describe", 8, ["10.7"],1,"gen",function(){
   var type=pick(["translate","reflectX","reflectY"]);
   var px=pick([-4,-3,-2,-1,1,2,3,4]);var py=pick([-4,-3,-2,-1,1,2,3,4]);
   var qx=px+pick([-3,-2,2,3]);var qy=py+pick([-3,-2,2,3]);if(qx>5||qx<-5)qx=px-2;if(qy>5||qy<-5)qy=py-2;
@@ -6634,7 +6659,7 @@ E("u8-pk-transform-describe", 8, ["10.13"],1,"gen",function(){
     {t:correct,fb:"Yes: applying it to both P and Q gives exactly the image vertices."},ds,
     "Test each vertex. P "+u8pair(P[0],P[1])+" goes to "+u8pair(P2[0],P2[1])+" and Q "+u8pair(Q[0],Q[1])+" goes to "+u8pair(Q2[0],Q2[1])+", which matches: <b>"+correct+"</b>.",{mode:type}); q.figure=figWideGrid([{x:P[0],y:P[1],label:"P"},{x:Q[0],y:Q[1],label:"Q"},{x:P2[0],y:P2[1],label:"P'"},{x:Q2[0],y:Q2[1],label:"Q'"}],[[P,Q],[P2,Q2]],null); return q;
 },["Test a description on every vertex, not just one: a transformation must fit them all.","Start by comparing the first vertex with its image, then confirm with the second."]);
-E("u8-pk-rotate", 8, ["10.13"], 2, "gen", function(){
+E("u8-pk-rotate", 8, ["10.7"], 2, "gen", function(){
   var x=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), y=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
   var cw=Math.random()<0.5;
   var step1=cw?[y,-x]:[-y,x], step2=[-x,-y];
@@ -6651,7 +6676,7 @@ E("u8-pk-angle-chain", 8, ["10.4"], 2, "gen", function(){
     "Find angle P from the straight line first, then use the triangle angle sum. \\[ \\begin{aligned} P &= 180 - "+B+" = "+C+" \\\\ \\text{third angle} &= 180 - "+C+" - "+D+" = "+third+" \\end{aligned} \\] The answer is <b>"+third+"</b>.",
     {B:B,D:D}); q.figure=triAngSVG(C,D,third,{L:["","",""],ang:["P",D+"°","?"]}); return q;
 }, ["Two angle facts are chained here: use the straight-line fact first, then feed its result into the triangle.", "Start by finding the supplementary angle on the straight line."]);
-E("u8-pk-protractor-read", 8, ["10.8"], 1, "gen", function(){
+E("u8-pk-protractor-read", 8, ["10.4"], 1, "gen", function(){
   var A=pick([20,40,50,70,80,100,110,130,140,160]);
   var cx=170, cy=165, R=125;
   function pt(r,deg){ var t=deg*Math.PI/180; return [cx+r*Math.cos(t), cy-r*Math.sin(t)]; }
@@ -6925,7 +6950,7 @@ function pk7lineSteps(values, markIdx, missingIdx) {
    facts), MA5.5.17 (the doubling and halving strategy), MA4.5.19
    beneath (recall to 7 x 7). Supports host indicators 5.1 to 5.4. */
 
-E("u2-pkf-fact-recall", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-fact-recall", 2, ["6.18"], 1, "gen", function () {
   var a = ri(3, 9), b = ri(3, 9), ans = a * b;
   var ds = pk7fill(ans, pk7uniq(ans, [(a - 1) * b, (a + 1) * b, a * (b - 1), a * (b + 1), ans - a, ans + b])).slice(0, 3);
   return mcq("What is \\(" + a + " \\times " + b + "\\)?",
@@ -6935,7 +6960,7 @@ E("u2-pkf-fact-recall", 2, ["6.17"], 1, "gen", function () {
     { a: a, b: b });
 }, ["Say the fact out loud before you look at the choices.","If the fact will not come, count up by one factor: groups of the other."]);
 
-E("u2-pkf-fact-skip", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-fact-skip", 2, ["6.18"], 1, "gen", function () {
   var n = ri(3, 9), ans = 5 * n;
   var ds = pk7uniq(ans, [4 * n + (n - 1), 4 * n + (n + 1), 6 * n, 4 * n + 1]).slice(0, 3);
   return mcq("Counting by " + n + "s: \\(" + n + ", " + (2 * n) + ", " + (3 * n) + ", " + (4 * n) + ", \\ldots\\) What number comes next?",
@@ -6945,7 +6970,7 @@ E("u2-pkf-fact-skip", 2, ["6.17"], 1, "gen", function () {
     { n: n });
 }, ["What is added at each step of the count?","Say the count out loud and keep going one more step."]);
 
-E("u2-pkf-fact-halving", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-fact-halving", 2, ["6.18"], 1, "gen", function () {
   var a = ri(2, 4), b = ri(3, 9), known = 2 * a * b, ans = a * b;
   var ds = pk7fill(ans, pk7uniq(ans, [known - b, ans + b, known - 2 * b, ans - b])).slice(0, 3);
   return mcq("You know that \\(" + (2 * a) + " \\times " + b + " = " + known + "\\). What is \\(" + a + " \\times " + b + "\\)?",
@@ -6955,7 +6980,7 @@ E("u2-pkf-fact-halving", 2, ["6.17"], 1, "gen", function () {
     { a: a, b: b });
 }, ["Compare the first factors of the two facts.","When one factor is halved, what happens to the product?"]);
 
-E("u2-pkf-mult-2by1", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-mult-2by1", 2, ["6.18"], 1, "gen", function () {
   var a = ri(23, 98), b = ri(3, 9), ans = a * b;
   var tens = Math.floor(a / 10) * 10, ones = a % 10;
   var ds = pk7uniq(ans, [tens * b + ones, ones * b + tens, ans + b, ans - b]).slice(0, 3);
@@ -6966,7 +6991,7 @@ E("u2-pkf-mult-2by1", 2, ["6.17"], 1, "gen", function () {
     { a: a, b: b });
 }, ["Split the bigger number into tens and ones.","Multiply each part by the single digit, then add."]);
 
-E("u2-pkf-mult-2by2", 2, ["6.17"], 2, "gen", function () {
+E("u2-pkf-mult-2by2", 2, ["6.18"], 2, "gen", function () {
   var a = ri(13, 49), b = ri(12, 39); if (b % 10 === 0) b += 1; if (a % 10 === 0) a += 1;
   var ans = a * b;
   var at = Math.floor(a / 10) * 10, ao = a % 10, bt = Math.floor(b / 10) * 10, bo = b % 10;
@@ -6978,7 +7003,7 @@ E("u2-pkf-mult-2by2", 2, ["6.17"], 2, "gen", function () {
     { a: a, b: b });
 }, ["Split one of the numbers into tens and ones.","There are two partial products to add."]);
 
-E("u2-pkf-mult-zeros", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-mult-zeros", 2, ["6.18"], 1, "gen", function () {
   var form = ri(0, 1), a = ri(2, 9), b = ri(2, 9), x, y, ans, base;
   if (form === 0) { x = a * 100; y = b; base = a * b; }
   else { x = a * 10; y = b * 10; base = a * b; }
@@ -6991,7 +7016,7 @@ E("u2-pkf-mult-zeros", 2, ["6.17"], 1, "gen", function () {
     { a: a, b: b, form: form });
 }, ["Do the basic fact first, ignoring the zeros.","Then put back one zero for each zero in the factors."]);
 
-E("u2-pkf-div-exact", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-div-exact", 2, ["6.22"], 1, "gen", function () {
   var d = ri(3, 9), q = ri(31, 99), n = d * q;
   var ds = pk7uniq(q, [q - 1, q + 1, q + 10, q - 10]).slice(0, 3);
   return mcq("What is \\(" + n + " \\div " + d + "\\)?",
@@ -7001,7 +7026,7 @@ E("u2-pkf-div-exact", 2, ["6.17"], 1, "gen", function () {
     { d: d, q: q });
 }, ["Check a possible answer by multiplying it by the divisor.","The multiplication fact with the same numbers settles it."]);
 
-E("u2-pkf-div-remainder", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-div-remainder", 2, ["6.22"], 1, "gen", function () {
   var d = ri(4, 9), q = ri(21, 89), r = ri(1, d - 2), n = d * q + r;
   function lab(qq, rr) { return qq + " remainder " + rr; }
   var ds = pk7uniq(lab(q, r), [lab(q + 1, r), lab(q, r + 1), lab(q - 1, r)]);
@@ -7012,7 +7037,7 @@ E("u2-pkf-div-remainder", 2, ["6.17"], 1, "gen", function () {
     { d: d, q: q, r: r });
 }, ["Find the largest multiple of the divisor that fits.","What is left over must be smaller than the divisor."]);
 
-E("u2-pkf-div-2digit", 2, ["6.17"], 2, "gen", function () {
+E("u2-pkf-div-2digit", 2, ["6.22"], 2, "gen", function () {
   var d = ri(12, 29); if (d % 10 === 0) d += 1;
   var qmax = Math.floor(999 / d), q = ri(11, qmax), n = d * q;
   var ds = pk7uniq(q, [q - 1, q + 1, q + 2, q - 2]).slice(0, 3);
@@ -7023,7 +7048,7 @@ E("u2-pkf-div-2digit", 2, ["6.17"], 2, "gen", function () {
     { d: d, q: q });
 }, ["Estimate with a round multiple of the divisor first.","Check the answer by multiplying it by the divisor."]);
 
-E("u2-pkf-add-regroup", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-add-regroup", 2, [], 1, "gen", function () {
   var a = 0, b = 0, g = 0;
   while (g++ < 300) {
     a = ri(1250, 9899); b = ri(1250, 9899);
@@ -7039,7 +7064,7 @@ E("u2-pkf-add-regroup", 2, ["6.17"], 1, "gen", function () {
     { a: a, b: b });
 }, ["Start from the ones place and work left.","Whenever a place totals 10 or more, regroup into the next place."]);
 
-E("u2-pkf-sub-regroup", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-sub-regroup", 2, [], 1, "gen", function () {
   var a = ri(3, 9) * 1000 + ri(0, 9), b = ri(1123, a - 1000), ans = a - b;
   function smallFromLarge(x, y) { var s = "", p = 1; for (var i = 0; i < 4; i++) { var dx = Math.floor(x / p) % 10, dy = Math.floor(y / p) % 10; s = String(Math.abs(dx - dy)) + s; p *= 10; } return parseInt(s, 10); }
   var ds = pk7fill(ans, pk7uniq(ans, [smallFromLarge(a, b), ans - 10, ans + 10, ans + 100])).slice(0, 3);
@@ -7050,7 +7075,7 @@ E("u2-pkf-sub-regroup", 2, ["6.17"], 1, "gen", function () {
     { a: a, b: b });
 }, ["Look at the zeros: they mean regrouping more than once.","Regroup step by step from the left until each place can be subtracted."]);
 
-E("u2-pkf-add-three", 2, ["6.17"], 2, "gen", function () {
+E("u2-pkf-add-three", 2, [], 2, "gen", function () {
   var a = ri(148, 989), b = ri(148, 989), c = ri(148, 989), ans = a + b + c;
   var ds = pk7fill(ans, pk7uniq(ans, [a + b, ans - 10, ans + 100, a + c])).slice(0, 3);
   return mcq("What is \\(" + a + " + " + b + " + " + c + "\\)?",
@@ -7060,7 +7085,7 @@ E("u2-pkf-add-three", 2, ["6.17"], 2, "gen", function () {
     { a: a, b: b, c: c });
 }, ["Add two of the numbers first.","Then add the third number to that total."]);
 
-E("u2-pkf-ooo-basic", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-ooo-basic", 2, ["6.27"], 1, "gen", function () {
   var a = ri(2, 20), b = ri(2, 9), c = ri(2, 9), ans = a + b * c;
   var ds = pk7fill(ans, pk7uniq(ans, [(a + b) * c, a * b + c, ans + b])).slice(0, 3);
   return mcq("What is \\(" + a + " + " + b + " \\times " + c + "\\)?",
@@ -7070,7 +7095,7 @@ E("u2-pkf-ooo-basic", 2, ["6.17"], 1, "gen", function () {
     { a: a, b: b, c: c });
 }, ["Look for multiplication or division first.","Addition is done after the multiplication here."]);
 
-E("u2-pkf-ooo-brackets", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-ooo-brackets", 2, ["6.27"], 1, "gen", function () {
   var a = ri(2, 15), b = ri(2, 15), c = ri(2, 9), ans = (a + b) * c;
   var cand = pk7uniq(ans, [a + b * c, (a + b) + c, a * b + c, (a + b) * (c + 1)]);
   if (ans >= 100) cand = cand.filter(function (v) { return v !== a * b + c; });
@@ -7082,7 +7107,7 @@ E("u2-pkf-ooo-brackets", 2, ["6.17"], 1, "gen", function () {
     { a: a, b: b, c: c });
 }, ["Look for brackets: they are done first.","Then finish the operations outside the brackets."]);
 
-E("u2-pkf-ooo-chain", 2, ["6.17"], 2, "gen", function () {
+E("u2-pkf-ooo-chain", 2, ["6.27"], 2, "gen", function () {
   var a = ri(2, 9), b = ri(2, 9), c = ri(2, 6), d = ri(2, 6), g = 0;
   while (g++ < 200 && a * b - c * d < 10) { a = ri(3, 9); b = ri(3, 9); c = ri(2, 6); d = ri(2, 6); }
   var ans = a * b - c * d;
@@ -7094,7 +7119,7 @@ E("u2-pkf-ooo-chain", 2, ["6.17"], 2, "gen", function () {
     { a: a, b: b, c: c, d: d });
 }, ["There are two multiplications; do both of them first.","Only then subtract."]);
 
-E("u2-pkf-below-temp", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-below-temp", 2, [], 1, "gen", function () {
   var T = ri(2, 15);
   var ds = pk7uniq("-" + T + " °C", [T + " °C", "0 °C", "-" + (T + 1) + " °C"]);
   return mcq("The temperature is " + T + " degrees below zero. Which temperature is this?",
@@ -7104,7 +7129,7 @@ E("u2-pkf-below-temp", 2, ["6.17"], 1, "gen", function () {
     { T: T });
 }, ["Below zero is the negative side of the scale.","The number of degrees stays the same; the sign changes."]);
 
-E("u2-pkf-below-line", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-below-line", 2, [], 1, "gen", function () {
   var mark = ri(-4, -1);
   var ds = pk7uniq(mark, [-mark, mark - 1, mark + 1]).slice(0, 3);
   var q = mcq("Which integer does the marker show on this number line?",
@@ -7116,7 +7141,7 @@ E("u2-pkf-below-line", 2, ["6.17"], 1, "gen", function () {
   return q;
 }, ["Find 0 first, then count the ticks to the marker.","Numbers to the left of 0 are negative."]);
 
-E("u2-pkf-below-compare", 2, ["6.17"], 1, "gen", function () {
+E("u2-pkf-below-compare", 2, [], 1, "gen", function () {
   var cold = ri(11, 15), mild = ri(10, cold - 1), warm = ri(1, 5);
   var key = "-" + cold + " °C";
   var ds = pk7uniq(key, ["-" + mild + " °C", warm + " °C", "0 °C"]);
@@ -7127,7 +7152,7 @@ E("u2-pkf-below-compare", 2, ["6.17"], 1, "gen", function () {
     { cold: cold, mild: mild, warm: warm });
 }, ["Picture the temperatures on a number line.","The coldest temperature is the furthest to the left."]);
 
-E("u1-pkf-order-place", 1, ["3.19"], 1, "gen", function () {
+E("u1-pkf-order-place", 1, [], 1, "gen", function () {
   var base = ri(200000, 900000);
   var vals = pk7uniq(-1, [base, base + ri(100, 900), base - ri(100, 900), base + ri(1000, 9000)]).slice(0, 4);
   while (vals.length < 4) { var v = base + ri(10000, 90000); if (vals.indexOf(v) < 0) vals.push(v); }
@@ -7140,7 +7165,7 @@ E("u1-pkf-order-place", 1, ["3.19"], 1, "gen", function () {
     { vals: vals });
 }, ["Compare the numbers from the leftmost digit.","The first place where the digits differ settles it."]);
 
-E("u1-pkf-order-line", 1, ["3.19"], 1, "gen", function () {
+E("u1-pkf-order-line", 1, [], 1, "gen", function () {
   var lo = ri(0, 40), mark = lo + ri(2, 8);
   var ds = pk7uniq(mark, [mark - 1, mark + 1, mark + 2]).slice(0, 3);
   var q = mcq("Which number does the marker show on this number line?",
@@ -7152,7 +7177,7 @@ E("u1-pkf-order-line", 1, ["3.19"], 1, "gen", function () {
   return q;
 }, ["Start at the labelled number on the left.","Count one tick at a time up to the marker."]);
 
-E("u1-pkf-order-below", 1, ["3.19"], 2, "gen", function () {
+E("u1-pkf-order-below", 1, [], 2, "gen", function () {
   var mark = ri(-5, -1);
   var ds = pk7uniq(mark, [-mark, mark - 1, mark + 1]).slice(0, 3);
   var q = mcq("Which number does the marker show on this number line?",
@@ -7210,7 +7235,7 @@ E("u6-pkf-divide-form", 6, ["8.1"], 2, "gen", function(){
     {a:a,k:k,b:b});
 }, ["Undo the operations in reverse order: undo the subtraction before undoing the division.","Start by adding the constant to both sides."]);
 
-E("u6-pkf-substitute-check", 6, ["8.1"], 1, "gen", function(){
+E("u6-pkf-substitute-check", 6, ["8.3"], 1, "gen", function(){
   var v=pick(["x","n","m","y"]);
   var mode=pick(["plus","twostep"]);
   var prompt,sol,corr,errs,lhs;
@@ -7233,7 +7258,7 @@ E("u6-pkf-substitute-check", 6, ["8.1"], 1, "gen", function(){
   return mcq(prompt,corr,u6iopts(lhs,errs),sol,{mode:mode,cand:cand2});
 }, ["Substitution means replacing the variable with the given value everywhere it appears.","Start by rewriting the left side with the given value in place of the variable."]);
 
-E("u6-pkf-check-diff", 6, ["8.1"], 2, "gen", function(){
+E("u6-pkf-check-diff", 6, ["8.3"], 2, "gen", function(){
   var a=ri(3,8), b=ri(2,15), xt=ri(4,12), c=a*xt+b;
   var delta=pick([2,3,-2,-3]); if(xt+delta<1) delta=-delta;
   var x0=xt+delta, lhs=a*x0+b, ans=lhs-c;
@@ -7254,7 +7279,7 @@ E("u1-pkf-square-compute", 1, ["3.19"], 1, "gen", function () {
     { n: n });
 }, ["Squaring a number means multiplying it by itself, not multiplying by 2.", "Write the multiplication out in full, then work it out."]);
 
-E("u1-pkf-square-recognize", 1, ["3.19"], 1, "gen", function () {
+E("u1-pkf-square-recognize", 1, ["3.20"], 1, "gen", function () {
   var k = ri(4, 12), s = k * k;
   var ds = pk7uniq(s, [s - 1, s + 1, s + 2, s - 2]).slice(0, 3);
   return mcq("Which of these numbers is a square number?",
@@ -7271,7 +7296,7 @@ E("u1-pkf-square-side", 1, ["3.19"], 2, "gen", function () {
     { k: k });
 }, ["List the square numbers in order until you reach the given number.", "The number you want is the one whose square matches the given number exactly."]);
 
-E("u1-pkf-square-between", 1, ["3.19"], 2, "gen", function () {
+E("u1-pkf-square-between", 1, ["6.30"], 2, "gen", function () {
   var k = ri(5, 11), s = (k + 1) * (k + 1);
   var lo = k * k + ri(2, 8), hi = (k + 2) * (k + 2) - ri(2, 8);
   var loSq = k * k, hiSq = (k + 2) * (k + 2), mid = s + 1;
@@ -7284,7 +7309,7 @@ E("u1-pkf-square-between", 1, ["3.19"], 2, "gen", function () {
     { k: k });
 }, ["List the square numbers in order and find the ones near the range.", "Check each choice twice: is it a square number, and is it between the two values?"]);
 
-E("u3-pkf-equiv-recognize", 3, ["6.4"], 1, "gen", function () {
+E("u3-pkf-equiv-recognize", 3, ["6.8"], 1, "gen", function () {
   var q = ri(4, 9), p = ri(1, q - 1), g0 = 0;
   while (u5gcd(p, q) !== 1 && g0++ < 60) { p = ri(1, q - 1); }
   if (u5gcd(p, q) !== 1) { p = 1; }
@@ -7298,7 +7323,7 @@ E("u3-pkf-equiv-recognize", 3, ["6.4"], 1, "gen", function () {
     { p: p, q: q, k: k });
 }, ["Look for the choice made by multiplying the top and the bottom by the same number.", "Adding the same number to the top and the bottom does not make an equivalent fraction."]);
 
-E("u3-pkf-equiv-target", 3, ["6.4"], 2, "gen", function () {
+E("u3-pkf-equiv-target", 3, ["6.8"], 2, "gen", function () {
   var q = ri(5, 9), p = ri(2, q - 2), g0 = 0;
   while (u5gcd(p, q) !== 1 && g0++ < 60) { p = ri(2, q - 2); }
   if (u5gcd(p, q) !== 1) { p = 2; }
@@ -7313,7 +7338,7 @@ E("u3-pkf-equiv-target", 3, ["6.4"], 2, "gen", function () {
     { p: p, q: q, k: k });
 }, ["Find what the denominator was multiplied by to reach the target denominator.", "Multiply the numerator by that same number."]);
 
-E("u3-pkf-equiv-divide", 3, ["6.4"], 2, "gen", function () {
+E("u3-pkf-equiv-divide", 3, ["6.8"], 2, "gen", function () {
   var q = ri(4, 9), p = ri(2, q - 1), g0 = 0;
   while (u5gcd(p, q) !== 1 && g0++ < 60) { p = ri(2, q - 1); }
   if (u5gcd(p, q) !== 1) { p = 2; }
@@ -7421,7 +7446,7 @@ BANK.forEach(function (e) { var t = PKT8S[e.id]; if (t) { e.pkFlag = true; e.pkS
    unborrowed, as Decision 7 directs). Grounding: Mathematics 7
    indicators 3.7, 6.11 and 6.12, recorded per entry in pkSrc. */
 
-E("u3-pkf-add-like", 3, ["6.4"], 1, "gen", function(){
+E("u3-pkf-add-like", 3, ["6.16"], 1, "gen", function(){
   var d=pick([4,5,6,7,8,9,10,11,12]);var a=ri(1,d-2);var b=ri(1,d-1-a);var s=a+b;
   var ctx=pick(["pure","trail","recipe"]);
   var prompt;
@@ -7436,7 +7461,7 @@ E("u3-pkf-add-like", 3, ["6.4"], 1, "gen", function(){
     sol,{mode:"add-like",a:a,b:b,d:d});
 }, ["The denominators match, so the parts are the same size.","Start by adding the numerators and keeping the denominator the same."]);
 
-E("u3-pkf-sub-like", 3, ["6.4"], 1, "gen", function(){
+E("u3-pkf-sub-like", 3, ["6.16"], 1, "gen", function(){
   var d=pick([4,5,6,7,8,9,10,12]);var a=ri(3,d-1);var b=ri(1,a-1);var s=a-b;
   var ctx=pick(["pure","ribbon","tank"]);
   var prompt;
@@ -7451,7 +7476,7 @@ E("u3-pkf-sub-like", 3, ["6.4"], 1, "gen", function(){
     sol,{mode:"sub-like",a:a,b:b,d:d});
 }, ["The denominators match, so the parts are the same size.","Start by subtracting the numerators and keeping the denominator the same."]);
 
-E("u3-pkf-problem-sub-mixed", 3, ["6.4"], 1, "gen", function(){
+E("u3-pkf-problem-sub-mixed", 3, ["6.16"], 1, "gen", function(){
   var d=pick([3,4,5,6,8,10,12]);var w2=ri(1,3);var w1=w2+ri(1,3);var n2=ri(1,d-2);var n1=n2+ri(1,d-1-n2);var cc=0;
   while((u5gcd(n1,d)!==1||u5gcd(n2,d)!==1)&&cc<40){n2=ri(1,d-2);n1=n2+ri(1,d-1-n2);cc++;}
   if(u5gcd(n1,d)!==1||u5gcd(n2,d)!==1){d=7;n2=ri(1,5);n1=n2+ri(1,6-n2);}
@@ -7466,7 +7491,7 @@ E("u3-pkf-problem-sub-mixed", 3, ["6.4"], 1, "gen", function(){
   return textq(prompt,u5accept(N,d),sol,{mode:"problem-sub-mixed",w1:w1,n1:n1,w2:w2,n2:n2,d:d});
 }, ["The question asks how much is left, so the amounts are subtracted.","Start by subtracting the whole numbers, then subtract the fraction parts."]);
 
-E("u5-pkf-write-percent", 5, ["3.1"], 1, "gen", function(){
+E("u5-pkf-write-percent", 5, ["3.4"], 1, "gen", function(){
   var mode = pick(["dec","frac"]);
   var p, prompt, sol;
   if(mode==="dec"){
@@ -7493,7 +7518,7 @@ E("u5-pkf-write-percent", 5, ["3.1"], 1, "gen", function(){
     sol, { mode: mode, p: p });
 }, ["A percent is a part out of 100.", "Start by writing the given value as a part out of 100."]);
 
-E("u5-pkf-find-whole", 5, ["3.1"], 2, "gen", function(){
+E("u5-pkf-find-whole", 5, ["6.1"], 2, "gen", function(){
   var W = pick([40,50,60,80,100,120,150,200,240,300,400]);
   var ps = [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95].filter(function(x){ return (W*x)%100===0; });
   var p = pick(ps), part = W*p/100;
@@ -7506,7 +7531,7 @@ E("u5-pkf-find-whole", 5, ["3.1"], 2, "gen", function(){
   return numq(prompt, W, 0, sol, { W: W, p: p, part: part });
 }, ["The percent and the part are given; the whole is the missing value.", "Start by dividing the part by the percent written as a decimal."]);
 
-E("u5-pkf-hst-total", 5, ["3.1"], 2, "gen", function(){
+E("u5-pkf-hst-total", 5, ["6.1"], 2, "gen", function(){
   var P = pick([40,60,80,100,120,140,160,180,200,240,300]);
   var tax = P*15/100, total = P + tax;
   var item = pick(["pair of winter boots","bicycle helmet","winter jacket","set of skates","backpack"]);
