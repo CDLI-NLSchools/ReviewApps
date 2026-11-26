@@ -180,6 +180,7 @@
       <div class="checks" style="margin-top:12px;">
         <label><input type="checkbox" id="stemToggle"> Show the question text on student devices too</label>
         <label><input type="checkbox" id="pkToggle"> Include prior knowledge questions</label>
+        <label><input type="checkbox" id="requireIdToggle"> Class ID required to join: students must enter the class ID number you gave them before they can join. It labels their results in your CSV, is stored encrypted, and never appears on any screen.</label>
       </div>
       <p id="setupMsg"></p>
       <div class="rowflex">
@@ -215,6 +216,7 @@
       <div class="rowflex"><button type="button" class="alt" id="shuffleName">Shuffle the name</button></div>
       <label class="f">Pick your avatar</label>
       <div class="avatars" id="avatarPick"></div>
+      <div id="joinCidZone"></div>
       <p id="playJoinMsg"></p>
       <div class="rowflex">
         <button type="button" class="big good" id="joinBtn">Join the game</button>
@@ -225,7 +227,7 @@
   </section>
 
   <footer>
-    Review Rally is a pilot game built on the Review Apps question banks. Students play under generated names; no student accounts are created and no real names are entered. Rooms are temporary and are deleted when the teacher ends the game. A student who wants their results recorded can share them at the end with their class ID number, which only their teacher can match to them.
+    Review Rally is a pilot game built on the Review Apps question banks. Students play under generated names; no student accounts are created and no real names are entered. Rooms are temporary and are deleted when the teacher ends the game. A student who wants their results recorded can enter their class ID number when they join; it is stored encrypted in the room, shown on no screen, and only their teacher can match it to them.
   </footer>
 </main>
 
@@ -312,6 +314,68 @@ var Relay = (function () {
     remove: function (path) { return ref(path).remove(); },
     TIMESTAMP: function () { return firebase.database.ServerValue.TIMESTAMP; }
   };
+})();
+
+/* ---------------- class ID encryption (November 26, 2026) --------------
+   A student's class ID is the one piece of real identity the game
+   handles, and it is never stored or shown in plain text. At room
+   creation the host browser makes a fresh RSA-OAEP key pair: the
+   public half rides in the room record, the private half stays in
+   the host browser (and in session storage, so a reload in the same
+   tab can restore it) and is never written to the room. A student
+   who gives a class ID encrypts it with the public key; only the
+   host can decrypt it, and only to label that student in the CSV.
+   Every function here fails soft: when WebCrypto is unavailable or
+   any step errors, the caller gets null and the game runs exactly
+   as it did before this feature existed. */
+var RallyCrypto = (function () {
+  var ALG = { name: "RSA-OAEP", hash: "SHA-256" };
+  function available() {
+    try { return !!(window.crypto && window.crypto.subtle && window.TextEncoder && window.TextDecoder); }
+    catch (e) { return false; }
+  }
+  function b64(buf) {
+    var u = new Uint8Array(buf), s = "";
+    for (var i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000));
+    return btoa(s);
+  }
+  function unb64(str) {
+    var s = atob(String(str || "")), u = new Uint8Array(s.length);
+    for (var i = 0; i < s.length; i++) u[i] = s.charCodeAt(i);
+    return u.buffer;
+  }
+  function generateHostKeys() {
+    if (!available()) return Promise.resolve(null);
+    return window.crypto.subtle.generateKey(
+      { name: "RSA-OAEP", modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" },
+      true, ["encrypt", "decrypt"]
+    ).then(function (kp) {
+      return Promise.all([
+        window.crypto.subtle.exportKey("jwk", kp.publicKey),
+        window.crypto.subtle.exportKey("jwk", kp.privateKey)
+      ]).then(function (jwks) { return { pubJwk: jwks[0], privJwk: jwks[1], privKey: kp.privateKey }; });
+    }).catch(function () { return null; });
+  }
+  function importPriv(jwk) {
+    if (!available() || !jwk) return Promise.resolve(null);
+    return window.crypto.subtle.importKey("jwk", jwk, ALG, false, ["decrypt"])
+      .then(function (k) { return k; }).catch(function () { return null; });
+  }
+  function importPub(jwk) {
+    if (!available() || !jwk) return Promise.resolve(null);
+    return window.crypto.subtle.importKey("jwk", jwk, ALG, false, ["encrypt"])
+      .then(function (k) { return k; }).catch(function () { return null; });
+  }
+  function encrypt(pubKey, text) {
+    return window.crypto.subtle.encrypt({ name: "RSA-OAEP" }, pubKey, new TextEncoder().encode(String(text)))
+      .then(function (ct) { return b64(ct); });
+  }
+  function decrypt(privKey, b64str) {
+    return window.crypto.subtle.decrypt({ name: "RSA-OAEP" }, privKey, unb64(b64str))
+      .then(function (pt) { return new TextDecoder().decode(pt); })
+      .catch(function () { return null; });
+  }
+  return { available: available, generateHostKeys: generateHostKeys, importPriv: importPriv, importPub: importPub, encrypt: encrypt, decrypt: decrypt };
 })();
 
 /* ---------------- small utilities ---------------- */
@@ -697,6 +761,7 @@ var Host = {
   answers: {}, expected: {}, scores: {}, perQ: [], timerInt: null,
   cur: -1, phase: "setup", mastery: null, reviewList: [],
   lightsInt: null, currentStartedAt: 0, loadedSet: null,
+  cidMap: {}, _cidSeen: {}, _privKey: null, _privTried: false,
 
   setup: function () {
     var sel = $("courseSel");
@@ -855,6 +920,7 @@ var Host = {
     var settings = {
       mode: "showcase", courseId: ls.courseId, courseName: c.shortName,
       units: units, levels: [1, 2, 3], includePK: true,
+      requireId: $("requireIdToggle").checked,
       timerSec: +$("timerSel").value, showStem: $("stemToggle").checked,
       count: ls.dealt.length,
       threshold: +$("thresholdSel").value,
@@ -873,6 +939,7 @@ var Host = {
     var settings = {
       mode: mode, courseId: COURSE.id, courseName: COURSE.shortName,
       units: units, levels: levels, includePK: $("pkToggle").checked,
+      requireId: $("requireIdToggle").checked,
       timerSec: +$("timerSel").value, showStem: $("stemToggle").checked,
       count: +$("countSel").value,
       threshold: +$("thresholdSel").value,
@@ -911,24 +978,87 @@ var Host = {
       this.mastery = settings.indicators.map(function (c) { return { code: c, asked: 0, acc: [], status: "working" }; });
       roomData.mastery = this.mastery.map(function (m) { return { code: m.code, status: m.status, asked: 0 }; });
     }
+    /* Class ID package (November 26, 2026): the room records whether
+       a class ID is required to join, and, when this browser has
+       WebCrypto, the public half of a fresh key pair for the room.
+       Students encrypt their class ID with that key; the private
+       half never leaves this browser. It is kept in session storage
+       under the room code so a reload in this tab can restore it.
+       Without WebCrypto there is simply no key in the room, and IDs
+       stay out of the room entirely, as before. */
+    roomData.requireId = !!settings.requireId;
+    this.cidMap = {}; this._cidSeen = {}; this._privKey = null; this._privTried = false;
+    var keyReady = RallyCrypto.generateHostKeys().then(function (keys) {
+      if (!keys) return;
+      roomData.pubKey = keys.pubJwk;
+      self._privKey = keys.privKey;
+      try { sessionStorage.setItem("rallyPriv:" + code, JSON.stringify(keys.privJwk)); } catch (e) {}
+    });
     $("createRoomBtn").disabled = true;
     $("createRoomFromSetBtn").disabled = true;
-    Relay.create("rooms/" + code, roomData).then(function () {
+    var created = function () {
       self.phase = "lobby";
       $("hostSetup").classList.add("hidden");
       $("hostLobby").classList.remove("hidden");
       $("roomCodeBig").textContent = code;
       self.unlisten = Relay.listen("rooms/" + code, function (room) { self.onRoom(room); });
-    }).catch(function (e) {
+    };
+    var failed = function (e) {
       $("createRoomBtn").disabled = !!self.loadedSet;
       $("createRoomFromSetBtn").disabled = !self.loadedSet;
       $("setupMsg").textContent = "The room could not be created: " + (e.message || e);
-    });
+    };
+    if (RallyCrypto.available()) {
+      /* Key generation is async, so the room is created once the
+         public key is ready to ride in it. */
+      keyReady.then(function () { return Relay.create("rooms/" + code, roomData); }).then(created).catch(failed);
+    } else {
+      Relay.create("rooms/" + code, roomData).then(created).catch(failed);
+    }
   },
   onRoom: function (room) {
     this.room = room;
+    this.syncCids(room);
     if (this.phase === "lobby") this.renderLobby();
     if (this.phase === "playing") this.renderBoardPlayers();
+  },
+  /* Restore the room's private key from session storage when this
+     page did not generate it itself (a host reload in the same tab).
+     Runs at most once per room on this page; a missing or unreadable
+     key simply leaves the CSV to use generated names. */
+  ensurePriv: function () {
+    if (this._privKey || this._privTried || !this.code) return;
+    this._privTried = true;
+    var self = this, raw = null;
+    try { raw = sessionStorage.getItem("rallyPriv:" + this.code); } catch (e) {}
+    if (!raw) return;
+    var jwk = null;
+    try { jwk = JSON.parse(raw); } catch (e) {}
+    RallyCrypto.importPriv(jwk).then(function (key) {
+      if (!key) return;
+      self._privKey = key;
+      self._cidSeen = {};
+      self.syncCids(self.room);
+    });
+  },
+  /* Keep the decrypted class ID map current as room snapshots
+     arrive. Each distinct ciphertext is decrypted once; the plain
+     IDs live only in this map, on this screen, for the CSV. A
+     corrected ID writes a fresh ciphertext, which is picked up the
+     same way. */
+  syncCids: function (room) {
+    if (!room || !room.players) return;
+    this.ensurePriv();
+    if (!this._privKey) return;
+    var self = this;
+    Object.keys(room.players).forEach(function (pid) {
+      var enc = (room.players[pid] || {}).cidEnc;
+      if (!enc || self._cidSeen[pid] === enc) return;
+      self._cidSeen[pid] = enc;
+      RallyCrypto.decrypt(self._privKey, enc).then(function (plain) {
+        if (plain != null && self._cidSeen[pid] === enc) self.cidMap[pid] = plain;
+      });
+    });
   },
   playersList: function () {
     var p = (this.room && this.room.players) || {};
@@ -1324,10 +1454,27 @@ var Host = {
     L.push("");
     L.push("STUDENTS");
     L.push("Rank,Player,Score,Correct,Answered");
+    /* A student who gave their class ID is labelled by it in place
+       of their generated name (Jason's ruling, November 26, 2026).
+       The IDs reach this map only by decryption, here on the host
+       screen; they appear in no other output of the game. */
+    var labelFor = function (r) { return Host.cidMap[r.pid] || r.name; };
     board.forEach(function (r) {
       var right = 0, total = 0;
       Host.perQ.forEach(function (rec) { var pp = rec.perPlayer[r.pid]; if (pp) { total++; if (pp.ok) right++; } });
-      L.push([r.rank, csvq(r.name), r.score, right, total].join(","));
+      L.push([r.rank, csvq(labelFor(r)), r.score, right, total].join(","));
+    });
+    L.push("");
+    L.push("STUDENT RESPONSES");
+    L.push(["Player"].concat(this.perQ.map(function (rec) { return "Q" + rec.n; })).join(","));
+    L.push(["Correct answer"].concat(this.perQ.map(function (rec) { return "ABCDE"[rec.correct]; })).join(","));
+    board.forEach(function (r) {
+      var cells = [csvq(labelFor(r))];
+      Host.perQ.forEach(function (rec) {
+        var pp = rec.perPlayer[r.pid];
+        cells.push(pp ? "ABCDE"[pp.c] + (pp.ok ? " ✓" : " ✗") : "");
+      });
+      L.push(cells.join(","));
     });
     L.push("");
     L.push("QUESTIONS");
@@ -1393,6 +1540,8 @@ var RESULTS_FORM = {
 var Play = {
   code: null, pid: null, room: null, unlisten: null, hbInt: null,
   name: "", avatar: AVATARS[0], myAnswers: {}, myDetail: {}, shared: false,
+  classId: "", roomRequireId: false, roomPubKey: null, _pubKeyP: null,
+  _joinConfirmId: null, _confirmId: null,
   lastState: "", lastQn: -1, timerInt: null, lightsInt: null, _lightsFor: -1,
 
   beginJoin: function (code) {
@@ -1427,19 +1576,79 @@ var Play = {
         self.name = genName(t2);
         $("genName").textContent = self.name;
       };
+      /* Class ID at join (November 26, 2026): the room says whether
+         an ID is required. Either way the field sits on the join
+         screen, with the confirm step before the join completes;
+         the ID itself is encrypted before it is written anywhere. */
+      self.roomRequireId = !!room.requireId;
+      self.roomPubKey = room.pubKey || null;
+      self._pubKeyP = null;
+      self.classId = (saved && saved.cid) || "";
+      self._joinConfirmId = self.classId || null;
+      $("joinCidZone").innerHTML = '<label class="f" for="joinCidInput">Class ID number</label>' +
+        (self.roomRequireId
+          ? '<p class="sub">Your teacher requires a class ID for this game. You still play under a fun name; the number only labels your results for your teacher.</p>'
+          : '<p class="sub">If your teacher gave you a class ID number, enter it here (optional). It labels your results for your teacher, and it is stored encrypted.</p>') +
+        '<input type="text" id="joinCidInput" placeholder="Class ID number" maxlength="16" style="font-size:1.2rem;width:220px;">' +
+        '<p id="joinCidMsg"></p>';
+      var cidInput = $("joinCidInput");
+      if (self.classId) cidInput.value = self.classId;
+      cidInput.addEventListener("input", function () { self._joinConfirmId = null; });
     }).catch(function (e) { $("homeMsg").textContent = "Could not reach the game service: " + (e.message || e); });
   },
   join: function () {
     var self = this;
-    var data = { name: this.name, avatar: this.avatar, joined: Relay.TIMESTAMP(), lastSeen: Relay.TIMESTAMP(), score: 0, gone: false };
-    Relay.create("rooms/" + this.code + "/players/" + this.pid, data).then(function () {
-      try { sessionStorage.setItem("gameJoin:" + self.code, JSON.stringify({ pid: self.pid, name: self.name, avatar: self.avatar })); } catch (e) {}
+    var input = $("joinCidInput"), msgEl = $("joinCidMsg");
+    var cid = input ? (input.value || "").trim() : (this.classId || "");
+    function say(t, isHtml) {
+      var m = msgEl || $("playJoinMsg");
+      if (!m) return;
+      if (isHtml) m.innerHTML = t; else m.textContent = t;
+    }
+    if (cid.length > 16) { say("That class ID is too long. Class IDs are at most 16 characters; check the number and try again."); return; }
+    if (this.roomRequireId && !cid) { say("Your teacher requires a class ID for this game. Enter your class ID number above, then join."); return; }
+    if (cid && this._joinConfirmId !== cid) {
+      this._joinConfirmId = cid;
+      say("Check the number: <b>" + esc(cid) + "</b>. If that is your class ID, tap Join the game again to join.", true);
+      return;
+    }
+    this.classId = cid;
+    $("joinBtn").disabled = true;
+    /* The required check above is about the entry itself, not about
+       the encryption: if the crypto path fails, the join still
+       completes and the ID simply stays out of the room record. */
+    var encP = cid ? this.encryptCid(cid) : Promise.resolve(null);
+    encP.then(function (enc) {
+      var data = { name: self.name, avatar: self.avatar, joined: Relay.TIMESTAMP(), lastSeen: Relay.TIMESTAMP(), score: 0, gone: false };
+      if (enc) data.cidEnc = enc;
+      return Relay.create("rooms/" + self.code + "/players/" + self.pid, data);
+    }).then(function () {
+      self.saveJoinRecord();
       Relay.heartbeat(self.code, self.pid, true);
       self.hbInt = setInterval(function () { Relay.heartbeat(self.code, self.pid); }, 8000);
       $("playJoin").classList.add("hidden");
       $("playMain").classList.remove("hidden");
       self.unlisten = Relay.listen("rooms/" + self.code, function (room) { self.onRoom(room); });
-    }).catch(function (e) { $("playJoinMsg").textContent = "Joining failed: " + (e.message || e); });
+    }).catch(function (e) {
+      $("joinBtn").disabled = false;
+      $("playJoinMsg").textContent = "Joining failed: " + (e.message || e);
+    });
+  },
+  saveJoinRecord: function () {
+    try { sessionStorage.setItem("gameJoin:" + this.code, JSON.stringify({ pid: this.pid, name: this.name, avatar: this.avatar, cid: this.classId || "" })); } catch (e) {}
+  },
+  /* Encrypt this student's class ID with the room's public key.
+     Resolves to the base64 ciphertext, or to null when the room
+     carries no key or anything in the crypto path fails; callers
+     carry on without it either way. */
+  encryptCid: function (cid) {
+    var pub = this.roomPubKey || (this.room && this.room.pubKey) || null;
+    if (!pub || !cid) return Promise.resolve(null);
+    if (!this._pubKeyP) this._pubKeyP = RallyCrypto.importPub(pub);
+    return this._pubKeyP.then(function (key) {
+      if (!key) return null;
+      return RallyCrypto.encrypt(key, cid);
+    }).catch(function () { return null; });
   },
   onRoom: function (room) {
     this.room = room;
@@ -1638,28 +1847,71 @@ var Play = {
     html += "<p class='bigstat'>Your score: <b>" + (res.score != null ? res.score : (players[this.pid] || {}).score || 0) + "</b>" +
       (res.right != null ? " · " + res.right + " correct of " + res.total : "") + "</p>";
     if (res.missed && res.missed.length) html += "<p>Indicators to practise: <b>" + esc(res.missed.join(", ")) + "</b></p>";
-    html += '<div class="card" style="margin-top:14px;"><h2>Share your results</h2>' +
-      "<p>If your teacher gave you a class ID number, enter it here. Your results go to your teacher's sheet under that number only, never your name, and you get a practice set aimed at the indicators you missed.</p>" +
-      '<div id="shareZone">' +
-      '<div class="rowflex"><input type="text" id="classIdInput" placeholder="Class ID number" inputmode="numeric" style="font-size:1.2rem;width:200px;">' +
-      '<button type="button" id="shareBtn">Share my results</button></div>' +
-      '<p id="shareMsg"></p></div></div>';
+    html += '<div class="card" style="margin-top:14px;"><h2>Share your results</h2><div id="shareZone"></div></div>';
     html += '<div class="card"><h2>Keep practising</h2><p>' +
       '<a id="practiceLink" href="' + esc(room.classPractice || "#") + '" target="_blank" rel="noopener">Practise what the class missed</a>' +
       " (opens the Review Apps). If you share your results above, this becomes a set aimed at your own misses.</p></div>";
     $("playMain").innerHTML = html;
-    var self = this;
-    $("shareBtn").addEventListener("click", function () { self.share(res, room); });
+    this.renderShareZone(res, room);
   },
-  share: function (res, room) {
+  /* The share card (November 26, 2026). A student who gave their
+     class ID at join sees it named here, on their own screen only,
+     and shares with one tap; the Change the number path re-runs the
+     entry form with its confirm step. A student with no ID on
+     record gets the entry form as the fallback. Either way the
+     results post itself is the same form post as always. */
+  renderShareZone: function (res, room) {
+    var zone = $("shareZone");
+    if (!zone) return;
+    var self = this;
+    if (this.classId) {
+      zone.innerHTML = "<p>Your results will go to your teacher under class ID <b>" + esc(this.classId) + "</b>.</p>" +
+        '<div class="rowflex"><button type="button" id="shareBtn">Share my results</button>' +
+        '<button type="button" class="alt" id="changeCidBtn">Change the number</button></div>' +
+        '<p id="shareMsg"></p>';
+      $("shareBtn").addEventListener("click", function () { self.postShare(self.classId, res, room); });
+      $("changeCidBtn").addEventListener("click", function () { self.renderCidForm(res, room); });
+    } else {
+      this.renderCidForm(res, room);
+    }
+  },
+  renderCidForm: function (res, room) {
+    var zone = $("shareZone");
+    if (!zone) return;
+    var self = this;
+    this._confirmId = null;
+    zone.innerHTML = "<p>If your teacher gave you a class ID number, enter it here. Your results go to your teacher's sheet under that number only, never your name, and you get a practice set aimed at the indicators you missed.</p>" +
+      '<div class="rowflex"><input type="text" id="classIdInput" placeholder="Class ID number" maxlength="16" style="font-size:1.2rem;width:220px;">' +
+      '<button type="button" id="shareBtn">Share my results</button></div>' +
+      '<p id="shareMsg"></p>';
+    var input = $("classIdInput");
+    if (this.classId) input.value = this.classId;
+    input.addEventListener("input", function () { self._confirmId = null; });
+    $("shareBtn").addEventListener("click", function () { self.shareFromForm(res, room); });
+  },
+  shareFromForm: function (res, room) {
     var input = $("classIdInput"), msg = $("shareMsg");
     var cid = (input.value || "").trim();
     if (!cid) { msg.textContent = "Enter your class ID number first."; return; }
-    if (!this._confirmId || this._confirmId !== cid) {
+    if (cid.length > 16) { msg.textContent = "That class ID is too long. Class IDs are at most 16 characters; check the number and try again."; return; }
+    if (this._confirmId !== cid) {
       this._confirmId = cid;
       msg.innerHTML = "Check the number: <b>" + esc(cid) + "</b>. If that is your class ID, tap Share again to send it.";
       return;
     }
+    this.classId = cid;
+    this.saveJoinRecord();
+    var self = this;
+    /* Keep the room copy current too, encrypted, so a CSV the
+       teacher downloads after this share labels the student by the
+       corrected (or newly given) number. A rejected or failed write
+       is ignored: the results post below is the record that counts. */
+    this.encryptCid(cid).then(function (enc) {
+      if (enc) Relay.update("rooms/" + self.code + "/players/" + self.pid, { cidEnc: enc }).catch(function () {});
+    });
+    this.postShare(cid, res, room);
+  },
+  postShare: function (cid, res, room) {
     var self = this;
     var detail = Object.keys(this.myDetail).sort(function (a, b) { return a - b; }).map(function (qn) {
       var d = self.myDetail[qn];
@@ -1674,7 +1926,8 @@ var Play = {
     body.set(RESULTS_FORM.result, (res.right != null ? res.right + " correct of " + res.total : ""));
     body.set(RESULTS_FORM.missed, (res.missed || []).join(", "));
     body.set(RESULTS_FORM.detail, detail);
-    $("shareBtn").disabled = true;
+    var btn = $("shareBtn"), msg = $("shareMsg");
+    if (btn) btn.disabled = true;
     fetch(RESULTS_FORM.url, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString() })
       .then(function () {
         self.shared = true;
@@ -1682,8 +1935,8 @@ var Play = {
           (res.practice ? '<p>Your practice set: <a href="' + esc(res.practice) + '" target="_blank" rel="noopener">Practise your missed indicators</a></p>' : "");
       })
       .catch(function () {
-        $("shareBtn").disabled = false;
-        msg.textContent = "Sharing did not get through. Check your connection and try again.";
+        if (btn) btn.disabled = false;
+        if (msg) msg.textContent = "Sharing did not get through. Check your connection and try again.";
       });
   }
 };
