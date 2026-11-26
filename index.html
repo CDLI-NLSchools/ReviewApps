@@ -2846,7 +2846,6 @@ var qrcode = function() {
       </div>
     </div>
     <div class="modebar">
-      <button type="button" id="copyLink" class="alt">Copy link to these settings</button>
       <button type="button" class="alt" id="advToolsBtn" hidden>Advanced tools</button>
       <label>Dual-form questions
         <select id="bmIn">
@@ -4244,7 +4243,7 @@ function tCodeOpenVia(q,sp){
 function tCodeOpenBoot(){
   tCodeOpenBanner("off");
   var touched=applyURL();
-  if(new URLSearchParams(window.__QPAYLOAD||location.search).get("set")&&tRebuildFromURL()){tCodeTeacherBar();return;}
+  if(new URLSearchParams(window.__QPAYLOAD||location.search).get("set")&&tRebuildFromURL()){tNoteOpenedSet(tOpenedCodeHere());tCodeTeacherBar();return;}
   if(touched&&new URLSearchParams(window.__QPAYLOAD||location.search).get("nostart")!=="1"&&(new URLSearchParams(window.__QPAYLOAD||location.search).get("unit")||new URLSearchParams(window.__QPAYLOAD||location.search).get("preset")||new URLSearchParams(window.__QPAYLOAD||location.search).get("indicator"))){
     var m=new URLSearchParams(window.__QPAYLOAD||location.search).get("mode");
     if(m==="sheet"||m==="worksheet")startSheet();else if(m==="exam")startExam();else startOnline();
@@ -4269,7 +4268,7 @@ function tCodeOpenFetch(){
   var code=window.__QCODE;if(!code||window.__QPAYLOAD)return;
   tCodeOpenBanner("load");
   var sp=new URLSearchParams(window.__QPAYLOAD||location.search);
-  function hit(q){if(!q)return;var q2=tCodeOpenVia(q,sp);try{var p=new URLSearchParams(q2);if(!p.get("via")&&!p.get("teacher")){p.set("via","code");q2=p.toString();}}catch(e){}window.__QPAYLOAD=q2;window.__QCODE=null;tCodeOpenBoot();}
+  function hit(q){if(!q)return;var q2=tCodeOpenVia(q,sp);try{var p=new URLSearchParams(q2);if(!p.get("via")&&!p.get("teacher")){p.set("via","code");q2=p.toString();}}catch(e){}window.__QPAYLOAD=q2;window.__QOPENED=code;window.__QCODE=null;tCodeOpenBoot();}
   try{var reg=window.PACK_CODES;if(reg&&reg[code]&&reg[code].q){hit(reg[code].q);return;}}catch(e){}
   var settled=0,hitDone=false;
   function fin(){settled++;if(settled>=2&&!hitDone&&!window.__QPAYLOAD)tCodeOpenBanner("miss",code);}
@@ -5204,21 +5203,146 @@ function tLinkCodeFor(url){
   countEvent("set_code_mint",[analyticsCourse()]);
   return code;
 }
+/* ---- link sharing simplification (Nov 26, 2026) ----
+   Opened-code reuse, registry dedupe before minting,
+   clipboard writes that survive an await, and the online
+   teacher panel's recipe link. See the build note above. */
+var _openedSet=null;
+function tSetFingerprint(){
+  if(typeof current==="undefined"||!current||!current.length)return "";
+  var parts=[];
+  for(var i=0;i<current.length;i++){
+    var q=current[i];if(!q)return "";
+    var id=(q._entry&&q._entry.id)?q._entry.id:"?";
+    var opts="";
+    if(q.type==="mc"&&q.options)opts=q.options.map(function(o){return String(o);}).join("~");
+    parts.push(id+"|"+q.type+"|"+canonQ(q)+"|"+opts);
+  }
+  return parts.join(";;");
+}
+function tNoteOpenedSet(code){
+  if(!code){_openedSet=null;return;}
+  var fp=tSetFingerprint();
+  _openedSet=fp?{code:code,fp:fp}:null;
+}
+function tOpenedCodeHere(){
+  if(window.__QOPENED)return window.__QOPENED;
+  if(window.__QPAYLOAD&&window.__QCODE)return window.__QCODE;
+  try{
+    var raw=sessionStorage.getItem("raCodePayload");
+    if(raw){
+      var o=JSON.parse(raw);
+      if(o&&o.code&&o.q){
+        var eff=window.__QPAYLOAD||location.search.replace(/^\?/,"");
+        if(o.q===eff)return o.code;
+      }
+    }
+  }catch(e){}
+  return "";
+}
+function tClipboardWrite(text){
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      var p=navigator.clipboard.writeText(text);
+      if(p&&typeof p.then==="function")return p;
+      return Promise.resolve();
+    }
+  }catch(e){return Promise.reject(e);}
+  return Promise.reject(new Error("clipboard unavailable"));
+}
+function tManualCopyText(){
+  return L9("Automatic copy was blocked, so nothing was copied. Copy it by hand: ","La copie automatique a été bloquée, alors rien n'a été copié. Copie-le à la main : ");
+}
+function tResolveLinkCode(url,cb){
+  var q=url.split("?")[1]||"";
+  if(!q||q.indexOf("set=")<0){cb("");return;}
+  if(_linkCodes[q]){cb(_linkCodes[q]);return;}
+  try{
+    var reg=window.PACK_CODES;
+    if(reg){
+      var ks=Object.keys(reg);
+      for(var i=0;i<ks.length;i++){
+        var e=reg[ks[i]];
+        var eq=(typeof e==="string")?e:((e&&(e.q||e.set))||"");
+        if(eq===q){_linkCodes[q]=ks[i];cb(ks[i]);return;}
+      }
+    }
+  }catch(e){}
+  var done=false,timer=null;
+  function finish(code){
+    if(done)return;done=true;
+    if(timer){clearTimeout(timer);timer=null;}
+    if(code){_linkCodes[q]=code;cb(code);return;}
+    cb(tLinkCodeFor(url));
+  }
+  var settled=0;
+  function source(res){
+    if(done)return;
+    var codes=(res&&res.ok&&res.codes)?res.codes:null;
+    if(codes){
+      var ks=Object.keys(codes);
+      for(var i=0;i<ks.length;i++){if(codes[ks[i]]===q){finish(ks[i]);return;}}
+    }
+    settled++;
+    if(settled>=2)finish("");
+  }
+  timer=setTimeout(function(){finish("");},6000);
+  var snapP=(typeof fetchSnapshotCodes==="function")?fetchSnapshotCodes():Promise.resolve({ok:false,codes:{}});
+  var sheetP=(typeof fetchSheetCodes==="function")?fetchSheetCodes():Promise.resolve({ok:false,codes:{}});
+  snapP.then(source,function(){source(null);});
+  sheetP.then(source,function(){source(null);});
+}
+function tRecipeURL(){
+  var url=tShareURL(false);
+  var p=new URLSearchParams(url.split("?")[1]||"");
+  p.delete("set");p.delete("mode");p.delete("teacher");p.delete("seed");
+  var s=(typeof lastSettings!=="undefined")?lastSettings:null;
+  var C=window.__COURSE;
+  if(s&&s.units&&s.units.length){
+    var sorted=s.units.slice().sort(function(a,b){return a-b;}).join();
+    var mid=(C&&C.presets)?C.presets.mid:null,fin=(C&&C.presets)?C.presets.final:null;
+    var midOk=!!(mid&&mid.units&&mid.units.slice().sort(function(a,b){return a-b;}).join()===sorted&&(!mid.cap||s.midCap));
+    var finOk=!!(!midOk&&fin&&fin.units&&fin.units.slice().sort(function(a,b){return a-b;}).join()===sorted&&(!fin.cap||s.finalCap));
+    p.delete("preset");p.delete("unit");
+    if(midOk)p.set("preset","mid");
+    else if(finOk)p.set("preset","final");
+    else p.set("unit",s.units.join(","));
+    if(s.inds&&s.inds.length)p.set("indicator",s.inds.join(","));else p.delete("indicator");
+    if(s.count)p.set("count",s.count);
+    if(s.order)p.set("order",s.order);
+  }
+  return location.origin+location.pathname+"?"+p.toString();
+}
+function tCopyRecipeLink(statusEl){
+  var url=tRecipeURL();
+  tClipboardWrite(url).then(function(){
+    if(statusEl)statusEl.textContent=L9("Selections link copied: everyone who opens it gets a different set of questions from the same selections.","Lien des sélections copié : chaque personne qui l'ouvre reçoit une série de questions différente tirée des mêmes sélections.");
+  },function(){
+    if(statusEl)statusEl.textContent=tManualCopyText()+url;
+  });
+}
 function tCopyLink(teacher,statusEl){
   var url=tShareURL(teacher);
-  var code=tLinkCodeFor(url);
-  if(code){
-    var shown=code.slice(0,3)+" "+code.slice(3);
-    var text=location.origin+location.pathname+"?course="+encodeURIComponent(new URLSearchParams(url.split("?")[1]||"").get("course")||"")+"&codeopen="+code;
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);}
+  tResolveLinkCode(url,function(code){
+    if(code){
+      var shown=code.slice(0,3)+" "+code.slice(3);
+      var text=location.origin+location.pathname+"?course="+encodeURIComponent(new URLSearchParams(url.split("?")[1]||"").get("course")||"")+"&codeopen="+code;
+      tClipboardWrite(text).then(function(){
+        if(statusEl)statusEl.textContent=teacher?("Short link copied: it opens this exact set with the editing controls on. Keep it for yourself. The set code "+shown+" also works typed on the Review Apps home page."):("Short link copied: it opens this exact set. The set code "+shown+" also works typed on the Review Apps home page.");
+      },function(){
+        if(statusEl)statusEl.textContent=tManualCopyText()+text;
+      });
+      if(!teacher)countEvent("student_link_copy",[analyticsCourse(),"s"+(tShufPref()==="shuf"?"1":"0")+"-h"+(tHintPref()==="off"?"1":"0")+"-e"+(tExPref()==="off"?"1":"0")+"-k"+(tRetryPref()==="keep"?"1":"0")]);
+      return;
+    }
+    tClipboardWrite(url).then(function(){
+      if(statusEl)statusEl.textContent=teacher?"Teacher link copied: it opens this exact set with the editing controls on. Keep it for yourself.":"Link copied for students: it opens this exact set, with no editing controls.";
+    },function(){
+      if(statusEl)statusEl.textContent=tManualCopyText()+url;
+    });
     if(!teacher)countEvent("student_link_copy",[analyticsCourse(),"s"+(tShufPref()==="shuf"?"1":"0")+"-h"+(tHintPref()==="off"?"1":"0")+"-e"+(tExPref()==="off"?"1":"0")+"-k"+(tRetryPref()==="keep"?"1":"0")]);
-    if(statusEl)statusEl.textContent=teacher?("Short link copied: it opens this exact set with the editing controls on. Keep it for yourself. The set code "+shown+" also works typed on the Review Apps home page."):("Short link copied: it opens this exact set. The set code "+shown+" also works typed on the Review Apps home page.");
-    return;
-  }
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url);}
-  if(!teacher)countEvent("student_link_copy",[analyticsCourse(),"s"+(tShufPref()==="shuf"?"1":"0")+"-h"+(tHintPref()==="off"?"1":"0")+"-e"+(tExPref()==="off"?"1":"0")+"-k"+(tRetryPref()==="keep"?"1":"0")]);
-  if(statusEl)statusEl.textContent=teacher?"Teacher link copied: it opens this exact set with the editing controls on. Keep it for yourself.":"Link copied for students: it opens this exact set, with no editing controls.";
-  if(!teacher){try{history.replaceState(null,"",url.slice(location.origin.length));}catch(e){}}
+    if(!teacher){try{history.replaceState(null,"",url.slice(location.origin.length));}catch(e){}}
+  });
 }
 function tBuildTok(tok,avoid,salt){
   var id=null,n=0,idx=0,raw=null,at=tok.indexOf("@");
@@ -5754,7 +5878,7 @@ function tctlHtml(i){
 }
 function tBarHtml(){
   if(!TEACHER||!T||T.view!=="online")return "";
-  return '<div class="tbar"><div class="trow"><b>Teacher tools:</b><button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button></div><div class="trow tlinkopts">'+tShufSelHtml()+tScafSelHtml()+'</div><span class="hint" id="tStatus" role="status"></span><div class="texports"><button type="button" class="alt" data-kahoot="1">Download for Kahoot</button><button type="button" class="alt" data-blooket="1">Download for Blooket</button><button type="button" class="alt" data-brightspace="1">Download for Brightspace</button> <label class="hint">Variants per question <select id="bsVarSel"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label> <span class="hint" id="gameStatus" role="status"></span></div><div style="margin-top:10px;"><b>Advanced options:</b> <span class="hint">Levels follow the course Table of Specifications. The default mix matches the exams: about 20% Level 1 (quick, one or two steps), 60% Level 2 (application: carry out the prescribed method), 20% Level 3 (higher-end thinking: analyse, justify, evaluate, transfer).</span><div class="adv"><label>Level 1 %<input type="number" id="lv1" min="0" max="100" value="'+settings().mix[0]+'"></label><label>Level 2 %<input type="number" id="lv2" min="0" max="100" value="'+settings().mix[1]+'"></label><label>Level 3 %<input type="number" id="lv3" min="0" max="100" value="'+settings().mix[2]+'"></label><label><input type="checkbox" id="timerChk"'+(settings().timer?" checked":"")+'> Show the exam timer on practice exams (it counts up; '+(window.__COURSE&&window.__COURSE.timerNote?("the real exam allows "+window.__COURSE.timerNote):"it is a guide only and never locks you out")+')</label>'+(BANK.some(function(e){return !!e.enrich;})?'<label><input type="checkbox" id="enrChk"'+(settings().enr?" checked":"")+'> Include enrichment questions (beyond the named indicators; practice draws only, never in composed tests or exams)</label>':"")+'</div></div><div id="tPicker" hidden></div></div>';
+  return '<div class="tbar"><div class="trow"><b>Teacher tools:</b><button type="button" class="alt" id="tAddBtn">Add question</button><button type="button" class="alt" id="tAddBankBtn">Add from bank</button><button type="button" class="alt" id="tCopyStudentBtn">Copy link for students</button><button type="button" class="alt" id="tCopyTeacherBtn">Copy teacher link (teacher only)</button><button type="button" class="alt" id="tCopyRecipeBtn">'+L9("Copy link: different questions for everyone","Copier le lien : des questions différentes pour tout le monde")+'</button></div><div class="trow tlinkopts">'+tShufSelHtml()+tScafSelHtml()+'</div><span class="hint" id="tStatus" role="status"></span><div class="texports"><button type="button" class="alt" data-kahoot="1">Download for Kahoot</button><button type="button" class="alt" data-blooket="1">Download for Blooket</button><button type="button" class="alt" data-brightspace="1">Download for Brightspace</button> <label class="hint">Variants per question <select id="bsVarSel"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label> <span class="hint" id="gameStatus" role="status"></span></div><div style="margin-top:10px;"><b>Advanced options:</b> <span class="hint">Levels follow the course Table of Specifications. The default mix matches the exams: about 20% Level 1 (quick, one or two steps), 60% Level 2 (application: carry out the prescribed method), 20% Level 3 (higher-end thinking: analyse, justify, evaluate, transfer).</span><div class="adv"><label>Level 1 %<input type="number" id="lv1" min="0" max="100" value="'+settings().mix[0]+'"></label><label>Level 2 %<input type="number" id="lv2" min="0" max="100" value="'+settings().mix[1]+'"></label><label>Level 3 %<input type="number" id="lv3" min="0" max="100" value="'+settings().mix[2]+'"></label><label><input type="checkbox" id="timerChk"'+(settings().timer?" checked":"")+'> Show the exam timer on practice exams (it counts up; '+(window.__COURSE&&window.__COURSE.timerNote?("the real exam allows "+window.__COURSE.timerNote):"it is a guide only and never locks you out")+')</label>'+(BANK.some(function(e){return !!e.enrich;})?'<label><input type="checkbox" id="enrChk"'+(settings().enr?" checked":"")+'> Include enrichment questions (beyond the named indicators; practice draws only, never in composed tests or exams)</label>':"")+'</div></div><div id="tPicker" hidden></div></div>';
 }
 function tOnlineStatus(m){var st=$("tStatus");if(st)st.textContent=m;}
 function tWireOnline(){
@@ -5773,6 +5897,7 @@ function tWireOnline(){
   var abb=$("tAddBankBtn");if(abb)abb.addEventListener("click",function(){tAddOnline(true);});
   var cs=$("tCopyStudentBtn");if(cs)cs.addEventListener("click",function(){tCopyLink(false,$("tStatus"));});
   var ct=$("tCopyTeacherBtn");if(ct)ct.addEventListener("click",function(){tCopyLink(true,$("tStatus"));});
+  var cr=$("tCopyRecipeBtn");if(cr)cr.addEventListener("click",function(){tCopyRecipeLink($("tStatus"));});
   Array.prototype.forEach.call(box.querySelectorAll("[data-kahoot]"),function(b){b.addEventListener("click",function(){exportGame("kahoot",current,$("gameStatus"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-blooket]"),function(b){b.addEventListener("click",function(){exportGame("blooket",current,$("gameStatus"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-brightspace]"),function(b){b.addEventListener("click",function(){exportBrightspace(current,$("gameStatus"));});});
@@ -6152,7 +6277,43 @@ function startOnline(){
   renderOnline(true);
 }
 function shareCurrentSet(){
-  var out=$("shareOut"),stat=$("shareStat");if(!out||!stat)return;
+  var boxes=[["shareOut","shareStat","copyCodeBtn"],["shareOutTop","shareStatTop","copyCodeBtnTop"]];
+  if(!$("shareOut")&&!$("shareOutTop"))return;
+  function eachOut(htmlFor){
+    boxes.forEach(function(b){var o=$(b[0]);if(o)o.innerHTML=htmlFor(b[2]);});
+  }
+  function eachStat(t){
+    boxes.forEach(function(b){var s=$(b[1]);if(s)s.textContent=t;});
+  }
+  function renderCode(code,courseId){
+    var shown=code.slice(0,3)+" "+code.slice(3);
+    var text=location.origin+location.pathname+"?course="+encodeURIComponent(courseId||"")+"&codeopen="+code;
+    eachOut(function(btnId){
+      return '<div class="sharecode"><span>'+L9("Set code","Code de l'ensemble")+'</span> <span style="font-size:1.5rem;font-weight:700;letter-spacing:.1em">'+shown+'</span></div><p>'+L9("Anyone can type this code on the Review Apps home page to open this exact set.","N'importe qui peut taper ce code sur la page d'accueil des Review Apps pour ouvrir exactement cet ensemble.")+'</p><p><button type="button" class="alt" id="'+btnId+'">'+L9("Copy just the code","Copier seulement le code")+'</button></p>';
+    });
+    boxes.forEach(function(b){
+      var cb=$(b[2]);
+      if(cb)cb.addEventListener("click",function(){
+        tClipboardWrite(code).then(function(){
+          eachStat(L9("Code copied: ","Code copié : ")+shown);
+        },function(){
+          eachStat(tManualCopyText()+shown);
+        });
+      });
+    });
+    tClipboardWrite(text).then(function(){
+      eachStat(L9("Short link copied: it opens this exact set.","Lien court copié : il ouvre exactement cet ensemble."));
+    },function(){
+      eachStat(tManualCopyText()+text);
+    });
+  }
+  /* Opened-code reuse (Nov 26, 2026): a set rebuilt from a
+     code, and not changed since, shares back the code it was
+     opened under. No mint, no registry lookup. */
+  if(_openedSet&&_openedSet.code&&tSetFingerprint()===_openedSet.fp){
+    renderCode(_openedSet.code,window.__COURSE?window.__COURSE.id:"");
+    return;
+  }
   var url=tShareURL(false);
   if(url.indexOf("set=")<0&&typeof current!=="undefined"&&current&&current.length){
     /* A student session carries no teacher context, so its
@@ -6170,24 +6331,16 @@ function shareCurrentSet(){
     T=keepT;
     if(sv){var p=new URLSearchParams(url.split("?")[1]||"");p.set("set",sv);url=url.split("?")[0]+"?"+p.toString();}
   }
-  var code=tLinkCodeFor(url);
-  if(code){
-    var shown=code.slice(0,3)+" "+code.slice(3);
-    var text=location.origin+location.pathname+"?course="+encodeURIComponent(new URLSearchParams(url.split("?")[1]||"").get("course")||"")+"&codeopen="+code;
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);}
-    out.innerHTML='<div class="sharecode"><span>'+L9("Set code","Code de l'ensemble")+'</span> <span style="font-size:1.5rem;font-weight:700;letter-spacing:.1em">'+shown+'</span></div><p>'+L9("Anyone can type this code on the Review Apps home page to open this exact set.","N'importe qui peut taper ce code sur la page d'accueil des Review Apps pour ouvrir exactement cet ensemble.")+'</p><p><button type="button" class="alt" id="copyCodeBtn">'+L9("Copy just the code","Copier seulement le code")+'</button></p>';
-    stat.textContent=L9("Short link copied: it opens this exact set.","Lien court copié : il ouvre exactement cet ensemble.");
-    var cb=$("copyCodeBtn");
-    if(cb)cb.addEventListener("click",function(){
-      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(code);}
-      stat.textContent=L9("Code copied: ","Code copié : ")+shown;
+  tResolveLinkCode(url,function(code){
+    if(code){renderCode(code,new URLSearchParams(url.split("?")[1]||"").get("course")||"");return;}
+    eachOut(function(){return "";});
+    tClipboardWrite(url).then(function(){
+      eachStat(L9("Link copied for students: it opens this exact set, with no editing controls.","Lien copié pour les élèves : il ouvre exactement cet ensemble, sans contrôles de modification."));
+    },function(){
+      eachStat(tManualCopyText()+url);
     });
-    return;
-  }
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url);}
-  out.innerHTML="";
-  stat.textContent=L9("Link copied for students: it opens this exact set, with no editing controls.","Lien copié pour les élèves : il ouvre exactement cet ensemble, sans contrôles de modification.");
-  try{history.replaceState(null,"",url.slice(location.origin.length));}catch(e){}
+    try{history.replaceState(null,"",url.slice(location.origin.length));}catch(e){}
+  });
 }
 function renderOnline(scroll){
   var s=lastSettings;var res={thin:onlineThin};
@@ -6200,7 +6353,7 @@ function renderOnline(scroll){
      renders panel-free as well. */
   var box=$("session");
   if(!current.length){box.innerHTML='<div class="card"><p>'+((onlineEffUnits||s.units).length?L9("No questions match that selection yet.","Aucune question ne correspond encore à cette sélection."):L9("Choose at least one unit above, or use the Mid-course review or Final review button, then start again.","Choisis au moins une unité ci-dessus, ou utilise le bouton Révision de mi-parcours ou Révision finale, puis recommence."))+'</p></div>';return;}
-  var html='<div class="card'+(checkMode==="end"?" endmode":"")+'"><h2>'+L9("Online practice","Pratique en ligne")+'</h2>'+(pkOnlyActive()?"":refPanelsHtml(onlineEffUnits||s.units))+(onlineNote?'<p class="thinNote">'+onlineNote+'</p>':(res.thin?'<p class="thinNote">'+L9("Heads up: the question bank is still thin for this selection, so this set repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.","Attention : la banque de questions est encore mince pour cette sélection, alors cette série répète la pratique sur la même forme de question (avec de nouveaux nombres), car il n'y a pas encore assez de questions différentes pour la remplir.")+'</p>':""))+'<p class="scoreline" id="score"></p>';
+  var html='<div class="card'+(checkMode==="end"?" endmode":"")+'"><h2>'+L9("Online practice","Pratique en ligne")+'</h2>'+(pkOnlyActive()?"":refPanelsHtml(onlineEffUnits||s.units))+(onlineNote?'<p class="thinNote">'+onlineNote+'</p>':(res.thin?'<p class="thinNote">'+L9("Heads up: the question bank is still thin for this selection, so this set repeats practice on the same question shape (with new numbers) because there are not yet enough different questions to fill it.","Attention : la banque de questions est encore mince pour cette sélection, alors cette série répète la pratique sur la même forme de question (avec de nouveaux nombres), car il n'y a pas encore assez de questions différentes pour la remplir.")+'</p>':""))+'<p class="scoreline" id="score"></p><p class="setctl"><button type="button" id="againBtnTop">'+L9("New set of questions","Nouvelle série de questions")+'</button> <button type="button" class="alt" id="shareSetBtnTop">'+L9("Share this set","Partager cet ensemble")+'</button></p><div class="sharebox" id="shareBoxTop"><div id="shareOutTop"></div><p id="shareStatTop"></p></div>';
   current.forEach(function(q,i){
     html+='<div class="q" id="q'+i+'"><div class="qhead"><b>Question '+(i+1)+'</b> '+tags(q)+'</div><div class="prompt">'+stepHTML(q.prompt)+'</div>';
     if(q.figure)html+='<div class="fig">'+q.figure+'</div>';
@@ -6232,6 +6385,8 @@ function renderOnline(scroll){
   Array.prototype.forEach.call(box.querySelectorAll("[data-repcopy]"),function(b){b.addEventListener("click",function(){copyReport(+b.getAttribute("data-repcopy"));});});
   $("againBtn").addEventListener("click",startOnline);
   if($("shareSetBtn"))$("shareSetBtn").addEventListener("click",shareCurrentSet);
+  if($("againBtnTop"))$("againBtnTop").addEventListener("click",startOnline);
+  if($("shareSetBtnTop"))$("shareSetBtnTop").addEventListener("click",shareCurrentSet);
   if($("gradeBtn"))$("gradeBtn").addEventListener("click",gradeAll);
   tWireOnline();
   resumeAfterRender("online");
@@ -9184,22 +9339,6 @@ $("goOnline").addEventListener("click",function(){hidCtl.pkOnly=false;hidCtl.pkG
 });})();
 $("goSheet").addEventListener("click",startSheet);
 $("goExam").addEventListener("click",startExam);
-$("copyLink").addEventListener("click",function(){
-  /* Hard rule (Jason, Nov 10, 2026): a shared link NEVER carries teacher
-     mode. When a teacher set is on screen the link carries the set itself
-     (tShareURL with teacher mode stripped); otherwise it is the plain
-     settings link, which settingsToURL builds without the flag anyway. */
-  var url=(T&&T.view)?tShareURL(false):(location.origin+tStripTeacher(settingsToURL()));
-  var code=tLinkCodeFor(url);
-  if(code){
-    var q=url.split("?")[1]||"";
-    try{sessionStorage.setItem("raCodePayload",JSON.stringify({code:code,q:q}));}catch(e){}
-    url=location.origin+location.pathname+"?course="+encodeURIComponent(new URLSearchParams(q).get("course")||"")+"&codeopen="+code;
-  }
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url);}
-  $("poolInfo").textContent=L9("Link copied (or copy it from the address bar): ","Lien copié (ou copie-le depuis la barre d'adresse) : ")+url;
-  history.replaceState(null,"",url.slice(location.origin.length));
-});
 a11yInit();
 var urlTouched=applyURL();
 if(window.__COURSE&&!ANALYTICS_OPEN_SENT){ANALYTICS_OPEN_SENT=true;countEvent("course_open",[analyticsCourse()]);}
@@ -9211,6 +9350,7 @@ if(advSetRestore()){
      but the mode. */
 }
 else if(new URLSearchParams(window.__QPAYLOAD||location.search).get("set")&&tRebuildFromURL()){
+  tNoteOpenedSet(tOpenedCodeHere());
   /* A set link was opened: the exact set it encodes is on screen. */
   var _lu=(typeof T!=="undefined"&&T&&T.scope&&T.scope.units)?T.scope.units:null;
   countEvent("practice_start",[analyticsCourse(),(_lu&&_lu.length===1)?("u"+_lu[0]):"all",TEACHER?"teacher":"student"]);
@@ -9394,7 +9534,7 @@ if(window.__NOCOURSE){(function(){
     p.set("via","code");
     if(p.get("set")){p.delete("mode");}
     else if(p.get("seed")){var m=p.get("mode");if(m==="sheet"||m==="exam")p.set("tmode",m);p.delete("mode");}
-    var url=base+"?"+p.toString();if(url.length>7000){try{sessionStorage.setItem("raCodePayload",JSON.stringify({code:code||"",q:p.toString()}));}catch(e){}location.href=base+"?course="+encodeURIComponent(p.get("course")||"")+"&codeopen="+encodeURIComponent(code||"");}else{location.href=url;}
+    var url=base+"?"+p.toString();if(url.length>7000){try{sessionStorage.setItem("raCodePayload",JSON.stringify({code:code||"",q:p.toString()}));}catch(e){}location.href=base+"?course="+encodeURIComponent(p.get("course")||"")+"&codeopen="+encodeURIComponent(code||"");}else{if(code){try{sessionStorage.setItem("raCodePayload",JSON.stringify({code:code,q:p.toString()}));}catch(e){}}location.href=url;}
   }
   form.addEventListener("submit",function(ev){
     ev.preventDefault();
