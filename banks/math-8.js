@@ -7551,6 +7551,20 @@ var PKT8D7 = {
 };
 BANK.forEach(function (e) { var t = PKT8D7[e.id]; if (t) { e.pkFlag = true; e.pkSrc = t.src; e.pkFor = t.for.slice(); e.pkGroup = t.group; } });
 
+/* Enrichment flags (November 26, 2026, Jason's rulings on the Math 8 guide
+   audit): the entries named below are kept in the bank as enrichment, the
+   house mechanism from the November 13, 2026 ruling. The flag is a property
+   on the entry, set here in the bank module the way the enrich flags are set
+   in Math 2201's bank-u7.js; flagged entries stay out of practice draws and
+   composed papers unless enrichment is deliberately included. B1:
+   u2-square-minus-product-gap (exponent work inside integer order of
+   operations; the guide's MA8.6.27 Focus defers exponents to Grade 9). B2:
+   u6-decimal-coefficient-gap (decimal coefficients; the guide's MA8.8 scope
+   limits equations to integer coefficients). C1: u6-two-points-evaluate-gap
+   (deriving an equation from two points; the guide never teaches it). */
+var ENRICH8 = ["u2-square-minus-product-gap", "u6-decimal-coefficient-gap", "u6-two-points-evaluate-gap"];
+BANK.forEach(function(e){if(ENRICH8.indexOf(e.id)>=0)e.enrich=true;});
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */

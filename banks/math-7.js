@@ -8984,6 +8984,18 @@ BANK.forEach(function (e) {
   if (m) { e.pkFlag = true; e.pkSrc = m.src; e.pkGroup = m.group; e.pkFor = m.for; }
 });
 
+/* Enrichment flags (November 26, 2026, Jason's rulings on the Math 7 guide
+   audit): the entries named below are kept in the bank as enrichment, the
+   house mechanism from the November 13, 2026 ruling. The flag is a property
+   on the entry, set here in the bank module the way the enrich flags are set
+   in Math 2201's bank-u7.js; flagged entries stay out of practice draws and
+   composed papers unless enrichment is deliberately included. Ruling 3 (B3):
+   u6-gap-both-sides-cr (variable on both sides) and u6-gap-divide-form-cr
+   (the x/a - b = c form); neither form appears in the guide's exhaustive
+   forms heading at MA7.8.12/8.14. */
+var ENRICH7 = ["u6-gap-both-sides-cr", "u6-gap-divide-form-cr"];
+BANK.forEach(function(e){if(ENRICH7.indexOf(e.id)>=0)e.enrich=true;});
+
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */

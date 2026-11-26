@@ -9568,7 +9568,7 @@ var PKT9={
   "u5-pk-numberline-place":{src:"Math 7 indicators 3.1 and 3.4",group:"ordering-numbers",for:PK9_FOR_C7},
   "u5-pk-misplaced":{src:"Math 7 indicators 3.3 and 3.6",group:"ordering-numbers",for:PK9_FOR_C7},
   "u6-pk-pattern-expression":{src:"Math 7 indicator 7.1",group:"patterns",for:PK9_FOR_C8},
-  "u6-pk-two-points-evaluate":{src:"Math 8 indicators 7.2 and 7.3",group:"patterns",for:PK9_FOR_C8},
+  "u6-pk-two-points-evaluate":{src:"Enrichment on this course: the Math 8 guide never teaches deriving an equation from two points (provenance corrected November 26, 2026)",group:"patterns",for:PK9_FOR_C8},
   "u6-pk-table-missing":{src:"Math 8 indicator 7.2",group:"tables-and-graphs",for:PK9_FOR_C8},
   "u6-pk-missing-pair":{src:"Math 8 indicator 7.3",group:"tables-and-graphs",for:PK9_FOR_C8},
   "u6-pk-construct-graph":{src:"Math 8 indicator 7.4",group:"tables-and-graphs",for:PK9_FOR_C8},
@@ -10368,6 +10368,25 @@ var PKT9S={
   "u9-pkf-range-basic":{src:"math-7:11.7",group:"centre-measures",for:PK9_FOR_C13}
 };
 BANK.forEach(function(e){var t=PKT9S[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=t.for.slice();e.pkGroup=t.group;}});
+
+/* Enrichment flags (November 26, 2026, Jason's rulings on the Math 9 guide
+   audit): the entries named below are kept in the bank as enrichment, the
+   house mechanism from the November 13, 2026 ruling. The flag is a property
+   on the entry, set here in the bank module the way the enrich flags are set
+   in Math 2201's bank-u7.js; flagged entries stay out of practice draws and
+   composed papers unless enrichment is deliberately included. Ruling 1a:
+   u3-gap-laws-mc and u3-gap-simplify-sub-cr (fully symbolic exponent work;
+   the guide's Unit 3 uses integral bases). Ruling 1c: u3-gap-sci-product-cr
+   (scientific notation products) and u3-gap-solve-exponent-cr (solving for
+   an exponent; the guide's work is forward-only). Ruling 3c:
+   u6-pk-two-points-evaluate (deriving an equation from two points is not
+   taught in Grade 8; its PK provenance is corrected above). Ruling 6:
+   u8-gap-cyclic-diag-cr (the cyclic quadrilateral theorem, never stated in
+   the guide) and the reflex family u8-inscribed-reflex,
+   u8-gap-reflex-arc-cr and u8-gap-two-theorems-mc (reflex central angles
+   and inscribed angles on a major arc, past the guide's ordinary cases). */
+var ENRICH9 = ["u3-gap-laws-mc", "u3-gap-simplify-sub-cr", "u3-gap-sci-product-cr", "u3-gap-solve-exponent-cr", "u6-pk-two-points-evaluate", "u8-gap-cyclic-diag-cr", "u8-inscribed-reflex", "u8-gap-reflex-arc-cr", "u8-gap-two-theorems-mc"];
+BANK.forEach(function(e){if(ENRICH9.indexOf(e.id)>=0)e.enrich=true;});
 
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
