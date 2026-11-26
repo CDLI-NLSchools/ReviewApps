@@ -1848,6 +1848,10 @@ E("u4-missing", 4, ["8.11"], 3, "gen", function(){
 }, ["The missing part is the total minus the parts you already know.", "First subtract the known polynomial from the total, term by term."]);
 
 E("u4-area-monomial", 4, ["8.12"], 3, "gen", function(){
+  /* Constraint, November 26, 2026 (Jason's ruling 8 on the Math 9 guide audit):
+     the numeric lengths below (k and d) are drawn positive only; the entry
+     dealt rectangles with a negative length or a negative known side. The
+     width expressions stay symbolic, as the unit's polynomial work requires. */
   for(var att=0;att<200;att++){
     if(ri(0,1)===0){
       var usex=ri(0,1)===1;
@@ -1859,7 +1863,7 @@ E("u4-area-monomial", 4, ["8.12"], 3, "gen", function(){
         var sol="Area is length times width: \\[ \\begin{aligned} A &= x("+u4p(0,b,c)+") \\\\ &= "+u4p(b,c,0)+" \\end{aligned} \\] So the area is <b>"+corr+"</b>.";
         return mcq("A rectangle has length \\(x\\) and width "+u4m(0,b,c)+". Which expression gives its area?",{t:corr,fb:"Correct: the length multiplies every term of the width."},ds,sol,{mode:"area-mult-x",cr:2});
       }
-      var k=pick([-4,-3,-2,2,3,4]);
+      var k=pick([2,3,4]);
       var b2=u4nz(-6,6),c2=u4nz(-7,7);
       var corr2=u4m(0,k*b2,k*c2);
       var ds2=[{t:u4m(0,k*b2,c2),fb:"The second width term was left unmultiplied; the length multiplies every term."},{t:u4m(0,b2+k,c2+k),fb:"That adds the length to each term; area multiplies."},{t:u4m(0,k*b2,-k*c2),fb:"The second product has the wrong sign."}];
@@ -1867,7 +1871,7 @@ E("u4-area-monomial", 4, ["8.12"], 3, "gen", function(){
       var sol2="Area is length times width: \\[ \\begin{aligned} A &= "+fmt(k)+"("+u4p(0,b2,c2)+") \\\\ &= "+u4p(0,k*b2,k*c2)+" \\end{aligned} \\] So the area is <b>"+corr2+"</b>.";
       return mcq("A rectangle has length \\("+fmt(k)+"\\) and width "+u4m(0,b2,c2)+". Which expression gives its area?",{t:corr2,fb:"Correct: the length multiplies every term of the width."},ds2,sol2,{mode:"area-mult-const",k:k,cr:2});
     }else{
-      var d=pick([-4,-3,-2,2,3,4,5]);
+      var d=pick([2,3,4,5]);
       var q2=u4nz(-6,6),q3=u4nz(-6,6);
       var corr3=u4m(0,q2,q3);
       var ds3=[{t:u4m(0,q2,d*q3),fb:"The second term was left undivided; every term of the area is divided."},{t:u4m(0,d*q2-d,q3),fb:"One part subtracts the side length; finding a side divides."},{t:u4m(0,-q2,q3),fb:"The first term of the side has the wrong sign."}];
@@ -7018,9 +7022,17 @@ E("u4-gap-sub-eval-neg-cr", 4, ["8.7", "8.11"], 2, "gen", function () {
 
 // PG. L2, 8.5/8.6, CR 3: simplify a polynomial perimeter, then evaluate.
 E("u4-gap-perimeter-eval-cr", 4, ["8.5", "8.6"], 2, "gen", function () {
-  var a1 = u4nz(-4, 4), b1 = ri(-5, 5), a2 = u4nz(-4, 4), b2 = ri(-5, 5), a3 = u4nz(-4, 4), b3 = ri(-5, 5);
+  /* Constraint, November 26, 2026 (Jason's ruling 8 on the Math 9 guide audit):
+     the draw is rejection-sampled until every side length at the given x is
+     positive. Unconstrained, about half the draws dealt a negative or zero
+     side or perimeter (dealt keys of -32, -25, -9, -1 and 0 cm). */
+  var a1, b1, a2, b2, a3, b3, v;
+  for (var att = 0; att < 500; att++) {
+    a1 = u4nz(-4, 4); b1 = ri(-5, 5); a2 = u4nz(-4, 4); b2 = ri(-5, 5); a3 = u4nz(-4, 4); b3 = ri(-5, 5);
+    v = ri(2, 5);
+    if (a1 * v + b1 > 0 && a2 * v + b2 > 0 && a3 * v + b3 > 0) break;
+  }
   var sx = a1 + a2 + a3, sk = b1 + b2 + b3;
-  var v = ri(2, 5);
   var ans = sx * v + sk;
   function side(a, b) { return u4expr([[a, "x"], [b, ""]]); }
   var prompt = "A triangle has side lengths \\((" + side(a1, b1) + ")\\), \\((" + side(a2, b2) + ")\\) and \\((" + side(a3, b3) + ")\\), in centimetres. Find the perimeter of the triangle, in centimetres, when \\(x = " + v + "\\).";
@@ -10053,9 +10065,18 @@ E("u1-pkf-div-decimals", 1, ["3.1"], 1, "gen", function(){
   ];
   var useDecDiv=ri(0,1)===0;
   var dv=useDecDiv?ri(3,9)/10:ri(3,9);
-  var q=ri(125,2400)/100;
+  /* Constraint, November 26, 2026 (Jason's ruling 8 on the Math 9 guide audit):
+     the decimal divisor mode no longer shares the count contexts above, which
+     dealt "split equally among 0.8 friends" and "cut into 0.6 equal pieces".
+     It uses size contexts instead (each piece or bottle has a size), and the
+     answer is a whole-number count, q=ri(4,30), the same fix as Math 7's
+     u3-div-decimals. The whole-number divisor mode keeps the count contexts. */
+  var q=useDecDiv?ri(4,30):ri(125,2400)/100;
   var dvd=q*dv;
-  var c=pick(ctxs);
+  var c=useDecDiv?pick([
+    {s:"A rope %D m long is cut into pieces that are each %V m long. How many pieces are cut?"},
+    {s:"A jug holds %D L of juice, poured into bottles that each hold %V L. How many bottles are filled?"}
+  ]):pick(ctxs);
   var prompt=c.s.replace("%D",fmt(dvd,3)).replace("%V",fmt(dv,1));
   var money=c.s.indexOf("$")>=0;
   var pool=[q*10,q/10,q+dv,q- dv];
