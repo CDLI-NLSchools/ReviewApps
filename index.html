@@ -2667,6 +2667,13 @@ var qrcode = function() {
         <li>Come back in a day or two and practise the same skill again. Spacing your practice out is what moves it into long-term memory.</li>
       </ol>
     </details>
+    <details>
+      <summary>How are questions levelled?</summary>
+      <p>Every question carries a level from 1 to 3, set by what the student has to do, not by how hard the numbers are.</p>
+      <p><b>Level 1</b> is recall and cued single steps: the question names or cues the move, and one application finishes it. <b>Level 2</b> is a taught procedure applied, including over several steps: the student works out which procedure the course teaches for the situation and carries it out. <b>Level 3</b> means the student must find, adapt, or judge the path, because no taught routine completes the question as given.</p>
+      <p>Four tests can place a question at Level 3. The <b>path test</b>: no taught routine, named or implied, completes it, so the student must assemble or adapt one. The <b>judgement test</b>: the answer is a verdict, explanation, justification, or correction that requires doing the analysis, not recalling a slogan. The <b>constraint test</b>: a condition or constraint, such as a domain restriction or an extraneous root, changes what the answer can be. The <b>transfer test</b>: the situation is structurally unfamiliar, so the student must first recognize what applies. A question is judged as students actually meet it, options included: if it can be answered by a shortcut, such as eliminating options, the shortcut is what sets its level.</p>
+      <p>Questions are audited against this standard course by course, and the test that decided each audited question's level is recorded. In Advanced tools (teacher mode), the card for an audited question shows that test beside its level, for example "Level 3 · judgement test". So far, Math 3200 and Math 3201 have been audited in full, and all of their questions carry the label. Questions in other courses show the level only until their audit is done.</p>
+    </details>
   </div>
 </div>
 <div class="wrap" id="app">
@@ -3153,8 +3160,9 @@ var UNIT_IND=window.__COURSE?window.__COURSE.unitInd:{};
    (banks/ in the shell folder), assembled from that course's
    per-unit bank sources. The module registers its entries
    through E below and publishes its constructed-response
-   marks as window.__BANK_CRMARKS and its bimodal manifest
-   as window.__BANK_BIMODAL. */
+   marks as window.__BANK_CRMARKS, its bimodal manifest
+   as window.__BANK_BIMODAL and its level basis manifest
+   as window.__BANK_LEVELBASIS. */
 var BANK=[];
 function E(id,unit,indicators,level,kind,gen,hints){var e={id:id,unit:unit,indicators:indicators,level:level,kind:kind,gen:gen};if(hints){e.hint1=hints[0]||"";e.hint2=hints[1]||"";}BANK.push(e);}
 </script>
@@ -3166,7 +3174,8 @@ function E(id,unit,indicators,level,kind,gen,hints){var e={id:id,unit:unit,indic
    script file would be blocked. */
 if(window.__COURSE){document.write('<script src="banks/'+window.__COURSE.bankFile+'"><\/script>');
   document.write('<script>window.CR_MARKS=window.__BANK_CRMARKS||{};<\/script>');
-  document.write('<script>window.BIMODAL=window.__BANK_BIMODAL||{};<\/script>');}
+  document.write('<script>window.BIMODAL=window.__BANK_BIMODAL||{};<\/script>');
+  document.write('<script>window.LEVELBASIS=window.__BANK_LEVELBASIS||{};<\/script>');}
 </script>
 
 <script>
@@ -3189,6 +3198,15 @@ var CR_MARKS=window.__BANK_CRMARKS||{};
    class; see Spec-Bimodal-Questions-2026-11-19.md.
    bimodalClass and stripQ live with the composer. */
 var BIMODAL=window.__BANK_BIMODAL||{};
+/* Level basis manifest (Nov 25, 2026): for each audited
+   entry, the short phrase naming the criterion that
+   decided its level under the adopted criteria card
+   (for example "judgement test"). Built by
+   assemble-bank.py from the LEVELBASIS comments at
+   each entry; teacher mode shows it beside the level
+   on the question card (see tags below). Entries no
+   audit has covered have no basis. */
+var LEVELBASIS=window.__BANK_LEVELBASIS||{};
 /* Dual-form toggle state (Nov 19, 2026): false (the
    default) means bimodal entries deal with their
    answer choices, in selected response; true means
@@ -3969,7 +3987,7 @@ function settings(){
 }
 function tags(q){
   var e=q._entry;
-  return '<span class="tag">'+L9("Unit ","Unité ")+e.unit+'</span> '+(TEACHER?'<span class="tag ind">'+e.indicators.join(", ")+'</span> ':"")+'<span class="tag lvl">'+L9("Level ","Niveau ")+e.level+'</span>'+(e.enrich?' <span class="tag enr">Enrichment</span>':"")+((typeof isPK==="function"&&isPK(e))?' <span class="tag pk">'+L9("Prior knowledge","Connaissances préalables")+'</span>':"");
+  return '<span class="tag">'+L9("Unit ","Unité ")+e.unit+'</span> '+(TEACHER?'<span class="tag ind">'+e.indicators.join(", ")+'</span> ':"")+'<span class="tag lvl">'+L9("Level ","Niveau ")+e.level+((TEACHER&&typeof LEVELBASIS!=="undefined"&&LEVELBASIS&&LEVELBASIS[e.id])?(" · "+LEVELBASIS[e.id]):"")+'</span>'+(e.enrich?' <span class="tag enr">Enrichment</span>':"")+((typeof isPK==="function"&&isPK(e))?' <span class="tag pk">'+L9("Prior knowledge","Connaissances préalables")+'</span>':"");
 }
 var current=null,checkedCount=0,correctCount=0,checkMode="each",endGraded=false;
 var setResults={};
@@ -5188,16 +5206,14 @@ function tLinkCodeFor(url){
 }
 function tCopyLink(teacher,statusEl){
   var url=tShareURL(teacher);
-  if(url.length>7000){
-    var code=tLinkCodeFor(url);
-    if(code){
-      var shown=code.slice(0,3)+" "+code.slice(3);
-      var text=location.origin+location.pathname+"?course="+encodeURIComponent(new URLSearchParams(url.split("?")[1]||"").get("course")||"")+"&codeopen="+code;
-      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);}
-      if(!teacher)countEvent("student_link_copy",[analyticsCourse(),"s"+(tShufPref()==="shuf"?"1":"0")+"-h"+(tHintPref()==="off"?"1":"0")+"-e"+(tExPref()==="off"?"1":"0")+"-k"+(tRetryPref()==="keep"?"1":"0")]);
-      if(statusEl)statusEl.textContent=teacher?("This set is too large for its full link, so a short link was copied instead. It opens this exact set with the editing controls on. The set code "+shown+" also works typed on the Review Apps home page."):("This set is too large for its full link, so a short link was copied instead. It opens this exact set. The set code "+shown+" also works typed on the Review Apps home page.");
-      return;
-    }
+  var code=tLinkCodeFor(url);
+  if(code){
+    var shown=code.slice(0,3)+" "+code.slice(3);
+    var text=location.origin+location.pathname+"?course="+encodeURIComponent(new URLSearchParams(url.split("?")[1]||"").get("course")||"")+"&codeopen="+code;
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);}
+    if(!teacher)countEvent("student_link_copy",[analyticsCourse(),"s"+(tShufPref()==="shuf"?"1":"0")+"-h"+(tHintPref()==="off"?"1":"0")+"-e"+(tExPref()==="off"?"1":"0")+"-k"+(tRetryPref()==="keep"?"1":"0")]);
+    if(statusEl)statusEl.textContent=teacher?("Short link copied: it opens this exact set with the editing controls on. Keep it for yourself. The set code "+shown+" also works typed on the Review Apps home page."):("Short link copied: it opens this exact set. The set code "+shown+" also works typed on the Review Apps home page.");
+    return;
   }
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url);}
   if(!teacher)countEvent("student_link_copy",[analyticsCourse(),"s"+(tShufPref()==="shuf"?"1":"0")+"-h"+(tHintPref()==="off"?"1":"0")+"-e"+(tExPref()==="off"?"1":"0")+"-k"+(tRetryPref()==="keep"?"1":"0")]);
@@ -9135,6 +9151,12 @@ $("copyLink").addEventListener("click",function(){
      (tShareURL with teacher mode stripped); otherwise it is the plain
      settings link, which settingsToURL builds without the flag anyway. */
   var url=(T&&T.view)?tShareURL(false):(location.origin+tStripTeacher(settingsToURL()));
+  var code=tLinkCodeFor(url);
+  if(code){
+    var q=url.split("?")[1]||"";
+    try{sessionStorage.setItem("raCodePayload",JSON.stringify({code:code,q:q}));}catch(e){}
+    url=location.origin+location.pathname+"?course="+encodeURIComponent(new URLSearchParams(q).get("course")||"")+"&codeopen="+code;
+  }
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url);}
   $("poolInfo").textContent=L9("Link copied (or copy it from the address bar): ","Lien copié (ou copie-le depuis la barre d'adresse) : ")+url;
   history.replaceState(null,"",url.slice(location.origin.length));
@@ -9205,7 +9227,7 @@ if(window.__NOCOURSE){(function(){
   if(pkThemeBtn){var pkSyncTheme=function(){pkThemeBtn.textContent=document.documentElement.getAttribute("data-a11y-theme")==="dark"?PK9("Light mode","Mode clair"):PK9("Dark mode","Mode sombre");};pkSyncTheme();pkThemeBtn.addEventListener("click",function(){var dark=document.documentElement.getAttribute("data-a11y-theme")==="dark";if(dark){document.documentElement.removeAttribute("data-a11y-theme");}else{document.documentElement.setAttribute("data-a11y-theme","dark");}try{var st=window.localStorage;var g={};var raw=st.getItem("app-a11y-v1");if(raw){g=JSON.parse(raw)||{};}g.theme=dark?"light":"dark";st.setItem("app-a11y-v1",JSON.stringify(g));}catch(e){}pkSyncTheme();});}
   var pkFaqEl=document.getElementById("pkFaq");
   var PK_FAQ_EN=pkFaqEl?pkFaqEl.innerHTML:"";
-  var PK_FAQ_FR="<h2 style=\"margin-top:0;\">\u00c0 propos des Review Apps</h2>\n    <details>\n      <summary>Que sont les Review Apps ?</summary>\n      <p>Des banques de questions d\u2019entra\u00eenement pour les cours ci-dessus. Choisissez votre cours, puis pratiquez par unit\u00e9 ou par indicateur du programme d\u2019\u00e9tudes. La plupart des questions sont g\u00e9n\u00e9r\u00e9es \u00e0 neuf chaque fois, alors vous pouvez pratiquer la m\u00eame habilet\u00e9 de nouveau et obtenir une question diff\u00e9rente. Vous pouvez travailler en ligne, imprimer une feuille de pratique ou cr\u00e9er un examen de pratique.</p>\n    </details>\n    <details>\n      <summary>\u00c0 qui s\u2019adressent-elles ?</summary>\n      <p>Aux \u00e9l\u00e8ves de n\u2019importe lequel des cours ci-dessus : que vous suiviez le rythme de la classe, que vous rattrapiez un sujet ou que vous vous pr\u00e9pariez \u00e0 un test ou \u00e0 un examen. Les enseignants peuvent aussi cr\u00e9er des ensembles de pratique et des feuilles \u00e0 imprimer pour leurs classes, et exporter des versions enti\u00e8rement modifiables dans Word ou Brightspace.</p>\n    </details>\n    <details>\n      <summary>Quand devrais-je les utiliser ?</summary>\n      <p>Un peu \u00e0 la fois, souvent. Essayez un court ensemble apr\u00e8s une le\u00e7on, quelques questions dans le cadre des devoirs, et un peu de r\u00e9vision m\u00e9lang\u00e9e dans les jours qui pr\u00e9c\u00e8dent un test. De courtes s\u00e9ances r\u00e9parties sur plusieurs jours donnent de meilleurs r\u00e9sultats qu\u2019une longue s\u00e9ance la veille.</p>\n    </details>\n    <details>\n      <summary>O\u00f9 puis-je les utiliser ?</summary>\n      <p>Partout o\u00f9 vous avez un navigateur : \u00e0 l\u2019\u00e9cole, \u00e0 la maison ou en d\u00e9placement. Les applications fonctionnent sur les Chromebook, les ordinateurs portables, les tablettes et les ordinateurs de bureau, et vous pouvez aussi imprimer des feuilles de pratique pour travailler hors ligne.</p>\n    </details>\n    <details>\n      <summary>Pourquoi la pratique fonctionne-t-elle ?</summary>\n      <p>Essayer de se rappeler une r\u00e9ponse, au lieu de la chercher, est l\u2019une des fa\u00e7ons les plus efficaces d\u2019apprendre. Chaque fois que vous tirez une r\u00e9ponse de votre propre m\u00e9moire, ce souvenir se renforce et dure plus longtemps. V\u00e9rifier votre travail tout de suite, avec une solution d\u00e9taill\u00e9e \u00e0 laquelle le comparer, aide aussi \u00e0 corriger les erreurs avant qu\u2019elles ne deviennent des habitudes.</p>\n    </details>\n    <details>\n      <summary>Comment devrais-je pratiquer ?</summary>\n      <ol>\n        <li>Choisissez une unit\u00e9 ou un indicateur et commencez un ensemble.</li>\n        <li>Essayez chaque question par vous-m\u00eame d\u2019abord, et \u00e9crivez votre d\u00e9marche. Cela semble plus difficile que de jeter un coup d\u2019\u0153il \u00e0 l\u2019exemple, mais c\u2019est cet effort qui construit la m\u00e9moire.</li>\n        <li>Bloqu\u00e9 ? Utilisez d\u2019abord l\u2019indice, puis l\u2019exemple travaill\u00e9, puis essayez la question de nouveau.</li>\n        <li>V\u00e9rifiez chaque r\u00e9ponse au fur et \u00e0 mesure et lisez la solution compl\u00e8te, m\u00eame quand vous avez raison. Remarquez l\u2019\u00e9tape que vous feriez diff\u00e9remment la prochaine fois.</li>\n        <li>Revenez dans un jour ou deux et pratiquez la m\u00eame habilet\u00e9 de nouveau. C\u2019est l\u2019espacement de la pratique qui la fait passer dans la m\u00e9moire \u00e0 long terme.</li>\n      </ol>\n    </details>";
+  var PK_FAQ_FR="<h2 style=\"margin-top:0;\">\u00c0 propos des Review Apps</h2>\n    <details>\n      <summary>Que sont les Review Apps ?</summary>\n      <p>Des banques de questions d\u2019entra\u00eenement pour les cours ci-dessus. Choisissez votre cours, puis pratiquez par unit\u00e9 ou par indicateur du programme d\u2019\u00e9tudes. La plupart des questions sont g\u00e9n\u00e9r\u00e9es \u00e0 neuf chaque fois, alors vous pouvez pratiquer la m\u00eame habilet\u00e9 de nouveau et obtenir une question diff\u00e9rente. Vous pouvez travailler en ligne, imprimer une feuille de pratique ou cr\u00e9er un examen de pratique.</p>\n    </details>\n    <details>\n      <summary>\u00c0 qui s\u2019adressent-elles ?</summary>\n      <p>Aux \u00e9l\u00e8ves de n\u2019importe lequel des cours ci-dessus : que vous suiviez le rythme de la classe, que vous rattrapiez un sujet ou que vous vous pr\u00e9pariez \u00e0 un test ou \u00e0 un examen. Les enseignants peuvent aussi cr\u00e9er des ensembles de pratique et des feuilles \u00e0 imprimer pour leurs classes, et exporter des versions enti\u00e8rement modifiables dans Word ou Brightspace.</p>\n    </details>\n    <details>\n      <summary>Quand devrais-je les utiliser ?</summary>\n      <p>Un peu \u00e0 la fois, souvent. Essayez un court ensemble apr\u00e8s une le\u00e7on, quelques questions dans le cadre des devoirs, et un peu de r\u00e9vision m\u00e9lang\u00e9e dans les jours qui pr\u00e9c\u00e8dent un test. De courtes s\u00e9ances r\u00e9parties sur plusieurs jours donnent de meilleurs r\u00e9sultats qu\u2019une longue s\u00e9ance la veille.</p>\n    </details>\n    <details>\n      <summary>O\u00f9 puis-je les utiliser ?</summary>\n      <p>Partout o\u00f9 vous avez un navigateur : \u00e0 l\u2019\u00e9cole, \u00e0 la maison ou en d\u00e9placement. Les applications fonctionnent sur les Chromebook, les ordinateurs portables, les tablettes et les ordinateurs de bureau, et vous pouvez aussi imprimer des feuilles de pratique pour travailler hors ligne.</p>\n    </details>\n    <details>\n      <summary>Pourquoi la pratique fonctionne-t-elle ?</summary>\n      <p>Essayer de se rappeler une r\u00e9ponse, au lieu de la chercher, est l\u2019une des fa\u00e7ons les plus efficaces d\u2019apprendre. Chaque fois que vous tirez une r\u00e9ponse de votre propre m\u00e9moire, ce souvenir se renforce et dure plus longtemps. V\u00e9rifier votre travail tout de suite, avec une solution d\u00e9taill\u00e9e \u00e0 laquelle le comparer, aide aussi \u00e0 corriger les erreurs avant qu\u2019elles ne deviennent des habitudes.</p>\n    </details>\n    <details>\n      <summary>Comment devrais-je pratiquer ?</summary>\n      <ol>\n        <li>Choisissez une unit\u00e9 ou un indicateur et commencez un ensemble.</li>\n        <li>Essayez chaque question par vous-m\u00eame d\u2019abord, et \u00e9crivez votre d\u00e9marche. Cela semble plus difficile que de jeter un coup d\u2019\u0153il \u00e0 l\u2019exemple, mais c\u2019est cet effort qui construit la m\u00e9moire.</li>\n        <li>Bloqu\u00e9 ? Utilisez d\u2019abord l\u2019indice, puis l\u2019exemple travaill\u00e9, puis essayez la question de nouveau.</li>\n        <li>V\u00e9rifiez chaque r\u00e9ponse au fur et \u00e0 mesure et lisez la solution compl\u00e8te, m\u00eame quand vous avez raison. Remarquez l\u2019\u00e9tape que vous feriez diff\u00e9remment la prochaine fois.</li>\n        <li>Revenez dans un jour ou deux et pratiquez la m\u00eame habilet\u00e9 de nouveau. C\u2019est l\u2019espacement de la pratique qui la fait passer dans la m\u00e9moire \u00e0 long terme.</li>\n      </ol>\n    </details>\n    <details>\n      <summary>Comment les questions sont-elles class\u00e9es par niveau ?</summary>\n      <p>Chaque question porte un niveau de 1 \u00e0 3, d\u00e9termin\u00e9 par ce que l\u2019\u00e9l\u00e8ve doit faire, et non par la difficult\u00e9 des nombres.</p>\n      <p>Le <b>niveau 1</b> correspond au rappel et aux \u00e9tapes uniques guid\u00e9es : la question nomme ou sugg\u00e8re la d\u00e9marche, et une seule application suffit. Le <b>niveau 2</b> correspond \u00e0 une proc\u00e9dure enseign\u00e9e appliqu\u00e9e, m\u00eame en plusieurs \u00e9tapes : l\u2019\u00e9l\u00e8ve d\u00e9termine la proc\u00e9dure que le cours enseigne pour la situation et l\u2019ex\u00e9cute. Le <b>niveau 3</b> signifie que l\u2019\u00e9l\u00e8ve doit trouver, adapter ou juger la d\u00e9marche, parce qu\u2019aucune routine enseign\u00e9e ne permet de terminer la question telle qu\u2019elle est pos\u00e9e.</p>\n      <p>Quatre crit\u00e8res peuvent placer une question au niveau 3. Le <b>crit\u00e8re de la d\u00e9marche</b> : aucune routine enseign\u00e9e, nomm\u00e9e ou implicite, ne permet de la terminer, alors l\u2019\u00e9l\u00e8ve doit en construire ou en adapter une. Le <b>crit\u00e8re du jugement</b> : la r\u00e9ponse est un verdict, une explication, une justification ou une correction qui exige de faire l\u2019analyse, et non de r\u00e9citer une formule apprise. Le <b>crit\u00e8re de la contrainte</b> : une condition ou une contrainte, comme une restriction de domaine ou une racine \u00e9trang\u00e8re, change ce que la r\u00e9ponse peut \u00eatre. Le <b>crit\u00e8re du transfert</b> : la situation est structurellement nouvelle, alors l\u2019\u00e9l\u00e8ve doit d\u2019abord reconna\u00eetre ce qui s\u2019applique. Une question est jug\u00e9e telle que les \u00e9l\u00e8ves la rencontrent, choix de r\u00e9ponse compris : si un raccourci, comme l\u2019\u00e9limination des choix, permet d\u2019y r\u00e9pondre, c\u2019est le raccourci qui fixe son niveau.</p>\n      <p>Les questions sont v\u00e9rifi\u00e9es par rapport \u00e0 cette norme, cours par cours, et le crit\u00e8re qui a d\u00e9cid\u00e9 le niveau de chaque question v\u00e9rifi\u00e9e est consign\u00e9. Dans les outils avanc\u00e9s (mode enseignant), la carte d\u2019une question v\u00e9rifi\u00e9e affiche ce crit\u00e8re \u00e0 c\u00f4t\u00e9 de son niveau, par exemple \u00ab Level 3 \u00b7 judgement test \u00bb. Jusqu\u2019ici, Math 3200 et Math 3201 ont \u00e9t\u00e9 v\u00e9rifi\u00e9s au complet, et toutes leurs questions portent l\u2019\u00e9tiquette. Les questions des autres cours n\u2019affichent que le niveau jusqu\u2019\u00e0 ce que leur v\u00e9rification soit faite.</p>\n    </details>";
   function pkApplyLang(){
     window.__PKFR=(pkLang==="fr");
     document.documentElement.lang=pkLang;
