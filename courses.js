@@ -5175,7 +5175,12 @@ window.COURSES = {
   },
 
   /* Indicator texts verbatim from the standalone app
-     (INDICATORS at line 653): 108 codes. */
+     (INDICATORS at line 653): 108 codes in the guide, 104 in
+     scope here. Ruling, November 26, 2026 (Jason, Math 9 guide
+     audit ruling 5): indicators 11.7 to 11.10 are project
+     outcomes, assessed through the data project itself and not
+     on any test, so they are out of the Review Apps scope, the
+     same call as Math 2201 Unit 9 (8.1 to 8.5). */
   indicators: {
     "3.1": "Order a given set of rational numbers, in fraction and decimal form, by placing them on a number line, e.g., 3/5, -0.666..., 0.5, -5/8",
     "3.2": "Identify a rational number that is between two given rational numbers",
@@ -5281,16 +5286,12 @@ window.COURSES = {
     "11.4": "Provide an example of a situation in which a population may be used to answer a question and justify the choice",
     "11.5": "Provide an example of a question where a limitation precludes the use of a population and describe the limitation, e.g., too costly, not enough time, limited resources",
     "11.6": "Identify and critique a given example in which a generalization from a sample of a population may or may not be valid for the population",
-    "11.7": "Create a rubric to assess a project that includes the assessment of: • a question for investigation • the choice of a data collection method that includes social considerations • the selection of a population or a sample and justifying the cho",
-    "11.8": "Develop a project plan that describes: • a question for investigation • the method of data collection that includes social considerations • the method for selecting a population or a sample • the method to be used for collection of the data",
-    "11.9": "Complete the project according to the plan, draw conclusions and communicate findings to an audience",
-    "11.10": "Self-assess the completed project by applying the rubric"
   },
 
   /* Unit to indicator map verbatim from the standalone app
-     (UNIT_IND at line 654): 108 placements over the
-     108 codes; it agrees exactly with the codes the bank
-     entries themselves carry at each placement. */
+     (UNIT_IND at line 654): 108 placements in the standalone;
+     104 here after the November 26, 2026 ruling that took
+     11.7 to 11.10 out of scope (see the indicators note above). */
   unitInd: {
     "1": ["3.1", "3.2", "6.1", "6.2", "6.3", "6.4"],
     "2": ["3.3", "6.9", "6.10", "6.11", "6.5", "6.6", "6.7", "6.8", "9.1", "9.2", "9.3"],
@@ -5300,7 +5301,7 @@ window.COURSES = {
     "6": ["7.1", "7.2", "7.4", "8.23", "7.3", "7.5", "7.7", "7.6", "7.8", "7.9", "7.10"],
     "7": ["10.8", "10.16", "10.17", "10.18", "10.7", "10.14", "10.15", "10.19", "10.1", "10.9", "10.2", "10.10", "10.3", "10.4", "10.11", "10.5", "10.6", "10.12", "10.13"],
     "8": ["9.4", "9.6", "9.7", "9.8", "9.9", "9.5"],
-    "9": ["12.1", "12.2", "12.3", "12.4", "11.1", "11.2", "11.3", "11.4", "11.5", "11.6", "11.7", "11.8", "11.9", "11.10"]
+    "9": ["12.1", "12.2", "12.3", "12.4", "11.1", "11.2", "11.3", "11.4", "11.5", "11.6"]
   },
 
   /* Presets: the standalone's three buttons (builder markup

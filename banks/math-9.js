@@ -5760,18 +5760,14 @@ E("u8-add-chord-length-mc", 8, ["9.6"], 2, "gen", function () {
 // CRMARKS: u9-collection-problem=3
 // CRMARKS: u9-collection-biggest-threat=3
 // CRMARKS: u9-match-influence=3
-// CRMARKS: u9-rubric-missing-part=2
-// CRMARKS: u9-plan-element=2
 // CRMARKS: u9-generalization-written-cr=2
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
 // CRMARKS: u9-same-number-two-sides=3
 // CRMARKS: u9-population-limitation=2
-// CRMARKS: u9-self-assessment=2
 // BIMODAL: u9-collection-biggest-threat=b
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
 // BIMODAL: u9-same-number-two-sides=b
 // BIMODAL: u9-population-limitation=b
-// BIMODAL: u9-self-assessment=b
 E("u9-prob-in-media", 9, ["12.1"], 1, "var", varset([
   function(){
     return mcq("Four short items appear in a school newsletter. Which item uses probability?",
@@ -6402,161 +6398,13 @@ E("u9-generalization-critique", 9, ["11.6"], 3, "var", varset([
   }
 ]), ["Test the claim against its sample: check the size, then check whether the sample matches the whole group claimed.", "Picture who is missing from the sample; missing groups are where a generalization usually breaks."]);
 
-E("u9-rubric-missing-part", 9, ["11.7"], 1, "var", varset([
-  function(){
-    return mcq("A rubric for a data project assesses the choice of a data collection method with social considerations, the selection of a population or a sample with justification, and the communication of findings. Which required part is missing from this rubric?",
-      {t:"A question for investigation that the project sets out to answer with collected data", fb:"Right: the rubric never assesses whether the project has a clear question guiding the study."},
-      [{t:"A choice of data collection method that includes social considerations for participants", fb:"That part is listed in the rubric already, in its method criterion, so it is present."},
-       {t:"A selection of a population or a sample with a justification for that selection", fb:"That part is listed in the rubric already, in its selection criterion, so it is present."},
-       {t:"A communication of findings that shares the project conclusions with an audience", fb:"That part is listed in the rubric already, in its final criterion, so it is present."}],
-      "A complete project rubric assesses the question for investigation, the collection method with social considerations, the population or sample choice with justification, and the communication of findings. The missing part is <b>a question for investigation</b>.",
-      {mode:"rubric-question"});
-  },
-  function(){
-    return mcq("A rubric for a data project assesses the question for investigation, the selection of a population or a sample with justification, and the communication of findings. Which required part is missing from this rubric?",
-      {t:"A choice of data collection method that includes social considerations for participants", fb:"Right: the rubric never assesses how data will be gathered or how people will be treated."},
-      [{t:"A question for investigation that the project sets out to answer with collected data", fb:"That part is listed in the rubric already, in its first criterion, so it is present."},
-       {t:"A selection of a population or a sample with a justification for that selection", fb:"That part is listed in the rubric already, in its selection criterion, so it is present."},
-       {t:"A communication of findings that shares the project conclusions with an audience", fb:"That part is listed in the rubric already, in its final criterion, so it is present."}],
-      "A complete project rubric assesses the question for investigation, the collection method with social considerations, the population or sample choice with justification, and the communication of findings. The missing part is <b>the choice of a data collection method with social considerations</b>.",
-      {mode:"rubric-method"});
-  },
-  function(){
-    return mcq("A rubric for a data project assesses the question for investigation, the choice of a data collection method with social considerations, and the communication of findings. Which required part is missing from this rubric?",
-      {t:"A selection of a population or a sample with a justification for that selection", fb:"Right: the rubric never assesses who will be studied or why that group was chosen."},
-      [{t:"A question for investigation that the project sets out to answer with collected data", fb:"That part is listed in the rubric already, in its first criterion, so it is present."},
-       {t:"A choice of data collection method that includes social considerations for participants", fb:"That part is listed in the rubric already, in its method criterion, so it is present."},
-       {t:"A communication of findings that shares the project conclusions with an audience", fb:"That part is listed in the rubric already, in its final criterion, so it is present."}],
-      "A complete project rubric assesses the question for investigation, the collection method with social considerations, the population or sample choice with justification, and the communication of findings. The missing part is <b>the selection of a population or a sample with justification</b>.",
-      {mode:"rubric-selection"});
-  },
-  function(){
-    return mcq("A rubric for a data project assesses the question for investigation, the choice of a data collection method with social considerations, and the selection of a population or a sample with justification. Which required part is missing from this rubric?",
-      {t:"A communication of findings that shares the project conclusions with an audience", fb:"Right: the rubric never assesses how the project results will be shared at the end."},
-      [{t:"A question for investigation that the project sets out to answer with collected data", fb:"That part is listed in the rubric already, in its first criterion, so it is present."},
-       {t:"A choice of data collection method that includes social considerations for participants", fb:"That part is listed in the rubric already, in its method criterion, so it is present."},
-       {t:"A selection of a population or a sample with a justification for that selection", fb:"That part is listed in the rubric already, in its selection criterion, so it is present."}],
-      "A complete project rubric assesses the question for investigation, the collection method with social considerations, the population or sample choice with justification, and the communication of findings. The missing part is <b>the communication of findings</b>.",
-      {mode:"rubric-communication"});
-  }
-]), ["Hold the full rubric list in mind, then tick off each part the described rubric already covers.", "List the four required parts first; the missing one is the part never named in the stem."]);
-
-E("u9-plan-element", 9, ["11.8"], 1, "var", varset([
-  function(){
-    return mcq("A project plan states that interviewers will ask each person for permission before starting and will keep names off all answer forms. Which element of the project plan does this detail belong to?",
-      {t:"The method of data collection, in the social considerations that protect participants", fb:"Right: permission and nameless forms are social considerations built into how data is collected."},
-      [{t:"The question for investigation, in the wording that the project sets out to answer", fb:"No research question is stated in this detail; it describes how people are treated during collection."},
-       {t:"The method for selecting a population or a sample from the group being studied", fb:"No selection of people is described in this detail; it describes treatment during the interviews."},
-       {t:"The method to be used for collection of the data during the project field work", fb:"Collection steps are close, but permission and privacy belong to the social considerations part."}],
-      "A project plan describes a question for investigation, a collection method with social considerations, a selection method, and a collection procedure. This detail belongs to <b>the method of data collection, in its social considerations</b>.",
-      {mode:"plan-social"});
-  },
-  function(){
-    return mcq("A project plan states that 30 students will be chosen by drawing names from the class lists of every grade in the school. Which element of the project plan does this detail belong to?",
-      {t:"The method for selecting a population or a sample from the group being studied", fb:"Right: drawing names from class lists is exactly how the sample is selected for the study."},
-      [{t:"The question for investigation, in the wording that the project sets out to answer", fb:"No research question is stated in this detail; it describes how the students are chosen."},
-       {t:"The method of data collection, in the social considerations that protect participants", fb:"No treatment of participants is described in this detail; it describes how names are drawn."},
-       {t:"The method to be used for collection of the data during the project field work", fb:"Field work steps come later; this detail settles who takes part before any data is gathered."}],
-      "A project plan describes a question for investigation, a collection method with social considerations, a selection method, and a collection procedure. This detail belongs to <b>the method for selecting a population or a sample</b>.",
-      {mode:"plan-selection"});
-  },
-  function(){
-    return mcq("A project plan states its question for investigation, describes a survey method with permission and privacy protections, and explains how its sample will be drawn from class lists. The plan says nothing about how, when or where the survey answers will actually be gathered and recorded. What does the plan still need?",
-      {t:"The method to be used for collection of the data during the project field work", fb:"Right: the plan never says how answers will be gathered and recorded, which is its missing element."},
-      [{t:"The question for investigation, in the wording that the project sets out to answer", fb:"The question is stated at the start of the plan, so that element is already covered in full."},
-       {t:"The method of data collection, in the social considerations that protect participants", fb:"Permission and privacy protections are described in the plan, so that element is covered already."},
-       {t:"The method for selecting a population or a sample from the group being studied", fb:"Drawing the sample from class lists is explained in the plan, so that element is covered already."}],
-      "A project plan describes a question for investigation, a collection method with social considerations, a selection method, and a collection procedure. The plan still needs <b>the method to be used for collection of the data</b>.",
-      {mode:"plan-collection"});
-  },
-  function(){
-    return mcq("A project plan opens with this sentence: the project will investigate whether students who walk to school arrive more alert in first period than students who ride the bus. Which element of the project plan does this sentence belong to?",
-      {t:"The question for investigation, in the wording that the project sets out to answer", fb:"Right: the sentence states what the project will investigate, which is its guiding question."},
-      [{t:"The method for selecting a population or a sample from the group being studied", fb:"No people are selected in this sentence; it states what the project will investigate overall."},
-       {t:"The method of data collection, in the social considerations that protect participants", fb:"No collection method or treatment of people appears in this sentence; it frames the study question."},
-       {t:"The method to be used for collection of the data during the project field work", fb:"No gathering or recording steps appear in this sentence; it states the question the data must answer."}],
-      "A project plan describes a question for investigation, a collection method with social considerations, a selection method, and a collection procedure. This sentence belongs to <b>the question for investigation</b>.",
-      {mode:"plan-question"});
-  }
-]), ["A plan has four elements: its question, its collection method with social considerations, its selection method, and its collection procedure.", "Decide what the detail does in the plan: states the question, protects people, picks people, or gathers data."]);
-
-E("u9-supported-conclusion", 9, ["11.9"], 3, "var", varset([
-  function(){
-    return mcq("For a project, a student surveys 40 students at school about getting to school. Of the 40 students, 30 say they walk, 6 ride a bus and 4 get a ride. Which conclusion does this data actually support?",
-      {t:"Most of the 40 students surveyed said they walk to school on a regular school day", fb:"Right: 30 of 40 is most of the group surveyed, so the conclusion stays inside the data."},
-      [{t:"Most students in the whole province walk to school on a regular school day each year", fb:"Forty students at one school cannot support a claim about a whole province of students."},
-       {t:"Walking to school causes students to arrive at school feeling more alert each day", fb:"The survey counted travel methods only; it measured nothing about alertness or its causes."},
-       {t:"Most of the 40 students surveyed said they ride a bus to school on a regular day", fb:"Only 6 of 40 named the bus, so this conclusion contradicts the numbers in the survey."}],
-      "A conclusion must stay inside the data collected: 30 of the 40 students surveyed walk, and nothing wider was measured. The supported conclusion is <b>most of the 40 students surveyed said they walk to school</b>.",
-      {mode:"conclusion-walk"});
-  },
-  function(){
-    return mcq("For a project, a student grows 10 bean plants with extra light and 10 without it. After three weeks, 7 of the extra light plants are taller than the tallest plant grown without extra light. Which conclusion does this data actually support?",
-      {t:"In this trial, most plants with extra light grew taller than the plants without it", fb:"Right: 7 of 10 beating every untreated plant supports a conclusion about this trial only."},
-      [{t:"Extra light will make every bean plant grow taller in any garden or classroom trial", fb:"One small trial cannot promise results for every plant in any place it might be grown."},
-       {t:"Extra light is the only reason any of the plants in the trial grew taller at all", fb:"Other factors also affect growth, and this trial never tested light as the only cause."},
-       {t:"In this trial, most plants without extra light grew taller than the plants with it", fb:"The tallest plants were in the extra light group, so this conclusion contradicts the results."}],
-      "A conclusion must stay inside the data collected: in this trial the extra light plants grew taller, and nothing wider was tested. The supported conclusion is <b>in this trial, most plants with extra light grew taller</b>.",
-      {mode:"conclusion-plants"});
-  },
-  function(){
-    return mcq("For a project, a student counts library loans over two school weeks. Fiction books were borrowed 120 times and non fiction books were borrowed 45 times during those two weeks. Which conclusion does this data actually support?",
-      {t:"During those two weeks, fiction books were borrowed more often than non fiction books", fb:"Right: 120 loans against 45 loans supports a comparison limited to the two weeks counted."},
-      [{t:"Fiction books are better written than non fiction books for student readers at school", fb:"Loan counts say nothing about writing quality; the project counted borrowing, not quality."},
-       {t:"Every student in the school prefers fiction books over non fiction books this year", fb:"Loan counts over two weeks cannot show what every student prefers across a whole year."},
-       {t:"During those two weeks, non fiction books were borrowed more often than fiction books", fb:"Non fiction had 45 loans against 120 for fiction, so this conclusion contradicts the counts."}],
-      "A conclusion must stay inside the data collected: fiction loans outnumbered non fiction loans in the two weeks counted. The supported conclusion is <b>during those two weeks, fiction books were borrowed more often</b>.",
-      {mode:"conclusion-library"});
-  },
-  function(){
-    return mcq("For a project, a student records the recess temperature on 10 school days in May. On 6 of the 10 days the temperature was above 10 degrees, and on 4 days it was at or below 10 degrees. Which conclusion does this data actually support?",
-      {t:"On most of the 10 days recorded, the recess temperature was above 10 degrees in May", fb:"Right: 6 of 10 days is most of the recorded days, so the conclusion matches the records."},
-      [{t:"May is always the warmest month of the school year in this part of the province", fb:"Ten days in one month cannot rank all months, and no other month was recorded at all."},
-       {t:"Warm recess weather causes students to play outside for longer at recess time", fb:"The project recorded temperatures only; it measured nothing about play time or its causes."},
-       {t:"On most of the 10 days recorded, the recess temperature was at or below 10 degrees", fb:"Only 4 of 10 days were at or below 10 degrees, so this conclusion contradicts the records."}],
-      "A conclusion must stay inside the data collected: 6 of the 10 recorded days were above 10 degrees, and nothing wider was measured. The supported conclusion is <b>on most of the 10 days recorded, the temperature was above 10 degrees</b>.",
-      {mode:"conclusion-temp"});
-  }
-]), ["A supported conclusion says only what the numbers show, for the group and the time actually studied.", "Check each option against the numbers in the stem, and drop any option that reaches past them."]);
-
-E("u9-self-assessment", 9, ["11.10"], 1, "var", varset([
-  function(){
-    return mcq("A rubric criterion says a project must select a population or a sample and justify the choice. For the project, a student asked only close friends and gave no reason for choosing them. Which self assessment statement is accurate for this criterion?",
-      {t:"My project falls short on this criterion, because I asked only friends and gave no reason for the choice", fb:"Right: the statement honestly matches the criterion to what the project actually did."},
-      [{t:"My project was excellent in every way, and the whole study went very well from start to finish overall", fb:"General praise names no criterion and no evidence, so it cannot judge this part of the project."},
-       {t:"My project fully meets this criterion, because my friends enjoyed answering all of my questions in the survey", fb:"Enjoyment does not justify a sample choice; the criterion asks for a reasoned selection."},
-       {t:"My project had a clear title page and neat charts, so this part of the project is strong and well organized", fb:"Titles and charts belong to other criteria; this criterion is about justifying who was asked."}],
-      "Self assessment applies the rubric honestly to the work done: the project asked only friends with no justification, so it falls short on this criterion. The accurate statement is <b>my project falls short, because I asked only friends and gave no reason</b>.",
-      {mode:"selfassess-sample"});
-  },
-  function(){
-    return mcq("A rubric criterion says a data collection method must include social considerations, such as permission and privacy. For the project, a student asked permission before each interview and kept names off every form. Which self assessment statement is accurate for this criterion?",
-      {t:"My project meets this criterion, because I asked permission first and kept names off every form I used", fb:"Right: the statement ties the criterion to two social considerations the project actually used."},
-      [{t:"My project was really good overall, and I feel proud of how the whole study turned out in the end", fb:"General pride names no criterion and no evidence, so it cannot judge this part of the project."},
-       {t:"My project falls short on this criterion, because my sample came from only one grade in the school", fb:"Sample grade range belongs to a different criterion; on social considerations this project delivered."},
-       {t:"My project fully meets this criterion, because my interview questions were short and easy to read", fb:"Short questions aid clarity, but the criterion asks about permission and privacy protections."}],
-      "Self assessment applies the rubric honestly to the work done: permission was asked and names were kept off forms, so the project meets this criterion. The accurate statement is <b>my project meets this criterion, because I asked permission and kept names off forms</b>.",
-      {mode:"selfassess-social"});
-  },
-  function(){
-    return mcq("A rubric criterion says findings must be communicated clearly, with labelled charts that an audience can read. For the project, a student presented one chart with no title and no labels on its axes. Which self assessment statement is accurate for this criterion?",
-      {t:"My project partly meets this criterion, because my chart shows the data but has no title or axis labels", fb:"Right: the statement honestly credits the chart while naming exactly what the criterion still needs."},
-      [{t:"My project was fantastic from beginning to end, and the presentation was the best part of my work", fb:"General praise names no criterion and no evidence, so it cannot judge this part of the project."},
-       {t:"My project fully meets this criterion, because my audience clapped at the end of my presentation", fb:"Applause does not show clear communication; the criterion asks for labelled, readable charts."},
-       {t:"My project falls short on this criterion, because my sample was drawn from a single classroom only", fb:"Sample source belongs to a different criterion; this criterion is about communicating the findings."}],
-      "Self assessment applies the rubric honestly to the work done: the chart shows data but lacks a title and labels, so the project partly meets this criterion. The accurate statement is <b>my project partly meets this criterion, because the chart has no title or axis labels</b>.",
-      {mode:"selfassess-charts"});
-  },
-  function(){
-    return mcq("A rubric criterion says a project must state a clear question for investigation that data can answer. For the project, a student investigated one focused question: how many students walk to school each day. Which self assessment statement is accurate for this criterion?",
-      {t:"My project meets this criterion, because my question was focused and my data answered it directly", fb:"Right: the statement ties the criterion to the focused question and the data that answered it."},
-      [{t:"My project was strong in every area, and I would give the whole study full marks without changes", fb:"Full marks with no evidence names no criterion detail, so it cannot judge this part fairly."},
-       {t:"My project falls short on this criterion, because my charts used colours that were hard to read", fb:"Chart colours belong to the communication criterion; the investigation question here was clear."},
-       {t:"My project fully meets this criterion, because I finished the whole study before the deadline date", fb:"Finishing on time is not the criterion; it asks whether the question was clear and answerable."}],
-      "Self assessment applies the rubric honestly to the work done: the question was focused and the data answered it, so the project meets this criterion. The accurate statement is <b>my project meets this criterion, because my question was focused and my data answered it</b>.",
-      {mode:"selfassess-question"});
-  }
-]), ["Self assessment means applying the rubric criterion to what the project actually did, with evidence.", "Match the criterion to the project detail first; vague praise and unrelated strengths do not count."]);
+/* Removal, November 26, 2026 (Jason's ruling 5 on the Math 9 guide audit):
+   indicators 11.7 to 11.10 are project outcomes, assessed through the
+   data project itself and not on any test, so they are out of the
+   Review Apps scope, the same call as Math 2201 Unit 9. The four
+   entries that served them in recognition form (u9-rubric-missing-part,
+   u9-plan-element, u9-supported-conclusion, u9-self-assessment) are
+   removed, with their CRMARKS and BIMODAL registrations. */
 
 
 /* Tranche (November 20, 2026): one new Level 3 written entry for
@@ -7478,8 +7326,8 @@ E("u8-gap-two-theorems-mc", 8, ["9.7"], 2, "gen", function () {
 
 /* Unit 9: Probability and Statistics */
 
-// PG. L2, 11.9, CR 2: mean from a frequency table (sum of fx, then divide).
-E("u9-gap-freq-mean-cr", 9, ["11.9"], 2, "gen", function () {
+// PG. L2, PK centre measures, CR 2: mean from a frequency table (sum of fx, then divide).
+E("u9-gap-freq-mean-cr", 9, [], 2, "gen", function () {
   var f1 = ri(2, 9), f2 = ri(2, 9), f3 = ri(2, 9), f4 = ri(2, 9);
   var S = 1 * f1 + 2 * f2 + 3 * f3 + 4 * f4, N = f1 + f2 + f3 + f4;
   var ans = Math.round(S / N * 100) / 100;
@@ -7520,8 +7368,8 @@ E("u9-gap-complement-pct-cr", 9, ["12.2"], 2, "gen", function () {
   return numq(prompt, ans, 0.01, sol, { mode: "gap-complement-pct", p: p, trials: trials });
 }, ["At least once is everything except the single case where it never happens.", "Find the probability of one failure as the first step."]);
 
-// PG. L2, 11.9, CR 3: difference of the means of two small data sets.
-E("u9-gap-mean-diff-cr", 9, ["11.9"], 2, "gen", function () {
+// PG. L2, PK centre measures, CR 3: difference of the means of two small data sets.
+E("u9-gap-mean-diff-cr", 9, [], 2, "gen", function () {
   function makeSet() {
     var v = [ri(2, 20), ri(2, 20), ri(2, 20), ri(2, 20)];
     return { v: v, s: v[0] + v[1] + v[2] + v[3] };
@@ -7561,8 +7409,8 @@ E("u9-gap-win-points-cr", 9, ["12.4"], 2, "gen", function () {
   return numq(prompt, ans, 0.01, sol, { mode: "gap-win-points", wins: wins, w: w });
 }, ["Points come from wins, so the expected win count must be found before points can be totalled.", "Multiply the probability by the number of plays as the first step."]);
 
-// PG. L2, 11.9, SR: frequency-table mean with forgot-to-divide and wrong-divisor distractors.
-E("u9-gap-freq-mean-mc", 9, ["11.9"], 2, "gen", function () {
+// PG. L2, PK centre measures, SR: frequency-table mean with forgot-to-divide and wrong-divisor distractors.
+E("u9-gap-freq-mean-mc", 9, [], 2, "gen", function () {
   var k = ri(1, 12);
   var v1 = k, v2 = k + 2, v3 = k + 4;
   var f1 = ri(2, 5), f2 = ri(2, 6), f3 = ri(2, 5);
@@ -9265,7 +9113,7 @@ E("u8-pk-angle-chain", 8, ["9.5"], 2, "gen", function(){
     "Find angle P from the straight line first, then use the triangle angle sum. \\[ \\begin{aligned} P &= 180 - "+B+" = "+C+" \\\\ \\text{third angle} &= 180 - "+C+" - "+D+" = "+third+" \\end{aligned} \\] The answer is <b>"+third+"</b>.",
     {B:B,D:D}); q.figure=triAngSVG(C,D,third,{L:["","",""],ang:["P",D+"°","?"]}); return q;
 }, ["Two angle facts are chained here: use the straight-line fact first, then feed its result into the triangle.", "Start by finding the supplementary angle on the straight line."]);
-E("u9-pk-mean-basic", 9, ["11.9"],1,"gen",function(){
+E("u9-pk-mean-basic", 9, [],1,"gen",function(){
   var ctx=pick(["quiz scores","laps swum each day","pages read each day","points scored each game","seedlings sprouting each day"]);
   var n=pick([5,5,6]);var vals=[];for(var i=0;i<n;i++)vals.push(ri(2,14));
   var m=u7mean(vals);var ms=fmt(m);
@@ -9279,7 +9127,7 @@ E("u9-pk-mean-basic", 9, ["11.9"],1,"gen",function(){
     {mode:"mean",n:n});
   return q;
 },["The mean is the total of all the values divided by how many values there are.","Start by adding all the values together."]);
-E("u9-pk-median-mode", 9, ["11.9"],1,"gen",function(){
+E("u9-pk-median-mode", 9, [],1,"gen",function(){
   var askMode=Math.random()<0.5;
   var base=ri(3,9);var vals;
   if(askMode){var modeV=ri(2,12);var others=[];while(others.length<4){var v=ri(1,15);if(v!==modeV&&others.indexOf(v)<0)others.push(v);}vals=shuffle([modeV,modeV,modeV].concat(others.slice(0,3)));
@@ -9435,7 +9283,7 @@ E("u9-pk-false-conclusion", 9, ["11.6"], 2, "var", varset([
       {mode:"false-practice"});
   }
 ]), ["Test each conclusion against every number given, not just the first ones you notice.", "Watch for strong words like most, always and every; they need more than half, or every case, to hold."]);
-E("u9-pk-circle-graph", 9, ["11.8"],1,"gen",function(){
+E("u9-pk-circle-graph", 9, [],1,"gen",function(){
   var labelSets=[["Bus","Walk","Bike"],["Reading","Games","Sport","Music"],["Apples","Bananas","Oranges"],["Red","Blue","Green","Yellow"],["Soccer","Hockey","Dance"],["Tea","Juice","Water","Milk"]];
   var pctSets=[[50,30,20],[40,30,20,10],[25,50,25],[30,30,25,15],[60,25,15],[45,35,20],[20,20,30,30],[35,45,20]];
   var labels=pick(labelSets);var pcts=pick(pctSets);var guard=0;while(pcts.length!==labels.length&&guard<20){pcts=pick(pctSets);guard++;}
@@ -9663,7 +9511,13 @@ var PK9_FOR_C9=["10.7","10.8","10.14","10.15","10.16","10.17","10.18","10.19"];
 var PK9_FOR_C10=["10.1","10.2","10.3","10.4","10.5","10.6","10.9","10.10","10.11","10.12","10.13"];
 var PK9_FOR_C11=["9.4","9.5","9.6","9.7","9.8","9.9"];
 var PK9_FOR_C12=["12.1","12.2","12.3","12.4"];
-var PK9_FOR_C13=["11.1","11.2","11.3","11.4","11.5","11.6","11.7","11.8","11.9","11.10"];
+/* Ruling 5 amendment, November 26, 2026: indicators 11.7 to 11.10 left
+   the registry scope (project outcomes, assessed through the project),
+   so the Unit 9 data cluster list now runs 11.1 to 11.6 only. The PK
+   centre-measures and graphing-data entries that carried 11.8 or 11.9 as
+   their E tag now carry no indicator tag; their skills are unchanged,
+   and the entries whose pkFor named 11.9 now take this cluster list. */
+var PK9_FOR_C13=["11.1","11.2","11.3","11.4","11.5","11.6"];
 var PKT9={
   "u1-pk-ooo-evaluate":{src:"Math 8 indicator 6.27",group:"integer-operations",for:PK9_FOR_C1},
   "u1-pk-identify-operation":{src:"Math 8 indicator 6.26",group:"integer-operations",for:PK9_FOR_C1},
@@ -9738,10 +9592,15 @@ var PKT9={
   "u3-pk-related-division":{src:"Mathematics 5 indicator MA5.5.19 (authored for this tranche; no banked source exists)",group:"repeated-multiplication",for:PK9_FOR_C4},
   "u3-pk-doubling-step":{src:"Mathematics 5 indicator MA5.5.16 (authored for this tranche; no banked source exists)",group:"repeated-multiplication",for:PK9_FOR_C4},
   "u3-pk-annex-zeros":{src:"Mathematics 5 indicator MA5.5.18 (authored for this tranche; no banked source exists)",group:"repeated-multiplication",for:PK9_FOR_C4},
-  "u9-gap-freq-mean-cr":{src:"Math 7 indicators 11.6 and 11.9",group:"freq-table",for:["11.9"]},
-  "u9-gap-freq-mean-mc":{src:"Math 7 indicators 11.6 and 11.9",group:"freq-table",for:["11.9"]},
-  "u9-gap-mean-diff-cr":{src:"Math 7 indicators 11.6 and 11.9",group:"centre-measures",for:["11.9"]},
+  "u9-gap-freq-mean-cr":{src:"Math 7 indicators 11.6 and 11.9",group:"freq-table",for:PK9_FOR_C13},
+  "u9-gap-freq-mean-mc":{src:"Math 7 indicators 11.6 and 11.9",group:"freq-table",for:PK9_FOR_C13},
+  "u9-gap-mean-diff-cr":{src:"Math 7 indicators 11.6 and 11.9",group:"centre-measures",for:PK9_FOR_C13},
   "u9-gap-expected-freq-cr":{src:"Math 7 indicators 12.6 and 12.7",group:"expected-count",for:["12.4"]},
+  /* Metadata completed November 26, 2026: the two entries flagged by ruling 2 of the
+     Math 9 guide audit (bank-fix.js tail) carried pkFlag only; they take their tranche
+     metadata here like the November 13, 2026 flags above. */
+  "u1-gap-mean-target-cr":{src:"Math 7 indicators 11.6 and 11.9",group:"centre-measures",for:PK9_FOR_C13},
+  "u9-gap-complement-pct-cr":{src:"Math 8 indicator 12.3",group:"probability-forms",for:PK9_FOR_C12},
   "u9-gap-win-points-cr":{src:"Math 7 indicators 12.6 and 12.7",group:"expected-count",for:["12.4"]}
 };
 BANK.forEach(function(e){var t=PKT9[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=t.for.slice();e.pkGroup=t.group;}});
@@ -10408,7 +10267,7 @@ E("u5-pkf-solve-context-problem", 5, ["8.17"], 2, "gen", function () {
   return numq(ctx.q, x, 0.01, sol, { mode: "solve-context-problem", a: a, b: b, c: c, unit: ctx.unit });
 }, ["Write an equation first: one-time fee plus per-unit charge times the unknown, equal to the total.","Subtract the fee from the total, then divide what is left by the per-unit charge."]);
 
-E("u9-pkf-mean-basic", 9, ["11.9"], 1, "gen", function(){
+E("u9-pkf-mean-basic", 9, [], 1, "gen", function(){
   var ctx=pick(["quiz scores","laps swum each day","pages read each day","points scored each game","seedlings sprouting each day"]);
   var n=pick([5,5,6]);var vals=[];for(var i=0;i<n;i++)vals.push(ri(2,14));
   var m=u7mean(vals);var ms=fmt(m);
@@ -10423,7 +10282,7 @@ E("u9-pkf-mean-basic", 9, ["11.9"], 1, "gen", function(){
   return q;
 }, ["The mean is the total of all the values divided by how many values there are.","Start by adding all the values together."]);
 
-E("u9-pkf-median-mode", 9, ["11.9"], 1, "gen", function(){
+E("u9-pkf-median-mode", 9, [], 1, "gen", function(){
   var askMode=Math.random()<0.5;
   var base=ri(3,9);var vals;
   if(askMode){var modeV=ri(2,12);var others=[];while(others.length<4){var v=ri(1,15);if(v!==modeV&&others.indexOf(v)<0)others.push(v);}vals=shuffle([modeV,modeV,modeV].concat(others.slice(0,3)));
@@ -10444,7 +10303,7 @@ E("u9-pkf-median-mode", 9, ["11.9"], 1, "gen", function(){
     "Order the values: "+srt.join(", ")+". With "+n+" values, the middle position holds <b>"+fmt(med)+"</b>.",{mode:"median"});
 }, ["Order the values first for the median; count frequencies for the mode.","Start by rewriting the data set in increasing order."]);
 
-E("u9-pkf-range-basic", 9, ["11.9"], 1, "gen", function(){
+E("u9-pkf-range-basic", 9, [], 1, "gen", function(){
   var ctx=pick(["daily high temperatures in degrees","heights of plants in centimetres","race times in seconds","numbers of pets per household","goals scored each week"]);
   var lo=ri(2,10),hi=lo+ri(4,14);var vals=[lo,hi];var n=ri(4,6);for(var i=0;i<n;i++)vals.push(ri(lo,hi));vals=shuffle(vals);
   var r=hi-lo;
@@ -10483,22 +10342,22 @@ var PKT9S={
   "u5-pkf-solve-distributive":{src:"math-8:8.5",group:"equation-solving",for:PK9_FOR_C6},
   "u5-pkf-solve-div-plus":{src:"math-8:8.4",group:"equation-solving",for:PK9_FOR_C6},
   "u5-pkf-solve-context-problem":{src:"math-8:8.7",group:"equation-solving",for:PK9_FOR_C6},
-  "u9-pkf-mean-basic":{src:"math-7:11.6",group:"centre-measures",for:["11.9"]},
-  "u9-pkf-median-mode":{src:"math-7:11.6",group:"centre-measures",for:["11.9"]},
-  "u9-pkf-range-basic":{src:"math-7:11.7",group:"centre-measures",for:["11.9"]}
+  "u9-pkf-mean-basic":{src:"math-7:11.6",group:"centre-measures",for:PK9_FOR_C13},
+  "u9-pkf-median-mode":{src:"math-7:11.6",group:"centre-measures",for:PK9_FOR_C13},
+  "u9-pkf-range-basic":{src:"math-7:11.7",group:"centre-measures",for:PK9_FOR_C13}
 };
 BANK.forEach(function(e){var t=PKT9S[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e.pkFor=t.for.slice();e.pkGroup=t.group;}});
 
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-frac-context":3,"u1-gap-brackets-cr":3,"u1-gap-div-add-cr":3,"u1-gap-mean-target-cr":3,"u1-gap-order-ops-cr":2,"u1-gap-total-change-cr":3,"u1-gap-two-expr-diff-cr":2,"u1-money-decimals":3,"u1-multistep-rational":3,"u1-ooo-brackets-mc":2,"u1-ooo-calc-display":2,"u1-ooo-calculator":2,"u1-ooo-error-value":3,"u1-ooo-evaluate-mc":3,"u1-ordering-reasoning-var":2,"u1-pk-add-context":2,"u1-pk-add-sub-decimals":2,"u1-pk-add-unlike":2,"u1-pk-divide-fractions":2,"u1-pk-identify-operation":2,"u1-pk-mult-decimals":2,"u1-pk-multiply-fractions":2,"u1-pk-ooo-evaluate":2,"u1-pk-order-mixed":2,"u1-pk-sub-unlike":2,"u1-pkf-area-model-product":2,"u1-pkf-context-divide-expression":2,"u1-pkf-div-decimals":2,"u1-pkf-estimate-product-benchmark":2,"u1-pkf-fact-division":2,"u1-pkf-fact-halving":2,"u1-pkf-fact-recall":2,"u1-pkf-frontend-prod-quot":2,"u1-pkf-frontend-sum":2,"u1-pkf-model-frac-times-whole":2,"u1-pkf-model-whole-div-frac":2,"u1-pkf-mult-model-chips":2,"u1-pkf-order-below":2,"u1-pkf-order-line":2,"u1-pkf-product-sign-apply":2,"u1-pkf-quotient-sign-apply":2,"u1-pkf-reasonableness":2,"u2-approx-explain-gen":2,"u2-best-estimate-side":2,"u2-calc-root-round":2,"u2-estimate-between":2,"u2-gap-composite-sa-mc":2,"u2-gap-estimate-best-mc":2,"u2-gap-estimate-gap-cr":2,"u2-gap-hidden-area-mc":2,"u2-gap-number-from-root-mc":2,"u2-gap-pyramid-roof-mc":3,"u2-gap-pyramid-slant-cr":3,"u2-gap-sa-cans-mc":2,"u2-gap-why-approx-mc":3,"u2-number-from-root":2,"u2-overlap":2,"u2-overlap-hidden":2,"u2-pk-estimate-between":2,"u2-pk-sqrt-perfect":2,"u2-pk-square-of-number":2,"u2-sa-composite-rect":3,"u2-sa-cyl-on-prism":3,"u2-sa-problem":2,"u2-sa-tri-context":3,"u2-spot-error":3,"u2-sqrt-fraction":2,"u2-sqrt-perfect":2,"u2-square-from-root":2,"u2-why-approx":2,"u3-difference-of-powers":2,"u3-error-two-laws":3,"u3-evaluate-power-neg":2,"u3-explanations-var":3,"u3-gap-growth-excess-cr":3,"u3-gap-laws-eval-cr":2,"u3-gap-laws-mc":3,"u3-gap-power-diff-cr":3,"u3-gap-sci-product-cr":3,"u3-gap-simplify-sub-cr":2,"u3-gap-solve-exponent-cr":3,"u3-interchanged-base-exponent":2,"u3-law-then-sum-difference":2,"u3-paren-powers-set":2,"u3-parentheses-sign":2,"u3-pk-annex-zeros":2,"u3-pk-doubling-step":2,"u3-pk-product-sign":2,"u3-pk-quotient-sign":2,"u3-pk-repeated-product":2,"u3-pk-repeated-write":2,"u3-power-from-repeated":2,"u3-power-model-var":2,"u3-power-of-power-law":2,"u3-power-of-product-quotient":3,"u3-product-law":2,"u3-quotient-law":2,"u3-repeated-multiplication":2,"u3-sum-of-powers":3,"u3-three-laws-evaluate":3,"u3-two-laws-evaluate":3,"u3-zero-exponent":2,"u3-zero-pattern":2,"u4-add":3,"u4-addsub-xy":2,"u4-area-monomial":2,"u4-degree":2,"u4-divide-missing-term":3,"u4-divide-monomial":2,"u4-equivalent":2,"u4-expr-to-tiles":2,"u4-gap-add-eval-cr":2,"u4-gap-area-eval-cr":3,"u4-gap-div-eval-cr":3,"u4-gap-mono-coeff-cr":2,"u4-gap-perimeter-eval-cr":3,"u4-gap-sub-eval-neg-cr":3,"u4-missing":3,"u4-mult-div-mixed":2,"u4-mult-monomial-area":3,"u4-multiply-monomial":3,"u4-parts":2,"u4-pk-identify-parts":2,"u4-pk-solve-one-step":2,"u4-subtract":3,"u4-tiles-addsub":2,"u4-tiles-figure-build":2,"u4-tiles-figure-expr":2,"u4-tiles-to-expr":2,"u5-balance-model":2,"u5-context-graph":2,"u5-gap-both-sides-cr":2,"u5-gap-ineq-boundary-cr":2,"u5-gap-min-items-cr":3,"u5-gap-solve-eval-cr":3,"u5-graph-to-ineq":2,"u5-ineq-substitution-check":3,"u5-ineq-to-words":2,"u5-inspection-basic":2,"u5-list-satisfies":2,"u5-meaning-of-solution":2,"u5-pk-identify-error":3,"u5-pk-misplaced":2,"u5-pk-model-equation":3,"u5-pk-numberline-place":2,"u5-pk-verify-solution":2,"u5-pkf-solve-one-step":2,"u5-pkf-visual-step":2,"u5-solve-brackets-both":3,"u5-solve-ineq-addsub":3,"u5-solve-ineq-addsub-choose":2,"u5-solve-ineq-neg-flip":3,"u5-solve-ineq-pos-div":2,"u5-solve-ineq-two-step-choose":2,"u5-solve-two-step":3,"u5-translate-inequality":2,"u5-trial-table":2,"u5-verify-error":2,"u5-which-is-solution":2,"u5-word-brackets":2,"u5-word-two-step":3,"u6-context-equation":2,"u6-extrapolate-graph":3,"u6-gap-break-even-cr":3,"u6-gap-inverse-cr":3,"u6-gap-missing-coord-cr":2,"u6-gap-pattern-far-cr":3,"u6-gap-slope-table-cr":2,"u6-graph-describe":3,"u6-graph-equation":3,"u6-interpolate-graph":3,"u6-pattern-figure-expr":3,"u6-pattern-large":2,"u6-pattern-solve-n":3,"u6-pattern-word-total":2,"u6-pk-construct-graph":2,"u6-pk-describe-graph":3,"u6-pk-pattern-expression":3,"u6-point-on-graph":2,"u6-table-equation":3,"u6-table-extend":3,"u6-two-plans-graph":3,"u7-artwork-symmetry-var":2,"u7-complete-half":2,"u7-complete-transformation":3,"u7-draw-similar-num":3,"u7-gap-area-scale-cr":3,"u7-gap-map-time-cr":2,"u7-gap-perimeter-scale-cr":3,"u7-gap-scale-apply-cr":2,"u7-gap-shadow-diff-cr":3,"u7-indirect-measure-num":2,"u7-lines-symmetry":2,"u7-pk-ratio-simplest":2,"u7-pk-reflect-point":2,"u7-pk-tess-transform":2,"u7-pk-transform-describe":2,"u7-pk-two-term-ratio":2,"u7-proportional-check":3,"u7-related-shapes":2,"u7-rotate-vertex":2,"u7-rotation-symmetry-var":2,"u7-scale-draw-num":3,"u7-scale-media-var":2,"u7-similar-context-num":3,"u7-similar-pair":3,"u7-similar-two-step-num":3,"u7-similar-verdict":2,"u7-tessellation-var":2,"u7-transformation-symmetry":2,"u7-translation-rule":2,"u8-add-chord-length-mc":2,"u8-add-same-arc-name":2,"u8-add-semicircle-right-angle":2,"u8-chord-length":3,"u8-chord-perp-bisects":2,"u8-chord-two-step":3,"u8-gap-chord-bisect-cr":3,"u8-gap-cyclic-diag-cr":2,"u8-gap-reflex-arc-cr":2,"u8-gap-semicircle-pyth-cr":3,"u8-gap-tangent-central-cr":3,"u8-gap-two-theorems-mc":2,"u8-inscribed-reflex":3,"u8-pk-central-angles":2,"u8-pk-circumference":2,"u8-pk-parallel-perp":2,"u8-pk-pi-ratio":2,"u8-pk-radius-diameter":2,"u8-same-arc-angles":2,"u8-semicircle-angle":2,"u8-tangent-central-inscribed":2,"u8-tangent-length":3,"u8-tangent-right-angle":2,"u9-collection-biggest-threat":3,"u9-collection-problem":3,"u9-combined-decision":3,"u9-gap-complement-pct-cr":3,"u9-gap-decision-evidence-cr":3,"u9-gap-expected-freq-cr":2,"u9-gap-fix-the-survey-cr":3,"u9-gap-freq-mean-cr":2,"u9-gap-freq-mean-mc":2,"u9-gap-mean-diff-cr":3,"u9-gap-sample-scale-cr":3,"u9-gap-win-points-cr":3,"u9-generalization-written-cr":2,"u9-match-influence":3,"u9-pk-circle-graph":2,"u9-pk-exp-vs-theor":2,"u9-pk-mean-basic":2,"u9-pk-median-mode":2,"u9-pk-misleading-format":2,"u9-pk-prob-basic":2,"u9-pk-product-rule":2,"u9-pkf-mean-basic":2,"u9-pkf-median-mode":2,"u9-pkf-range-basic":2,"u9-plan-element":2,"u9-population-limitation":2,"u9-rubric-missing-part":2,"u9-same-number-two-sides":3,"u9-self-assessment":2};
+window.__BANK_CRMARKS={"u1-frac-context":3,"u1-gap-brackets-cr":3,"u1-gap-div-add-cr":3,"u1-gap-mean-target-cr":3,"u1-gap-order-ops-cr":2,"u1-gap-total-change-cr":3,"u1-gap-two-expr-diff-cr":2,"u1-money-decimals":3,"u1-multistep-rational":3,"u1-ooo-brackets-mc":2,"u1-ooo-calc-display":2,"u1-ooo-calculator":2,"u1-ooo-error-value":3,"u1-ooo-evaluate-mc":3,"u1-ordering-reasoning-var":2,"u1-pk-add-context":2,"u1-pk-add-sub-decimals":2,"u1-pk-add-unlike":2,"u1-pk-divide-fractions":2,"u1-pk-identify-operation":2,"u1-pk-mult-decimals":2,"u1-pk-multiply-fractions":2,"u1-pk-ooo-evaluate":2,"u1-pk-order-mixed":2,"u1-pk-sub-unlike":2,"u1-pkf-area-model-product":2,"u1-pkf-context-divide-expression":2,"u1-pkf-div-decimals":2,"u1-pkf-estimate-product-benchmark":2,"u1-pkf-fact-division":2,"u1-pkf-fact-halving":2,"u1-pkf-fact-recall":2,"u1-pkf-frontend-prod-quot":2,"u1-pkf-frontend-sum":2,"u1-pkf-model-frac-times-whole":2,"u1-pkf-model-whole-div-frac":2,"u1-pkf-mult-model-chips":2,"u1-pkf-order-below":2,"u1-pkf-order-line":2,"u1-pkf-product-sign-apply":2,"u1-pkf-quotient-sign-apply":2,"u1-pkf-reasonableness":2,"u2-approx-explain-gen":2,"u2-best-estimate-side":2,"u2-calc-root-round":2,"u2-estimate-between":2,"u2-gap-composite-sa-mc":2,"u2-gap-estimate-best-mc":2,"u2-gap-estimate-gap-cr":2,"u2-gap-hidden-area-mc":2,"u2-gap-number-from-root-mc":2,"u2-gap-pyramid-roof-mc":3,"u2-gap-pyramid-slant-cr":3,"u2-gap-sa-cans-mc":2,"u2-gap-why-approx-mc":3,"u2-number-from-root":2,"u2-overlap":2,"u2-overlap-hidden":2,"u2-pk-estimate-between":2,"u2-pk-sqrt-perfect":2,"u2-pk-square-of-number":2,"u2-sa-composite-rect":3,"u2-sa-cyl-on-prism":3,"u2-sa-problem":2,"u2-sa-tri-context":3,"u2-spot-error":3,"u2-sqrt-fraction":2,"u2-sqrt-perfect":2,"u2-square-from-root":2,"u2-why-approx":2,"u3-difference-of-powers":2,"u3-error-two-laws":3,"u3-evaluate-power-neg":2,"u3-explanations-var":3,"u3-gap-growth-excess-cr":3,"u3-gap-laws-eval-cr":2,"u3-gap-laws-mc":3,"u3-gap-power-diff-cr":3,"u3-gap-sci-product-cr":3,"u3-gap-simplify-sub-cr":2,"u3-gap-solve-exponent-cr":3,"u3-interchanged-base-exponent":2,"u3-law-then-sum-difference":2,"u3-paren-powers-set":2,"u3-parentheses-sign":2,"u3-pk-annex-zeros":2,"u3-pk-doubling-step":2,"u3-pk-product-sign":2,"u3-pk-quotient-sign":2,"u3-pk-repeated-product":2,"u3-pk-repeated-write":2,"u3-power-from-repeated":2,"u3-power-model-var":2,"u3-power-of-power-law":2,"u3-power-of-product-quotient":3,"u3-product-law":2,"u3-quotient-law":2,"u3-repeated-multiplication":2,"u3-sum-of-powers":3,"u3-three-laws-evaluate":3,"u3-two-laws-evaluate":3,"u3-zero-exponent":2,"u3-zero-pattern":2,"u4-add":3,"u4-addsub-xy":2,"u4-area-monomial":2,"u4-degree":2,"u4-divide-missing-term":3,"u4-divide-monomial":2,"u4-equivalent":2,"u4-expr-to-tiles":2,"u4-gap-add-eval-cr":2,"u4-gap-area-eval-cr":3,"u4-gap-div-eval-cr":3,"u4-gap-mono-coeff-cr":2,"u4-gap-perimeter-eval-cr":3,"u4-gap-sub-eval-neg-cr":3,"u4-missing":3,"u4-mult-div-mixed":2,"u4-mult-monomial-area":3,"u4-multiply-monomial":3,"u4-parts":2,"u4-pk-identify-parts":2,"u4-pk-solve-one-step":2,"u4-subtract":3,"u4-tiles-addsub":2,"u4-tiles-figure-build":2,"u4-tiles-figure-expr":2,"u4-tiles-to-expr":2,"u5-balance-model":2,"u5-context-graph":2,"u5-gap-both-sides-cr":2,"u5-gap-ineq-boundary-cr":2,"u5-gap-min-items-cr":3,"u5-gap-solve-eval-cr":3,"u5-graph-to-ineq":2,"u5-ineq-substitution-check":3,"u5-ineq-to-words":2,"u5-inspection-basic":2,"u5-list-satisfies":2,"u5-meaning-of-solution":2,"u5-pk-identify-error":3,"u5-pk-misplaced":2,"u5-pk-model-equation":3,"u5-pk-numberline-place":2,"u5-pk-verify-solution":2,"u5-pkf-solve-one-step":2,"u5-pkf-visual-step":2,"u5-solve-brackets-both":3,"u5-solve-ineq-addsub":3,"u5-solve-ineq-addsub-choose":2,"u5-solve-ineq-neg-flip":3,"u5-solve-ineq-pos-div":2,"u5-solve-ineq-two-step-choose":2,"u5-solve-two-step":3,"u5-translate-inequality":2,"u5-trial-table":2,"u5-verify-error":2,"u5-which-is-solution":2,"u5-word-brackets":2,"u5-word-two-step":3,"u6-context-equation":2,"u6-extrapolate-graph":3,"u6-gap-break-even-cr":3,"u6-gap-inverse-cr":3,"u6-gap-missing-coord-cr":2,"u6-gap-pattern-far-cr":3,"u6-gap-slope-table-cr":2,"u6-graph-describe":3,"u6-graph-equation":3,"u6-interpolate-graph":3,"u6-pattern-figure-expr":3,"u6-pattern-large":2,"u6-pattern-solve-n":3,"u6-pattern-word-total":2,"u6-pk-construct-graph":2,"u6-pk-describe-graph":3,"u6-pk-pattern-expression":3,"u6-point-on-graph":2,"u6-table-equation":3,"u6-table-extend":3,"u6-two-plans-graph":3,"u7-artwork-symmetry-var":2,"u7-complete-half":2,"u7-complete-transformation":3,"u7-draw-similar-num":3,"u7-gap-area-scale-cr":3,"u7-gap-map-time-cr":2,"u7-gap-perimeter-scale-cr":3,"u7-gap-scale-apply-cr":2,"u7-gap-shadow-diff-cr":3,"u7-indirect-measure-num":2,"u7-lines-symmetry":2,"u7-pk-ratio-simplest":2,"u7-pk-reflect-point":2,"u7-pk-tess-transform":2,"u7-pk-transform-describe":2,"u7-pk-two-term-ratio":2,"u7-proportional-check":3,"u7-related-shapes":2,"u7-rotate-vertex":2,"u7-rotation-symmetry-var":2,"u7-scale-draw-num":3,"u7-scale-media-var":2,"u7-similar-context-num":3,"u7-similar-pair":3,"u7-similar-two-step-num":3,"u7-similar-verdict":2,"u7-tessellation-var":2,"u7-transformation-symmetry":2,"u7-translation-rule":2,"u8-add-chord-length-mc":2,"u8-add-same-arc-name":2,"u8-add-semicircle-right-angle":2,"u8-chord-length":3,"u8-chord-perp-bisects":2,"u8-chord-two-step":3,"u8-gap-chord-bisect-cr":3,"u8-gap-cyclic-diag-cr":2,"u8-gap-reflex-arc-cr":2,"u8-gap-semicircle-pyth-cr":3,"u8-gap-tangent-central-cr":3,"u8-gap-two-theorems-mc":2,"u8-inscribed-reflex":3,"u8-pk-central-angles":2,"u8-pk-circumference":2,"u8-pk-parallel-perp":2,"u8-pk-pi-ratio":2,"u8-pk-radius-diameter":2,"u8-same-arc-angles":2,"u8-semicircle-angle":2,"u8-tangent-central-inscribed":2,"u8-tangent-length":3,"u8-tangent-right-angle":2,"u9-collection-biggest-threat":3,"u9-collection-problem":3,"u9-combined-decision":3,"u9-gap-complement-pct-cr":3,"u9-gap-decision-evidence-cr":3,"u9-gap-expected-freq-cr":2,"u9-gap-fix-the-survey-cr":3,"u9-gap-freq-mean-cr":2,"u9-gap-freq-mean-mc":2,"u9-gap-mean-diff-cr":3,"u9-gap-sample-scale-cr":3,"u9-gap-win-points-cr":3,"u9-generalization-written-cr":2,"u9-match-influence":3,"u9-pk-circle-graph":2,"u9-pk-exp-vs-theor":2,"u9-pk-mean-basic":2,"u9-pk-median-mode":2,"u9-pk-misleading-format":2,"u9-pk-prob-basic":2,"u9-pk-product-rule":2,"u9-pkf-mean-basic":2,"u9-pkf-median-mode":2,"u9-pkf-range-basic":2,"u9-population-limitation":2,"u9-same-number-two-sides":3};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-ooo-brackets-mc":"a","u1-ooo-calc-display":"a","u1-ooo-error-value":"a","u1-ooo-evaluate-mc":"a","u1-ordering-reasoning-var":"a","u1-pk-add-context":"a","u1-pk-add-sub-decimals":"a","u1-pk-add-unlike":"a","u1-pk-divide-fractions":"a","u1-pk-identify-operation":"a","u1-pk-mult-decimals":"a","u1-pk-multiply-fractions":"a","u1-pk-ooo-evaluate":"a","u1-pk-order-mixed":"a","u1-pk-sub-unlike":"a","u1-pkf-area-model-product":"a","u1-pkf-context-divide-expression":"a","u1-pkf-div-decimals":"a","u1-pkf-estimate-product-benchmark":"a","u1-pkf-fact-division":"a","u1-pkf-fact-halving":"a","u1-pkf-fact-recall":"a","u1-pkf-frontend-prod-quot":"a","u1-pkf-frontend-sum":"a","u1-pkf-model-frac-times-whole":"a","u1-pkf-model-whole-div-frac":"a","u1-pkf-mult-model-chips":"a","u1-pkf-order-below":"a","u1-pkf-order-line":"a","u1-pkf-product-sign-apply":"a","u1-pkf-quotient-sign-apply":"a","u1-pkf-reasonableness":"b","u2-approx-explain-gen":"b","u2-best-estimate-side":"a","u2-calc-root-round":"a","u2-estimate-between":"a","u2-gap-composite-sa-mc":"a","u2-gap-estimate-best-mc":"a","u2-gap-hidden-area-mc":"a","u2-gap-number-from-root-mc":"a","u2-gap-pyramid-roof-mc":"a","u2-gap-sa-cans-mc":"a","u2-gap-why-approx-mc":"b","u2-number-from-root":"a","u2-pk-estimate-between":"a","u2-pk-sqrt-perfect":"a","u2-pk-square-of-number":"a","u2-spot-error":"b","u2-sqrt-fraction":"a","u2-sqrt-perfect":"a","u2-square-from-root":"a","u2-why-approx":"b","u3-error-two-laws":"a","u3-evaluate-power-neg":"a","u3-explanations-var":"b","u3-gap-laws-mc":"b","u3-interchanged-base-exponent":"a","u3-paren-powers-set":"a","u3-parentheses-sign":"a","u3-pk-annex-zeros":"a","u3-pk-doubling-step":"a","u3-pk-product-sign":"a","u3-pk-quotient-sign":"a","u3-pk-repeated-product":"a","u3-pk-repeated-write":"a","u3-power-from-repeated":"a","u3-power-model-var":"b","u3-power-of-power-law":"a","u3-product-law":"a","u3-quotient-law":"a","u3-repeated-multiplication":"a","u3-zero-exponent":"a","u3-zero-pattern":"a","u4-addsub-xy":"a","u4-area-monomial":"b","u4-degree":"a","u4-divide-missing-term":"b","u4-equivalent":"b","u4-expr-to-tiles":"a","u4-missing":"b","u4-mult-monomial-area":"a","u4-parts":"a","u4-pk-identify-parts":"a","u4-pk-solve-one-step":"a","u4-subtract":"b","u4-tiles-addsub":"b","u4-tiles-figure-build":"a","u4-tiles-figure-expr":"b","u4-tiles-to-expr":"b","u5-balance-model":"b","u5-context-graph":"a","u5-graph-to-ineq":"a","u5-ineq-substitution-check":"b","u5-ineq-to-words":"a","u5-inspection-basic":"a","u5-meaning-of-solution":"b","u5-pk-identify-error":"b","u5-pk-misplaced":"a","u5-pk-model-equation":"b","u5-pk-numberline-place":"a","u5-pk-verify-solution":"a","u5-pkf-solve-one-step":"a","u5-pkf-visual-step":"b","u5-solve-ineq-addsub-choose":"a","u5-solve-ineq-neg-flip":"a","u5-solve-ineq-pos-div":"a","u5-solve-ineq-two-step-choose":"a","u5-translate-inequality":"a","u5-trial-table":"a","u5-verify-error":"b","u5-which-is-solution":"a","u6-context-equation":"b","u6-extrapolate-graph":"a","u6-graph-describe":"b","u6-graph-equation":"b","u6-pattern-figure-expr":"b","u6-pk-construct-graph":"a","u6-pk-describe-graph":"b","u6-pk-pattern-expression":"b","u6-table-equation":"b","u7-artwork-symmetry-var":"a","u7-complete-transformation":"b","u7-lines-symmetry":"a","u7-pk-ratio-simplest":"a","u7-pk-reflect-point":"a","u7-pk-tess-transform":"a","u7-pk-transform-describe":"a","u7-pk-two-term-ratio":"a","u7-proportional-check":"b","u7-related-shapes":"a","u7-rotate-vertex":"a","u7-rotation-symmetry-var":"a","u7-scale-media-var":"b","u7-similar-pair":"a","u7-similar-verdict":"b","u7-tessellation-var":"a","u7-transformation-symmetry":"a","u8-add-chord-length-mc":"a","u8-add-same-arc-name":"a","u8-add-semicircle-right-angle":"a","u8-chord-perp-bisects":"a","u8-gap-two-theorems-mc":"a","u8-pk-central-angles":"a","u8-pk-circumference":"a","u8-pk-parallel-perp":"a","u8-pk-pi-ratio":"a","u8-pk-radius-diameter":"a","u8-tangent-central-inscribed":"a","u8-tangent-right-angle":"a","u9-collection-biggest-threat":"b","u9-gap-freq-mean-mc":"a","u9-pk-circle-graph":"a","u9-pk-exp-vs-theor":"a","u9-pk-mean-basic":"a","u9-pk-median-mode":"a","u9-pk-misleading-format":"b","u9-pk-prob-basic":"a","u9-pk-product-rule":"a","u9-pkf-mean-basic":"a","u9-pkf-median-mode":"a","u9-pkf-range-basic":"a","u9-population-limitation":"b","u9-same-number-two-sides":"b","u9-self-assessment":"b"};
+window.__BANK_BIMODAL={"u1-ooo-brackets-mc":"a","u1-ooo-calc-display":"a","u1-ooo-error-value":"a","u1-ooo-evaluate-mc":"a","u1-ordering-reasoning-var":"a","u1-pk-add-context":"a","u1-pk-add-sub-decimals":"a","u1-pk-add-unlike":"a","u1-pk-divide-fractions":"a","u1-pk-identify-operation":"a","u1-pk-mult-decimals":"a","u1-pk-multiply-fractions":"a","u1-pk-ooo-evaluate":"a","u1-pk-order-mixed":"a","u1-pk-sub-unlike":"a","u1-pkf-area-model-product":"a","u1-pkf-context-divide-expression":"a","u1-pkf-div-decimals":"a","u1-pkf-estimate-product-benchmark":"a","u1-pkf-fact-division":"a","u1-pkf-fact-halving":"a","u1-pkf-fact-recall":"a","u1-pkf-frontend-prod-quot":"a","u1-pkf-frontend-sum":"a","u1-pkf-model-frac-times-whole":"a","u1-pkf-model-whole-div-frac":"a","u1-pkf-mult-model-chips":"a","u1-pkf-order-below":"a","u1-pkf-order-line":"a","u1-pkf-product-sign-apply":"a","u1-pkf-quotient-sign-apply":"a","u1-pkf-reasonableness":"b","u2-approx-explain-gen":"b","u2-best-estimate-side":"a","u2-calc-root-round":"a","u2-estimate-between":"a","u2-gap-composite-sa-mc":"a","u2-gap-estimate-best-mc":"a","u2-gap-hidden-area-mc":"a","u2-gap-number-from-root-mc":"a","u2-gap-pyramid-roof-mc":"a","u2-gap-sa-cans-mc":"a","u2-gap-why-approx-mc":"b","u2-number-from-root":"a","u2-pk-estimate-between":"a","u2-pk-sqrt-perfect":"a","u2-pk-square-of-number":"a","u2-spot-error":"b","u2-sqrt-fraction":"a","u2-sqrt-perfect":"a","u2-square-from-root":"a","u2-why-approx":"b","u3-error-two-laws":"a","u3-evaluate-power-neg":"a","u3-explanations-var":"b","u3-gap-laws-mc":"b","u3-interchanged-base-exponent":"a","u3-paren-powers-set":"a","u3-parentheses-sign":"a","u3-pk-annex-zeros":"a","u3-pk-doubling-step":"a","u3-pk-product-sign":"a","u3-pk-quotient-sign":"a","u3-pk-repeated-product":"a","u3-pk-repeated-write":"a","u3-power-from-repeated":"a","u3-power-model-var":"b","u3-power-of-power-law":"a","u3-product-law":"a","u3-quotient-law":"a","u3-repeated-multiplication":"a","u3-zero-exponent":"a","u3-zero-pattern":"a","u4-addsub-xy":"a","u4-area-monomial":"b","u4-degree":"a","u4-divide-missing-term":"b","u4-equivalent":"b","u4-expr-to-tiles":"a","u4-missing":"b","u4-mult-monomial-area":"a","u4-parts":"a","u4-pk-identify-parts":"a","u4-pk-solve-one-step":"a","u4-subtract":"b","u4-tiles-addsub":"b","u4-tiles-figure-build":"a","u4-tiles-figure-expr":"b","u4-tiles-to-expr":"b","u5-balance-model":"b","u5-context-graph":"a","u5-graph-to-ineq":"a","u5-ineq-substitution-check":"b","u5-ineq-to-words":"a","u5-inspection-basic":"a","u5-meaning-of-solution":"b","u5-pk-identify-error":"b","u5-pk-misplaced":"a","u5-pk-model-equation":"b","u5-pk-numberline-place":"a","u5-pk-verify-solution":"a","u5-pkf-solve-one-step":"a","u5-pkf-visual-step":"b","u5-solve-ineq-addsub-choose":"a","u5-solve-ineq-neg-flip":"a","u5-solve-ineq-pos-div":"a","u5-solve-ineq-two-step-choose":"a","u5-translate-inequality":"a","u5-trial-table":"a","u5-verify-error":"b","u5-which-is-solution":"a","u6-context-equation":"b","u6-extrapolate-graph":"a","u6-graph-describe":"b","u6-graph-equation":"b","u6-pattern-figure-expr":"b","u6-pk-construct-graph":"a","u6-pk-describe-graph":"b","u6-pk-pattern-expression":"b","u6-table-equation":"b","u7-artwork-symmetry-var":"a","u7-complete-transformation":"b","u7-lines-symmetry":"a","u7-pk-ratio-simplest":"a","u7-pk-reflect-point":"a","u7-pk-tess-transform":"a","u7-pk-transform-describe":"a","u7-pk-two-term-ratio":"a","u7-proportional-check":"b","u7-related-shapes":"a","u7-rotate-vertex":"a","u7-rotation-symmetry-var":"a","u7-scale-media-var":"b","u7-similar-pair":"a","u7-similar-verdict":"b","u7-tessellation-var":"a","u7-transformation-symmetry":"a","u8-add-chord-length-mc":"a","u8-add-same-arc-name":"a","u8-add-semicircle-right-angle":"a","u8-chord-perp-bisects":"a","u8-gap-two-theorems-mc":"a","u8-pk-central-angles":"a","u8-pk-circumference":"a","u8-pk-parallel-perp":"a","u8-pk-pi-ratio":"a","u8-pk-radius-diameter":"a","u8-tangent-central-inscribed":"a","u8-tangent-right-angle":"a","u9-collection-biggest-threat":"b","u9-gap-freq-mean-mc":"a","u9-pk-circle-graph":"a","u9-pk-exp-vs-theor":"a","u9-pk-mean-basic":"a","u9-pk-median-mode":"a","u9-pk-misleading-format":"b","u9-pk-prob-basic":"a","u9-pk-product-rule":"a","u9-pkf-mean-basic":"a","u9-pkf-median-mode":"a","u9-pkf-range-basic":"a","u9-population-limitation":"b","u9-same-number-two-sides":"b"};
 /* ============ Level basis labels (generated) ============ */
 /* Built by assemble-bank.py from the LEVELBASIS comments at each
    audited entry (November 25, 2026): the criterion that decided
