@@ -6151,6 +6151,39 @@ function startOnline(){
   ANALYTICS_RETRY_KIND=null;
   renderOnline(true);
 }
+function shareCurrentSet(){
+  var out=$("shareOut"),stat=$("shareStat");if(!out||!stat)return;
+  var url=tShareURL(false);
+  if(url.indexOf("set=")<0&&typeof current!=="undefined"&&current&&current.length){
+    /* A student session carries no teacher context, so its
+       share URL has no set token yet. Adopt the dealt
+       questions raw (the same adoption the printed set code
+       uses for a restored set) and tokenize them under a
+       temporary online context, so the registered address
+       reopens this exact set; the context is restored
+       before anything else can see it. */
+    var av={};
+    current.forEach(function(q){tAdoptDrawn(q,av);});
+    var keepT=T;
+    T={view:"online",salt:"share",scope:null,edited:false,state:{},picker:null};
+    var sv=tSetValue();
+    T=keepT;
+    if(sv){var p=new URLSearchParams(url.split("?")[1]||"");p.set("set",sv);url=url.split("?")[0]+"?"+p.toString();}
+  }
+  var code=tLinkCodeFor(url);
+  if(code){
+    var shown=code.slice(0,3)+" "+code.slice(3);
+    var text=location.origin+location.pathname+"?course="+encodeURIComponent(new URLSearchParams(url.split("?")[1]||"").get("course")||"")+"&codeopen="+code;
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);}
+    out.innerHTML='<div class="sharecode"><span>'+L9("Set code","Code de l'ensemble")+'</span> <span style="font-size:1.5rem;font-weight:700;letter-spacing:.1em">'+shown+'</span></div><p>'+L9("Anyone can type this code on the Review Apps home page to open this exact set.","N'importe qui peut taper ce code sur la page d'accueil des Review Apps pour ouvrir exactement cet ensemble.")+'</p>';
+    stat.textContent=L9("Short link copied: it opens this exact set.","Lien court copié : il ouvre exactement cet ensemble.");
+    return;
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url);}
+  out.innerHTML="";
+  stat.textContent=L9("Link copied for students: it opens this exact set, with no editing controls.","Lien copié pour les élèves : il ouvre exactement cet ensemble, sans contrôles de modification.");
+  try{history.replaceState(null,"",url.slice(location.origin.length));}catch(e){}
+}
 function renderOnline(scroll){
   var s=lastSettings;var res={thin:onlineThin};
   /* Prerequisite checks carry no Formulas and facts panel (Nov 15,
@@ -6182,7 +6215,7 @@ function renderOnline(scroll){
       +(REPORT_FORM.url?'<p><button type="button" data-repsend="'+i+'">'+L9("Send report","Envoyer le rapport")+'</button> <button type="button" class="alt" data-repcopy="'+i+'">'+L9("Copy report text instead","Copier le texte du rapport plutôt")+'</button></p>':'<p><button type="button" data-repcopy="'+i+'">'+L9("Copy report text","Copier le texte du rapport")+'</button></p>')
       +'<div class="repstat" id="repstat'+i+'"></div></div>'+tctlHtml(i)+'</div>';
   });
-  html+='<p>'+(checkMode==="end"?'<button type="button" id="gradeBtn">'+L9("Check all my answers","Vérifier toutes mes réponses")+'</button> ':"")+'<button type="button" id="againBtn">'+L9("New set of questions","Nouvelle série de questions")+'</button></p>'+tBarHtml()+'<div id="setSummary"></div></div>';
+  html+='<p>'+(checkMode==="end"?'<button type="button" id="gradeBtn">'+L9("Check all my answers","Vérifier toutes mes réponses")+'</button> ':"")+'<button type="button" id="againBtn">'+L9("New set of questions","Nouvelle série de questions")+'</button></p><div class="sharebox" id="shareBox"><p><button type="button" class="alt" id="shareSetBtn">'+L9("Share this set","Partager cet ensemble")+'</button></p><div id="shareOut"></div><p id="shareStat"></p></div>'+tBarHtml()+'<div id="setSummary"></div></div>';
   box.innerHTML=html;updateScore();typesetMath(box);
   Array.prototype.forEach.call(box.querySelectorAll("[data-check]"),function(b){b.addEventListener("click",function(){checkQ(+b.getAttribute("data-check"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-sol]"),function(b){b.addEventListener("click",function(){toggleSolution(+b.getAttribute("data-sol"));});});
@@ -6193,6 +6226,7 @@ function renderOnline(scroll){
   Array.prototype.forEach.call(box.querySelectorAll("[data-repsend]"),function(b){b.addEventListener("click",function(){openReport(+b.getAttribute("data-repsend"));});});
   Array.prototype.forEach.call(box.querySelectorAll("[data-repcopy]"),function(b){b.addEventListener("click",function(){copyReport(+b.getAttribute("data-repcopy"));});});
   $("againBtn").addEventListener("click",startOnline);
+  if($("shareSetBtn"))$("shareSetBtn").addEventListener("click",shareCurrentSet);
   if($("gradeBtn"))$("gradeBtn").addEventListener("click",gradeAll);
   tWireOnline();
   resumeAfterRender("online");
