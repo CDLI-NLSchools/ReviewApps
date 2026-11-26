@@ -15,6 +15,7 @@
   .sub{color:#52617a;margin:0 0 14px;}
   .card{background:#fff;border:1px solid #d5dce6;border-radius:14px;padding:18px;margin:0 0 16px;}
   .hidden{display:none !important;}
+  .dimmed{opacity:.45;}
   button{font:inherit;padding:10px 18px;border-radius:10px;border:1px solid #31435f;background:#31435f;color:#fff;cursor:pointer;}
   button.alt{background:#fff;color:#31435f;}
   button.good{background:#1e7d46;border-color:#1e7d46;}
@@ -131,7 +132,10 @@
         <p id="setLoadMsg"></p>
         <div id="setConfirm" class="ok hidden">
           <p id="setConfirmText" style="margin:0 0 10px;"></p>
-          <button type="button" class="alt" id="clearSetBtn">Clear the set and use the picks below</button>
+          <div class="rowflex">
+            <button type="button" class="big good" id="createRoomFromSetBtn" disabled>Create the room</button>
+            <button type="button" class="alt" id="clearSetBtn">Clear the set and use the picks below</button>
+          </div>
         </div>
       </div>
       <label class="f" for="courseSel">Course</label>
@@ -711,10 +715,12 @@ var Host = {
         self.loadedSet = null;
         $("setConfirm").classList.add("hidden");
         $("setLoadMsg").textContent = "The set was cleared because the code changed. Load a set, or create the room from the picks below.";
+        self.applySetLock(false);
         self.courseChanged();
       }
     });
     $("createRoomBtn").addEventListener("click", function () { self.createRoom(); });
+    $("createRoomFromSetBtn").addEventListener("click", function () { self.createRoom(); });
     $("cancelRoomBtn").addEventListener("click", function () { self.cancelRoom(); });
     $("startGameBtn").addEventListener("click", function () { self.startGame(); });
     Relay.test().then(function () {
@@ -734,7 +740,10 @@ var Host = {
     if (m === "mastery") this.fillIndicators();
   },
   _maybeEnable: function () {
-    if (this._pfOk && this._bankOk) $("createRoomBtn").disabled = false;
+    if (this._pfOk && this._bankOk) {
+      $("createRoomBtn").disabled = !!this.loadedSet;
+      $("createRoomFromSetBtn").disabled = !this.loadedSet;
+    }
   },
   courseChanged: function () {
     var self = this;
@@ -751,6 +760,7 @@ var Host = {
       $("unitChecks").querySelectorAll("input").forEach(function (cb) { cb.addEventListener("change", function () { self.fillIndicators(); }); });
       $("setupMsg").textContent = "";
       self.fillIndicators();
+      if (self.loadedSet) self.applySetLock(true);
     }).catch(function (e) { $("setupMsg").textContent = e.message; });
   },
   fillIndicators: function () {
@@ -796,11 +806,12 @@ var Host = {
       msg.className = ""; msg.textContent = "";
       var c = window.COURSES[res.courseId];
       var skipped = total - dealt.length;
-      var line = "Set loaded: " + (c.title || c.shortName) + ". " + total + " questions in your set, " + dealt.length + " playable in Rally";
-      line += skipped ? "; " + skipped + " written or numeric " + (skipped === 1 ? "question" : "questions") + " will be skipped." : ", and all of them will play.";
+      var line = "Set loaded: " + (c.title || c.shortName) + ". " + total + " questions in your set";
+      line += skipped ? ", " + dealt.length + " playable in Rally; " + skipped + " written or numeric " + (skipped === 1 ? "question" : "questions") + " will be skipped." : ", and all of them will play.";
       line += " The set plays in its own order as a fixed list with Showcase scoring, whatever the mode above says. Create the room when you are ready.";
       $("setConfirmText").textContent = line;
       $("setConfirm").classList.remove("hidden");
+      self.applySetLock(true);
     }).catch(function (e) {
       $("loadSetBtn").disabled = false;
       msg.className = "err";
@@ -813,7 +824,28 @@ var Host = {
     var msg = $("setLoadMsg");
     msg.className = ""; msg.textContent = "";
     $("setCodeInput").value = "";
+    this.applySetLock(false);
     this.courseChanged();
+  },
+  /* While a set is loaded, the scope picks below the set box do not
+     apply (the room comes from the set alone), so disable and dim
+     them; clearing the set restores them exactly as they were. The
+     room is created from the button inside the confirmation box,
+     which runs the same createRoom path as the scope button. */
+  applySetLock: function (on) {
+    ["courseSel", "modeChecks", "unitChecks", "masterySetup", "levelChecks"].forEach(function (id) {
+      var el = $(id);
+      el.classList.toggle("dimmed", on);
+      var lab = el.previousElementSibling;
+      if (lab && lab.classList && lab.classList.contains("f")) lab.classList.toggle("dimmed", on);
+    });
+    $("courseSel").disabled = on;
+    document.querySelectorAll('input[name="mode"]').forEach(function (r) { r.disabled = on; });
+    ["unitChecks", "indChecks", "levelChecks"].forEach(function (id) {
+      $(id).querySelectorAll("input").forEach(function (cb) { cb.disabled = on; });
+    });
+    $("createRoomBtn").classList.toggle("dimmed", on);
+    if (on) $("createRoomBtn").disabled = true;
   },
   createRoomFromSet: function () {
     var ls = this.loadedSet;
@@ -880,6 +912,7 @@ var Host = {
       roomData.mastery = this.mastery.map(function (m) { return { code: m.code, status: m.status, asked: 0 }; });
     }
     $("createRoomBtn").disabled = true;
+    $("createRoomFromSetBtn").disabled = true;
     Relay.create("rooms/" + code, roomData).then(function () {
       self.phase = "lobby";
       $("hostSetup").classList.add("hidden");
@@ -887,7 +920,8 @@ var Host = {
       $("roomCodeBig").textContent = code;
       self.unlisten = Relay.listen("rooms/" + code, function (room) { self.onRoom(room); });
     }).catch(function (e) {
-      $("createRoomBtn").disabled = false;
+      $("createRoomBtn").disabled = !!self.loadedSet;
+      $("createRoomFromSetBtn").disabled = !self.loadedSet;
       $("setupMsg").textContent = "The room could not be created: " + (e.message || e);
     });
   },
