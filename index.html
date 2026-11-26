@@ -6175,8 +6175,13 @@ function shareCurrentSet(){
     var shown=code.slice(0,3)+" "+code.slice(3);
     var text=location.origin+location.pathname+"?course="+encodeURIComponent(new URLSearchParams(url.split("?")[1]||"").get("course")||"")+"&codeopen="+code;
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text);}
-    out.innerHTML='<div class="sharecode"><span>'+L9("Set code","Code de l'ensemble")+'</span> <span style="font-size:1.5rem;font-weight:700;letter-spacing:.1em">'+shown+'</span></div><p>'+L9("Anyone can type this code on the Review Apps home page to open this exact set.","N'importe qui peut taper ce code sur la page d'accueil des Review Apps pour ouvrir exactement cet ensemble.")+'</p>';
+    out.innerHTML='<div class="sharecode"><span>'+L9("Set code","Code de l'ensemble")+'</span> <span style="font-size:1.5rem;font-weight:700;letter-spacing:.1em">'+shown+'</span></div><p>'+L9("Anyone can type this code on the Review Apps home page to open this exact set.","N'importe qui peut taper ce code sur la page d'accueil des Review Apps pour ouvrir exactement cet ensemble.")+'</p><p><button type="button" class="alt" id="copyCodeBtn">'+L9("Copy just the code","Copier seulement le code")+'</button></p>';
     stat.textContent=L9("Short link copied: it opens this exact set.","Lien court copié : il ouvre exactement cet ensemble.");
+    var cb=$("copyCodeBtn");
+    if(cb)cb.addEventListener("click",function(){
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(code);}
+      stat.textContent=L9("Code copied: ","Code copié : ")+shown;
+    });
     return;
   }
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url);}
