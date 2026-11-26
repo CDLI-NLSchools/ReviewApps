@@ -1570,7 +1570,10 @@ var Host = {
       L.push("Indicator,Questions asked,Status");
       this.mastery.forEach(function (m) { L.push([m.code, m.asked, m.status === "cleared" ? "Cleared" : "Not yet"].join(",")); });
     }
-    download(s.courseName + " game results - " + stampFile(new Date()) + ".csv", L.join("\r\n"), "text/csv");
+    // The \uFEFF byte order mark makes Excel open the file as UTF-8, so the
+    // check and cross marks in STUDENT RESPONSES render instead of mojibake
+    // (Jason's test CSV, November 26, 2026).
+    download(s.courseName + " game results - " + stampFile(new Date()) + ".csv", "\uFEFF" + L.join("\r\n"), "text/csv");
   }
 };
 function csvq(v) {
