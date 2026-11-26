@@ -132,6 +132,7 @@
         <p id="setLoadMsg"></p>
         <div id="setConfirm" class="ok hidden">
           <p id="setConfirmText" style="margin:0 0 10px;"></p>
+          <div class="checks" id="setToggles"></div>
           <div class="rowflex">
             <button type="button" class="big good" id="createRoomFromSetBtn" disabled>Create the room</button>
             <button type="button" class="alt" id="clearSetBtn">Clear the set and use the picks below</button>
@@ -680,6 +681,27 @@ function mintStashCode() {
   for (var i = 0; i < 6; i++) s += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
   return s;
 }
+/* Loading a set navigates the hidden engine frame to the shell,
+   whose set rebuild scrolls the rebuilt set into view inside the
+   frame; in a real browser that scroll drags the whole top page
+   down to where the hidden frame sits at the foot of the document,
+   so the host page jumps away from the set box (Jason, Nov 26,
+   2026). Hold the host page at the scroll position it had when
+   Load was clicked for the whole load: re-apply the position on a
+   short interval while the frame loads, and once more when the
+   load settles, on success and on failure alike, so there is no
+   visible jump at any point. Course bank loads (loadCourse) do
+   not rebuild a set and do not scroll the page, so they are left
+   alone. */
+function holdScrollDuring(promise) {
+  var y = 0;
+  try { y = window.scrollY || window.pageYOffset || 0; } catch (e) {}
+  function restore() { try { window.scrollTo(0, y); } catch (e) {} }
+  var iv = setInterval(restore, 50);
+  function release() { clearInterval(iv); restore(); }
+  return promise.then(function (v) { release(); return v; },
+                       function (e) { release(); throw e; });
+}
 function loadSetFrame(address, code) {
   return new Promise(function (resolve, reject) {
     var params = new URLSearchParams(address);
@@ -853,7 +875,7 @@ var Host = {
     $("loadSetBtn").disabled = true;
     $("setConfirm").classList.add("hidden");
     var addrP = parsed.address ? Promise.resolve(parsed.address) : resolveSetCode(parsed.code);
-    addrP.then(function (address) {
+    holdScrollDuring(addrP.then(function (address) {
       if (!address) throw new Error("That set code could not be opened. Check the code and try again. If the set was shared just now, it may still be registering.");
       return loadSetFrame(address, parsed.code);
     }).then(function (res) {
@@ -877,7 +899,7 @@ var Host = {
       $("setConfirmText").textContent = line;
       $("setConfirm").classList.remove("hidden");
       self.applySetLock(true);
-    }).catch(function (e) {
+    })).catch(function (e) {
       $("loadSetBtn").disabled = false;
       msg.className = "err";
       msg.textContent = (e && e.message) || "The set did not load. Check the link and try again.";
@@ -911,12 +933,57 @@ var Host = {
     });
     $("createRoomBtn").classList.toggle("dimmed", on);
     if (on) $("createRoomBtn").disabled = true;
+    /* The question count and the prior knowledge toggle do not
+       apply to a set room either (the set fixes the count, and its
+       questions play as they are), so they lock with the rest of
+       the scope picks and come back on clear. The timer stays live:
+       it applies to set rooms. */
+    $("countSel").disabled = on;
+    $("countRow").classList.toggle("dimmed", on);
+    var pk = $("pkToggle");
+    pk.disabled = on;
+    var pkLab = pk.closest ? pk.closest("label") : pk.parentNode;
+    if (pkLab && pkLab.classList) pkLab.classList.toggle("dimmed", on);
+    this.setTogglesToBox(on);
+  },
+  /* Two of the lower toggles DO apply to a set room: showing the
+     question text on student devices, and requiring a class ID to
+     join. While a set is loaded they move into the confirmation
+     box, beside the Create the room button, so the teacher sets
+     them there without scrolling down (Jason, Nov 26, 2026). They
+     are the same elements the scope path uses, moved, never
+     copied, so there is a single value and createRoom reads it the
+     same way on both paths. Clearing the set puts them back in
+     their exact original places, either side of the prior knowledge
+     toggle, which never moves. */
+  setTogglesToBox: function (toBox) {
+    var stem = $("stemToggle"), pk = $("pkToggle"), req = $("requireIdToggle");
+    if (!stem || !pk || !req) return;
+    var stemLab = stem.closest ? stem.closest("label") : stem.parentNode;
+    var reqLab = req.closest ? req.closest("label") : req.parentNode;
+    var pkLab = pk.closest ? pk.closest("label") : pk.parentNode;
+    if (toBox) {
+      var box = $("setToggles");
+      if (!box) return;
+      if (stemLab.parentNode !== box) box.appendChild(stemLab);
+      if (reqLab.parentNode !== box) box.appendChild(reqLab);
+    } else {
+      var home = pkLab.parentNode;
+      if (!home) return;
+      if (stemLab.parentNode !== home) home.insertBefore(stemLab, pkLab);
+      if (reqLab.parentNode !== home) home.appendChild(reqLab);
+    }
   },
   createRoomFromSet: function () {
     var ls = this.loadedSet;
     var c = window.COURSES[ls.courseId];
     var seen = {}, units = [];
     ls.dealt.forEach(function (d) { var u = d.entry.unit; if (!seen[u]) { seen[u] = 1; units.push(u); } });
+    /* showStem and requireId are read from the toggles as they sit
+       in the confirmation box (applySetLock moved the very elements
+       there), so what the teacher checked in the box is exactly
+       what the room gets. The count and the prior knowledge toggle
+       play no part on this path. */
     var settings = {
       mode: "showcase", courseId: ls.courseId, courseName: c.shortName,
       units: units, levels: [1, 2, 3], includePK: true,
