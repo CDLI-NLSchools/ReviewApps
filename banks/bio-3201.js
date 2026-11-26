@@ -4820,6 +4820,21 @@ BANK.forEach(function (e) {
      builder, so option order follows the house rule (numeric
      ascending, otherwise alphabetical) like every other entry.
 
+   Serving rule added Nov 26, 2026 (teacher report by R. Reid on a
+   probability deal): the prototype checker forced the couple's
+   genotypes under the GENERATING mode only, but the student is never
+   told the mode, and most drawn trees are consistent with more than
+   one mode. A sweep of 2,000 probability deals served under the old
+   rule found about 1 in 5 carried an autosomal cross-reading with a
+   different keyed answer, and 2 in 3 genotype deals had a different
+   genotype forced under another consistent mode. Probability and
+   genotype questions are therefore served only when the answer is
+   stable across every mode the drawn phenotypes allow: the same
+   percentage under every consistent mode (and, between the two
+   autosomal modes, the same parental genotypes, so the solution's
+   genotype claims hold under either reading), and a genotype target
+   forced to the same genotype under every consistent mode.
+
    Levels: mode identification is Level 3 (weigh the whole tree, rule
    patterns in and out). The forced genotype is Level 3: the prompt
    does not state the mode, so the student must first identify the
@@ -5468,17 +5483,107 @@ function probabilityAsk(mode, couple, rnd) {
   }
   var asks = [];
   if (mode === "AR") {
-    asks.push({ text: "have a child who is affected", pct: frac(function (k) { return phenotypeOf(mode, k.sex, k.g); }) });
-    asks.push({ text: "have a child who is a carrier", pct: frac(function (k) { return k.g === "Aa"; }) });
+    asks.push({ kind: "child-aff", text: "have a child who is affected", pct: frac(function (k) { return phenotypeOf(mode, k.sex, k.g); }) });
+    asks.push({ kind: "child-car", text: "have a child who is a carrier", pct: frac(function (k) { return k.g === "Aa"; }) });
   } else if (mode === "AD") {
-    asks.push({ text: "have a child who is affected", pct: frac(function (k) { return phenotypeOf(mode, k.sex, k.g); }) });
+    asks.push({ kind: "child-aff", text: "have a child who is affected", pct: frac(function (k) { return phenotypeOf(mode, k.sex, k.g); }) });
   } else {
-    asks.push({ text: "have a son who is affected", pct: frac(function (k) { return k.sex === "M" && phenotypeOf(mode, k.sex, k.g); }) });
-    asks.push({ text: "have a daughter who is a carrier", pct: frac(function (k) { return k.sex === "F" && k.g === "Aa"; }) });
-    asks.push({ text: "have a daughter who is affected", pct: frac(function (k) { return k.sex === "F" && phenotypeOf(mode, k.sex, k.g); }) });
+    asks.push({ kind: "son-aff", text: "have a son who is affected", pct: frac(function (k) { return k.sex === "M" && phenotypeOf(mode, k.sex, k.g); }) });
+    asks.push({ kind: "dau-car", text: "have a daughter who is a carrier", pct: frac(function (k) { return k.sex === "F" && k.g === "Aa"; }) });
+    asks.push({ kind: "dau-aff", text: "have a daughter who is affected", pct: frac(function (k) { return k.sex === "F" && phenotypeOf(mode, k.sex, k.g); }) });
   }
   var ask = asks[Math.floor(rnd() * asks.length)];
   return { dad: dad, mom: mom, dadG: dadG, momG: momG, ask: ask };
+}
+function consistentCouplePairs(people, byId, mode, aId, bId) {
+  /* Joint enumeration, mirroring consistentGenotypes' backtracking:
+     the genotype pairs the two named people take together in any
+     assignment consistent with the drawn phenotypes under this mode. */
+  var order = people.slice().sort(function (a, b) { return a.gen - b.gen || a.id - b.id; });
+  var assign = {}, pairs = {}, solutions = 0, CAP = 4000;
+  function parentsOK(p, g) {
+    if (p.father == null) return true;
+    var dad = byId[p.father], mom = byId[p.mother];
+    if (!(dad.id in assign) || !(mom.id in assign)) return true;
+    var combos = punnett(mode, assign[dad.id], assign[mom.id]);
+    return combos.some(function (c) { return c.sex === p.sex && c.g === g; });
+  }
+  function bt(idx) {
+    if (solutions >= CAP) return;
+    if (idx === order.length) {
+      solutions++;
+      pairs[assign[aId] + "|" + assign[bId]] = true;
+      return;
+    }
+    var p = order[idx];
+    var dom = genotypeDomain(mode, p.sex).filter(function (g) {
+      return phenotypeOf(mode, p.sex, g) === p.affected;
+    });
+    for (var i = 0; i < dom.length; i++) {
+      var g = dom[i];
+      if (!parentsOK(p, g)) continue;
+      assign[p.id] = g;
+      bt(idx + 1);
+      delete assign[p.id];
+      if (solutions >= CAP) return;
+    }
+  }
+  bt(0);
+  return Object.keys(pairs);
+}
+function askPctUnder(mode, dadG, momG, kind) {
+  var kids = punnett(mode, dadG, momG), pred;
+  if (kind === "child-aff") pred = function (k) { return phenotypeOf(mode, k.sex, k.g); };
+  else if (kind === "child-car") pred = function (k) { return k.g === "Aa"; };
+  else if (kind === "son-aff") pred = function (k) { return k.sex === "M" && phenotypeOf(mode, k.sex, k.g); };
+  else if (kind === "dau-car") pred = function (k) { return k.sex === "F" && k.g === "Aa"; };
+  else pred = function (k) { return k.sex === "F" && phenotypeOf(mode, k.sex, k.g); };
+  var n = kids.filter(pred).length;
+  return Math.round(100 * n / kids.length);
+}
+function probStableAcrossModes(t, mode, pa) {
+  /* Nov 26, 2026 serving rule: the keyed percentage must be the only
+     one the drawn phenotypes allow, under every consistent mode. A
+     Y-linked reading is checked by its own rule (only males affected,
+     sons of an affected father all affected, no carriers). Between
+     the two autosomal modes the couple's genotypes must also agree,
+     so the solution's genotype claims hold under either reading. */
+  var modes = consistentModes(t), i, j, m2;
+  for (i = 0; i < modes.length; i++) {
+    m2 = modes[i];
+    if (m2 === mode) continue;
+    if (m2 === "YL") {
+      var yl = pa.ask.kind === "child-aff" ? (pa.dad.affected ? 50 : 0)
+             : pa.ask.kind === "son-aff" ? (pa.dad.affected ? 100 : 0) : 0;
+      if (yl !== pa.ask.pct) return false;
+      continue;
+    }
+    var pairs = consistentCouplePairs(t.people, t.byId, m2, pa.dad.id, pa.mom.id);
+    for (j = 0; j < pairs.length; j++) {
+      var parts = pairs[j].split("|");
+      if (askPctUnder(m2, parts[0], parts[1], pa.ask.kind) !== pa.ask.pct) return false;
+      if (MODES[mode].kind === "auto" && MODES[m2].kind === "auto" &&
+          (parts[0] !== pa.dadG || parts[1] !== pa.momG)) return false;
+    }
+  }
+  return true;
+}
+function genotypeStableAcrossModes(t, mode, target) {
+  /* Nov 26, 2026 serving rule: the target's genotype must be forced
+     to the same value under every consistent mode; a tree that also
+     fits Y-linked inheritance does not pin an autosomal or X-linked
+     genotype at all, so it is not served for this question type. */
+  var modes = consistentModes(t), i, m2;
+  for (i = 0; i < modes.length; i++) {
+    m2 = modes[i];
+    if (m2 === mode) continue;
+    if (m2 === "YL") return false;
+    var poss = consistentGenotypes(t.people, t.byId, m2);
+    if (!poss) continue;
+    var set = Array.from(poss[target.person.id]);
+    if (set.length !== 1 || set[0] !== target.genotype) return false;
+  }
+  return true;
 }
 function snap(t) {
   return t.people.map(function (p) {
@@ -5513,6 +5618,7 @@ function makePedigreeQuestion(rnd, wantType) {
       var target = pool[Math.floor(rnd() * pool.length)];
       var gsol = genotypeSolution(t, mode, target, s.possible);
       if (!gsol) continue;
+      if (!genotypeStableAcrossModes(t, mode, target)) continue;
       var dom = genotypeDomain(mode, target.person.sex)
         .map(function (g) { return genotypeText(mode, target.person.sex, g); });
       var correct = genotypeText(mode, target.person.sex, target.genotype);
@@ -5528,6 +5634,7 @@ function makePedigreeQuestion(rnd, wantType) {
     /* probability */
     var couple = s.probabilityCouples[Math.floor(rnd() * s.probabilityCouples.length)];
     var pa = probabilityAsk(mode, couple, rnd);
+    if (!probStableAcrossModes(t, mode, pa)) continue;
     var pctSet = ["0%", "25%", "50%", "75%", "100%"];
     var correctP = pa.ask.pct + "%";
     var dsP = pctSet.filter(function (x) { return x !== correctP; });
@@ -5601,3 +5708,10 @@ window.__BANK_CRMARKS={"bio-gen-66-mrna":2,"bio-gen-66-rep":2,"bio-gen-67-aa":2,
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
 window.__BANK_BIMODAL={"bio-gen-66-mrna":"a","bio-gen-66-rep":"a","bio-gen-67-aa":"a","bio-gen-67-anti":"a","bio-gen-67-mrna":"a","bio-gen-68-aa":"a","bio-gen-68-indel":"a","bio-gen-68-sub":"a","bio-u1-51-q01":"a","bio-u1-51-q02":"b","bio-u1-51-q03":"a","bio-u1-51-q04":"a","bio-u1-51-q05":"b","bio-u1-51-q06":"a","bio-u1-51-q07":"a","bio-u1-51-q08":"a","bio-u1-51-q09":"a","bio-u1-51-q11":"a","bio-u1-510-q01":"a","bio-u1-510-q02":"a","bio-u1-510-q03":"a","bio-u1-510-q04":"a","bio-u1-510-q05":"a","bio-u1-510-q06":"a","bio-u1-510-q07":"a","bio-u1-510-q08":"a","bio-u1-52-q01":"a","bio-u1-52-q02":"a","bio-u1-52-q03":"b","bio-u1-53-q01":"b","bio-u1-54-q01":"a","bio-u1-54-q02":"b","bio-u1-54-q03":"a","bio-u1-54-q04":"a","bio-u1-54-q05":"a","bio-u1-54-q06":"a","bio-u1-54-q08":"a","bio-u1-54-q09":"a","bio-u1-54-q11":"a","bio-u1-54-q12":"a","bio-u1-55-q01":"a","bio-u1-55-q02":"a","bio-u1-55-q03":"b","bio-u1-55-q05":"a","bio-u1-55-q06":"a","bio-u1-55-q07":"b","bio-u1-55-q08":"b","bio-u1-56-q01":"a","bio-u1-56-q02":"a","bio-u1-56-q03":"a","bio-u1-56-q04":"a","bio-u1-56-q05":"a","bio-u1-56-q06":"a","bio-u1-56-q09":"b","bio-u1-56-q12":"a","bio-u1-56-q14":"a","bio-u1-56-q15":"a","bio-u1-56-q18":"a","bio-u1-56-q19":"a","bio-u1-56-q20":"b","bio-u1-56-q21":"b","bio-u1-56-q22":"a","bio-u1-57-q01":"a","bio-u1-57-q02":"a","bio-u1-57-q08":"a","bio-u1-57-q09":"a","bio-u1-57-q13":"b","bio-u1-57-q14":"b","bio-u1-57-q15":"a","bio-u1-58-q01":"a","bio-u1-58-q03":"a","bio-u1-58-q04":"a","bio-u1-58-q06":"a","bio-u1-58-q08":"a","bio-u1-58-q09":"a","bio-u1-59-q01":"a","bio-u1-59-q03":"a","bio-u1-59-q04":"a","bio-u1-59-q07":"a","bio-u1-59-q08":"a","bio-u1-59-q09":"a","bio-u1-59-q11":"a","bio-u1-59-q12":"a","bio-u1-59-q13":"b","bio-u1-59-q15":"b","bio-u1-59-q16":"b","bio-u1-59-q18":"b","bio-u1-59-q19":"a","bio-u1-81-q01":"a","bio-u1-82-q01":"a","bio-u1-82-q02":"a","bio-u1-82-q03":"a","bio-u1-83-q01":"a","bio-u1-84-q01":"b","bio-u1-84-q02":"a","bio-u1-84-q03":"a","bio-u1-85-q01":"a","bio-u1-85-q02":"a","bio-u1-85-q03":"a","bio-u1-85-q04":"a","bio-u1-86-q02":"b","bio-u1-87-q01":"b","bio-u1-88-q01":"a","bio-u1-88-q02":"b","bio-u1-88-q03":"a","bio-u2-61-q01":"b","bio-u2-61-q02":"a","bio-u2-61-q03":"b","bio-u2-61-q04":"b","bio-u2-61-q05":"b","bio-u2-61-q06":"b","bio-u2-61-q08":"b","bio-u2-61-q09":"a","bio-u2-61-q10":"a","bio-u2-61-q11":"b","bio-u2-62-g01":"a","bio-u2-62-g02":"a","bio-u2-62-g03":"a","bio-u2-62-g04":"a","bio-u2-62-q01":"a","bio-u2-62-q02":"a","bio-u2-62-q03":"a","bio-u2-62-q04":"a","bio-u2-62-q05":"a","bio-u2-62-q06":"a","bio-u2-62-q07":"a","bio-u2-62-q08":"a","bio-u2-62-q09":"a","bio-u2-62-q10":"a","bio-u2-62-q11":"a","bio-u2-62-q13":"a","bio-u2-62-q14":"a","bio-u2-62-q15":"a","bio-u2-62-q16":"a","bio-u2-62-q17":"a","bio-u2-62-q18":"a","bio-u2-62-q19":"a","bio-u2-63-g01":"a","bio-u2-63-g02":"a","bio-u2-63-g03":"a","bio-u2-63-g04":"a","bio-u2-63-q01":"a","bio-u2-63-q02":"a","bio-u2-63-q03":"b","bio-u2-63-q04":"a","bio-u2-63-q05":"a","bio-u2-63-q07":"b","bio-u2-63-q08":"a","bio-u2-63-q09":"a","bio-u2-63-q10":"a","bio-u2-63-q11":"a","bio-u2-63-q13":"a","bio-u2-63-q14":"a","bio-u2-63-q15":"a","bio-u2-63-q16":"b","bio-u2-63-q17":"a","bio-u2-63-q18":"a","bio-u2-64-gen-genotype":"a","bio-u2-64-gen-mode":"a","bio-u2-64-gen-probability":"a","bio-u2-64-q01":"a","bio-u2-64-q02":"a","bio-u2-64-q03":"a","bio-u2-64-q04":"a","bio-u2-64-q05":"a","bio-u2-64-q06":"a","bio-u2-64-q07":"a","bio-u2-65-q03":"b","bio-u2-65-q04":"b","bio-u2-65-q05":"a","bio-u2-65-q06":"a","bio-u2-66-q01":"b","bio-u2-66-q02":"b","bio-u2-66-q03":"a","bio-u2-66-q04":"b","bio-u2-66-q05":"b","bio-u2-67-q01":"a","bio-u2-67-q02":"a","bio-u2-67-q03":"a","bio-u2-67-q04":"b","bio-u2-67-q05":"a","bio-u2-67-q06":"a","bio-u2-67-q07":"a","bio-u2-67-q08":"a","bio-u2-67-q09":"a","bio-u2-68-q01":"a","bio-u2-68-q05":"a","bio-u2-68-q06":"a","bio-u2-68-q07":"a","bio-u2-68-q08":"a","bio-u2-68-q09":"a","bio-u2-68-q10":"a","bio-u2-68-q11":"a","bio-u2-68-q12":"a","bio-u2-69-q01":"b","bio-u2-69-q02":"a","bio-u2-69-q03":"a","bio-u2-69-q04":"a","bio-u2-91-q01":"b","bio-u2-92-q01":"b","bio-u3-71-q03":"a","bio-u3-71-q04":"a","bio-u3-71-q05":"b","bio-u3-71-q07":"b","bio-u3-71-q08":"b","bio-u3-71-q10":"a","bio-u3-710-q02":"a","bio-u3-710-q03":"a","bio-u3-710-q04":"a","bio-u3-710-q06":"a","bio-u3-710-q07":"a","bio-u3-710-q09":"a","bio-u3-72-q01":"b","bio-u3-72-q02":"a","bio-u3-72-q03":"a","bio-u3-72-q04":"a","bio-u3-72-q05":"a","bio-u3-72-q06":"b","bio-u3-72-q07":"b","bio-u3-72-q08":"a","bio-u3-72-q10":"a","bio-u3-72-q12":"a","bio-u3-73-q01":"b","bio-u3-73-q02":"a","bio-u3-73-q03":"a","bio-u3-73-q04":"a","bio-u3-73-q05":"b","bio-u3-73-q07":"a","bio-u3-75-q01":"b","bio-u3-75-q02":"a","bio-u3-75-q03":"a","bio-u3-75-q04":"a","bio-u3-75-q05":"a","bio-u3-75-q07":"a","bio-u3-75-q08":"a","bio-u3-75-q10":"a","bio-u3-76-q02":"b","bio-u3-76-q04":"a","bio-u3-76-q06":"a","bio-u3-76-q07":"a","bio-u3-76-q08":"a","bio-u3-76-q09":"a","bio-u3-77-g01":"a","bio-u3-77-g02":"a","bio-u3-77-g03":"a","bio-u3-78-q02":"a","bio-u3-78-q03":"a","bio-u3-78-q06":"a","bio-u3-78-q08":"a","bio-u3-78-q09":"a","bio-u3-78-q10":"a","bio-u3-78-q11":"a","bio-u3-78-q12":"a","bio-u3-79-q01":"a","bio-u3-79-q04":"a","bio-u3-79-q05":"b","bio-u3-79-q06":"a","bio-u3-79-q07":"a","bio-u3-79-q08":"a","bio-u3-79-q10":"a","bio-u3-79-q11":"a"};
+/* ============ Level basis labels (generated) ============ */
+/* Built by assemble-bank.py from the LEVELBASIS comments at each
+   audited entry (November 25, 2026): the criterion that decided
+   the entry's level under the adopted criteria card, shown in
+   teacher mode beside the level on the question card. Entries
+   no audit has covered have no label. */
+window.__BANK_LEVELBASIS={};
