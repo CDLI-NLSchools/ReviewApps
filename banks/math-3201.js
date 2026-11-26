@@ -304,8 +304,10 @@ function venn3(aO,bO,cO,ab,ac,bc,abc,none,lA,lB,lC){
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
 // BIMODAL: u1-npv-why=b
 // BIMODAL: u1-extraneous=b
+// BIMODAL: u1-npv-quadratic=a
 /* ================= Unit 1: Rational Expressions and Equations ================= */
 /* --- non-permissible values and equivalence (3.1, 3.2, 3.3, 3.4, 3.6, 3.7) --- */
+// LEVELBASIS: u1-npv-linear=one cued step
 E("u1-npv-linear",1,["3.2"],1,"gen",function(){
   var shape=ri(1,3),numDen,root,solSteps;
   var num=pick([linS(ri(2,6),ri(-5,5)),ri(2,9)+"x",quadS(1,ri(-4,4),ri(-9,9)),""+ri(2,12)]);
@@ -317,6 +319,7 @@ E("u1-npv-linear",1,["3.2"],1,"gen",function(){
     solSteps+". Division by zero is undefined, so the non-permissible value is <b>\\(x = "+root+"\\)</b>.",
     {root:root,shape:shape});
 });
+// LEVELBASIS: u1-npv-why=recognition test
 E("u1-npv-why",1,["3.1"],1,"var",varset([
   function(){return mcq("Why is \\(x = 3\\) a non-permissible value for the expression \\("+FR("5","x - 3")+"\\)?",
     "Substituting \\(x = 3\\) makes the denominator equal to 0, and division by zero is undefined",
@@ -331,7 +334,10 @@ E("u1-npv-why",1,["3.1"],1,"var",varset([
     ["Substituting \\(x = 2\\) makes the numerator equal to 0, and a numerator of 0 is not allowed","Substituting \\(x = 2\\) makes the expression equal to 0, and the expression cannot equal 0 there","The denominator is a multiple of the numerator when \\(x = 2\\), and that relationship is not allowed"],
     "In the denominator, \\(3(2) - 6 = 0\\). Non-permissible values always come from the denominator being zero, never from the numerator.",{});}
 ]));
-E("u1-npv-quadratic",1,["3.2"],1,"gen",function(){
+// Level audit Nov 25, 2026: retagged 1 to 2. Factoring the denominator and solving twice is a routine multi-step procedure (Webb DOK 2), not one cued step.
+// Bimodal registration Nov 26, 2026 (Jason's ruling): the entry carried CR marks without registration, so at Level 2 an unstripped multiple choice deal could land in Section B. The stripped form is a genuine written question (state the non-permissible values); class a on the u1-solve-quad-eq precedent, whose key has the identical pair form.
+// LEVELBASIS: u1-npv-quadratic=taught procedure, multi-step
+E("u1-npv-quadratic",1,["3.2"],2,"gen",function(){
   var r1=ri(-8,8),r2=ri(-8,8),t=0;
   while((r1===0||r2===0||r1===r2||r1+r2===0)&&t<60){r1=ri(-8,8);r2=ri(-8,8);t++;}
   var lo=Math.min(r1,r2),hi=Math.max(r1,r2);
@@ -343,6 +349,7 @@ E("u1-npv-quadratic",1,["3.2"],1,"gen",function(){
     "Set the denominator equal to zero and factor: \\("+quadR(r1,r2)+" = "+linF(r1)+linF(r2)+" = 0\\). So \\(x = "+lo+"\\) or \\(x = "+hi+"\\). The non-permissible values are <b>\\(x = "+lo+"\\) and \\(x = "+hi+"\\)</b>. Watch the signs: the roots of the factors are the values themselves, not their opposites.",
     {r1:r1,r2:r2});
 });
+// LEVELBASIS: u1-equiv-forms=one cued step
 E("u1-equiv-forms",1,["3.3"],1,"gen",function(){
   var a=ri(2,6),rb=ri(-7,7),rm=ri(-7,7),t=0;
   while((rm===rb||rm===0)&&t<40){rm=ri(-7,7);t++;}
@@ -353,6 +360,7 @@ E("u1-equiv-forms",1,["3.3"],1,"gen",function(){
     "An equivalent expression is made by multiplying the numerator and the denominator by the same nonzero expression, here \\("+fac+"\\). Multiplying only the top, only the bottom, or the top by a different factor changes the value of the expression.",
     {a:a,rb:rb,rm:rm});
 });
+// LEVELBASIS: u1-create-equivalent=one cued step
 E("u1-create-equivalent",1,["3.4"],1,"gen",function(){
   var a=ri(2,5),b=ri(-7,7),c=ri(1,4),d=ri(-7,7),t=0;
   while((b===0||d===0||(a===c&&b===d))&&t<60){b=ri(-7,7);d=ri(-7,7);t++;}
@@ -363,6 +371,7 @@ E("u1-create-equivalent",1,["3.4"],1,"gen",function(){
     "Multiply out: \\(("+linS(a,b)+")(x "+(s>0?"+ ":"- ")+kf+") = "+quadS(a,mid,last)+"\\). The first distractor flips the sign of the constant term, the second uses the wrong sign on the middle term, and the third is the new denominator, not the numerator.",
     {a:a,b:b,c:c,d:d,kf:kf,s:s});
 });
+// LEVELBASIS: u1-npv-simplified=taught procedure, multi-step
 E("u1-npv-simplified",1,["3.6"],2,"var",varset([
   function(){return mcq("The expression \\("+FR(quadR(2,5),quadR(2,-3))+"\\) simplifies to \\("+FR("x - 5","x + 3")+"\\). A student says the simplified expression is non-permissible only when \\(x = -3\\). Which statement is correct?",
     "The student is wrong: \\(x = 2\\) is still non-permissible, because simplifying does not change the values for which the original expression is undefined",
@@ -377,6 +386,7 @@ E("u1-npv-simplified",1,["3.6"],2,"var",varset([
     ["The student is right: cancelling the common factor removes its restriction, so only the values left in the denominator are still non-permissible","The only non-permissible value is \\(x = 3\\), because cancelling a common factor keeps its own restriction while the restriction from the other factor is dropped","Once an expression is simplified, it has no non-permissible values, because the simplified form can be evaluated for every value of the variable"],
     "The original denominator is \\((x - 3)(x + 5)\\), zero when \\(x = 3\\) and when \\(x = -5\\). Restrictions are a property of the original expression and survive simplification.",{});}
 ]));
+// LEVELBASIS: u1-reverse-restrictions=path test
 E("u1-reverse-restrictions",1,["3.6"],3,"gen",function(){
   var r1=ri(-7,7),r2=ri(-7,7),r3=ri(-7,7),t=0;
   while((r1===r2||r1===r3||r2===r3)&&t<80){r1=ri(-7,7);r2=ri(-7,7);r3=ri(-7,7);t++;}
@@ -387,6 +397,7 @@ E("u1-reverse-restrictions",1,["3.6"],3,"gen",function(){
     "The original denominator must be zero at both non-permissible values, so it needs the factors \\("+linF(r1)+"\\) and \\("+linF(r3)+"\\). Cancelling the shared factor \\("+linF(r1)+"\\) must leave \\("+FR(linF(r2),linF(r3))+"\\), so the numerator needs \\("+linF(r1)+"\\) and \\("+linF(r2)+"\\). Only the correct option satisfies both conditions at once.",
     {r1:r1,r2:r2,r3:r3});
 });
+// LEVELBASIS: u1-error-simplify=one cued step
 E("u1-error-simplify",1,["3.7"],1,"var",varset([
   function(){return mcq("A student simplifies \\("+FR("5x + 20","5")+"\\) and gets \\(x + 20\\). What is the <b>correct</b> simplified form?",
     "\\(x + 4\\)",
@@ -403,6 +414,7 @@ E("u1-error-simplify",1,["3.7"],1,"var",varset([
 ]));
 
 /* --- simplifying (3.5) --- */
+// LEVELBASIS: u1-simplify-monomial=one cued step
 E("u1-simplify-monomial",1,["3.5"],1,"gen",function(){
   if(Math.random()<0.5){
     var a=ri(2,12),b=ri(2,12),t=0;
@@ -425,6 +437,7 @@ E("u1-simplify-monomial",1,["3.5"],1,"gen",function(){
     "Factor the numerator and divide every term by the common factor \\("+g+"x\\), then cancel \\(x\\) and reduce by \\("+g+"\\): \\[ \\begin{aligned} \\frac{"+quadS(a2,b2,0)+"}{"+c2+"x} &= \\frac{x("+linS(a2,b2)+")}{"+c2+"x} \\\\ &= "+corr.slice(2,-2)+" \\end{aligned} \\]",
     {a:a2,b:b2,c:c2,g:g});
 });
+// LEVELBASIS: u1-simplify-gcf=one cued step
 E("u1-simplify-gcf",1,["3.5"],1,"gen",function(){
   var c=ri(1,4),d=ri(-8,8),k=ri(2,7),t=0;
   while(d===0&&t<40){d=ri(-8,8);t++;}
@@ -433,6 +446,7 @@ E("u1-simplify-gcf",1,["3.5"],1,"gen",function(){
     "Factor the numerator: \\("+linS(k*c,k*d)+" = "+k+"("+linS(c,d)+")\\). The factor \\(("+linS(c,d)+")\\) cancels with the denominator, leaving <b>\\("+k+"\\)</b>.",
     {c:c,d:d,k:k});
 });
+// LEVELBASIS: u1-simplify-quad=taught procedure, multi-step
 E("u1-simplify-quad",1,["3.5"],2,"gen",function(){
   var r1=ri(-8,8),r2=ri(-8,8),r3=ri(-8,8),t=0;
   while((r1===r2||r1===r3||r2===r3)&&t<80){r1=ri(-8,8);r2=ri(-8,8);r3=ri(-8,8);t++;}
@@ -443,6 +457,7 @@ E("u1-simplify-quad",1,["3.5"],2,"gen",function(){
     {r1:r1,r2:r2,r3:r3});
 });
 /* --- operations (3.8, 3.9, 3.10, 3.11, 3.12) --- */
+// LEVELBASIS: u1-add-same-den=taught procedure, multi-step
 E("u1-add-same-den",1,["3.10"],2,"gen",function(){
   var r=ri(-8,8),op=pick(["+","-"]),a1,b1,m,t=0,qa,qb;
   do{a1=ri(1,4);b1=ri(-8,8);m=ri(-6,6);t++;
@@ -456,6 +471,7 @@ E("u1-add-same-den",1,["3.10"],2,"gen",function(){
     "The denominators already match, so combine the numerators: the numerator becomes \\("+S+" = "+m+linF(r)+"\\) . Cancelling \\("+linF(r)+"\\) with the denominator leaves <b>\\("+m+"\\)</b> (with \\(x \\ne "+r+"\\)). The first distractor is the combined fraction before cancelling.",
     {r:r,op:op,m:m});
 });
+// LEVELBASIS: u1-add-diff-den=taught procedure, multi-step
 E("u1-add-diff-den",1,["3.11"],2,"gen",function(){
   var p=ri(-8,8),q=ri(-8,8),a=ri(2,6),b=ri(2,6),op=pick(["+","-"]),t=0;
   while((p===0||q===0||p===q||a===b)&&t<80){p=ri(-8,8);q=ri(-8,8);a=ri(2,6);b=ri(2,6);t++;}
@@ -468,6 +484,7 @@ E("u1-add-diff-den",1,["3.11"],2,"gen",function(){
     "The lowest common denominator is \\("+den+"\\). Rewrite each fraction with that denominator and combine: the numerator is \\("+a+"(x "+(q>0?"- "+q:"+ "+(-q))+") "+op+" "+b+"(x "+(p>0?"- "+p:"+ "+(-p))+") = "+linS(nA,nB)+"\\). The result is <b>\\("+FR(linS(nA,nB),den)+"\\)</b>. Adding the numerators straight across, or using the wrong operation on the second term, gives the distractors.",
     {p:p,q:q,a:a,b:b,op:op});
 });
+// LEVELBASIS: u1-sub-monomial-den=taught procedure, multi-step
 E("u1-sub-monomial-den",1,["3.11"],2,"gen",function(){
   var a=ri(2,7),b=ri(2,9),op=pick(["+","-"]);
   var nb=(op==="-")?-b:b, straight=(op==="-")?(a-b):(a+b);
@@ -477,6 +494,7 @@ E("u1-sub-monomial-den",1,["3.11"],2,"gen",function(){
     "The lowest common denominator is \\(x^2\\), so the first fraction becomes \\(\\frac{"+a+"x}{x^2}\\). Combining gives \\(\\frac{"+linS(a,nb)+"}{x^2}\\). The result is <b>\\("+FR(linS(a,nb),"x^2")+"\\)</b>. The denominators cannot be treated as equal, and the denominator of the answer is \\(x^2\\), not \\(x\\).",
     {a:a,b:b,op:op});
 });
+// LEVELBASIS: u1-lcd=one cued step
 E("u1-lcd",1,["3.11"],1,"gen",function(){
   var pr=pick([[2,3],[3,2],[3,4],[4,3],[4,6],[6,4]]),k1=pr[0],k2=pr[1];
   var L=k1*k2/gcd2(k1,k2);
@@ -490,6 +508,7 @@ E("u1-lcd",1,["3.11"],1,"gen",function(){
     "The second denominator already contains both variable factors, \\("+linF(p)+"\\) and \\("+linF(q)+"\\). For the coefficients, the least common multiple of \\("+k1+"\\) and \\("+k2+"\\) is \\("+L+"\\), so the LCD is <b>\\("+lcd+"\\)</b>. The second denominator alone uses \\("+k2+"\\) instead of \\("+L+"\\), and multiplying the two denominators gives more than the lowest common one.",
     {k1:k1,k2:k2,p:p,q:q});
 });
+// LEVELBASIS: u1-mult=one cued step
 E("u1-mult",1,["3.12"],1,"gen",function(){
   var a=ri(-8,8),b=ri(-8,8),c=ri(-8,8),t=0;
   while((a===b||a===c||b===c)&&t<80){a=ri(-8,8);b=ri(-8,8);c=ri(-8,8);t++;}
@@ -502,6 +521,7 @@ E("u1-mult",1,["3.12"],1,"gen",function(){
     "Multiply the numerators and denominators, then cancel the shared factor \\("+linF(b)+"\\): the product is <b>\\("+(cj+FR(linF(a),linF(c)))+"\\)</b>. The first distractor skips the cancellation, and the second flips the result.",
     {a:a,b:b,c:c,m:m,n:n});
 });
+// LEVELBASIS: u1-div=one cued step
 E("u1-div",1,["3.12"],1,"gen",function(){
   var a=ri(-8,8),b=ri(-8,8),c=ri(-8,8),t=0;
   while((a===b||a===c||b===c)&&t<80){a=ri(-8,8);b=ri(-8,8);c=ri(-8,8);t++;}
@@ -511,6 +531,7 @@ E("u1-div",1,["3.12"],1,"gen",function(){
     "Dividing by a fraction means multiplying by its reciprocal: \\("+FR(linF(a),linF(b))+" \\times "+FR(linF(c),linF(a))+"\\). The factor \\("+linF(a)+"\\) cancels, leaving <b>\\("+FR(linF(c),linF(b))+"\\)</b>. Multiplying straight across without flipping is the first distractor.",
     {a:a,b:b,c:c});
 });
+// LEVELBASIS: u1-npv-operations=direct recall
 E("u1-npv-operations",1,["3.9"],1,"gen",function(){
   function sample4(){var s=new Set();while(s.size<4)s.add(ri(-8,8));return [...s];}
   var v=sample4(),s=v[0],p=v[1],q=v[2],r=v[3];
@@ -530,6 +551,7 @@ E("u1-npv-operations",1,["3.9"],1,"gen",function(){
     "Three spots cause trouble: the first denominator \\("+linF(p)+"\\) (zero at \\(x = "+p+"\\)) and the divisor \\("+FR(linF(q),linF(r))+"\\), which is undefined at \\(x = "+r+"\\) and equal to zero at \\(x = "+q+"\\), and a divisor of zero is not allowed. The non-permissible values are <b>"+lst([p,q,r])+"</b>. The root of the first numerator does not restrict anything.",
     {shape:"div",p:p,q:q,r:r,s:s});
 });
+// LEVELBASIS: u1-strategy-compare=recognition test
 E("u1-strategy-compare",1,["3.8"],1,"var",varset([
   function(){return mcq("Which statement correctly compares adding rational expressions with adding rational numbers (fractions)?",
     "Both must first be rewritten with a common denominator; the denominators themselves are never added",
@@ -550,6 +572,7 @@ E("u1-strategy-compare",1,["3.8"],1,"var",varset([
 /* --- equations (3.13, 3.14, 3.15, 3.16) --- */
 
 /* --- equations (3.13, 3.14, 3.15, 3.16) --- */
+// LEVELBASIS: u1-npv-equation=one cued step
 E("u1-npv-equation",1,["3.13"],1,"gen",function(){
   var a=ri(-8,8),b=ri(-8,8),m=ri(2,9),n=ri(2,9),t=0;
   while((a===b||m===a||m===b||n===a||n===b||m===n)&&t<80){a=ri(-8,8);b=ri(-8,8);m=ri(2,9);n=ri(2,9);t++;}
@@ -560,7 +583,9 @@ E("u1-npv-equation",1,["3.13"],1,"gen",function(){
     "Non-permissible values come from the denominators: \\("+linF(a)+"\\) is zero at \\(x = "+a+"\\) and \\("+linF(b)+"\\) is zero at \\(x = "+b+"\\). The numerators \\("+m+"\\) and \\("+n+"\\) play no part. The non-permissible values are <b>"+pair(a,b)+"</b>.",
     {a:a,b:b,m:m,n:n});
 });
-E("u1-solve-simple",1,["3.14"],2,"gen",function(){
+// Level audit Nov 25, 2026: retagged 2 to 1. As dealt, the proportions resolve by matching equal numerators or denominators; one cued step (Level 1 boundary test).
+// LEVELBASIS: u1-solve-simple=one cued step
+E("u1-solve-simple",1,["3.14"],1,"gen",function(){
   var a,b,c,x,t=0;
   if(Math.random()<0.5){
     do{a=ri(2,9);b=ri(2,9);c=ri(2,9);t++;}while((a*c)%b!==0&&t<90);
@@ -577,6 +602,7 @@ E("u1-solve-simple",1,["3.14"],2,"gen",function(){
     "Cross-multiply and solve: \\[ \\begin{aligned} "+c+"x &= "+(a*b)+" \\\\ x &= \\frac{"+(a*b)+"}{"+c+"} = "+x+" \\end{aligned} \\] The solution is <b>\\(x = "+x+"\\)</b>.",
     {a:a,b:b,c:c,shape:"x/a"});
 });
+// LEVELBASIS: u1-solve-cross=taught procedure, multi-step
 E("u1-solve-cross",1,["3.14"],2,"gen",function(){
   var p=ri(-8,8),a,b,c,x,t=0;
   if(Math.random()<0.5){
@@ -594,6 +620,7 @@ E("u1-solve-cross",1,["3.14"],2,"gen",function(){
     "Cross-multiply and solve: \\[ \\begin{aligned} "+c+linF(p)+" &= "+(a*b)+" \\\\ "+c+"x &= "+(a*b+c*p)+" \\\\ x &= \\frac{"+(a*b+c*p)+"}{"+c+"} = "+x+" \\end{aligned} \\] The solution is <b>\\(x = "+x+"\\)</b>.",
     {p:p,a:a,b:b,c:c,shape:"numshift"});
 });
+// LEVELBASIS: u1-solve-quad-eq=taught procedure, multi-step
 E("u1-solve-quad-eq",1,["3.14"],2,"gen",function(){
   var s1,s2,d,b,a,t=0;
   do{s1=ri(2,7);s2=-ri(2,7);var prod=Math.abs(s1*s2);var divs=[2,3,4,5,6].filter(function(dd){return prod%dd===0;});t++;}
@@ -606,6 +633,7 @@ E("u1-solve-quad-eq",1,["3.14"],2,"gen",function(){
     "Multiply both sides by \\("+d+"x\\) and expand: \\[ \\begin{aligned} x(x "+(a>=0?"+ ":"- ")+Math.abs(a)+") &= "+(b*d)+" \\\\ x^2 "+(a>=0?"+ ":"- ")+Math.abs(a)+"x - "+(b*d)+" &= 0 \\\\ "+linF(s1)+linF(s2)+" &= 0 \\end{aligned} \\] So \\(x = "+s1+"\\) or \\(x = "+s2+"\\). Neither value is 0, so both are permissible: <b>"+pair(s2,s1)+"</b>.",
     {s1:s1,s2:s2,d:d,b:b,a:a});
 });
+// LEVELBASIS: u1-extraneous=taught procedure, multi-step
 E("u1-extraneous",1,["3.15"],2,"var",varset([
   function(){return mcq("A student solves \\("+FR("5","x - 2")+" = "+FR("x + 3","x - 2")+"\\) by multiplying both sides by \\((x - 2)\\), gets \\(5 = x + 3\\), and concludes the solution is \\(x = 2\\). Why is \\(x = 2\\) <b>not</b> a solution?",
     "At \\(x = 2\\) both denominators in the original equation are 0, so the equation is undefined there",
@@ -620,6 +648,7 @@ E("u1-extraneous",1,["3.15"],2,"var",varset([
     ["Both are solutions, because both satisfy the multiplied-out equation \\(x^2 = x\\), and multiplying both sides by \\((x - 1)\\) does not change the solution set","Only \\(x = 1\\) is a solution, because \\(x = 0\\) makes a numerator 0, and a value that makes a numerator 0 must be rejected if it is to count as a solution","Neither is a solution, because an equation with a fraction on each side can never be solved by multiplying out, so values obtained that way never count"],
     "Multiplying by \\((x - 1)\\) gives \\(x^2 = x\\), with roots 0 and 1. Checking in the original equation: \\(x = 0\\) gives \\(0 = 0\\), which works, but \\(x = 1\\) divides by zero. A numerator of 0 is fine; a denominator of 0 is not.",{});}
 ]));
+// LEVELBASIS: u1-context-work=taught procedure, multi-step
 E("u1-context-work",1,["3.16"],2,"gen",function(){
   var combos=[[3,6],[4,12],[6,12],[5,20],[8,24],[10,15],[9,18],[12,12],[15,30],[20,30],[6,6],[4,4],[7,7],[14,14]];
   var pr=pick(combos),a=pr[0],b=pr[1],t=a*b/(a+b);
@@ -634,6 +663,7 @@ E("u1-context-work",1,["3.16"],2,"gen",function(){
     "Work rates add. In one hour "+ctx.p[0]+" does \\(\\frac{1}{"+a+"}\\) of the job and "+ctx.p[1]+" does \\(\\frac{1}{"+b+"}\\). Together: \\[ \\begin{aligned} \\frac{1}{"+a+"} + \\frac{1}{"+b+"} &= \\frac{"+(a+b)+"}{"+(a*b)+"} \\\\ \\text{time} &= \\frac{"+(a*b)+"}{"+(a+b)+"} = "+fmt(t)+" \\end{aligned} \\] The combined rate is the job per hour, so the whole job takes "+fmt(t)+" hours. The time together is <b>"+fmt(t)+" hours</b>, less than either time alone, as it should be.",
     {a:a,b:b,t:t});
 });
+// LEVELBASIS: u1-context-wind=taught procedure, multi-step
 E("u1-context-wind",1,["3.16"],2,"gen",function(){
   var plane=Math.random()<0.5,v,w,t,d1,d2;
   if(plane){v=pick([150,180,200,220,240,260,300]);w=pick([10,20,25,30,40]);t=pick([2,2.5,3]);}
@@ -647,6 +677,7 @@ E("u1-context-wind",1,["3.16"],2,"gen",function(){
     "Let the still-air speed be \\(v\\). Equal times give \\(\\frac{"+d1+"}{v - "+w+"} = \\frac{"+d2+"}{v + "+w+"}\\). Cross-multiplying and collecting the \\(v\\) terms: \\[ \\begin{aligned} "+d1+"(v + "+w+") &= "+d2+"(v - "+w+") \\\\ "+d1+"v + "+(d1*w)+" &= "+d2+"v - "+(d2*w)+" \\\\ "+(d2-d1)+"v &= "+(w*(d1+d2))+" \\\\ v &= "+v+" \\end{aligned} \\] The speed is <b>\\(v = "+v+"\\) km/h</b>.",
     {v:v,w:w,d1:d1,d2:d2});
 });
+// LEVELBASIS: u1-context-cost=taught procedure, multi-step
 E("u1-context-cost",1,["3.16"],2,"gen",function(){
   var n,k,s1,C,e,t=0;
   do{n=ri(18,48);k=ri(2,9);s1=ri(15,40);C=n*s1;t++;}
@@ -658,6 +689,7 @@ E("u1-context-cost",1,["3.16"],2,"gen",function(){
     "Let \\(n\\) be the number who first signed up. The cost condition gives: \\[ \\begin{aligned} \\frac{"+C+"}{n - "+k+"} - \\frac{"+C+"}{n} &= "+e+" \\\\ \\frac{"+(C*k)+"}{n(n - "+k+")} &= "+e+" \\\\ n(n - "+k+") &= "+(C*k/e)+" \\end{aligned} \\] Trying the factor pair: \\("+n+" \\times "+went+" = "+(C*k/e)+"\\), so \\(n = "+n+"\\). The number who actually went is <b>"+went+"</b>.",
     {C:C,n:n,k:k,e:e});
 });
+// LEVELBASIS: u1-two-step-simplify=taught procedure, multi-step
 E("u1-two-step-simplify",1,["3.12"],2,"gen",function(){
   var s=ri(2,6),t=ri(-6,6),k=ri(2,5),tr=0;
   while((t===0||t===s||t===-s)&&tr<60){t=ri(-6,6);tr++;}
@@ -698,6 +730,7 @@ E("u1-two-step-simplify",1,["3.12"],2,"gen",function(){
 // BIMODAL: u2-sketch-match=b
 // BIMODAL: u2-model-decision=b
 /* ================= Unit 2: Polynomial Functions ================= */
+// LEVELBASIS: u2-degree-equation=direct recall
 E("u2-degree-equation",2,["3.18"],1,"gen",function(){
   var choice=ri(1,6),f,deg,why;
   if(choice===1){var a=ri(2,6);f="f(x) = "+a+"x - "+ri(3,25)+" + x^2";deg=2;why="written in standard form it is \\(x^2 + "+a+"x - \\dots\\), so the highest power is \\(x^2\\)";}
@@ -711,6 +744,7 @@ E("u2-degree-equation",2,["3.18"],1,"gen",function(){
     "The degree is the highest power of \\(x\\) when the function is expanded: here "+why+", so the degree is <b>"+deg+"</b>.",
     {deg:deg,choice:choice});
 });
+// LEVELBASIS: u2-y-intercept=direct recall
 E("u2-y-intercept",2,["3.18"],1,"gen",function(){
   var a=ri(2,6),b=ri(-9,9),c=ri(-12,12),form=ri(1,3),f,yi;
   if(form===1){f=quadS(a,b,c);yi=c;}
@@ -721,6 +755,7 @@ E("u2-y-intercept",2,["3.18"],1,"gen",function(){
     "The y-intercept is the value at \\(x = 0\\). Every term containing \\(x\\) becomes 0, leaving the constant term: <b>"+yi+"</b>.",
     {yi:yi,form:form});
 });
+// LEVELBASIS: u2-turning-points-graph=direct recall
 E("u2-turning-points-graph",2,["3.17"],1,"gen",function(){
   var kind=pick(["quad","cubic2","cubic0"]),fn,tp;
   if(kind==="quad"){var s=pick([1,-1]),h=ri(-2,2),k=ri(-3,3);fn=function(x){return s*(x-h)*(x-h)+k;};tp=1;
@@ -739,6 +774,7 @@ E("u2-turning-points-graph",2,["3.17"],1,"gen",function(){
     "This cubic keeps moving in the same direction the whole way across; it may flatten briefly but never changes direction, so there are <b>0 turning points</b>.",{kind:kind});
   q3.figure=plotSVG(fn,-3.5,3.5,-22,22);return q3;
 });
+// LEVELBASIS: u2-end-behaviour=one cued step
 E("u2-end-behaviour",2,["3.18"],1,"gen",function(){
   var deg=pick([1,2,3]),sgn=pick([1,-1]),a=sgn*ri(2,6),b=ri(-8,8),c=ri(-8,8);
   var fs=(deg===1)?linS(a,c):(deg===2?quadS(a,b,c):(""+a+"x^3 "+(b>=0?"+ ":"- ")+Math.abs(b)+"x^2 "+(c>=0?"+ ":"- ")+Math.abs(c)+"x"));
@@ -751,6 +787,7 @@ E("u2-end-behaviour",2,["3.18"],1,"gen",function(){
     "The degree "+deg+" is "+(deg%2===1?"odd":"even")+" and the leading coefficient "+a+" is "+(sgn>0?"positive":"negative")+". "+(deg%2===1?("For an odd degree, the two ends go in opposite directions; a positive leading coefficient sends the right end up, so the graph runs from Quadrant III to Quadrant I."):("For an even degree, both ends go the same way; the sign of the leading coefficient decides whether both ends rise or both fall."))+" Here the graph extends from <b>"+correct+"</b>.",
     {deg:deg,a:a});
 });
+// LEVELBASIS: u2-characteristics-equation=direct recall
 E("u2-characteristics-equation",2,["3.18"],1,"gen",function(){
   var feat=pick(["yint","end","count"]);
   if(feat==="end"){
@@ -786,6 +823,7 @@ E("u2-characteristics-equation",2,["3.18"],1,"gen",function(){
     "Set \\(x = 0\\): each factor becomes the negative of its root, so \\(f(0) = "+a3+" \\times ("+(-p)+") \\times ("+(-qq)+") \\times ("+(-rr)+") = "+Y+"\\). Three negative factors give a negative product before the leading coefficient is applied. The y-intercept is <b>"+Y+"</b>.",
     {feat:"yint",Y:Y});
 });
+// LEVELBASIS: u2-match-equation-graph=indicator-named taught procedure
 E("u2-match-equation-graph",2,["3.19"],2,"gen",function(){
   var r1=ri(-4,4),r2=ri(-4,4),r3=ri(-4,4),t=0;
   while((r1===0||r2===0||r3===0||r1===r2||r1===r3||r2===r3)&&t<80){r1=ri(-4,4);r2=ri(-4,4);r3=ri(-4,4);t++;}
@@ -802,6 +840,7 @@ E("u2-match-equation-graph",2,["3.19"],2,"gen",function(){
   q.figure=plotSVG(fn,-5.5,5.5,-mx,mx);
   return q;
 });
+// LEVELBASIS: u2-match-by-characteristics=taught procedure, multi-step
 E("u2-match-by-characteristics",2,["3.19"],2,"gen",function(){
   var c=pick([-6,-4,-2,2,3,5]),p=ri(1,5),target=pick(["odd+","odd-","even+","even-"]);
   function build(kind){
@@ -817,6 +856,7 @@ E("u2-match-by-characteristics",2,["3.19"],2,"gen",function(){
     "All four options share the constant term "+c+", so the decision comes from the end behaviour: "+names[target]+" needs "+(target.indexOf("odd")===0?"an odd degree":"an even degree")+" with a "+(target==="odd+"||target==="even+"?"positive":"negative")+" leading coefficient. That is <b>"+build(target)+"</b>.",
     {target:target,c:c});
 });
+// LEVELBASIS: u2-scatter-type=taught procedure, multi-step
 E("u2-scatter-type",2,["3.20"],2,"gen",function(){
   var type=pick(["linear","quadratic","cubic"]),pts=[],xs=[];
   if(type==="linear"){var m=pick([2,3]),b0=ri(-2,4);for(var x=0;x<=5;x++){var y=m*x+b0+((x===2||x===4)?pick([-1,1]):0);xs.push(x);pts.push([x,y]);}}
@@ -832,6 +872,7 @@ E("u2-scatter-type",2,["3.20"],2,"gen",function(){
   q.figure=plotSVG(null,Math.min.apply(null,xs)-1,Math.max.apply(null,xs)+1,y0,y1,{nocurve:true,points:pts});
   return q;
 });
+// LEVELBASIS: u2-fit-value=taught procedure, multi-step
 E("u2-fit-value",2,["3.20"],2,"gen",function(){
   var kind=pick(["quadratic","cubic"]),xs=[0,1,2,3,4],fn,ask=5;
   if(kind==="quadratic"){var a=ri(1,3),b=ri(-3,4),c=ri(1,8);fn=function(x){return a*x*x+b*x+c;};}
@@ -842,6 +883,7 @@ E("u2-fit-value",2,["3.20"],2,"gen",function(){
     "Look at the differences: "+ys.join(", ")+" has first differences "+(function(){var d=[];for(var i=1;i<ys.length;i++)d.push(ys[i]-ys[i-1]);return d.join(", ");})()+". "+(kind==="quadratic"?"The second differences are constant, confirming a quadratic pattern; extending the differences gives the next value.":"The third differences are constant, confirming a cubic pattern; extending the differences gives the next value.")+" When \\(x = "+ask+"\\), <b>\\(y = "+fn(ask)+"\\)</b>.",
     {kind:kind,ans:fn(ask)});
 });
+// LEVELBASIS: u2-graph-characteristics=direct recall
 E("u2-graph-characteristics",2,["3.17"],1,"gen",function(){
   var feat=pick(["yint","xint","range"]);
   if(feat==="range"){
@@ -873,7 +915,9 @@ E("u2-graph-characteristics",2,["3.17"],1,"gen",function(){
     "The y-intercept is where the curve crosses the y-axis, at \\(x = 0\\). Reading the graph there gives <b>"+Y3+"</b>. (The vertex value "+k3+" is the distractor: it is read at the turning point, not at the y-axis.)",{feat:feat});
   q3.figure=plotSVG(fn3,-6,6,-10,14);return q3;
 });
-E("u2-sketch-match",2,["3.17"],1,"gen",function(){
+// Level audit Nov 25, 2026: retagged 1 to 2. The matching list bundles four characteristics (degree, leading coefficient sign, turning points, y-intercept); coordinating several graph readings to discriminate the options is Webb DOK 2, not a single read.
+// LEVELBASIS: u2-sketch-match=taught procedure, multi-step
+E("u2-sketch-match",2,["3.17"],2,"gen",function(){
   var s=pick([1,-1]),h=pick([-1,0,0,1]),u=(h===0?pick([1,1.25,1.5]):1),k=pick([-6,-4,-2,0,3,5,7]);
   var fn=function(x){var t=x-h;return s*(t*t*t-3*u*u*t)+k;};
   var Y=fn(0);
@@ -887,6 +931,7 @@ E("u2-sketch-match",2,["3.17"],1,"gen",function(){
     "The graph has the S-shape and two direction changes of a cubic, its ends run "+(s>0?"from Quadrant III to Quadrant I (positive leading coefficient)":"from Quadrant II to Quadrant IV (negative leading coefficient)")+", and it crosses the y-axis at "+fmt(Y)+". The matching list is: <b>"+corr+"</b>.",{s:s,k:k,h:h});
   q.figure=plotSVG(fn,-4.5,4.5,-20,20);return q;
 });
+// LEVELBASIS: u2-interpret-model=taught procedure, multi-step
 E("u2-interpret-model",2,["3.21"],2,"var",varset([
   function(){return numq("An open-top box is made by cutting squares of side \\(x\\) cm from the corners of a 20 cm by 14 cm sheet and folding up the sides. The volume is modelled by \\(V(x) = x(20 - 2x)(14 - 2x)\\). What is the volume, in cm\\(^3\\), when squares of side 2 cm are cut?",
     320,1,
@@ -899,6 +944,7 @@ E("u2-interpret-model",2,["3.21"],2,"var",varset([
     5800,1,
     "2025 is \\(t = 10\\): \\[ \\begin{aligned} P(10) &= 0.02(1000) - 0.3(100) + 2(10) + 48 \\\\ &= 20 - 30 + 20 + 48 \\\\ &= 58 \\end{aligned} \\] That is 58 hundred people, which is <b>5800 people</b>.",{});}
 ]));
+// LEVELBASIS: u2-reverse-intercepts=path test
 E("u2-reverse-intercepts",2,["3.18"],3,"gen",function(){
   var r1=ri(-5,5),r2=ri(-5,5),r3=ri(-5,5),t=0;
   while((r1===0||r2===0||r3===0||r1===r2||r1===r3||r2===r3)&&t<80){r1=ri(-5,5);r2=ri(-5,5);r3=ri(-5,5);t++;}
@@ -910,6 +956,7 @@ E("u2-reverse-intercepts",2,["3.18"],3,"gen",function(){
     "The intercepts give \\(f(x) = a"+linF(r1)+linF(r2)+linF(r3)+"\\). Use the y-intercept to solve for \\(a\\): \\[ \\begin{aligned} f(0) &= a("+(-r1)+")("+(-r2)+")("+(-r3)+") \\\\ "+(a*(-r1)*(-r2)*(-r3)/a)+"a &= "+Y+" \\\\ a &= "+a+" \\end{aligned} \\] Then \\(f("+x0+") = "+a+"("+ (x0-r1) +")("+(x0-r2)+")("+(x0-r3)+") = "+fv+"\\). The value is <b>"+fv+"</b>.",
     {r1:r1,r2:r2,r3:r3,a:a,x0:x0});
 });
+// LEVELBASIS: u2-model-decision=taught procedure, multi-step
 E("u2-model-decision",2,["3.22"],2,"var",varset([
   function(){return mcq("Weekly attendance at a new arena, in hundreds, was recorded over five weeks. "+tblHTML([0,1,2,3,4],[5,8,17,38,77],"Week","Attendance")+" Which statement best describes a polynomial model for the data, and the predicted attendance in week 5?",
     "A cubic model fits; predicted attendance is 140 (hundreds)",
@@ -929,6 +976,7 @@ E("u2-model-decision",2,["3.22"],2,"var",varset([
 function u2lead(a){ return a===1?"x^3":a===-1?"-x^3":a+"x^3"; }
 function u2tm(v,p){ if(v===0) return ""; var m=Math.abs(v); var core=p? (m===1? p : m+p) : ""+m; return (v>0?" + ":" - ")+core; }
 function u2polyLead(lead,b,c,d){ return lead+u2tm(b,"x^2")+u2tm(c,"x")+u2tm(d,""); }
+// LEVELBASIS: u2-recover-and-predict-cr=taught procedure, multi-step
 E("u2-recover-and-predict-cr",2,["3.20","3.22"],2,"gen",function(){
   var a=pick([2,3,-2,-3]), b=ri(-4,4), c=ri(-5,5), d=ri(-6,6), x0=pick([2,3]);
   var t=pick([1,4,-1,5]); if(t===x0) t=t+2;
@@ -939,6 +987,7 @@ E("u2-recover-and-predict-cr",2,["3.20","3.22"],2,"gen",function(){
     "Substitute \\(x = "+x0+"\\): \\("+cube+"a + ("+rest+") = "+v0+"\\), so \\("+cube+"a = "+(v0-rest)+" = "+(a*cube)+"\\), giving \\(a = "+a+"\\). The model is \\(f(x) = "+u2polyLead(u2lead(a),b,c,d)+"\\). Evaluating at \\(x = "+t+"\\): \\(f("+t+") = "+a+"("+t+")^3"+u2tm(b,"("+t+")^2")+u2tm(c,"("+t+")")+u2tm(d,"")+" = \\)<b>"+ans+"</b>.",
     {a:a,x0:x0,t:t});
 });
+// LEVELBASIS: u2-correct-the-claim-cr=taught procedure, multi-step
 E("u2-correct-the-claim-cr",2,["3.17"],2,"var",varset([
   function(){
     var a=pick([-1,-2]), b=ri(-4,4), c=ri(-5,5), d=ri(-6,6);
@@ -972,6 +1021,7 @@ E("u2-correct-the-claim-cr",2,["3.17"],2,"var",varset([
       {sc:"turning-points"});
   }
 ]));
+// LEVELBASIS: u2-zeros-and-intercept-cr=taught procedure, multi-step
 E("u2-zeros-and-intercept-cr",2,["3.18"],2,"gen",function(){
   var roots=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,3).sort(function(x,y){return x-y;});
   var a=pick([1,2]);
@@ -985,6 +1035,7 @@ E("u2-zeros-and-intercept-cr",2,["3.18"],2,"gen",function(){
     "Each factor is zero at one of the zeros, so the zeros are "+roots.join(", ")+". The y-intercept is \\(f(0) = "+(a===1?"":a+" \\times ")+"("+(-roots[0])+")("+(-roots[1])+")("+(-roots[2])+") = "+Y+"\\). Watch the signs: the constant in each factor is the opposite of the zero.",
     {roots:roots,a:a});
 });
+// LEVELBASIS: u2-model-change-cr=taught procedure, multi-step
 E("u2-model-change-cr",2,["3.21"],2,"gen",function(){
   var CTX=[
     {name:"The value, in dollars, of a collectible card", unit:"years after it was purchased", v:"V"},
@@ -1005,6 +1056,7 @@ E("u2-model-change-cr",2,["3.21"],2,"gen",function(){
    the compose gate. Without it the Unit 2 test composes at 24 of 25
    marks and the pooled Units 2+3 paper at 48 of 50; this single 5-mark
    entry closes both gaps. SME-flagged for the specialist pass. */
+// LEVELBASIS: u2-model-multistep-cr=taught procedure, multi-step
 E("u2-model-multistep-cr",2,["3.21"],2,"var",varset([
   function(){return textq("An open-top box is made by cutting squares of side \\(x\\) cm from the corners of a 24 cm by 18 cm sheet of card and folding up the sides. The volume of the box, in cubic centimetres, is modelled by \\(V(x) = x(24 - 2x)(18 - 2x)\\).\n(a) Find the volume of the box when squares of side 3 cm are cut, and explain what the value means in this context. (2)\n(b) The model has a zero at \\(x = 9\\). Explain what this zero means in this context. (1)\n(c) Find the cut size that makes the height of the box equal to its width, and state the volume of the box for that cut size. (2)",
     ["(a) 648 cm^3, the volume of the box when 3 cm squares are cut; (b) a 9 cm cut uses the whole 18 cm width, so the volume is 0 and no box can be formed; (c) cut size 6 cm, giving a volume of 432 cm^3"],
@@ -1074,6 +1126,7 @@ function sinS(a,trig,b,c,d){
   return "y = "+s;
 }
 function sinFn(a,trig,b,c,d){return function(x){var ang=b*(x-c)*Math.PI/180;return a*(trig==="sin"?Math.sin(ang):Math.cos(ang))+d;};}
+// LEVELBASIS: u3-deg-to-rad=one cued step
 E("u3-deg-to-rad",3,["7.1"],1,"gen",function(){
   var pool=[];for(var v=15;v<=345;v+=5){if(v!==180)pool.push(v);}
   var d,opts,tries=0;
@@ -1087,6 +1140,7 @@ E("u3-deg-to-rad",3,["7.1"],1,"gen",function(){
     "Multiply by \\(\\frac{\\pi}{180^\\circ}\\): \\("+d+"^\\circ \\times \\frac{\\pi}{180^\\circ} = "+radStr(f[0],f[1])+"\\) (the fraction \\(\\frac{"+d+"}{180}\\) reduces by "+gcd2(d,180)+").",
     {d:d});
 });
+// LEVELBASIS: u3-rad-to-deg=one cued step
 E("u3-rad-to-deg",3,["7.1"],1,"gen",function(){
   var pool5=[];for(var v=15;v<=345;v+=5){if(v!==180)pool5.push(v);}
   var d=pick(pool5),f=radFrac(d),pool,tries=0;
@@ -1098,6 +1152,7 @@ E("u3-rad-to-deg",3,["7.1"],1,"gen",function(){
     "Multiply by \\(\\frac{180^\\circ}{\\pi}\\): \\("+radStr(f[0],f[1])+" \\times \\frac{180^\\circ}{\\pi} = "+d+"^\\circ\\).",
     {d:d});
 });
+// LEVELBASIS: u3-decimal-convert=one cued step
 E("u3-decimal-convert",3,["7.1"],1,"gen",function(){
   if(Math.random()<0.5){
     var r=pick([0.2,0.3,0.5,0.7,0.8,0.9,1.1,1.2,1.4,1.6,1.9,2.2,2.4,2.7,2.9,3.3,3.6,3.9,4.2,4.5,4.8,5.1,5.5,5.9,6.1]);
@@ -1114,6 +1169,7 @@ E("u3-decimal-convert",3,["7.1"],1,"gen",function(){
     "Multiply by \\(\\frac{\\pi}{180^\\circ}\\): \\("+dg+" \\times \\frac{\\pi}{180} \\approx "+fmt(rad,3)+"\\), which rounds to <b>"+fmt(Math.round(rad*100)/100,2)+"</b> radians.",
     {dg:dg});
 });
+// LEVELBASIS: u3-graph-amplitude=direct recall
 E("u3-graph-amplitude",3,["7.2"],1,"gen",function(){
   var a=pick([2,3,4,5]),d=pick([-3,-2,-1,1,2,3,4]),trig=pick(["sin","cos"]),b=pick([1,2]);
   while(d===a||d===2*a)d=pick([-3,-2,-1,1,2,3,4]);
@@ -1126,6 +1182,7 @@ E("u3-graph-amplitude",3,["7.2"],1,"gen",function(){
   q.figure=plotSVG(fn,0,720,-(a+Math.abs(d)+2),a+Math.abs(d)+2,{gx:90,gy:1,labelX:true,labelY:true});
   return q;
 });
+// LEVELBASIS: u3-graph-period-midline=direct recall
 E("u3-graph-period-midline",3,["7.2"],1,"gen",function(){
   var feat=pick(["period","midline"]);
   var b=pick([1,2]),a=pick([2,3,4]),d=pick([-3,-2,-1,0,1,2,3]),trig=pick(["sin","cos"]);
@@ -1147,6 +1204,7 @@ E("u3-graph-period-midline",3,["7.2"],1,"gen",function(){
   q2.figure=plotSVG(fn,0,720,-(a+Math.abs(d)+2),a+Math.abs(d)+2,{gx:90,gy:1,labelX:true,labelY:true});
   return q2;
 });
+// LEVELBASIS: u3-graph-range=direct recall
 E("u3-graph-range",3,["7.2"],1,"gen",function(){
   var a=pick([2,3,4,5]),d=pick([-4,-3,-1,2,3,5]),trig=pick(["sin","cos"]),bb=pick([1,2]);
   var fn=sinFn(a,trig,bb,0,d),lo=d-a,hi=d+a;
@@ -1161,6 +1219,7 @@ E("u3-graph-range",3,["7.2"],1,"gen",function(){
   q.figure=plotSVG(fn,0,720,lo-2,hi+2,{gx:90,gy:1,labelX:true,labelY:true});
   return q;
 });
+// LEVELBASIS: u3-periodic-or-sinusoidal=recognition test
 E("u3-periodic-or-sinusoidal",3,["7.3"],1,"gen",function(){
   var fam=pick(["sinusoidal","triangle","square","parabola"]),fn,x1=pick([9,10,12]);
   if(fam==="sinusoidal"){var A1=pick([1.5,2,2.5]),W1=pick([1.2,1.6,2.1]),D1=pick([-0.5,0,0.8]);fn=function(x){return A1*Math.sin(W1*x)+D1;};}
@@ -1178,6 +1237,7 @@ E("u3-periodic-or-sinusoidal",3,["7.3"],1,"gen",function(){
   q.figure=plotSVG(fn,0,x1,-3,4,{gx:1,gy:1});
   return q;
 });
+// LEVELBASIS: u3-ferris-interpret=direct recall
 E("u3-ferris-interpret",3,["7.3"],1,"var",varset([
   function(){var fn=function(t){return 9-7*Math.cos(30*t*Math.PI/180);};
     var q=mcq("The graph shows the height of a rider on a Ferris wheel at a St. John's fair, in metres, over time in minutes. Riders board at the lowest point of the ride. What is the <b>boarding height</b>?",
@@ -1197,6 +1257,7 @@ E("u3-ferris-interpret",3,["7.3"],1,"var",varset([
       "The height oscillates evenly between 2 m and 18 m around the midline y = 10. Halfway between the top and bottom of the ride is the centre of the wheel, so the midline gives the axle height, 10 m.",{});
     q.figure=plotSVG(fn,0,10,0,20,{gx:1,gy:2,labelX:true,labelY:true});return q;}
 ]));
+// LEVELBASIS: u3-eq-amplitude-period=direct recall
 E("u3-eq-amplitude-period",3,["7.4"],1,"gen",function(){
   var feat=pick(["amplitude","period"]);
   var a=pick([2,3,4,5])*pick([1,-1]),b=pick([0.5,1,2,3]),c=pick([0,20,40]),d=pick([-3,-1,0,2]),trig=pick(["sin","cos"]),tries=0;
@@ -1233,6 +1294,7 @@ E("u3-eq-amplitude-period",3,["7.4"],1,"gen",function(){
     "The period is \\(\\frac{360^\\circ}{b} = \\frac{360^\\circ}{"+b+"} = "+per+"^\\circ\\). The coefficient \\(b = "+b+"\\) compresses or stretches the basic cycle; it is not the period itself.",
     {feat:feat,b:b,per:per});
 });
+// LEVELBASIS: u3-eq-range-midline=direct recall
 E("u3-eq-range-midline",3,["7.4"],1,"gen",function(){
   var feat=pick(["range","midline"]);
   var a=pick([2,3,4,5])*pick([1,-1]),d=pick([-4,-2,-1,1,3]),trig=pick(["sin","cos"]),tg=0;
@@ -1250,6 +1312,7 @@ E("u3-eq-range-midline",3,["7.4"],1,"gen",function(){
     "The amplitude is \\(|a| = "+Math.abs(a)+"\\), so the graph runs from \\(d - |a| = "+lo+"\\) up to \\(d + |a| = "+hi+"\\) around the midline \\(y = "+d+"\\). The interval that stops at the midline, and the one that forgets the vertical shift, are the traps.",
     {feat:feat,a:a,d:d});
 });
+// LEVELBASIS: u3-eq-phase-shift=direct recall
 E("u3-eq-phase-shift",3,["7.4"],1,"var",varset([
   function(){
   var c=pick([15,30,45,60,90])*pick([1,-1]),a=pick([1,2,3]),d=pick([-2,0,1]),trig=pick(["sin","cos"]);
@@ -1276,6 +1339,7 @@ E("u3-eq-phase-shift",3,["7.4"],1,"var",varset([
     return q;
   }
 ]));
+// LEVELBASIS: u3-match-eq-graph=indicator-named taught procedure
 E("u3-match-eq-graph",3,["7.5"],2,"gen",function(){
   var a=pick([2,3,4]),b=pick([1,2,3]),d=pick([-3,-2,-1,1,2,3]),trig=pick(["sin","cos"]);
   var fn=sinFn(a,trig,b,0,d);
@@ -1288,6 +1352,7 @@ E("u3-match-eq-graph",3,["7.5"],2,"gen",function(){
   q.figure=plotSVG(fn,0,720,-(a+Math.abs(d)+2),a+Math.abs(d)+2,{gx:90,gy:1,labelX:true,labelY:true});
   return q;
 });
+// LEVELBASIS: u3-build-equation=taught procedure, multi-step
 E("u3-build-equation",3,["7.5"],2,"gen",function(){
   var M=pick([6,8,9,10,12]),m=pick([-4,-2,-1,1,2]),P=pick([120,180,360,720]);
   while(((M+m)%2!==0)||m===0||(M-m)/2<1){M=pick([6,8,9,10,12]);m=pick([-4,-2,-1,1,2]);}
@@ -1299,6 +1364,7 @@ E("u3-build-equation",3,["7.5"],2,"gen",function(){
     {M:M,m:m,P:P});
   return q;
 });
+// LEVELBASIS: u3-graph-full-equation=taught procedure, multi-step
 E("u3-graph-full-equation",3,["7.2","7.5"],2,"gen",function(){
   var a=pick([2,3,4]),c=pick([30,45,60,90,120]),d=pick([-3,-2,-1,1,2,3]);
   var fn=sinFn(a,"sin",1,c,d);
@@ -1310,6 +1376,7 @@ E("u3-graph-full-equation",3,["7.2","7.5"],2,"gen",function(){
   q.figure=plotSVG(fn,0,720,-(a+Math.abs(d)+2),a+Math.abs(d)+2,{gx:30,gy:1,labelX:true,labelY:true,labelEvery:3});
   return q;
 });
+// LEVELBASIS: u3-data-fit-params=direct recall
 E("u3-data-fit-params",3,["7.6"],1,"gen",function(){
   var a=pick([1.5,2,2.5,3,3.5,4]),d=pick([2,3,4,5,6,8,10]),feat=pick(["amplitude","period"]);
   while(d===a||2*a===d)d=pick([2,3,4,5,6,8,10]);
@@ -1327,6 +1394,7 @@ E("u3-data-fit-params",3,["7.6"],1,"gen",function(){
     "The pattern high, mid, low, mid returns to its starting height at 12 h (high at 3 h repeats at 15 h), so one full cycle takes <b>12 h</b>. The 6 h figure is only the high-to-low half cycle.",
     {feat:feat,a:a,d:d}); q.figure=fig; return q;
 });
+// LEVELBASIS: u3-data-equation=taught procedure, multi-step
 E("u3-data-equation",3,["7.6"],2,"gen",function(){
   var a=pick([2,3,4]),d=pick([3,4,5,6,8,10]),b=pick([15,30]),fam=pick(["sin","cos"]);
   while(d===a)d=pick([3,4,5,6,8,10]);
@@ -1344,6 +1412,7 @@ E("u3-data-equation",3,["7.6"],2,"gen",function(){
     (fam==="sin"?"The depth starts at the midline value "+d+" and rises to "+(d+a)+", the sine pattern starting at its midline.":"The depth starts at its maximum "+(d+a)+" and falls, the cosine pattern starting at a peak.")+" The midline is "+d+", the amplitude is "+a+", and the cycle takes "+per+" h, so \\(b = \\frac{360}{"+per+"} = "+b+"\\) with the cycle measured in degrees. The model is \\("+eqFor(a,fam,b,d)+"\\).",
     {a:a,d:d,b:b,fam:fam}); q.figure=fig; return q;
 });
+// LEVELBASIS: u3-tide-predict=taught procedure, multi-step
 E("u3-tide-predict",3,["7.7"],2,"gen",function(){
   var H=pick([3.6,4.2,4.8,5.4]),L=pick([0.4,0.6,0.8,1.2]);
   var h1=pick([1,2,3]),off=pick([0,3,6,9]),cycles=pick([1,2]);
@@ -1353,6 +1422,7 @@ E("u3-tide-predict",3,["7.7"],2,"gen",function(){
     "Work out where "+t+":00 falls in the cycle. Low tide is at "+(h1+6)+":00 and the pattern repeats every 12 hours, so lows also occur at "+(h1+6+12)+":00 and "+(h1+6+24)+":00, and highs 6 hours after each low. "+(off===0?"The time "+t+":00 lands exactly on a low tide.":(off===6?"The time "+t+":00 lands exactly on a high tide.":"The time "+t+":00 lands halfway between a high and a low, on the midline, whose height is the average \\(\\frac{"+H+" + "+L+"}{2}\\)."))+" The height is <b>"+fmt(Math.round(ans*100)/100)+" m</b>.",
     {H:H,L:L,t:t,off:off});
 });
+// LEVELBASIS: u3-temp-model=taught procedure, multi-step
 E("u3-temp-model",3,["7.7"],2,"var",varset([
   function(){return numq("The temperature in Gander over a day is modelled by \\(T(t) = 6 \\sin 15^\\circ(t - 9) + 14\\), where \\(t\\) is the hour of the day. At what hour does the temperature first reach its daily maximum?",
     15,0.01,
@@ -1366,6 +1436,7 @@ E("u3-temp-model",3,["7.7"],2,"var",varset([
 ]));
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: three Level 2 CR entries (3, 2 and 2 marks). The Level 2 CR pool held only three 2-mark entries, so the remainders behind the Level 3 picks could not form. ---------- */
+// LEVELBASIS: u3-evaluate-equation-cr=taught procedure, multi-step
 E("u3-evaluate-equation-cr",3,["7.4"],2,"gen",function(){
   var cb=pick([[15,30],[15,90],[15,150],[15,270],[30,30],[30,90],[30,150],[30,270],[45,90],[45,270],[60,90],[60,270],[90,90],[90,180],[90,270]]);
   var b=cb[0], phase=cb[1];
@@ -1377,6 +1448,7 @@ E("u3-evaluate-equation-cr",3,["7.4"],2,"gen",function(){
     "Substitute \\(x = "+t+"^\\circ\\): the angle inside the sine is \\("+b+"("+t+" - "+c+")^\\circ = "+phase+"^\\circ\\), and \\(\\sin "+phase+"^\\circ = "+sv+"\\). So \\(y = "+a+" \\times "+sv+(d===0?"":" + ("+d+")")+" = \\)<b>"+fmt(ans,2)+"</b>.",
     {b:b,phase:phase,c:c,t:t});
 });
+// LEVELBASIS: u3-first-max-time-cr=taught procedure, multi-step
 E("u3-first-max-time-cr",3,["7.3"],2,"gen",function(){
   var b=pick([15,30,45]), a=pick([2,3,4]), h=pick([0,1,2]), k=pick([6,8,10,12]);
   var t=h+90/b;
@@ -1387,6 +1459,7 @@ E("u3-first-max-time-cr",3,["7.3"],2,"gen",function(){
     "The depth is greatest when the sine factor first equals 1, which happens when its argument first reaches \\(90^\\circ\\). Set the argument equal to \\(90^\\circ\\) and solve: \\[ \\begin{aligned} "+steps+" \\end{aligned} \\] The depth first reaches its maximum at <b>"+fmt(t,2)+"</b> hours after midnight.",
     {b:b,h:h});
 });
+// LEVELBASIS: u3-characteristics-combo-cr=taught procedure, multi-step
 E("u3-characteristics-combo-cr",3,["7.2"],2,"gen",function(){
   var pr=pick([[11,-3],[9,-3],[9,1],[7,-1],[7,1],[11,1],[13,-1],[10,-2],[12,2]]);
   var M=pr[0], m=pr[1], P=pick([120,180,360,720]);
@@ -1434,6 +1507,7 @@ function bStr(bn,bd){return bd===1?(""+bn):"\\left(\\frac{"+bn+"}{"+bd+"}\\right
 function expS(a,bn,bd){return (a===1?"":(""+a))+"("+bStr(bn,bd)+")^x";}
 function powVal(bn,bd,k){var n=1,d=1,i;if(k>=0){for(i=0;i<k;i++){n*=bn;d*=bd;}}else{for(i=0;i<-k;i++){n*=bd;d*=bn;}}var g=gcd2(n,d);return [n/g,d/g];}
 function valStr(n,d){return d===1?(""+n):("\\frac{"+n+"}{"+d+"}");}
+// LEVELBASIS: u4-identify-exponential=recognition test
 E("u4-identify-exponential",4,["4.12"],1,"gen",function(){
   var A=pick([2,3,4,5,6,7,8,9]),bp=pick([[2,1],[3,1],[4,1],[1,2],[1,3],[1,4],[4,5],[5,4],[3,2]]);
   var corr="\\(y = "+expS(A,bp[0],bp[1])+"\\)";
@@ -1453,6 +1527,7 @@ E("u4-identify-exponential",4,["4.12"],1,"gen",function(){
     "An exponential function has the variable in the exponent with a positive constant base (not 1): \\(y = a(b)^x\\). The correct choice has that form. The others are a polynomial, a linear function, a power of \\(x\\), a negative base (not allowed for exponential functions in this course), a reciprocal, a constant, or a root function.",
     {A:A,bp:bp});
 });
+// LEVELBASIS: u4-growth-or-decay=one cued step
 E("u4-growth-or-decay",4,["4.13"],1,"gen",function(){
   var A=pick([2,3,4,5,6,8,10,12,15,20]),bp=pick([[2,1],[3,1],[4,1],[5,1],[1,2],[1,3],[1,4],[2,5],[5,2]]);
   var bv=bp[0]/bp[1],growth=bv>1;
@@ -1464,6 +1539,7 @@ E("u4-growth-or-decay",4,["4.13"],1,"gen",function(){
     "For \\(y = a(b)^x\\) with \\(a > 0\\), the base decides the direction: here \\(b = "+fmt(bv)+"\\), which is "+(growth?"greater than 1, so each step multiplies by more than 1 and the function increases.":"between 0 and 1, so each step multiplies by a fraction and the function decreases.")+" The coefficient \\(a\\) sets the starting value, not the direction.",
     {A:A,bp:bp});
 });
+// LEVELBASIS: u4-express-as-power=one cued step
 E("u4-express-as-power",4,["4.7"],1,"gen",function(){
   var mode=pick(["int","int","frac"]);
   if(mode==="frac"){
@@ -1491,6 +1567,7 @@ E("u4-express-as-power",4,["4.7"],1,"gen",function(){
     "\\("+B+"^"+k+"\\) means "+B+" multiplied by itself "+k+" times: \\("+Array(k).fill(B).join(" \\times ")+" = "+N+"\\). (Multiplying the base by the exponent, "+(B*k)+", is the classic trap.)",
     {B:B,k:k});
 });
+// LEVELBASIS: u4-graph-characteristics=direct recall
 E("u4-graph-characteristics",4,["4.12"],1,"gen",function(){
   function normOpts(key,ds){
     function dp(s){var m=String(s).match(/^(-?\d+(?:\.(\d+))?)(%?)$/);return m?(m[2]?m[2].length:0):null;}
@@ -1540,6 +1617,7 @@ E("u4-graph-characteristics",4,["4.12"],1,"gen",function(){
     {feat:feat,A:A,bp:bp});
   q3.figure=plotSVG(fn,win.x0,win.x1,win.y0,win.y1,{gx:1,gy:5,labelX:true});return q3;
 });
+// LEVELBASIS: u4-eq-characteristics=direct recall
 E("u4-eq-characteristics",4,["4.13"],1,"gen",function(){
   function normOpts(key,ds){
     function dp(s){var m=String(s).match(/^(-?\d+(?:\.(\d+))?)(%?)$/);return m?(m[2]?m[2].length:0):null;}
@@ -1582,6 +1660,7 @@ E("u4-eq-characteristics",4,["4.13"],1,"gen",function(){
     "Each increase of 1 in \\(x\\) adds one more multiplication by the base: \\(y\\) is multiplied by \\(b = "+fmt(bv)+"\\) every step. That constant multiple is the growth (or decay) factor; \\(a = "+A+"\\) is only the starting value at \\(x = 0\\).",
     {feat:feat,A:A,bp:bp});
 });
+// LEVELBASIS: u4-match-graph=taught procedure, multi-step
 E("u4-match-graph",4,["4.11"],2,"gen",function(){
   var A=pick([1,2,3,4,5,6,7,8]),bp=pick([[2,1],[3,1],[4,1],[5,1],[1,2],[1,3],[1,4],[1,5],[4,5],[3,2]]),bv=bp[0]/bp[1];
   var fn=function(x){return A*Math.pow(bv,x);};
@@ -1594,6 +1673,7 @@ E("u4-match-graph",4,["4.11"],2,"gen",function(){
   q.figure=plotSVG(fn,-3,3.5,-4,Math.max(20,A*Math.pow(bv,2.5)+6),{gx:1,gy:5,labelX:true});
   return q;
 });
+// LEVELBASIS: u4-match-by-description=taught procedure, multi-step
 E("u4-match-by-description",4,["4.11"],2,"gen",function(){
   var table=[[[2,1],[3,5,12,20,25]],[[3,1],[3,5,12,20,25]],[[4,1],[2,3,5,10]],[[1,2],[4,6,10,20,30]],[[1,3],[6,12,24,30]],[[1,4],[8,16,20,40]],[[1,5],[10,25,50]]];
   var row=pick(table),bp=row[0],A=pick(row[1]),bv=bp[0]/bp[1],step=pick([1,2]);
@@ -1620,6 +1700,7 @@ function expDataGen(){
   var ys=xs.map(function(x,i){return A*Math.pow(bv,i);});
   return {bp:bp,bv:bv,A:A,step:step,xs:xs,ys:ys,ctx:pick(EXP_CTX)};
 }
+// LEVELBASIS: u4-data-fit-equation=direct recall
 E("u4-data-fit-equation",4,["4.1"],1,"gen",function(){
   var g=expDataGen(),recip=[g.bp[1],g.bp[0]];
   var tbl=tblHTML(g.xs,g.ys.map(function(v){return fmt(v);}),g.ctx.xu,g.ctx.yu);
@@ -1630,6 +1711,7 @@ E("u4-data-fit-equation",4,["4.1"],1,"gen",function(){
     "Check the pattern: each step multiplies the value by "+fmt(g.bv)+" ("+g.ys.slice(0,3).map(function(v){return fmt(v);}).join(" to ")+" ...), a constant ratio, so the model is exponential, not linear. The starting value at \\(t = 0\\) is "+g.A+", giving \\(a = "+g.A+"\\), and the ratio gives \\(b = "+fmt(g.bv)+"\\). The model is \\("+eqv(g.A,g.bp)+"\\).",
     {A:g.A,bp:g.bp,step:g.step});
 });
+// LEVELBASIS: u4-data-next-value=one cued step
 E("u4-data-next-value",4,["4.1"],1,"gen",function(){
   var g=expDataGen(),ask=pick(["next","missing"]);
   if(ask==="next"){
@@ -1645,6 +1727,7 @@ E("u4-data-next-value",4,["4.1"],1,"gen",function(){
     "The values change by a constant ratio: "+fmt(g.ys[1])+" / "+fmt(g.ys[0])+" = "+fmt(g.bv)+", confirmed by "+fmt(g.ys[4])+" / "+fmt(g.ys[3])+" = "+fmt(g.bv)+". So the missing value is "+fmt(g.ys[1])+" \\(\\times "+fmt(g.bv)+" = "+fmt(missing)+"\\). (Adding a constant difference instead is the linear trap; the differences here grow.)",
     {ask:ask,A:g.A,bp:g.bp});
 });
+// LEVELBASIS: u4-interpret-graph-model=taught procedure, multi-step
 E("u4-interpret-graph-model",4,["4.3"],2,"var",varset([
   function(){var fn=function(t){return 150*Math.pow(2,t/2);};
     var q=mcq("The graph models the population of bacteria in a sample, over time in hours. What does the value where the graph crosses the vertical axis represent?",
@@ -1665,6 +1748,7 @@ E("u4-interpret-graph-model",4,["4.3"],2,"var",varset([
       "Read across from 540 on the vertical axis to the curve and down: the graph passes through (4, 180) and (8, 540), since the count triples every 4 days (60, 180, 540). It takes 8 days.",{});
     q.figure=plotSVG(fn,0,10,0,2000,{gx:1,gy:250,labelX:true});return q;}
 ]));
+// LEVELBASIS: u4-solve-common-base=one cued step
 E("u4-solve-common-base",4,["4.7"],1,"gen",function(){
   var bp=pick([[2,1],[3,1],[4,1],[5,1],[9,1],[25,1],[1,2],[1,3]]),k=pick([-3,-2,-1,1,2,3,4]);
   var v=powVal(bp[0],bp[1],k);
@@ -1673,6 +1757,7 @@ E("u4-solve-common-base",4,["4.7"],1,"gen",function(){
     "Rewrite the right side as a power of the same base: \\("+valStr(v[0],v[1])+" = "+bStr(bp[0],bp[1])+"^{"+k+"}\\). With equal bases, the exponents are equal, so \\(x = "+k+"\\)"+(k<0?" (a negative exponent, matching the fraction on the right)":"")+".",
     {bp:bp,k:k});
 });
+// LEVELBASIS: u4-solve-rewrite-base=taught procedure, multi-step
 E("u4-solve-rewrite-base",4,["4.7"],2,"gen",function(){
   var cdata={2:{ms:[2,3,4,5],nmax:8},3:{ms:[2,3,4],nmax:6},5:{ms:[2,3],nmax:4},7:{ms:[2],nmax:3}};
   var c=pick([2,3,5,7]),m=pick(cdata[c].ms),nmax=cdata[c].nmax,n=ri(1,nmax),tries=0;
@@ -1684,6 +1769,7 @@ E("u4-solve-rewrite-base",4,["4.7"],2,"gen",function(){
     "Both numbers are powers of "+c+": \\("+B+" = "+c+"^{"+m+"}\\) and \\("+N+" = "+c+"^{"+n+"}\\). Rewrite with the common base and equate the exponents: \\[ \\begin{aligned} "+c+"^{"+m+"x} &= "+c+"^{"+n+"} \\\\ "+m+"x &= "+n+" \\\\ x &= "+(gcd2(n,m)>1?("\\frac{"+(n/gcd2(n,m))+"}{"+(m/gcd2(n,m))+"}"):("\\frac{"+n+"}{"+m+"}"))+" = "+fmt(x,2)+" \\end{aligned} \\]",
     {c:c,m:m,n:n});
 });
+// LEVELBASIS: u4-solve-two-sided=taught procedure, multi-step
 E("u4-solve-two-sided",4,["4.7"],2,"gen",function(){
   var fam=pick(["shift","scale","recip"]);
   if(fam==="shift"){
@@ -1707,6 +1793,7 @@ E("u4-solve-two-sided",4,["4.7"],2,"gen",function(){
     "Rewrite the fraction base: \\(\\left(\\frac{1}{"+B3+"}\\right)^x = "+B3+"^{-x}\\), and the right side is \\("+B3+"^{"+K3+"}\\). So \\(-x = "+K3+"\\), giving \\(x = "+x3+"\\). A fraction base with a positive value greater than 1 on the right forces a negative solution.",
     {fam:fam,B:B3});
 });
+// LEVELBASIS: u4-estimate-solution=one cued step
 E("u4-estimate-solution",4,["4.8"],1,"gen",function(){
   if(Math.random()<0.35){
     var k2=pick([2,3,4]),lo2=Math.pow(2,k2),hi2=Math.pow(2,k2+1);
@@ -1725,6 +1812,7 @@ E("u4-estimate-solution",4,["4.8"],1,"gen",function(){
     "Compute the consecutive powers: \\("+B+"^{"+k+"} = "+lo+"\\) and \\("+B+"^{"+(k+1)+"} = "+hi+"\\). Since "+lo+" < "+N+" < "+hi+", and the function is increasing, the solution lies <b>between "+k+" and "+(k+1)+"</b>. No logarithm is needed for the estimate; the powers bracket the answer.",
     {B:B,k:k,N:N});
 });
+// LEVELBASIS: u4-solve-isolate=taught procedure, multi-step
 E("u4-solve-isolate",4,["4.8"],2,"gen",function(){
   if(Math.random()<0.3){
     var x0=pick([3,4]),mult=pick([3,5]),A3=Math.pow(2,x0)*mult;
@@ -1739,6 +1827,7 @@ E("u4-solve-isolate",4,["4.8"],2,"gen",function(){
     "Isolate the power first: \\[ \\begin{aligned} "+a+"("+b+")^x &= "+C+" \\\\ "+b+"^x &= "+Math.pow(b,x1)+" \\\\ x &= "+x1+" \\end{aligned} \\] The right side in the middle line is \\("+b+"^{"+x1+"}\\), so the bases match. (Dividing "+C+" by "+a+" early is the step that makes the bases match.)",
     {b:b,x1:x1,a:a});
 });
+// LEVELBASIS: u4-growth-model-eval=taught procedure, multi-step
 E("u4-growth-model-eval",4,["4.9"],2,"gen",function(){
   var fam=pick(["eval","inverse"]);
   var P0=pick([50,120,300,800]),b=pick([2,3]),D=pick([2,3,4]),ctx=pick([
@@ -1758,6 +1847,7 @@ E("u4-growth-model-eval",4,["4.9"],2,"gen",function(){
     "Set the model equal to the target and solve: \\[ \\begin{aligned} "+P0+"("+b+")^{t/"+D+"} &= "+target+" \\\\ ("+b+")^{t/"+D+"} &= "+Math.pow(b,kk2)+" \\\\ \\frac{t}{"+D+"} &= "+kk2+" \\\\ t &= "+ans2+" \\end{aligned} \\] The target is "+kk2+" growth periods of "+D+" "+ctx.u+" each, so \\(t = "+ans2+"\\) "+ctx.u+".",
     {fam:fam,P0:P0,b:b,D:D});
 });
+// LEVELBASIS: u4-half-life=taught procedure, multi-step
 E("u4-half-life",4,["4.9"],2,"gen",function(){
   var fam=pick(["amount","time"]);
   var A0=pick([160,240,320,480,640,800]),h=pick([4,5,6,8,10,12]),ctx=pick([
@@ -1777,6 +1867,7 @@ E("u4-half-life",4,["4.9"],2,"gen",function(){
     "Count the halvings: "+A0+" halves to "+(A0/2)+", then "+(A0/4)+", reaching "+target+" after "+kk2+" half-lives. Each takes "+h+" "+ctx.u+", so the time is \\("+kk2+" \\times "+h+" = "+ans2+"\\) "+ctx.u+".",
     {fam:fam,A0:A0,h:h});
 });
+// LEVELBASIS: u4-compound-model=taught procedure, multi-step
 E("u4-compound-model",4,["4.9"],2,"gen",function(){
   var fam=pick(["choose","read"]);
   var pairs=[[4,4],[6,2],[8,4],[6,12],[5,2],[8,2],[4,2],[6,4]];
@@ -1806,6 +1897,7 @@ E("u4-compound-model",4,["4.9"],2,"gen",function(){
     "In \\(A = P(1 + i)^{nt}\\), the coefficient of \\(t\\) in the exponent counts the compounding periods per year: here it is "+n+", so interest is compounded "+n+" times a year, "+(n===2?"semi-annually":(n===4?"quarterly":"monthly"))+". (The per-period rate \\(i = "+istr+"\\) agrees: it is the "+r+"% annual rate divided by "+n+".)",
     {fam:fam,ask:ask,r:r,n:n});
 });
+// LEVELBASIS: u4-app-decision=taught procedure, multi-step
 E("u4-app-decision",4,["4.5"],2,"var",varset([
   function(){return mcq("A town's population is recorded every five years: "+tblHTML([0,5,10],[120,360,1080],"Year","Population")+" Which statement best models the data and predicts the population in year 15?",
     "Exponential model P(t) = 120(3)^(t/5); year 15 population is 3240",
@@ -1820,6 +1912,7 @@ E("u4-app-decision",4,["4.5"],2,"var",varset([
     ["Exponential model M(t) = 5(4)^t; mass at 4 h is 320 g","Exponential model M(t) = 20(4)^t; mass at 4 h is 5120 g","Linear model M(t) = 5 + 37.5t; mass at 4 h is 155 g"],
     "The ratio is constant: 20 / 5 = 4 and 80 / 20 = 4, so M(t) = 5(4)^t with the initial mass 5 g (not 20 g, the value at t = 1). At t = 4: 5 x 256 = 1280 g.",{});}
 ]));
+// LEVELBASIS: u4-reverse-half-life=taught procedure, multi-step
 E("u4-reverse-half-life",4,["4.9"],2,"gen",function(){
   var R=pick([5,10,15,20,25,40]),kk=pick([2,3,4]),h=pick([3,4,5,6,8,10,12]);
   var A0=R*Math.pow(2,kk),t=h*kk;
@@ -1830,6 +1923,7 @@ E("u4-reverse-half-life",4,["4.9"],2,"gen",function(){
     "First count the halvings: "+A0+" to "+R+" is a factor of "+Math.pow(2,kk)+", which is "+kk+" halvings ("+chain.join(" \\(\\to\\) ")+"). Those "+kk+" half-lives took "+t+" "+ctx.u+", so one half-life is \\(\\frac{"+t+"}{"+kk+"} = "+h+"\\) "+ctx.u+". The extra step is counting the halvings before dividing.",
     {R:R,kk:kk,h:h});
 });
+// LEVELBASIS: u4-find-base=taught procedure, multi-step
 E("u4-find-base",4,["4.13"],2,"gen",function(){
   var useFrac=Math.random()<0.3;
   var kk,a,b,v,bdisp,ratioDisp;
@@ -1842,7 +1936,9 @@ E("u4-find-base",4,["4.13"],2,"gen",function(){
     "From \\(f(0)\\), \\(a = "+a+"\\) (the starting value). Then \\(f("+kk+")\\) gives: \\[ \\begin{aligned} b^{"+kk+"} &= \\frac{"+fmt(v)+"}{"+a+"} = "+ratioDisp+" \\\\ b &= "+bdisp+" \\end{aligned} \\] Recognizing the perfect power (\\("+ratioDisp+" = \\left("+bdisp+"\\right)^{"+kk+"}\\)) is the key step; no logarithm is needed.",
     {kk:kk,a:a,b:b});
 });
-E("u4-compare-models",4,["4.13"],1,"gen",function(){
+// Level audit Nov 25, 2026: retagged 1 to 2. The November 25 Level 3 review saw the equal-start deals, where the larger base wins at sight; as dealt now, most draws give the towns different starts, so the typical deal evaluates both models and compares, the same work as u6-compare-costs at Level 2 (Webb DOK 2).
+// LEVELBASIS: u4-compare-models=taught procedure, multi-step
+E("u4-compare-models",4,["4.13"],2,"gen",function(){
   var t=pick([3,4]),a1,a2,b1,b2,V1,V2,tries=0;
   do{a1=pick([40,60,100,150,200,300,500,750]);a2=pick([40,60,100,150,200,300,500,750]);b1=pick([2,3]);b2=pick([2,3]);
     V1=a1*Math.pow(b1,t);V2=a2*Math.pow(b2,t);tries++;}
@@ -1920,6 +2016,7 @@ function dis3s(correct,cands,fallbacks){
 }
 
 /* --- converting and evaluating (1.1, 1.2) --- */
+// LEVELBASIS: u5-convert-form=one cued step
 E("u5-convert-form",5,["1.1"],1,"gen",function(){
   var pairs=[[2,3],[2,5],[3,2],[3,4],[3,5],[4,3],[4,5],[5,2],[5,3],[5,4],[6,2],[6,3],[6,4],[7,2],[7,3],[7,4],[8,2],[8,3],[8,4],[9,2],[9,3],[9,4],[10,2],[10,3],[10,4],[10,5],[12,2],[12,3]];
   var pr=pick(pairs),b=pr[0],e=pr[1],v=Math.pow(b,e),toExp=Math.random()<0.5;
@@ -1937,6 +2034,7 @@ E("u5-convert-form",5,["1.1"],1,"gen",function(){
     "The base of the power stays the base of the logarithm, the exponent \\("+e+"\\) becomes the value of the logarithm, and the result \\("+v+"\\) becomes the argument: \\("+lg+"\\). The distractors swap the argument with the exponent, or use the wrong base.",
     {b:b,e:e,toExp:0});
 });
+// LEVELBASIS: u5-solve-log-basic=one cued step
 E("u5-solve-log-basic",5,["1.1"],1,"gen",function(){
   var shape=ri(1,3);
   if(shape===1){
@@ -1959,6 +2057,7 @@ E("u5-solve-log-basic",5,["1.1"],1,"gen",function(){
     "Rewrite in exponential form: \\(x^{"+e3+"} = "+a+"\\). Taking the "+(e3===2?"square":"cube")+" root gives \\(x = "+m+"\\) (the base of a logarithm must be positive, so the negative root is not allowed).",
     {shape:shape,m:m,e:e3});
 });
+// LEVELBASIS: u5-evaluate-log=direct recall
 E("u5-evaluate-log",5,["1.2"],1,"gen",function(){
   var shape=pick(["int","int","int","neg","half","threehalf","neghalf","zero"]);
   var b,arg,ans;
@@ -1973,6 +2072,7 @@ E("u5-evaluate-log",5,["1.2"],1,"gen",function(){
     "Ask what power of \\("+b+"\\) gives the argument: \\("+b+"^{"+fmt(ans)+"}\\) equals the argument"+(shape==="zero"?", since any base to the power 0 is 1":"")+", so \\("+lgS(b,arg)+" = "+fmt(ans)+"\\) by the definition of a logarithm.",
     {shape:shape,b:b});
 });
+// LEVELBASIS: u5-evaluate-mixed=direct recall
 E("u5-evaluate-mixed",5,["1.2"],1,"gen",function(){
   var shape=pick(["power","logpower","one","recip","root"]);
   var b=pick([2,3,4,5,6,7,8,9]),m=pick([2,3,4,5,6,7,8,9,10,11,12]),t=0;
@@ -2024,6 +2124,7 @@ function normOpts(key,ds){
     "A square root is the power \\(\\frac{1}{2}\\): \\(\\sqrt{"+b+"} = "+b+"^{1/2}\\), so the exponent, and therefore the logarithm, is \\(\\frac{1}{2}\\).",
     {shape:shape,b:b});
 });
+// LEVELBASIS: u5-which-law=recognition test
 E("u5-which-law",5,["1.3"],1,"var",varset([
   function(){return mcq("A student checks a law of logarithms with numbers and writes \\("+lgS(2,"32")+" = "+lgS(2,"8")+" + "+lgS(2,"4")+"\\). Which law does this illustrate?",
     "The product law: \\(\\log_b(mn) = \\log_b m + \\log_b n\\)",
@@ -2040,7 +2141,9 @@ E("u5-which-law",5,["1.3"],1,"var",varset([
 ]));
 
 /* --- laws of logarithms (1.3, 1.4) --- */
-E("u5-law-numeric",5,["1.3"],1,"gen",function(){
+// Level audit Nov 25, 2026: retagged 1 to 2. The target must be decomposed with the laws (a quotient and a power in the richest deals) and the given values combined; parity with u5-simplify-eval at Level 2 (Webb DOK 2).
+// LEVELBASIS: u5-law-numeric=taught procedure, multi-step
+E("u5-law-numeric",5,["1.3"],2,"gen",function(){
   var LV={2:0.3010,3:0.4771,5:0.6990,7:0.8451},LVS={2:"0.3010",3:"0.4771",5:"0.6990",7:"0.8451"};
   var pr=pick([[2,3],[2,5],[2,7],[3,5],[3,7],[5,7]]),p=pr[0],q=pr[1],lp=LV[p],lq=LV[q],lps=LVS[p],lqs=LVS[q];
   var forms=[
@@ -2061,6 +2164,7 @@ E("u5-law-numeric",5,["1.3"],1,"gen",function(){
     "Split the argument into the two given values using the laws of logarithms: \\[ \\begin{aligned} \\log_{10} "+f.disp+" &= "+f.expr+" \\\\ &= "+f.nexp+" \\\\ &= "+fmt(f.val,4)+" \\end{aligned} \\] Products become sums, quotients become differences, and powers become multipliers.",
     {p:p,q:q});
 });
+// LEVELBASIS: u5-expand-log=taught procedure, multi-step
 E("u5-expand-log",5,["1.4"],2,"gen",function(){
   var b=pick([2,3,5,10]),shape=pick(["prod","quot","three","root"]);
   var m=ri(2,5),n=ri(2,5),t=0;while(n===m&&t<40){n=ri(2,5);t++;}
@@ -2087,6 +2191,7 @@ E("u5-expand-log",5,["1.4"],2,"gen",function(){
     "The product law turns multiplication into addition, the quotient law turns division into subtraction, and the power law brings each exponent out front as a coefficient: the expansion is <b>\\("+corr+"\\)</b>. The distractors flip the sign of the last term, drop the coefficients, or attach the coefficients to the wrong variables.",
     {b:b,shape:shape});
 });
+// LEVELBASIS: u5-condense-log=taught procedure, multi-step
 E("u5-condense-log",5,["1.4"],2,"gen",function(){
   var b=pick([2,3,5,10]),shape=pick(["prod","quot","three","root"]);
   var m=ri(2,5),n=ri(2,5),t=0;while(n===m&&t<40){n=ri(2,5);t++;}
@@ -2117,6 +2222,7 @@ E("u5-condense-log",5,["1.4"],2,"gen",function(){
     "Run the laws in reverse: each coefficient becomes an exponent (the power law), addition combines into a product (the product law), and subtraction combines into a quotient (the quotient law): the result is <b>\\("+lgS(b,corrArg)+"\\)</b>. The distractors put a subtracted term in the numerator, turn the quotient upside down, or drop the exponents.",
     {b:b,shape:shape});
 });
+// LEVELBASIS: u5-simplify-eval=taught procedure, multi-step
 E("u5-simplify-eval",5,["1.4"],2,"gen",function(){
   var shape=pick(["sum","sum","diff","diff","power"]);
   if(shape==="sum"){
@@ -2144,6 +2250,7 @@ E("u5-simplify-eval",5,["1.4"],2,"gen",function(){
     {shape:shape,b:bb,A:AA,k:kk});
 });
 var U5SC=null;
+// LEVELBASIS: u5-solve-condense=taught procedure, multi-step
 E("u5-solve-condense",5,["1.4"],2,"gen",function(){
   if(!U5SC){
     U5SC=[];
@@ -2164,6 +2271,7 @@ E("u5-solve-condense",5,["1.4"],2,"gen",function(){
 });
 
 /* --- estimating, data, graphs and models (1.5, 4.2, 4.4, 4.6) --- */
+// LEVELBASIS: u5-estimate-log=one cued step
 E("u5-estimate-log",5,["1.5"],1,"gen",function(){
   var b=pick([2,2,3,3,10]),n,tv,fl,tries=0;
   do{
@@ -2177,6 +2285,7 @@ E("u5-estimate-log",5,["1.5"],1,"gen",function(){
     "Bracket the argument between consecutive powers of \\("+b+"\\): \\("+b+"^{"+fl+"} = "+Math.pow(b,fl)+"\\) and \\("+b+"^{"+(fl+1)+"} = "+Math.pow(b,fl+1)+"\\), so the logarithm lies between \\("+fl+"\\) and \\("+(fl+1)+"\\) \\((\\log_{"+b+"} "+n+" \\approx "+fmt(tv,2)+")\\). Of the choices, only \\("+corr+"\\) sits in that bracket at the right distance from the ends.",
     {b:b,n:n});
 });
+// LEVELBASIS: u5-data-fit-log=direct recall
 E("u5-data-fit-log",5,["4.2"],1,"gen",function(){
   var mode=pick(["ten","two","five"]),base=mode==="ten"?10:mode==="two"?2:5;
   var xs=mode==="ten"?[1,10,100,1000]:mode==="two"?[1,2,4,8,16]:[1,5,25,125];
@@ -2191,6 +2300,7 @@ E("u5-data-fit-log",5,["4.2"],1,"gen",function(){
     "Each time \\(x\\) is multiplied by \\("+base+"\\), \\(y\\) increases by exactly \\("+d+"\\): a constant increase per multiplication is the signature of a logarithmic model (an exponential model would multiply \\(y\\) instead). At \\(x = 1\\) the logarithm is 0, so the constant term is \\("+c+"\\), and the per-step increase is the coefficient of the logarithm: \\("+corr+"\\).",
     {mode:mode,c:c,d:d});
 });
+// LEVELBASIS: u5-interpret-graph=direct recall
 E("u5-interpret-graph",5,["4.4"],1,"gen",function(){
   var bg=pick([{b:2,x1:16,gx:2},{b:3,x1:27,gx:3},{b:10,x1:120,gx:10}]),b=bg.b,k=pick([-1,0,1,2]);
   var fn=function(x){return Math.log(x)/Math.log(b)+k;};
@@ -2233,6 +2343,7 @@ E("u5-interpret-graph",5,["4.4"],1,"gen",function(){
   q.figure=fig([]);
   return q;
 });
+// LEVELBASIS: u5-context-model=one cued step
 E("u5-context-model",5,["4.6"],1,"var",varset([
   function(){return mcq("The sound level of a noise, in decibels, is modelled by \\(L = 10\\log_{10}\\left(\\frac{I}{I_0}\\right)\\), where \\(I\\) is the intensity of the sound and \\(I_0\\) is a reference intensity. A factory machine produces a sound with intensity \\(I = 10^{7} I_0\\). What is its sound level?",
     "70 dB",
@@ -2248,6 +2359,7 @@ E("u5-context-model",5,["4.6"],1,"var",varset([
     "Substitute \\(t = 100\\): \\(\\log_{10} 100 = 2\\), so \\(R = 100 - 20 \\times 2 = 60\\)%. The 80% option treats the logarithm as 1; the model subtracts 20 for every factor of 10 in the time, and 100 days is two factors of 10 past day 1.",{});}
 ]));
 /* --- solving with logarithms (4.8) and applications (4.9) --- */
+// LEVELBASIS: u5-solve-with-logs=taught procedure, multi-step
 E("u5-solve-with-logs",5,["4.8"],2,"gen",function(){
   var shape=pick(["plain","plain","isolate","double","half"]);
   var b=pick([2,3,5,6,7,10]),c,tries=0;
@@ -2282,6 +2394,7 @@ E("u5-solve-with-logs",5,["4.8"],2,"gen",function(){
     "Take logarithms of both sides; the exponent here is \\(\\frac{x}{2}\\): \\[ \\begin{aligned} "+b+"^{\\frac{x}{2}} &= "+c+" \\\\ \\frac{x}{2} \\log "+b+" &= \\log "+c+" \\\\ x &= "+FR("2\\log "+c,"\\log "+b)+" \\end{aligned} \\] Solving for \\(x\\) doubles the logarithm ratio; halving it instead is the second distractor's error.",
     {shape:shape,b:b,c:c});
 });
+// LEVELBASIS: u5-two-bases=taught procedure, multi-step
 E("u5-two-bases",5,["4.8"],2,"gen",function(){
   var shape=Math.random()<0.45?"twoexp":"coeff";
   if(shape==="twoexp"){
@@ -2302,6 +2415,7 @@ E("u5-two-bases",5,["4.8"],2,"gen",function(){
     {shape:shape,b:bb,d:dd,a:a,m:m});
 });
 
+// LEVELBASIS: u5-growth-time=taught procedure, multi-step
 E("u5-growth-time",5,["4.9"],2,"gen",function(){
   if(Math.random()<0.5){
     var r=pick([2,3,4]),rw={2:"doubles",3:"triples",4:"quadruples"}[r],m=pick([3,4,5,6]);
@@ -2327,6 +2441,7 @@ E("u5-growth-time",5,["4.9"],2,"gen",function(){
     "Model the amount as \\(P(t) = "+A2+" \\times \\left(\\frac{1}{2}\\right)^{t/"+k2+"}\\) and set it equal to "+T2+": \\[ \\begin{aligned} "+A2+" \\times \\left(\\frac{1}{2}\\right)^{t/"+k2+"} &= "+T2+" \\\\ \\left(\\frac{1}{2}\\right)^{t/"+k2+"} &= "+FR("1",""+Math.pow(2,m2))+" \\\\ \\frac{t}{"+k2+"} &= "+m2+" \\\\ t &= "+(m2*k2)+" \\end{aligned} \\] The amount must halve "+m2+" times, and each halving takes one half-life.",
     {m:m2,k:k2});
 });
+// LEVELBASIS: u5-catch-up=taught procedure, multi-step
 E("u5-catch-up",5,["4.9"],2,"gen",function(){
   var f=pick([2,3]),k=pick([2,3,4]),s=pick([30,40,50,60,100,120,200,250,300,500]),B0=s*Math.pow(f,k);
   var ctx=pick([
@@ -2341,6 +2456,7 @@ E("u5-catch-up",5,["4.9"],2,"gen",function(){
     {f:f,k:k,s:s});
 });
 /* --- logarithmic scales (4.10) --- */
+// LEVELBASIS: u5-ph-scale=direct recall
 E("u5-ph-scale",5,["4.10"],1,"gen",function(){
   var CTX={2:["lemon juice","vinegar"],3:["orange juice","apple juice"],4:["tomato juice","a carbonated soft drink"],5:["black coffee","rainwater"],6:["milk","human saliva"],7:["pure water","distilled water"],8:["seawater","a baking soda solution"],9:["a soap solution","a laundry detergent solution"]};
   var shape=pick(["findpH","findpH","findConc","compare","vsWater"]);
@@ -2372,6 +2488,7 @@ E("u5-ph-scale",5,["4.10"],1,"gen",function(){
     "Compare concentrations through the pH gap: \\(7 - "+p3+" = "+(7-p3)+"\\) pH units, and each unit is a factor of 10, so the concentration is \\(10^{"+(7-p3)+"} = "+Math.pow(10,7-p3)+"\\) times as large.",
     {shape:shape,p:p3});
 });
+// LEVELBASIS: u5-richter-decibel=one cued step
 E("u5-richter-decibel",5,["4.10"],1,"gen",function(){
   var shape=pick(["db","db","richter","concept"]);
   if(shape==="db"){
@@ -2405,6 +2522,7 @@ E("u5-richter-decibel",5,["4.10"],1,"gen",function(){
 });
 /* --- matching and characteristics (4.11, 4.14, 4.15) --- */
 function pvStr(b,e){var v=powVal(b,1,e);return valStr(v[0],v[1]);}
+// LEVELBASIS: u5-match-graph=taught procedure, multi-step
 E("u5-match-graph",5,["4.11"],2,"gen",function(){
   var BS=[{b:2,d:"2",rec:"\\frac{1}{2}"},{b:3,d:"3",rec:"\\frac{1}{3}"},{b:4,d:"4",rec:"\\frac{1}{4}"},{b:10,d:"10",rec:"\\frac{1}{10}"},{b:0.5,d:"\\frac{1}{2}",rec:"2"},{b:1/3,d:"\\frac{1}{3}",rec:"3"},{b:0.25,d:"\\frac{1}{4}",rec:"4"}];
   var B=pick(BS),b=B.b,form=Math.random()<0.55?"k":"h";
@@ -2432,6 +2550,7 @@ E("u5-match-graph",5,["4.11"],2,"gen",function(){
   q2.figure=plotSVG(fn2,h+0.02,(b===10?60:12)+Math.max(h,0),-5,5,{gx:b===10?10:(b===3||b===1/3?3:2),gy:1,labelX:true,labelY:true});
   return q2;
 });
+// LEVELBASIS: u5-graph-char=direct recall
 E("u5-graph-char",5,["4.14"],1,"gen",function(){
   var form=Math.random()<0.5?"A":"B",b=pick([2,3]),q;
   if(form==="A"){
@@ -2483,6 +2602,7 @@ E("u5-graph-char",5,["4.14"],1,"gen",function(){
   q.figure=figB;
   return q;
 });
+// LEVELBASIS: u5-eq-char=direct recall
 E("u5-eq-char",5,["4.15"],1,"gen",function(){
   var form=pick(["a","k","h"]),b=pick([2,3,5,10]),eq,feat;
   if(form==="a"){
@@ -2588,6 +2708,7 @@ FINC.push({r:5,fw:"annually",m:1,n:4,term:"4 years"});
 function finPick(){var s=pick(FINC);return {r:s.r,fw:s.fw,m:s.m,n:s.n,term:s.term,i:s.r/100/s.m};}
 
 /* --- interest concepts (1.6, 1.7) --- */
+// LEVELBASIS: u6-identify-compound=recognition test
 E("u6-identify-compound",6,["1.7"],1,"var",varset([
   function(){return mcq("Which situation involves <b>compound interest</b>?",
     "A savings account where the interest is added to the balance each year, so the next year's interest is calculated on the larger balance",
@@ -2602,6 +2723,7 @@ E("u6-identify-compound",6,["1.7"],1,"var",varset([
     ["The interest rate increases every month, rising a little at a time while the balance stays unpaid","A monthly fee is added to the balance, and the fee grows a little larger with each passing month","The bank rounds every balance up to the nearest dollar, and the roundings build up month by month"],
     "The unpaid interest becomes part of the balance, and the next month's interest is charged on that larger balance: interest on interest, the defining feature of compound interest.",{});}
 ]));
+// LEVELBASIS: u6-simple-vs-compound=recognition test
 E("u6-simple-vs-compound",6,["1.6"],1,"var",varset([
   function(){return mcq("At the same stated rate and term, why does an <b>investor</b> usually prefer compound interest over simple interest?",
     "The interest itself earns interest, so the investment grows faster and faster over time",
@@ -2619,6 +2741,7 @@ E("u6-simple-vs-compound",6,["1.6"],1,"var",varset([
 /* --- reading formulas and basic calculations (1.8, 1.10) --- */
 /* --- reading formulas and basic calculations (1.8, 1.10) --- */
 /* --- reading formulas and basic calculations (1.8, 1.10) --- */
+// LEVELBASIS: u6-read-formula=direct recall
 E("u6-read-formula",6,["1.8"],1,"gen",function(){
   var s=finPick(),P=pick([400,500,800,1000,1200,1500,2000,2500,3000,4000,5000]),feat=pick(["principal","perrate","periods","freq"]);
   var formula="A = "+P+"("+fmt(1+s.i,4)+")^{"+s.n+"}";
@@ -2660,6 +2783,7 @@ function normOpts(key,ds){
     "The periodic rate inside the formula is \\("+fmt(s.i,4)+"\\), and \\("+s.r+"\\% \\div "+fmt(s.i*100,2)+"\\% = "+s.m+"\\), so the annual rate is split into "+s.m+" period(s) per year: the interest is compounded "+s.fw+".",
     {feat:feat,P:P});
 });
+// LEVELBASIS: u6-simple-interest=one cued step
 E("u6-simple-interest",6,["1.8"],1,"gen",function(){
   var P=pick([300,400,500,600,800,1000,1200,1500,2000,2500,3000,4000,5000,6000]),r=pick([3,3.5,4,4.5,5,6,7,8]),t=pick([2,3,4,5,6]);
   var I=P*r/100*t,askAmt=Math.random()<0.5;
@@ -2668,6 +2792,7 @@ E("u6-simple-interest",6,["1.8"],1,"gen",function(){
     "Simple interest is \\(I = Prt = "+P+" \\times "+fmt(r/100,3)+" \\times "+t+" = "+fmtF(I,2)+"\\), calculated on the original principal only."+(askAmt?" Adding the principal gives a total of "+mon(P+I)+" to repay.":""),
     {P:P,r:r,t:t});
 });
+// LEVELBASIS: u6-compound-amount=one cued step
 E("u6-compound-amount",6,["1.8"],1,"gen",function(){
   var s=finPick(),P=pick([400,500,800,1000,1200,1500,2000,2500,3000,5000]);
   var A=P*Math.pow(1+s.i,s.n),loan=Math.random()<0.4;
@@ -2676,6 +2801,7 @@ E("u6-compound-amount",6,["1.8"],1,"gen",function(){
     "Use \\(A = P(1 + i)^n\\) with the periodic rate \\(i = "+s.r+"\\% \\div "+s.m+" = "+fmt(s.i*100,2)+"\\%\\) and \\(n = "+s.n+"\\) periods: \\[ \\begin{aligned} A &= P(1 + i)^n \\\\ &= "+P+"("+fmt(1+s.i,4)+")^{"+s.n+"} \\\\ &= "+fmtF(A,2)+" \\end{aligned} \\] So the amount is "+mon(A)+". The rate must be divided by the compounding frequency before it goes into the formula.",
     {P:P,r:s.r,fw:s.fw});
 });
+// LEVELBASIS: u6-interest-earned=one cued step
 E("u6-interest-earned",6,["1.10"],1,"gen",function(){
   var s=finPick(),P=pick([400,500,800,1000,1200,1500,2000,2500,3000,5000]);
   var A=P*Math.pow(1+s.i,s.n),I=A-P,loan=Math.random()<0.5;
@@ -2685,6 +2811,7 @@ E("u6-interest-earned",6,["1.10"],1,"gen",function(){
     {P:P,r:s.r,fw:s.fw});
 });
 /* --- solving for an unknown (1.12) --- */
+// LEVELBASIS: u6-present-value=taught procedure, multi-step
 E("u6-present-value",6,["1.12"],2,"gen",function(){
   var s=finPick(),P=pick([400,500,800,1000,1200,1500,2000,2500,3000,5000]);
   var Aex=P*Math.pow(1+s.i,s.n),Ad=Math.round(Aex*100)/100,ans=Ad/Math.pow(1+s.i,s.n);
@@ -2693,6 +2820,7 @@ E("u6-present-value",6,["1.12"],2,"gen",function(){
     "Work the compound formula backwards, dividing instead of multiplying: \\[ \\begin{aligned} P &= \\frac{A}{(1 + i)^n} \\\\ &= \\frac{"+fmtF(Ad,2)+"}{("+fmt(1+s.i,4)+")^{"+s.n+"}} \\\\ &= "+fmtF(ans,2)+" \\end{aligned} \\] About "+mon(P)+" was borrowed; the rest of the payment is interest.",
     {P:P,r:s.r,fw:s.fw});
 });
+// LEVELBASIS: u6-find-term=taught procedure, multi-step
 E("u6-find-term",6,["1.12"],2,"gen",function(){
   var base=pick([[1.05,5],[1.1,10],[1.2,20],[1.25,25]]),fac=base[0],r=base[1],n=pick([2,3,4]);
   var P=pick([400,500,800,1000,1200,1500,2000,2500,3000,5000]),A=P*Math.pow(fac,n);
@@ -2702,6 +2830,7 @@ E("u6-find-term",6,["1.12"],2,"gen",function(){
     {r:r,n:n,P:P});
 });
 /* --- comparing compounding and offers (1.9) --- */
+// LEVELBASIS: u6-compare-frequency=taught procedure, multi-step
 E("u6-compare-frequency",6,["1.9"],2,"gen",function(){
   var r=pick([8,10,12]),P=pick([500,750,1000,1250,1500,1750,2000,2500,3000,4000]);
   var Aa=P*(1+r/100),As=P*Math.pow(1+r/200,2),Aq=P*Math.pow(1+r/400,4),askDiff=Math.random()<0.5;
@@ -2726,6 +2855,7 @@ var U6CC=[
   {at:"compound interest at 15% compounded annually for 2 years",af:Math.pow(1.15,2),bt:"simple interest at 16% for 2 years",bf:1+0.16*2},
   {at:"compound interest at 4% compounded semi-annually for 3 years",af:Math.pow(1.02,6),bt:"simple interest at 4.25% for 3 years",bf:1+0.0425*3}
 ];
+// LEVELBASIS: u6-compare-costs=taught procedure, multi-step
 E("u6-compare-costs",6,["1.9"],2,"gen",function(){
   var sc=pick(U6CC),P=pick([1000,1500,2000,2500,3000,4000,5000]);
   var IA=P*(sc.af-1),IB=P*(sc.bf-1),winner=IA<IB?"Loan A":"Loan B",save=Math.abs(IA-IB);
@@ -2737,6 +2867,7 @@ E("u6-compare-costs",6,["1.9"],2,"gen",function(){
 });
 
 /* --- loan costs and amortization (1.11) --- */
+// LEVELBASIS: u6-total-cost-loan=one cued step
 E("u6-total-cost-loan",6,["1.11"],1,"gen",function(){
   var pay=pick([74.50,86.25,95.75,109.99,124.60,138.45,152.30,175.80,210.25,249.99]),n=pick([12,18,24,36,48,60]);
   var total=Math.round(pay*n*100)/100,P=0,tries=0;
@@ -2748,6 +2879,7 @@ E("u6-total-cost-loan",6,["1.11"],1,"gen",function(){
     "Multiply the payment by the number of payments: \\[ \\begin{aligned} \\text{Total repaid} &= "+fmtF(pay,2)+" \\times "+n+" \\\\ &= "+fmtF(total,2)+(askInt?" \\\\ \\text{Interest} &= "+fmtF(total,2)+" - "+fmtF(P,2)+" \\\\ &= "+fmtF(interest,2):"")+" \\end{aligned} \\] "+(askInt?"The borrower pays "+mon(interest)+" for the use of the money; the rest repays the principal.":"The borrower repays "+mon(total)+" altogether, of which "+mon(interest)+" is interest."),
     {pay:pay,n:n,P:P});
 });
+// LEVELBASIS: u6-payments-term=one cued step
 E("u6-payments-term",6,["1.11"],1,"gen",function(){
   var f=pick([{w:"weekly",per:52},{w:"bi-weekly",per:26},{w:"semi-monthly",per:24},{w:"monthly",per:12},{w:"quarterly",per:4},{w:"semi-annually",per:2}]);
   var y=ri(1,6),count=f.per*y,toYears=Math.random()<0.5;
@@ -2756,6 +2888,7 @@ E("u6-payments-term",6,["1.11"],1,"gen",function(){
   return numq("A loan is repaid with "+f.w+" payments over "+y+" years. How many payments are made in total?",
     count,0.001,"There are "+f.per+" "+f.w+" payments in each year, and \\("+f.per+" \\times "+y+" = "+count+"\\), so "+count+" payments are made in total.",{f:f.w,y:y});
 });
+// LEVELBASIS: u6-amortization-read=direct recall
 E("u6-amortization-read",6,["1.11"],1,"gen",function(){
   var rows=null,P=0,rate=0,tries=0;
   while(tries++<80){
@@ -2790,6 +2923,7 @@ E("u6-amortization-read",6,["1.11"],1,"gen",function(){
     last.pay,0.01,"By the last year only "+mon(rows[rows.length-2].bal)+" is owing, and with one year of interest ("+mon(last.it)+") the final payment is just "+mon(last.pay)+", smaller than the regular payments because the loan is almost gone.",{shape:shape});
 });
 /* --- credit options (1.13) --- */
+// LEVELBASIS: u6-credit-fees=taught procedure, multi-step
 E("u6-credit-fees",6,["1.13"],2,"gen",function(){
   var B0=pick([800,1000,1200,1500,2000,2500]),ra=pick([14,16,18,20]),drop=pick([3,4,5]),rb=ra-drop;
   var diff0=B0*drop/100,delta=pick([-20,-12,-6,6,12,20]),fee=Math.max(5,Math.round((diff0+delta)/5)*5);
@@ -2800,6 +2934,7 @@ E("u6-credit-fees",6,["1.13"],2,"gen",function(){
     "A rate is only part of a card's cost. Add each card's charges for the year: \\[ \\begin{aligned} \\text{Card A} &= "+fmtF(cA,2)+" \\\\ \\text{Card B} &= "+fmtF(B0*rb/100,2)+" + "+fmtF(fee,2)+" = "+fmtF(cB,2)+" \\end{aligned} \\] "+winner+" costs less, by "+mon(Math.abs(cA-cB))+". The annual fee can wipe out a lower rate's advantage, which is why the last option is a trap.",
     {B0:B0,ra:ra,rb:rb});
 });
+// LEVELBASIS: u6-deferred-offer=taught procedure, multi-step
 E("u6-deferred-offer",6,["1.13"],2,"gen",function(){
   var P=pick([600,750,800,900,1100,1200,1500,1800,2000,2400]),r=pick([15,18,20,21,24,28]);
   var item=pick(["sofa","dining set","television","mattress","appliance package"]),nm=pick(["Taylor","Jordan","Casey","Riley","Alex"]);
@@ -2817,6 +2952,7 @@ E("u6-deferred-offer",6,["1.13"],2,"gen",function(){
     {P:P,r:r,paid:paid});
 });
 /* --- assets: appreciate and depreciate (1.14) --- */
+// LEVELBASIS: u6-appreciate-depreciate=one cued step
 E("u6-appreciate-depreciate",6,["1.14"],1,"var",varset([
   function(){return mcq("A classic car bought for $18,000 is now worth $24,000. By what percent did the car <b>appreciate</b>?",
     "33.3%",["25%","66.7%","6%"],
@@ -2829,6 +2965,7 @@ E("u6-appreciate-depreciate",6,["1.14"],1,"var",varset([
     ["A new smartphone","A new car that is driven daily","A laptop computer"],
     "Real estate in a growing area commonly gains value as demand rises, so the house is the appreciating asset. Phones, cars and laptops are depreciating assets: they lose value with age, wear and newer models replacing them.",{});}
 ]));
+// LEVELBASIS: u6-depreciation-value=one cued step
 E("u6-depreciation-value",6,["1.14"],1,"gen",function(){
   var asset=pick([
     {n:"car",mode:"dep",pool:[12000,15000,18000,20000,24000,28000,32000]},
@@ -2843,6 +2980,7 @@ E("u6-depreciation-value",6,["1.14"],1,"gen",function(){
     {asset:asset.n,r:r,t:t});
 });
 /* --- renting, buying, leasing (1.15, 1.16) --- */
+// LEVELBASIS: u6-rent-buy-lease=taught procedure, multi-step
 E("u6-rent-buy-lease",6,["1.15"],2,"var",varset([
   function(){return mcq("Renting a home costs $950 per month. Buying a similar home would cost $1,275 per month in mortgage payments, property taxes and upkeep. Ignoring equity, how much <b>more</b> cash goes out over 2 years if the family buys?",
     "$7,800",["$325","$3,900","$15,600"],
@@ -2855,6 +2993,7 @@ E("u6-rent-buy-lease",6,["1.15"],2,"var",varset([
     ["Leasing, by $1,320","Buying, by $2,680","They cost exactly the same"],
     "Buying really costs \\(26000 - 11000 = 15000\\) dollars once the resale value is counted. Leasing costs \\(340 \\times 48 = 16320\\) dollars. Buying costs less by \\(16320 - 15000 = 1320\\) dollars, and the buyer owns the car at the end as well.",{});}
 ]));
+// LEVELBASIS: u6-justify-decision=taught procedure, multi-step
 E("u6-justify-decision",6,["1.16"],2,"var",varset([
   function(){return mcq("Maya, a nurse, takes a 9-month work contract in a town where she knows no one, and expects to move back home afterwards. She needs a place to live. Which choice is <b>most advantageous</b> for her?",
     "Rent an apartment, because costs of buying and selling a home are hard to recover in a short stay",
@@ -2870,6 +3009,7 @@ E("u6-justify-decision",6,["1.16"],2,"var",varset([
     "Leasing trades ownership for exactly what Devon's circumstances call for: a current-model vehicle for his clients, fixed monthly costs for his business budget, and a vehicle that is always under warranty. Buying and keeping a vehicle long term is cheaper per year but leaves him with an aging vehicle and repair bills. Justification for Level 3: the best option depends on the stated priorities, not on the lowest headline cost.",{});}
 ]));
 /* --- cost and benefits (1.17) --- */
+// LEVELBASIS: u6-cost-benefit=taught procedure, multi-step
 E("u6-cost-benefit",6,["1.17"],2,"gen",function(){
   var ctx=pick([
     {item:"a high-efficiency furnace",saves:"on heating bills"},
@@ -2887,6 +3027,7 @@ E("u6-cost-benefit",6,["1.17"],2,"gen",function(){
 });
 
 /* Bimodal build additions (Nov 19, 2026): one written compound interest entry for the written section and one selected-response renting, leasing and buying entry for Unit 6. SME-flagged for the specialist pass. */
+// LEVELBASIS: u6-wcr-compound-loan-interest=taught procedure, multi-step
 E("u6-wcr-compound-loan-interest",6,["1.10"],2,"gen",function(){
   var combos=[
     {r:6,m:2,fw:"semi-annually",years:[2,3,4,5]},
@@ -2905,6 +3046,7 @@ E("u6-wcr-compound-loan-interest",6,["1.10"],2,"gen",function(){
     "The periodic rate is \\(i = "+c.r+"\\% \\div "+c.m+" = "+fmt(i*100,2)+"\\%\\) and there are \\(n = "+c.m+" \\times "+yrs+" = "+n+"\\) compounding periods. First find the final amount, then subtract the principal: \\[ \\begin{aligned} A &= P(1 + i)^n \\\\ &= "+P+"("+fmt(1+i,4)+")^{"+n+"} \\\\ &= "+fmtF(Ar,2)+" \\\\ I &= "+fmtF(Ar,2)+" - "+fmtF(P,2)+" \\\\ &= "+fmtF(I,2)+" \\end{aligned} \\] The total interest is <b>"+mon(I)+"</b>.",
     {P:P,r:c.r,fw:c.fw,yrs:yrs});
 });
+// LEVELBASIS: u6-add-rent-lease-buy=taught procedure, multi-step
 E("u6-add-rent-lease-buy",6,["1.15"],2,"gen",function(){
   function money0(v){return "$"+String(v).replace(/\B(?=(\d{3})+(?!\d))/g,",");}
   var L=0,T=0,D=0,P=0,S=0,leaseTotal=0,buyNet=0,diff=0,diffNS=0,tries=0;
@@ -2985,6 +3127,7 @@ function u7pair(filterFn,U){
 }
 
 /* --- concepts in context (2.1) --- */
+// LEVELBASIS: u7-set-concepts=recognition test
 E("u7-set-concepts",7,["2.1"],1,"var",varset([
   function(){return mcq("A teacher asks for the set of months of the year that have 32 days. What kind of set is this?",
     "The empty set, because no month has 32 days",
@@ -3003,6 +3146,7 @@ E("u7-set-concepts",7,["2.1"],1,"var",varset([
     ["all students in the school, in every grade level","all teenagers in the province, wherever they live","the students who have weekend jobs"],
     "The universal set is the set of everything under consideration for the problem at hand. Here every question is about the 28 surveyed students, so they form the universal set; the students with jobs are just a subset of it.",{});}
 ]));
+// LEVELBASIS: u7-subset-relation=taught procedure, multi-step
 E("u7-subset-relation",7,["2.1"],2,"gen",function(){
   var U=u7Universe();
   var got=u7pair(function(A,B){
@@ -3019,6 +3163,7 @@ E("u7-subset-relation",7,["2.1"],2,"gen",function(){
     "List the sets: A = "+roster(A)+" and B = "+roster(B)+". "+(subAB?"Every element of A appears in B, so A is a subset of B.":subBA?"Every element of B appears in A, so B is a subset of A.":"The two lists share no element at all, so the sets are disjoint.")+" The sets are not equal, since their lists differ.",
     {a:got.pa.n,b:got.pb.n});
 });
+// LEVELBASIS: u7-disjoint-check=taught procedure, multi-step
 E("u7-disjoint-check",7,["2.1"],2,"gen",function(){
   var U=u7Universe();
   var got=u7pair(function(A,B){
@@ -3043,6 +3188,7 @@ E("u7-disjoint-check",7,["2.1"],2,"gen",function(){
 });
 /* --- elements of operations (2.4) --- */
 /* --- elements of operations (2.4) --- */
+// LEVELBASIS: u7-complement-elements=one cued step
 E("u7-complement-elements",7,["2.4"],1,"gen",function(){
   var n=pick([8,9,10,11,12]),U=[];for(var i=1;i<=n;i++)U.push(i);
   var size=pick([3,4,5,6]),A=shuffle(U.slice()).slice(0,size).sort(function(a,b){return a-b;});
@@ -3055,6 +3201,7 @@ E("u7-complement-elements",7,["2.4"],1,"gen",function(){
     "The complement A' holds every element of the universal set that is not in A. Removing "+roster(A)+" from U leaves "+roster(comp)+". The second distractor swaps one element wrongly, and the third keeps an element of A in the complement.",
     {n:n,size:size});
 });
+// LEVELBASIS: u7-operations=taught procedure, multi-step
 E("u7-operations",7,["2.4"],2,"gen",function(){
   var ops=[
     {key:"union",label:"A \\cup B",calc:function(A,B,U){return U.filter(function(x){return A.indexOf(x)>=0||B.indexOf(x)>=0;});}},
@@ -3101,6 +3248,7 @@ var U7REGIONS=[
   {key:"either",phrase:function(c){return "students who "+c.aP+" or "+c.bP+" (or both)";},notn:"A \\cup B",mark:null},
   {key:"notA",phrase:function(c){return "students who do not "+c.aP;},notn:"A'",mark:null}
 ];
+// LEVELBASIS: u7-region-meaning=one cued step
 E("u7-region-meaning",7,["2.3"],1,"gen",function(){
   var c=pick(U7CTX),reg=pick(U7REGIONS),style=pick(["pos","phrase2not","not2phrase"]);
   if(style==="pos"&&!reg.mark)style="phrase2not";
@@ -3133,6 +3281,7 @@ var U7SURVEY=[
   {lA:"Basketball",lB:"Volleyball",aP:"play basketball",bP:"play volleyball"}
 ];
 function u7regions(){return {aO:ri(3,16),both:ri(2,11),bO:ri(3,16),none:ri(0,11)};}
+// LEVELBASIS: u7-venn-read=direct recall
 E("u7-venn-read",7,["2.2"],1,"gen",function(){
   var c=pick(U7SURVEY),r=u7regions(),fig=venn2(r.aO,r.both,r.bO,r.none,c.lA,c.lB,null);
   var total=r.aO+r.both+r.bO+r.none,union=r.aO+r.both+r.bO;
@@ -3150,6 +3299,7 @@ E("u7-venn-read",7,["2.2"],1,"gen",function(){
   var q=numq("A survey of students produced this Venn diagram (A: "+c.lA+", B: "+c.lB+"). "+Q[0],
     Q[1],0.001,Q[2],{ctx:c.lA,target:target}); q.figure=fig; return q;
 });
+// LEVELBASIS: u7-venn-fill=taught procedure, multi-step
 E("u7-venn-fill",7,["2.2"],2,"gen",function(){
   var c=pick(U7SURVEY),r=u7regions();
   var nA=r.aO+r.both,nB=r.bO+r.both,union=r.aO+r.both+r.bO,total=union+r.none;
@@ -3164,6 +3314,7 @@ E("u7-venn-fill",7,["2.2"],2,"gen",function(){
   var q=numq(head+"How many students do neither activity?",
     r.none,0.001,"First the union, then subtract from the total surveyed: \\[ \\begin{aligned} n(A \\cup B) &= "+nA+" + "+nB+" - "+r.both+" \\\\ &= "+union+" \\\\ n((A \\cup B)') &= "+total+" - "+union+" \\\\ &= "+r.none+" \\end{aligned} \\]",{ctx:c.lA,target:target}); q.figure=venn2(null,null,null,null,c.lA,c.lB,null); return q;
 });
+// LEVELBASIS: u7-venn-missing=taught procedure, multi-step
 E("u7-venn-missing",7,["2.2"],2,"gen",function(){
   var c=pick(U7SURVEY),r=u7regions(),total=r.aO+r.both+r.bO+r.none;
   if(Math.random()<0.5){var q=numq("A Venn diagram for a survey (A: "+c.lA+", B: "+c.lB+") shows "+r.aO+" students in A only, "+r.both+" in both, "+r.bO+" in B only, and "+r.none+" in neither. How many students were surveyed?",
@@ -3171,6 +3322,7 @@ E("u7-venn-missing",7,["2.2"],2,"gen",function(){
   var q=numq("A survey of "+total+" students (A: "+c.lA+", B: "+c.lB+") has a Venn diagram showing "+r.both+" students in both sets, "+r.bO+" in B only, and "+r.none+" in neither. How many students are in A only?",
     r.aO,0.001,"The four regions must add to the total surveyed, so the missing region is \\("+total+" - "+r.both+" - "+r.bO+" - "+r.none+" = "+r.aO+"\\) students.",{ctx:c.lA}); q.figure=venn2("?",r.both,r.bO,r.none,c.lA,c.lB,null); return q;
 });
+// LEVELBASIS: u7-venn-three-read=direct recall
 E("u7-venn-three-read",7,["2.2"],1,"gen",function(){
   var r={a:ri(1,9),b:ri(1,9),c:ri(1,9),ab:ri(0,7),ac:ri(0,7),bc:ri(0,7),abc:ri(1,5),none:ri(0,9)};
   var fig=venn3(r.a,r.b,r.c,r.ab,r.ac,r.bc,r.abc,r.none,"Skiing","Skating","Hockey");
@@ -3186,6 +3338,7 @@ E("u7-venn-three-read",7,["2.2"],1,"gen",function(){
     Q[1],0.001,Q[2],{target:target}); q.figure=fig; return q;
 });
 /* --- contextual problems with set notation (2.5) --- */
+// LEVELBASIS: u7-two-set-problem=taught procedure, multi-step
 E("u7-two-set-problem",7,["2.5"],2,"gen",function(){
   var c=pick(U7SURVEY),r=u7regions();
   var nA=r.aO+r.both,nB=r.bO+r.both,union=r.aO+r.both+r.bO,total=union+r.none;
@@ -3200,6 +3353,7 @@ E("u7-two-set-problem",7,["2.5"],2,"gen",function(){
   var q=numq(head+"How many students "+c.bP+" <b>only</b>?",
     r.bO,0.001,fill+"In set notation the question asks for \\(n(A' \\cap B)\\): \\[ \\begin{aligned} n(A' \\cap B) &= n(B) - n(A \\cap B) \\\\ &= "+nB+" - "+r.both+" \\\\ &= "+r.bO+" \\end{aligned} \\] The students who do both must be removed from the B total.",{ctx:c.lA,target:target}); q.figure=venn2(null,null,null,null,"A","B",null); return q;
 });
+// LEVELBASIS: u7-two-set-notation=taught procedure, multi-step
 E("u7-two-set-notation",7,["2.5"],2,"gen",function(){
   var c=pick(U7SURVEY),r=u7regions();
   var nA=r.aO+r.both,nB=r.bO+r.both,union=r.aO+r.both+r.bO,total=union+r.none;
@@ -3215,6 +3369,7 @@ E("u7-two-set-notation",7,["2.5"],2,"gen",function(){
   return numq("A survey of "+total+" students has \\(n(A) = "+nA+"\\), \\(n(B) = "+nB+"\\) and \\(n(A \\cap B) = "+r.both+"\\) (A: "+c.lA+", B: "+c.lB+"). Determine \\("+t.label+"\\).",
     t.val,0.001,"Translate the notation first: \\("+t.label+"\\) counts "+t.why+". Here that is \\("+t.val+"\\). Writing out what each symbol means before computing is the reliable route through notation questions.",{ctx:c.lA,target:t.label});
 });
+// LEVELBASIS: u7-three-set-problem=taught procedure, multi-step
 E("u7-three-set-problem",7,["2.5"],2,"gen",function(){
   var r={a:ri(2,12),b:ri(2,12),c:ri(2,12),ab:ri(1,8),ac:ri(1,8),bc:ri(1,8),abc:ri(1,5),none:ri(0,10)};
   var nA=r.a+r.ab+r.ac+r.abc,nB=r.b+r.ab+r.bc+r.abc,nC=r.c+r.ac+r.bc+r.abc;
@@ -3234,6 +3389,7 @@ E("u7-three-set-problem",7,["2.5"],2,"gen",function(){
     r.none,0.001,fill+"The regions inside the circles add to \\("+union+"\\), so the students outside all three circles are: \\[ \\begin{aligned} n((A \\cup B \\cup C)') &= "+total+" - "+union+" \\\\ &= "+r.none+" \\end{aligned} \\]",{target:target}); q.figure=venn3("","","","","","","","","A","B","C"); return q;
 });
 /* --- errors in set solutions (2.6) --- */
+// LEVELBASIS: u7-error-identify=taught procedure, multi-step
 E("u7-error-identify",7,["2.6"],2,"var",varset([
   function(){return mcq("In a class, 18 students take music and 14 take art, and 6 students take both. A student writes: <i>n(music ∪ art) = 18 + 14 = 32</i>. What is the error?",
     "The 6 students who take both were counted twice; the overlap must be subtracted once",
@@ -3248,6 +3404,7 @@ E("u7-error-identify",7,["2.6"],2,"var",varset([
     ["The student is right; subsets must have the same number of elements, so a smaller set can never be a subset","The error is that A is actually the empty set, because it contains no element that also belongs to B","The error is that 8 is not an element of A, because it appears only at the end of the list for B"],
     "Subset is about membership, not size: B is a subset of A whenever every element of B appears in A. Here 2, 4 and 8 all appear in A, so B is a (proper) subset of A, and its smaller size is exactly what makes it proper.",{});}
 ]));
+// LEVELBASIS: u7-error-correct=taught procedure, multi-step
 E("u7-error-correct",7,["2.6"],2,"gen",function(){
   var c=pick(U7SURVEY),r=u7regions(),kind=pick(["union","none","aonly"]);
   if(kind==="none")r.none=r.both+ri(0,8);
@@ -3260,6 +3417,7 @@ E("u7-error-correct",7,["2.6"],2,"gen",function(){
   return numq(head+"A student writes: \"The number who "+c.aP+" only is "+nA+".\" What is the <b>correct</b> number who "+c.aP+" only?",
     r.aO,0.001,"The student reported all of A, including the "+r.both+" students who also "+c.bP+". Removing the overlap: \\[ \\begin{aligned} n(A \\cap B') &= "+nA+" - "+r.both+" \\\\ &= "+r.aO+" \\end{aligned} \\] Justification for Level 3: spotting that the given answer answers a different question (all of A, not A only) is the key step.",{ctx:c.lA,kind:kind});
 });
+// LEVELBASIS: u7-error-venn=one cued step
 E("u7-error-venn",7,["2.6"],1,"gen",function(){
   var c=pick(U7SURVEY),r=u7regions(),total=r.aO+r.both+r.bO+r.none;
   var kind=pick(["forgotNone","doubleBoth","forgotBoth"]);
@@ -3269,6 +3427,7 @@ E("u7-error-venn",7,["2.6"],1,"gen",function(){
     total,0.001,"The student "+why+". Every student belongs to exactly one region, so the correct total is \\("+r.aO+" + "+r.both+" + "+r.bO+" + "+r.none+" = "+total+"\\) students.",{ctx:c.lA,kind:kind}); q.figure=venn2(r.aO,r.both,r.bO,r.none,c.lA,c.lB,null); return q;
 });
 /* --- applications of set theory (2.7) --- */
+// LEVELBASIS: u7-applications=recognition test
 E("u7-applications",7,["2.7"],1,"var",varset([
   function(){return mcq("A search engine query uses the terms <b>whales AND kayaking</b>. In set terms, the results page shows pages that are in",
     "the intersection of the two sets of pages, because each result must contain both terms",
@@ -3283,6 +3442,7 @@ E("u7-applications",7,["2.7"],1,"var",varset([
     ["the intersection of the control group with the treatment group in the study","the union of all the groups in the study, covering everyone who took part in it","the empty set, because every respondent belongs to some group in the study"],
     "Everyone who is not in the control group, within the universal set of all respondents, is exactly the complement of the control group. Data analysis queries lean on complements in precisely this way.",{});}
 ]));
+// LEVELBASIS: u7-search-logic=taught procedure, multi-step
 E("u7-search-logic",7,["2.7"],2,"gen",function(){
   var r=u7regions(),nA=r.aO+r.both,nB=r.bO+r.both,union=r.aO+r.both+r.bO,total=union+r.none;
   var board=pick(["job board","streaming service","library catalogue","classifieds site"]);
@@ -3298,6 +3458,7 @@ E("u7-search-logic",7,["2.7"],2,"gen",function(){
 });
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: one Level 3 MC generator (the unit had no Level 3 selected-response entry), two Level 3 CR entries (3 and 2 marks) and three Level 2 CR entries (3, 3 and 2 marks). ---------- */
+// LEVELBASIS: u7-deduction-mc=path test
 E("u7-deduction-mc",7,["2.7","2.1"],3,"var",varset([
   function(){
     return mcq("Sets \\(A\\), \\(B\\) and \\(C\\) satisfy \\(A \\subseteq B\\) and \\(B \\cap C = \\varnothing\\). Which statement <b>must</b> be true?",
@@ -3327,6 +3488,7 @@ E("u7-deduction-mc",7,["2.7","2.1"],3,"var",varset([
       {sc:"impossible-data"});
   }
 ]));
+// LEVELBASIS: u7-exactly-two-cr=taught procedure, multi-step
 E("u7-exactly-two-cr",7,["2.5"],2,"gen",function(){
   var CTX=[
     {A:"play soccer",B:"play hockey",C:"swim competitively"},
@@ -3349,6 +3511,7 @@ E("u7-exactly-two-cr",7,["2.5"],2,"gen",function(){
     "Work set by set, removing both pairwise overlaps and adding back the all-three group, which was removed twice: only \\(A\\): \\("+nA+" - "+pAB+" - "+pAC+" + "+abc+" = "+onlyA+"\\); only \\(B\\): \\("+nB+" - "+pAB+" - "+pBC+" + "+abc+" = "+onlyB+"\\); only \\(C\\): \\("+nC+" - "+pAC+" - "+pBC+" + "+abc+" = "+onlyC+"\\). The total in exactly one set is \\("+onlyA+" + "+onlyB+" + "+onlyC+" = \\)<b>"+(onlyA+onlyB+onlyC)+"</b>.",
     {target:target}); q.figure=venn3("","","","","","","","","A","B","C"); return q;
 });
+// LEVELBASIS: u7-relations-count-cr=taught procedure, multi-step
 E("u7-relations-count-cr",7,["2.1","2.4"],2,"gen",function(){
   var nB=ri(12,30), nA=ri(10,30), U=nA+nB, nC=ri(3,nB-4), ans=nB-nC;
   return numq("Sets \\(A\\) and \\(B\\) are disjoint, with \\(n(A \\cup B) = "+U+"\\) and \\(n(A) = "+nA+"\\). Set \\(C\\) is a subset of \\(B\\), and \\(n(C) = "+nC+"\\). How many elements are in \\(B\\) but not in \\(C\\)?",
@@ -3356,6 +3519,7 @@ E("u7-relations-count-cr",7,["2.1","2.4"],2,"gen",function(){
     "Since \\(A\\) and \\(B\\) are disjoint, \\(n(B) = n(A \\cup B) - n(A) = "+U+" - "+nA+" = "+nB+"\\). Since \\(C \\subseteq B\\), the elements of \\(B\\) outside \\(C\\) number \\("+nB+" - "+nC+" = \\)<b>"+ans+"</b>.",
     {nA:nA,nB:nB,nC:nC});
 });
+// LEVELBASIS: u7-two-set-totals-cr=taught procedure, multi-step
 E("u7-two-set-totals-cr",7,["2.2","2.4"],2,"gen",function(){
   var c=pick(U7SURVEY), r=u7regions();
   var nA=r.aO+r.both, total=r.aO+r.both+r.bO+r.none, union=r.aO+r.both+r.bO, nB=r.bO+r.both;
@@ -3364,6 +3528,7 @@ E("u7-two-set-totals-cr",7,["2.2","2.4"],2,"gen",function(){
     "The number doing at least one activity is \\("+total+" - "+r.none+" = "+union+"\\). Of the "+nA+" students in A, "+r.both+" are also in B, so A only is \\("+nA+" - "+r.both+" = "+r.aO+"\\). Then B only is \\("+union+" - "+r.aO+" - "+r.both+" = "+r.bO+"\\), and the total in B is \\("+r.bO+" + "+r.both+" = \\)<b>"+nB+"</b>.",
     {ctx:c.lA});
 });
+// LEVELBASIS: u7-symmetric-difference-cr=taught procedure, multi-step
 E("u7-symmetric-difference-cr",7,["2.3"],2,"gen",function(){
   var c=pick(U7SURVEY), r=u7regions();
   var nA=r.aO+r.both, nB=r.bO+r.both, ans=r.aO+r.bO;
@@ -3372,7 +3537,9 @@ E("u7-symmetric-difference-cr",7,["2.3"],2,"gen",function(){
     "Remove the overlap from each total: A only is \\("+nA+" - "+r.both+" = "+r.aO+"\\), and B only is \\("+nB+" - "+r.both+" = "+r.bO+"\\). Together, the students in exactly one set number \\("+r.aO+" + "+r.bO+" = \\)<b>"+ans+"</b>.",
     {ctx:c.lA});
 });
-E("u7-subset-difference-cr",7,["2.1"],2,"gen",function(){
+// Level audit Nov 25, 2026: retagged 2 to 1. Each deal applies the subset relation once: the union and intersection deals are read off (n(A) or n(B) directly) and the difference deals are one subtraction. Contrast u7-relations-count-cr, which chains two subtractions through a derived intermediate.
+// LEVELBASIS: u7-subset-difference-cr=one cued step
+E("u7-subset-difference-cr",7,["2.1"],1,"gen",function(){
   var nA=ri(25,60), nB=ri(5,nA-8), target=pick(["diff","inter","union"]);
   var head="Set \\(B\\) is a subset of set \\(A\\), with \\(n(A) = "+nA+"\\) and \\(n(B) = "+nB+"\\). ";
   if(target==="diff") return numq(head+"How many elements are in \\(A\\) but not in \\(B\\)?",
@@ -3429,6 +3596,7 @@ function nPr(n,r){return fact(n)/fact(n-r);}
 function nCr(n,r){return fact(n)/(fact(r)*fact(n-r));}
 
 /* --- graphic organizers and the counting principle (9.16, 9.17, 9.18, 9.19) --- */
+// LEVELBASIS: u8-tree-diagram=one cued step
 E("u8-tree-diagram",8,["9.16"],1,"gen",function(){
   var use3=Math.random()<0.6;
   var ctx=pick([
@@ -3450,6 +3618,7 @@ E("u8-tree-diagram",8,["9.16"],1,"gen",function(){
   if(tf)q.figure=tf;
   return q;
 });
+// LEVELBASIS: u8-tree-outcomes=one cued step
 E("u8-tree-outcomes",8,["9.16"],1,"gen",function(){
   function coinDie(){
     var conds=[],side,d,v,k;
@@ -3494,6 +3663,7 @@ E("u8-tree-outcomes",8,["9.16"],1,"gen",function(){
   q.figure=treeSVG(T.stages.map(function(st,ix){return {title:T.titles[ix],options:st};}),{leafLabel:T.lf});
   return q;
 });
+// LEVELBASIS: u8-fcp-pattern=one cued step
 E("u8-fcp-pattern",8,["9.17"],1,"gen",function(){
   if(Math.random()<0.5){
     var k=pick([2,3,4,5,6]),m=pick([5,6,7,8].filter(function(x){return x!==k;}));
@@ -3507,6 +3677,7 @@ E("u8-fcp-pattern",8,["9.17"],1,"gen",function(){
     ["Add the choices: "+a+" + "+b+" + "+s+" = "+(a+b+s)+", all at once","Multiply only the newest choices: "+s+" × "+s+" = "+(s*s),"Add "+s+" to the previous total: "+(a*b)+" + "+s+" = "+(a*b+s)+" in all"],
     "Adding a stage to a counting problem multiplies the total by the number of choices at that stage; it never adds them. Generalizing this pattern from small cases is exactly how the Fundamental Counting Principle is built.",{a:a,b:b,s:s});
 });
+// LEVELBASIS: u8-assumptions=recognition test
 E("u8-assumptions",8,["9.18"],1,"var",varset([
   function(){return mcq("A student counts the possible three-letter codes from the alphabet as 26 × 26 × 26. What <b>assumption</b> is built into this count?",
     "Letters are allowed to repeat in the code",
@@ -3521,6 +3692,7 @@ E("u8-assumptions",8,["9.18"],1,"var",varset([
     ["the line must contain exactly 5 chairs, and each person must have a chair of their own to stand by in the line","no two of the people are friends, because friends standing together would count as one unit","the people are standing in alphabetical order, so only the arrangement in name order is counted"],
     "Factorial counting treats every swap as a new arrangement, which requires the people to be distinguishable. If two of the five were identical (like identical twins in matching outfits being treated as interchangeable), arrangements would have to be divided to correct the overcount.",{});}
 ]));
+// LEVELBASIS: u8-fcp-context=one cued step
 E("u8-fcp-context",8,["9.19"],1,"gen",function(){
   var T=pick(["pin","code","outfit","routes","menu","password"]);
   if(T==="pin"){var d=pick([4,5,6]);return numq("A bank PIN is "+d+" digits long, and digits may be repeated. How many different PINs are possible?",
@@ -3549,6 +3721,7 @@ function enumNums(D,L,pred,unitFixed){
   rec(0,[],0,null);return count;
 }
 function rangeDigits(a,b){var D=[];for(var i=a;i<=b;i++)D.push(i);return D;}
+// LEVELBASIS: u8-fcp-restricted=taught procedure, multi-step
 E("u8-fcp-restricted",8,["9.19"],2,"gen",function(){
   var T=pick(["digitsNoZero","digitsZero","mult5","plate","pin","code","people"]);
   var J=" Justification for Level 3: the restriction changes the stage counts or forces a case split, so the counting has to be restructured before any multiplication.";
@@ -3605,6 +3778,7 @@ E("u8-fcp-restricted",8,["9.19"],2,"gen",function(){
   return numq(np+" people are arranging themselves in a line. In how many arrangements is one particular person <b>not</b> at either end?",
     valpp,0.001,"Place the restricted person first: they have "+(np-2)+" allowed positions (any except the two ends). The other "+(np-1)+" people then arrange freely in \\("+(np-1)+"! = "+fact(np-1)+"\\) ways. Total: \\("+(np-2)+" \\times "+fact(np-1)+" = "+valpp+"\\)."+J,{T:T,n:np});
 });
+// LEVELBASIS: u8-fcp-cases=taught procedure, multi-step
 E("u8-fcp-cases",8,["9.19"],2,"gen",function(){
   var T=pick(["either","startletter","mixed"]);
   var J=" Justification for Level 3: choosing between multiplying (choices in sequence) and adding (either/or cases) at each step is a structural decision, not a formula recall.";
@@ -3625,6 +3799,7 @@ E("u8-fcp-cases",8,["9.19"],2,"gen",function(){
     w1+w2,0.001,"Count each format with the counting principle and add the alternatives: format one gives \\(26^{"+a1+"} \\times 10^{"+b1+"} = "+w1+"\\) and format two gives \\(10^{"+b2+"} \\times 26^{"+a2+"} = "+w2+"\\), for a total of "+(w1+w2)+"."+J,{T:T});
 });
 /* --- factorials (9.20, 9.21, 9.22) --- */
+// LEVELBASIS: u8-factorial-value=one cued step
 E("u8-factorial-value",8,["9.20"],1,"gen",function(){
   var verb=pick(["Determine the value of","Evaluate"]);
   var shape=pick(["plain","times","plusone","minusprev","plusprev"]);
@@ -3652,6 +3827,7 @@ E("u8-factorial-value",8,["9.20"],1,"gen",function(){
   return numq(verb+" \\("+n5+"! + "+(n5-1)+"!\\).",
     fact(n5)+fact(n5-1),0.001,"Evaluate each factorial: \\("+n5+"! = "+fact(n5)+"\\) and \\("+(n5-1)+"! = "+fact(n5-1)+"\\), so the sum is \\("+fact(n5)+" + "+fact(n5-1)+" = "+(fact(n5)+fact(n5-1))+"\\).",{shape:shape,n:n5});
 });
+// LEVELBASIS: u8-factorial-fraction=taught procedure, multi-step
 E("u8-factorial-fraction",8,["9.21"],2,"gen",function(){
   if(Math.random()<0.5){
     var m=pick([2,3,4,5,6,7]),k=pick([1,2,3]),n=m+k,val=1,i;
@@ -3708,6 +3884,7 @@ E("u8-factorial-fraction",8,["9.21"],2,"gen",function(){
     MV("n"),[MV("n - 1"),MV("1"),MV("n(n - 1)")],
     "Expand the numerator one step: \\(n! = n \\times (n - 1)!\\), so the \\((n - 1)!\\) cancels and only \\(n\\) remains.",{shape:shape});
 });
+// LEVELBASIS: u8-factorial-equation=taught procedure, multi-step
 E("u8-factorial-equation",8,["9.22"],2,"gen",function(){
   var shapes=[
     function(){var n=pick([3,4,5,6,7,8,9]);return {eq:"n! = "+fact(n),ans:n,sol:"Read the value against the factorial sequence (3! = 6, 4! = 24, 5! = 120, 6! = 720, and so on): \\("+fact(n)+"\\) is \\("+n+"!\\), so \\(n = "+n+"\\)."};},
@@ -3726,6 +3903,7 @@ E("u8-factorial-equation",8,["9.22"],2,"gen",function(){
     s.ans,0.001,s.sol,{eq:s.eq});
 });
 /* --- permutations (9.23, 9.24, 9.25) --- */
+// LEVELBASIS: u8-arrange-all=one cued step
 E("u8-arrange-all",8,["9.23"],1,"gen",function(){
   var ctx=pick([
     {n:pick([4,5,6,7,8,9]),what:"books are arranged in a row on a shelf",item:"books"},
@@ -3741,6 +3919,7 @@ E("u8-arrange-all",8,["9.23"],1,"gen",function(){
   return numq(ask+" "+ctx.n+" "+ctx.what+"?",
     fact(ctx.n),0.001,"All "+ctx.n+" "+ctx.item+" are used and every order is different, so the count is \\("+ctx.n+"! = "+fact(ctx.n)+"\\) (factorial notation: "+ctx.n+" choices for the first spot, "+(ctx.n-1)+" for the next, and so on).",{n:ctx.n,item:ctx.item});
 });
+// LEVELBASIS: u8-fixed-position=taught procedure, multi-step
 E("u8-fixed-position",8,["9.23"],2,"gen",function(){
   var n=pick([4,5,6,7,8,9]),pos=pick(["end","first","last","second","centre"]);
   if(pos==="centre"&&n%2===0)pos="end";
@@ -3756,6 +3935,7 @@ E("u8-fixed-position",8,["9.23"],2,"gen",function(){
   return numq(n+" "+ctx.w+" are being arranged. One particular "+ctx.noun+" "+posText+". How many arrangements are possible?",
     val,0.001,"Fix the restricted position first: there "+(pos==="end"?"are 2 choices for which end":"is 1 choice for the fixed position")+", and the remaining "+(n-1)+" arrange freely in \\("+(n-1)+"! = "+fact(n-1)+"\\) ways. Total: "+(pos==="end"?"\\(2 \\times "+fact(n-1)+" = "+val+"\\)":"\\("+val+"\\)")+".",{n:n,pos:pos});
 });
+// LEVELBASIS: u8-perm-r=taught procedure, multi-step
 E("u8-perm-r",8,["9.24"],2,"gen",function(){
   var ctx=pick([
     {n:pick([8,9,10,11,12,13]),r:pick([2,3,4]),what:"runners in a race, how many ways can the first {r} finishing positions be filled"},
@@ -3768,6 +3948,7 @@ E("u8-perm-r",8,["9.24"],2,"gen",function(){
     nPr(ctx.n,ctx.r),0.001,"Order matters and no one can hold two positions, so this is a permutation: \\[ \\begin{aligned} _{"+ctx.n+"}P_{"+ctx.r+"} &= "+prod.join(" \\times ")+" \\\\ &= "+nPr(ctx.n,ctx.r)+" \\end{aligned} \\] The multiplication stops after "+ctx.r+" factors, one for each position filled.",{n:ctx.n,r:ctx.r});
 });
 
+// LEVELBASIS: u8-together-apart=taught procedure, multi-step
 E("u8-together-apart",8,["9.24"],2,"gen",function(){
   var n=pick([5,6,7]),together=Math.random()<0.5;
   var names=shuffle(["Alex","Blair","Casey","Devon","Emery","Finley","Harper"].slice()).slice(0,2);
@@ -3778,6 +3959,7 @@ E("u8-together-apart",8,["9.24"],2,"gen",function(){
   return numq(n+" "+ctx+". In how many arrangements are "+names[0]+" and "+names[1]+" <b>not</b> next to each other?",
     total-blockVal,0.001,"Count the complement: there are \\("+n+"! = "+total+"\\) arrangements in total, and the arrangements where the two stand together number \\(2 \\times "+(n-1)+"! = "+blockVal+"\\) (treat the pair as one block). Subtracting: \\("+total+" - "+blockVal+" = "+(total-blockVal)+"\\). Justification for Level 3: the direct count is awkward, so the problem is solved by counting the opposite case.",{n:n});
 });
+// LEVELBASIS: u8-perm-strategy=recognition test
 E("u8-perm-strategy",8,["9.25"],1,"var",varset([
   function(){return mcq("To count the ways to award 1st, 2nd and 3rd place among 8 runners, the efficient strategy is to multiply 8 × 7 × 6. Why does this work?",
     "Each place filled removes one runner from the choices for the next place: 8 choices, then 7, then 6",
@@ -3792,6 +3974,7 @@ E("u8-perm-strategy",8,["9.25"],1,"var",varset([
     ["Arrange all 6 finalists (6!), then divide by 2 to account for the finalist who must finish first","Choose any of the 6 finalists for first place, then arrange the other 5 finalists","Arrange all 6 finalists and subtract the arrangements where she finishes last instead of first"],
     "A restriction is handled by dealing with the restricted position first: first place is forced (1 choice), and the other five positions are a free arrangement of 5. Choosing 'any of the 6' for first place ignores the restriction and counts all 6! orders.",{});}
 ]));
+// LEVELBASIS: u8-identical-perm=taught procedure, multi-step
 E("u8-identical-perm",8,["9.26"],2,"gen",function(){
   function fromCounts(total,counts){var d=1;counts.forEach(function(c){d*=fact(c);});return fact(total)/d;}
   var word=pick([null,null,"BANANA","BALLOON","OTTAWA"]);
@@ -3818,6 +4001,7 @@ E("u8-identical-perm",8,["9.26"],2,"gen",function(){
   return numq("How many different arrangements are there of "+total+" "+ctx.thing+", made up of "+descText+"?",
     fromCounts(total,counts),0.001,"Start with \\("+total+"!\\) arrangements of "+total+" distinct items, then divide by the factorials of each identical group, since swapping identical items changes nothing: \\[ \\begin{aligned} \\frac{"+total+"!}{"+denom+"} &= "+fromCounts(total,counts)+" \\end{aligned} \\]",{g:g,total:total});
 });
+// LEVELBASIS: u8-identical-effect=recognition test
 E("u8-identical-effect",8,["9.27"],1,"var",varset([
   function(){return mcq("Four different letters can be arranged in 24 ways. Two of the letters are now replaced by copies of a third letter, so the multiset has a pair of identical letters, and the count drops to 12. Why?",
     "Each arrangement was being counted twice, once for each order of the two identical letters, and those orders are no longer different",
@@ -3834,6 +4018,7 @@ E("u8-identical-effect",8,["9.27"],1,"var",varset([
 ]));
 /* --- does order matter? (9.29) --- */
 /* --- does order matter? (9.29) --- */
+// LEVELBASIS: u8-order-matters=recognition test
 E("u8-order-matters",8,["9.29"],1,"var",varset([
   function(){return mcq("A club with 10 members elects a president and a vice-president. Does <b>order matter</b> in this counting problem?",
     "Yes: the two roles are different, so electing Alex as president and Blair as vice-president is a different outcome from the reverse (a permutation)",
@@ -3852,6 +4037,7 @@ E("u8-order-matters",8,["9.29"],1,"var",varset([
     ["Yes: the book picked first sits at the bottom of the bag, so the packing order is part of the outcome","Yes: choosing is always a permutation, because items are picked one at a time in some order","No: order never matters for objects, only for people, because people can hold ranked roles"],
     "The outcome is just the set of 4 books in the bag; reordering the picks changes nothing about the result. So the count is a combination, C(9, 4) = 126. What the items are (books or people) is irrelevant; what matters is whether a swap changes the outcome.",{});}
 ]));
+// LEVELBASIS: u8-perm-or-comb=one cued step
 E("u8-perm-or-comb",8,["9.29"],1,"gen",function(){
   var T=pick(["perm","comb","fact","power"]);
   var n=pick([6,7,8,9,10,11]),r=pick([2,3,4]);
@@ -3876,6 +4062,7 @@ E("u8-perm-or-comb",8,["9.29"],1,"gen",function(){
     {T:T,n:n,r:r});
 });
 /* --- combinations (9.30, 9.31) --- */
+// LEVELBASIS: u8-comb-r=taught procedure, multi-step
 E("u8-comb-r",8,["9.30"],2,"gen",function(){
   var ctx=pick([
     {n:pick([7,8,9,10,11,12,13]),r:pick([2,3,4]),what:"students, how many different committees of {r} can be formed"},
@@ -3886,6 +4073,7 @@ E("u8-comb-r",8,["9.30"],2,"gen",function(){
   return numq("From "+ctx.n+" "+ctx.what.replace("{r}",ctx.r)+"?",
     nCr(ctx.n,ctx.r),0.001,"The order of the chosen items does not matter, so this is a combination: \\[ \\begin{aligned} \\binom{"+ctx.n+"}{"+ctx.r+"} &= \\frac{"+ctx.n+"!}{"+ctx.r+"! \\times "+(ctx.n-ctx.r)+"!} \\\\ &= "+nCr(ctx.n,ctx.r)+" \\end{aligned} \\] Dividing by \\("+ctx.r+"!\\) removes the orderings of each chosen group.",{n:ctx.n,r:ctx.r});
 });
+// LEVELBASIS: u8-comb-two-group=taught procedure, multi-step
 E("u8-comb-two-group",8,["9.30"],2,"gen",function(){
   var g1=pick([5,6,7,8,9]),a=pick([2,3]),g2=pick([5,6,7,8,9]),b=pick([2,3]);
   var ctx=pick([
@@ -3896,6 +4084,7 @@ E("u8-comb-two-group",8,["9.30"],2,"gen",function(){
   return numq(ctx.w,
     nCr(g1,a)*nCr(g2,b),0.001,"The two choices are independent, so multiply the combinations: \\[ \\begin{aligned} \\binom{"+g1+"}{"+a+"} \\times \\binom{"+g2+"}{"+b+"} &= "+nCr(g1,a)+" \\times "+nCr(g2,b)+" \\\\ &= "+(nCr(g1,a)*nCr(g2,b))+" \\end{aligned} \\] Order within each chosen group does not matter, which is why both factors are combinations.",{g1:g1,a:a,g2:g2,b:b});
 });
+// LEVELBASIS: u8-committee-atleast=taught procedure, multi-step
 E("u8-committee-atleast",8,["9.30"],2,"gen",function(){
   var shape=pick(["atleast","include"]);
   var n=pick([8,9,10,11,12,13]),r=pick([3,4,5]),s=pick([2,3,4]);
@@ -3909,6 +4098,7 @@ E("u8-committee-atleast",8,["9.30"],2,"gen",function(){
   return numq("A committee of "+r+" is to be chosen from "+n+" people, and one particular person, the club president, <b>must</b> be on it. How many different committees are possible?",
     val2,0.001,"Reserve one seat for the president, then choose the remaining "+(r-1)+" members from the other "+(n-1)+" people: \\[ \\begin{aligned} \\binom{"+(n-1)+"}{"+(r-1)+"} &= "+val2+" \\end{aligned} \\] Fixing the required member first turns a conditional problem into a plain combination. Justification for Level 3: the seat-reservation restructure has to be seen before any formula applies.",{n:n,r:r});
 });
+// LEVELBASIS: u8-comb-strategy=recognition test
 E("u8-comb-strategy",8,["9.31"],1,"var",varset([
   function(){return mcq("Why is C(8, 3) equal to P(8, 3) divided by 3!?",
     "Every group of 3 people was counted 3! times in the permutation count, once for each order, and combinations ignore order",
@@ -3923,6 +4113,7 @@ E("u8-comb-strategy",8,["9.31"],1,"var",varset([
     ["The number of people not chosen, counted from the full group of eight people in the room","The number of committees that can be formed from the eight people in total","The number of positions on the committee, doubled to allow for the two directions"],
     "The ordered count lists each committee once for every arrangement of its 3 members, and 3 members can be arranged in 3! = 6 ways. Dividing by 6 removes the ordering: 336 ÷ 6 = 56 committees. Recognizing what the divisor means is the strategy, not just the arithmetic.",{});}
 ]));
+// LEVELBASIS: u8-mixed-roles=taught procedure, multi-step
 E("u8-mixed-roles",8,["9.24"],2,"gen",function(){
   var n=pick([6,7,8,9,10,11,12]),r=pick([2,3,4]);
   var jobList={2:"captain and vice-captain",3:"captain, equipment manager, and treasurer",4:"captain, vice-captain, equipment manager, and treasurer"};
@@ -3967,6 +4158,7 @@ function pathGridSVG(m,n,opt){
   out+='<text x="'+(X(m)+9)+'" y="'+(Y(n)+4)+'" font-size="12" fill="'+FIG_INK+'">B</text>';
   return out+'</svg>';
 }
+// LEVELBASIS: u8-pathways=taught procedure, multi-step
 E("u8-pathways",8,["9.30"],2,"gen",function(){
   var arm=pick(["plain","waypoint"]);
   if(arm==="plain"){
@@ -3992,6 +4184,7 @@ E("u8-pathways",8,["9.30"],2,"gen",function(){
 });
 
 /* --- pathways in context (9.30): the blocked grid, and the grid hidden in a story (L3) --- */
+// LEVELBASIS: u8-pathways-context=taught procedure, multi-step
 E("u8-pathways-context",8,["9.30"],2,"gen",function(){
   var J=" Justification for Level 3: nothing in the diagram names an operation; a route first has to be recoded as a sequence of moves, and any point the route must use or avoid restructures the count.";
   var arm=pick(["blocked","context","ctxwp"]);
@@ -4178,6 +4371,7 @@ function rcnBuildDraw(world){
   }
   return null;
 }
+// LEVELBASIS: u8-reverse-count=taught procedure, multi-step
 E("u8-reverse-count",8,["9.19"],2,"gen",function(){
   var world=pick(RCN_WORLDS);
   var draw=rcnBuildDraw(world);
@@ -4261,6 +4455,7 @@ function pick3Frac(corr,pool){
 }
 
 /* --- probability and odds in the world (9.1, 9.2) --- */
+// LEVELBASIS: u9-media-statements=one cued step
 E("u9-media-statements",9,["9.1"],1,"var",varset([
   function(){return mcq("A weather page reports: \"Chance of rain tomorrow: 30%.\" In the language of this unit, that statement is",
     "a probability: in about 30 of 100 similar situations, it rains",
@@ -4275,6 +4470,7 @@ E("u9-media-statements",9,["9.1"],1,"var",varset([
     [MV(frN(1,100)),MV(frN(1000,1)),MV(frN(999,1000))],
     "\"1 in 1000\" is a part-to-whole statement: 1 patient out of every 1000, a probability of \\("+frN(1,1000)+" = 0.001\\). The last option is the probability of NOT getting the side effect.",{});}
 ]));
+// LEVELBASIS: u9-odds-vs-prob=one cued step
 E("u9-odds-vs-prob",9,["9.2"],1,"var",varset([
   function(){return mcq("The odds in favour of an event are 3 : 2. Which statement about the event is true?",
     "Its probability is 3/5, because the 3 favourable outcomes are part of 5 outcomes in total",
@@ -4291,6 +4487,7 @@ E("u9-odds-vs-prob",9,["9.2"],1,"var",varset([
 ]));
 /* --- determining probability and odds (9.3, 9.4) --- */
 /* --- determining probability and odds (9.3, 9.4) --- */
+// LEVELBASIS: u9-prob-basics=one cued step
 E("u9-prob-basics",9,["9.3"],1,"gen",function(){
   var ctx=pick([
     {thing:"sections of a spinner",g1:"red",g2:"blue",g3:"green",lead:"A spinner is divided into equal sections:"},
@@ -4306,6 +4503,7 @@ E("u9-prob-basics",9,["9.3"],1,"gen",function(){
     "Probability is favourable outcomes over total outcomes: there are "+tc+" "+tn+" out of "+T+" in total, giving \\("+frN(tc,T)+"\\) (part to whole). The distractor \\("+frN(tc,T-tc)+"\\) is the odds form (part to part), which answers a different question.",
     {ctx:ctx.thing,target:target});
 });
+// LEVELBASIS: u9-prob-odds-determine=one cued step
 E("u9-prob-odds-determine",9,["9.3"],1,"gen",function(){
   var a=pick([2,3,4,5,6,8]),b=pick([2,3,4,5,6,8]);if(a===b)b=b===8?6:b+1;
   var ctx=pick([
@@ -4323,6 +4521,7 @@ E("u9-prob-odds-determine",9,["9.3"],1,"gen",function(){
     [ratioStr(a,b),ratioStr(b,a+b),(2*b)+" : "+(2*a)],
     "Odds against compare unfavourable outcomes to favourable outcomes: "+b+" to "+a+", which reduces to "+ratioStr(b,a)+". Watch the order: against reverses the pair, and the answer must be in lowest terms.",{a:a,b:b,f:0});
 });
+// LEVELBASIS: u9-convert-odds-prob=one cued step
 E("u9-convert-odds-prob",9,["9.4"],1,"gen",function(){
   if(Math.random()<0.5){
     var a=pick([1,2,3,4,5]),b=pick([1,2,3,4,5,6]);
@@ -4339,6 +4538,7 @@ E("u9-convert-odds-prob",9,["9.4"],1,"gen",function(){
     [againstStr,ratioStr(p,q),(2*p)+" : "+(2*(q-p))],
     "The probability says p favourable outcomes out of q in total, so the unfavourable count is q − p = "+(q-p)+". Odds in favour compare the parts: "+ratioStr(p,q-p)+". The second option reads the probability itself as odds, the standard confusion.",{p:p,q:q,dir:"p2o"});
 });
+// LEVELBASIS: u9-context-prob=one cued step
 E("u9-context-prob",9,["9.5"],1,"gen",function(){
   var ctx=pick([
     {x:pick([6,8,9,10,12]),y:pick([4,5,7,8,11]),w:function(x,y){return "In a survey of "+(x+y)+" students, "+x+" said they prefer autumn and "+y+" said they prefer spring. One student is chosen at random.";},tx:"prefer autumn"},
@@ -4352,6 +4552,7 @@ E("u9-context-prob",9,["9.5"],1,"gen",function(){
     "There are "+ctx.x+" favourable outcomes out of "+N+" equally likely choices, so the probability is \\("+frN(ctx.x,N)+"\\) (part to whole). The odds form \\("+frN(ctx.x,N-ctx.x)+"\\) and the complement \\("+frN(N-ctx.x,N)+"\\) are the standard near misses.",{x:ctx.x,y:ctx.y});
 });
 /* --- decisions and judgement (9.6) --- */
+// LEVELBASIS: u9-decisions=taught procedure, multi-step
 E("u9-decisions",9,["9.6"],2,"var",varset([
   function(){return mcq("Which of these decisions is based on a <b>subjective judgement</b> rather than on probability?",
     "A goalie decides to dive left because the shooter 'looks nervous'",
@@ -4368,7 +4569,9 @@ E("u9-decisions",9,["9.6"],2,"var",varset([
 ]));
 /* --- complementary events (9.8) --- */
 /* --- complementary events (9.8) --- */
-E("u9-complementary",9,["9.8"],2,"gen",function(){
+// Level audit Nov 25, 2026: Boundary, levelled down 2 to 1 under the audit protocol interim rule. The deals split: the numeric deals are one subtraction from 1 (Level 1), while the are-they-complementary deals test both conditions (mutually exclusive and exhaustive) against a scenario (Level 2). Awaiting Jason's ruling; a split of the entry is the likely fix.
+// LEVELBASIS: u9-complementary=boundary, ruling pending
+E("u9-complementary",9,["9.8"],1,"gen",function(){
   var mode=pick(["frac","decimal","comp","menotcomp","notme"]);
   if(mode==="frac"){
     var frac=pick([[1,4],[1,3],[2,5],[3,8],[5,6],[3,10],[7,10],[1,6],[5,12],[2,7],[4,9]]);
@@ -4406,6 +4609,7 @@ E("u9-complementary",9,["9.8"],2,"gen",function(){
 /* --- representing events (9.9) and ME probability (9.10) --- */
 /* --- representing events (9.9) and ME probability (9.10) --- */
 /* --- representing events (9.9) and ME probability (9.10) --- */
+// LEVELBASIS: u9-represent-events=taught procedure, multi-step
 E("u9-represent-events",9,["9.9"],2,"gen",function(){
   if(Math.random()<0.5){
     var c=pick(U7SURVEY),r=u7regions(),total=r.aO+r.both+r.bO+r.none;
@@ -4427,6 +4631,7 @@ E("u9-represent-events",9,["9.9"],2,"gen",function(){
     MV(sym),[MV(nA+nB-inter),MV(inter),MV(U-(nA+nB-inter))],
     "\"A or B but not both\" is the union with the overlap removed twice over: \\(n(A) + n(B) - 2 \\times n(A \\cap B) = "+nA+" + "+nB+" - "+(2*inter)+" = "+sym+"\\). The first distractor is the full union (both included); the last is the complement of the union.",{nA:nA,nB:nB});
 });
+// LEVELBASIS: u9-me-prob=one cued step
 E("u9-me-prob",9,["9.10"],1,"gen",function(){
   var T=pick(["die2","die3","suits","suits3","ranks","colours"]);
   if(T==="die2"){var vals=shuffle([1,2,3,4,5,6]).slice(0,2).sort();
@@ -4456,6 +4661,7 @@ E("u9-me-prob",9,["9.10"],1,"gen",function(){
     "One spin lands on a single colour, so the events are mutually exclusive: \\(\\frac{"+cr+"}{"+TT+"} + \\frac{"+cb+"}{"+TT+"} = \\frac{"+(cr+cb)+"}{"+TT+"} \\approx "+fmt((cr+cb)/TT,3)+"\\) (to three decimal places).",{T:T});
 });
 
+// LEVELBASIS: u9-nonme-prob=taught procedure, multi-step
 E("u9-nonme-prob",9,["9.10"],2,"gen",function(){
   var T=pick(["die-even3","die-prime-even","card-king-heart","survey"]);
   if(T==="die-even3")return numq("A standard die is rolled. What is the probability of rolling an <b>even number or a multiple of 3</b>? Give your answer as a decimal (to three decimal places).",
@@ -4473,6 +4679,7 @@ E("u9-nonme-prob",9,["9.10"],2,"gen",function(){
     Math.round((union/tot)*1000)/1000,0.002,
     "The "+o+" students who do both sit inside both counts, so subtract the overlap once: \\[ \\begin{aligned} P(A \\cup B) &= \\frac{"+a+"}{"+tot+"} + \\frac{"+b+"}{"+tot+"} - \\frac{"+o+"}{"+tot+"} \\\\ &= \\frac{"+union+"}{"+tot+"} \\approx "+fmt(union/tot,3)+" \\end{aligned} \\]",{T:T});
 });
+// LEVELBASIS: u9-me-or-not=taught procedure, multi-step
 E("u9-me-or-not",9,["9.10"],2,"gen",function(){
   var T=pick(["ranksuit","redrank","evenmult4","tworanks","dieodd3","dieprime5","survey"]);
   var J=" Justification for Level 3: the formula cannot be chosen until the overlap between the events has been analyzed; adding blindly is the trap.";
@@ -4507,6 +4714,7 @@ E("u9-me-or-not",9,["9.10"],2,"gen",function(){
     "First classify: every multiple of 4 on a die (just 4) is already even, so the second event sits inside the first and the union is just the even outcomes: \\(\\frac{3}{6} = 0.5\\). Adding the two probabilities and subtracting a generic overlap without noticing the containment overcomplicates it."+J,{T:T});
 });
 /* --- creating probability problems (9.11) --- */
+// LEVELBASIS: u9-create-problem=one cued step
 E("u9-create-problem",9,["9.11"],1,"gen",function(){
   var device=pick([
     {w:"spinner with {T} equal sections, some coloured red",unit:"sections should be red"},
@@ -4520,6 +4728,7 @@ E("u9-create-problem",9,["9.11"],1,"gen",function(){
     "The probability is (number of red) ÷ (total). Set the fraction equal to the target: red = "+T+" × \\("+frN(frac[0],frac[1])+"\\) = "+need+". Designing the device to hit a stated probability is the reverse of the usual direction: start from the probability and build the sample space to match.",{T:T,frac:frac.join("/")});
 });
 /* --- dependent and independent events (9.12, 9.13, 9.14) --- */
+// LEVELBASIS: u9-dep-vs-indep=recognition test
 E("u9-dep-vs-indep",9,["9.12"],1,"var",varset([
   function(){return mcq("Two cards are drawn from a deck <b>without replacement</b>. The two draws are",
     "dependent events, because the first draw changes the deck, and so changes the probabilities for the second draw",
@@ -4534,6 +4743,7 @@ E("u9-dep-vs-indep",9,["9.12"],1,"var",varset([
     ["Rolling a die and flipping a coin, two separate experiments done at the same time","Spinning a spinner and then spinning it again, with the spinner left exactly as it was","Drawing a card, replacing it, shuffling, and drawing again from the restored full deck of cards"],
     "Only the marble pair has one event change the other's probabilities (the bag's contents change). The replacement draw is the instructive contrast: putting the card back restores the original deck and makes the draws independent.",{});}
 ]));
+// LEVELBASIS: u9-independent-prob=one cued step
 E("u9-independent-prob",9,["9.13"],1,"gen",function(){
   var T=pick(["coin-die","two-coins","die-die-six","spinner-coin","two-spinners"]);
   if(T==="coin-die"){var cond=pick([{d:"an even number",p:1/2},{d:"a number greater than 4",p:1/3},{d:"a prime number",p:1/2},{d:"a 6",p:1/6},{d:"an odd number",p:1/2},{d:"a number less than 3",p:1/3},{d:"a multiple of 3",p:1/3}]);
@@ -4557,6 +4767,7 @@ E("u9-independent-prob",9,["9.13"],1,"gen",function(){
     Math.round((1/(s1*s2))*1000)/1000,0.002,
     "Independent devices: multiply the separate probabilities: \\(\\frac{1}{"+s1+"} \\times \\frac{1}{"+s2+"} = "+frN(1,s1*s2)+" \\approx "+fmt(1/(s1*s2),3)+"\\) (to three decimal places).",{T:T});
 });
+// LEVELBASIS: u9-conditional=taught procedure, multi-step
 E("u9-conditional",9,["9.14"],2,"gen",function(){
   var a=pick([3,4,5,6,7]),b=pick([3,4,5,6,7]),t=a+b;
   var shape=pick(["given-red","given-then-other","both-red","both-same"]);
@@ -4576,6 +4787,7 @@ E("u9-conditional",9,["9.14"],2,"gen",function(){
     "Two paths lead to a match, and they are mutually exclusive, so add them: \\[ \\begin{aligned} P(\\text{same}) &= \\frac{"+a+" \\times "+(a-1)+" + "+b+" \\times "+(b-1)+"}{"+t+" \\times "+(t-1)+"} \\\\ &= "+frN(a*(a-1)+b*(b-1),t*(t-1))+" \\\\ &\\approx "+fmt(ans2,3)+" \\end{aligned} \\]",{shape:shape,a:a,b:b});
 });
 /* --- creating and solving with dependent events (9.15) --- */
+// LEVELBASIS: u9-create-solve-game=path test
 E("u9-create-solve-game",9,["9.15"],3,"gen",function(){
   var withRep=Math.random()<0.4;
   var ctx=pick(["marbles in a bag","counters in a box","beads in a pouch"]);
@@ -4599,6 +4811,7 @@ E("u9-create-solve-game",9,["9.15"],3,"gen",function(){
     "With replacement the draws are independent, so the probability is the square of the single-draw probability: \\(\\left(\\frac{"+correct2[0]+"}{"+correct2[1]+"}\\right)^2 = "+frN(correct2[0]*correct2[0],correct2[1]*correct2[1])+"\\), exactly the target. Justification for Level 3: the design runs backwards from a target probability, and spotting that the target must be a perfect square of the single-draw probability is the key insight.",{r:correct2[0],t:correct2[1],wr:1});
 });
 /* --- odds in context (9.5), permutations (9.28), combinations (9.32) --- */
+// LEVELBASIS: u9-odds-context=taught procedure, multi-step
 E("u9-odds-context",9,["9.5"],2,"gen",function(){
   var sport=pick(["hockey team","baseball team","curling team","soccer team"]);
   var N=pick([20,25,30,40]),w=pick([6,7,8,9,10,11,12,13,14,15,16,17,18,22,24,26,28]);if(w>=N)w=N-6;
@@ -4609,6 +4822,7 @@ E("u9-odds-context",9,["9.5"],2,"gen",function(){
     ["The odds in favour of a win are "+ratioStr(l,w)+", corresponding to a probability of "+MV(prob),"The odds in favour of a win are "+odds+", corresponding to a probability of "+MV(frN(w,l)),"The odds in favour of a win are "+odds+", corresponding to a probability of "+MV(frN(l,w+l))],
     "From the record: favourable outcomes "+w+", unfavourable "+l+", so the odds in favour are "+odds+" (part to part). The matching probability uses the whole: \\("+prob+"\\) (part to whole). The record is being used as an experimental estimate, which is how odds in sports reporting are usually produced. Justification for Level 3: both representations must be produced from the record and kept consistent with each other.",{w:w,l:l});
 });
+// LEVELBASIS: u9-prob-perm-context=taught procedure, multi-step
 E("u9-prob-perm-context",9,["9.28"],2,"gen",function(){
   var n=pick([4,5,6]),shape=pick(["first","adjacent","notadjacent","together3","exact"]);
   var people=pick(["friends","students","singers","teammates","dancers","cousins"]);
@@ -4631,6 +4845,7 @@ E("u9-prob-perm-context",9,["9.28"],2,"gen",function(){
     sol+" Justification for Level 3: the favourable arrangements have to be built with permutation reasoning before the probability ratio can be formed.",{n:n,shape:shape});
 });
 /* --- probability with combinations (9.32). Moved from Unit 8 on November 24, 2026 under Jason’s ruling: probability questions belong in the Probability unit, not in Counting Methods. --- */
+// LEVELBASIS: u9-prob-comb=taught procedure, multi-step
 E("u9-prob-comb",9,["9.32","9.30"],2,"gen",function(){
   var ctx=pick([
     {lead:"A bag contains",tail:"marbles",g1:"red",g2:"blue"},
@@ -4645,6 +4860,7 @@ E("u9-prob-comb",9,["9.32","9.30"],2,"gen",function(){
     "Count combinations: there are \\(\\binom{"+a+"}{2} = "+nCr(a,2)+"\\) ways to draw two "+ctx.g1+" and \\(\\binom{"+t+"}{2} = "+nCr(t,2)+"\\) ways to draw any two, so the probability is \\("+frN(nCr(a,2),nCr(t,2))+"\\). The first two distractors come from mishandling the second draw (keeping the full pool of "+t+" for it, or treating the draws as independent with replacement); the last counts the wrong colour.",
     {a:a,b:b});
 });
+// LEVELBASIS: u9-prob-comb-hard=taught procedure, multi-step
 E("u9-prob-comb-hard",9,["9.32","9.30"],2,"gen",function(){
   var n=pick([8,9,10,11,12]),r=pick([3,4]);while(n-2<r)n++;
   var tot=nCr(n,r),favour=nCr(n-2,r);
@@ -4656,6 +4872,7 @@ E("u9-prob-comb-hard",9,["9.32","9.30"],2,"gen",function(){
     "If neither of them is chosen, all "+r+" members come from the other "+(n-2)+" "+setting.p+": \\(\\binom{"+(n-2)+"}{"+r+"} = "+favour+"\\) favourable groups out of \\(\\binom{"+n+"}{"+r+"} = "+tot+"\\) equally likely groups, giving \\("+frN(favour,tot)+"\\). The first distractor is the opposite event (at least one of them is chosen). Justification for Level 3: the favourable set has to be rebuilt around the exclusion before the probability ratio can be formed.",
     {n:n,r:r});
 });
+// LEVELBASIS: u9-prob-comb-context=taught procedure, multi-step
 E("u9-prob-comb-context",9,["9.32","9.30"],2,"gen",function(){
   var shape=pick(["exactly","atleast","all"]);
   var g=pick([4,5,6,7,8]),b=pick([4,5,6,7,8]),t=g+b;
@@ -4672,6 +4889,7 @@ E("u9-prob-comb-context",9,["9.32","9.30"],2,"gen",function(){
     pick3Frac(corr,pool),
     sol+" Justification for Level 3: the favourable set must be counted with combinations under a composition condition before the ratio can be formed.",{shape:shape,g:g,b:b});
 });
+// LEVELBASIS: u9-compare-games=taught procedure, multi-step
 E("u9-compare-games",9,["9.13"],2,"gen",function(){
   var gamesA=[
     {aDesc:"flipping a coin and rolling a die, winning with a head and an even number",pa:0.25},
@@ -4692,6 +4910,7 @@ E("u9-compare-games",9,["9.13"],2,"gen",function(){
     "Compute both. Game A uses independent stages: the win probability is "+fmt(c.pa,3)+". Game B is dependent (no replacement): \\(\\frac{"+c.bA+"}{"+c.bT+"} \\times \\frac{"+(c.bA-1)+"}{"+(c.bT-1)+"} \\approx "+fmt(pb,3)+"\\) (to three decimal places). Comparing the two computed values, "+winner+" is higher. Justification for Level 3: two different probability models (independent product versus dependent path) must both be built before any comparison is possible.",{pa:c.pa,bA:c.bA,bT:c.bT});
 });
 
+// LEVELBASIS: u9-classify-events=direct recall
 E("u9-classify-events",9,["9.7"],1,"var",varset([
   function(){return mcq("One card is drawn from a standard deck. Event A is \"the card is a heart\" and event B is \"the card is a spade\". The two events are",
     "mutually exclusive, because a single card cannot be both a heart and a spade",
@@ -4716,6 +4935,7 @@ E("u9-classify-events",9,["9.7"],1,"var",varset([
    entry is selected-response only in exam mode. Worksheet mode uses these plus
    all numeric-answer entries. */
 /* ---------- Unit-test pool fix, Nov 9, 2026: two Level 2 CR entries (3 and 2 marks). The Level 2 CR pool held only three 2-mark entries, so the 9-mark remainder behind the 5 Level 3 pick could not form. ---------- */
+// LEVELBASIS: u9-same-colour-cr=taught procedure, multi-step
 E("u9-same-colour-cr",9,["9.14","9.15"],2,"gen",function(){
   var CTX=[
     {item:"marbles", place:"bag", c1:"red", c2:"blue"},
@@ -4729,6 +4949,7 @@ E("u9-same-colour-cr",9,["9.14","9.15"],2,"gen",function(){
     "Add the two matching cases. Both "+cx.c1+": \\(\\frac{"+r+"}{"+(r+b)+"} \\times \\frac{"+(r-1)+"}{"+(r+b-1)+"} = \\frac{"+n1+"}{"+den+"}\\). Both "+cx.c2+": \\(\\frac{"+b+"}{"+(r+b)+"} \\times \\frac{"+(b-1)+"}{"+(r+b-1)+"} = \\frac{"+n2+"}{"+den+"}\\). Together: \\(\\frac{"+num+"}{"+den+"} \\approx \\)<b>"+fmt(p,3)+"</b>.",
     {r:r,b:b});
 });
+// LEVELBASIS: u9-independent-pair-cr=taught procedure, multi-step
 E("u9-independent-pair-cr",9,["9.13"],2,"var",varset([
   function(){
     var S=pick([6,8,10]), R=pick([2,3,4]); if(R>=S) R=2;
@@ -4811,6 +5032,7 @@ var BIN_CTX=[
 var BIN_CANDY={id:"candies",a:1,d:20,nMin:12,nMax:20,succ:"peppermint candies",
   setup:function(n){return "In a very large batch of mixed candies, \\("+frN(1,20)+"\\) of the candies are peppermint. A handful of "+n+" candies is drawn at random, so the draws are effectively independent.";},
   ev1:function(n){return "at least one of the "+n+" candies is peppermint";}};
+// LEVELBASIS: u9-binomial-prob=taught procedure, multi-step
 E("u9-binomial-prob",9,["9.13","9.32"],2,"gen",function(){
   var arm=pick(["exact","atmost","atleast1","top"]);
   function proposal(){
@@ -4866,6 +5088,7 @@ var BIN_EXP=[
   {id:"wells",n:24,a:2,d:3,item:"wells that strike water",fail:"dry wells",run:"set of 24 wells",
    setup:"In one region, each drilled well strikes water with probability \\(\\frac{2}{3}\\), independently of the others. A contractor drills 24 wells."}
 ];
+// LEVELBASIS: u9-binomial-expected=taught procedure, multi-step
 E("u9-binomial-expected",9,["9.5","9.6"],2,"gen",function(){
   var cx=pick(BIN_EXP),n=cx.n,a=cx.a,d=cx.d;
   var ev0=n*a/d,fv0=n*(d-a)/d;
@@ -4902,6 +5125,7 @@ var BIN_BAD={
     {id:"throws-tire",t:"A player takes 20 free throws in a row. As she tires, her probability of making each throw drops steadily. X is the number of free throws she makes.",why:"her probability of success changes from throw to throw instead of staying the same on every trial"}]
 };
 var BIN_CAT_NAME={fixed:"the fixed number of trials condition",binary:"the two outcomes per trial condition",indep:"the independent trials condition",prob:"the same probability of success on every trial condition"};
+// LEVELBASIS: u9-binomial-identify=taught procedure, multi-step
 E("u9-binomial-identify",9,["9.12","9.13"],2,"gen",function(){
   var good=pick(BIN_GOOD);
   var cats=shuffle(["fixed","binary","indep","prob"]).slice(0,3);
@@ -5252,6 +5476,7 @@ function u7tableSVG(rowHead,colHead,rows){
   for(var v=0;v<=colHead.length;v++){var x=v===0?70:70+colW*v;out+='<line x1="'+x+'" y1="10" x2="'+x+'" y2="'+(H-10)+'" stroke="'+FIG_INK+'" stroke-width="1"/>';}
   return out+'</svg>';
 }
+// LEVELBASIS: u1-pk-frac-context=one cued step
 E("u1-pk-frac-context",1,["3.1"], 1, "gen", function () {
   var dens = [2, 4, 5, 8, 10, 20];
   var d1 = pick(dens), d2 = pick(dens);
@@ -5272,6 +5497,7 @@ E("u1-pk-frac-context",1,["3.1"], 1, "gen", function () {
   var solution = "Use the common denominator \\(" + lcm + "\\): \\[ \\begin{aligned} " + FR(n1, d1) + (sub ? " - " : " + ") + FR(n2, d2) + " &= " + FR(e1, lcm) + (sub ? " - " : " + ") + FR(e2, lcm) + " \\\\ &= " + FR(resN, lcm) + " = " + fmt(ans) + " \\end{aligned} \\] So the answer is <b>" + fmt(ans) + "</b>.";
   return numq(prompt, ans, 0.01, solution, { mode: sub ? "sub-frac-ctx" : "add-frac-ctx", a: n1, b: d1, c: n2, d: d2 });
 }, ["Fractions with different denominators need a common denominator first.", "Rewrite both fractions with the least common denominator, then combine the numerators."]);
+// LEVELBASIS: u1-pk-add-unlike=taught procedure, multi-step
 E("u1-pk-add-unlike",1,["3.1"], 2, "gen", function(){
   var d1=2,d2=3,a=1,c=1,cnt=0,L=6;
   while(cnt<60){d1=pick([2,3,4,5,6,8,9,10,12]);d2=pick([2,3,4,5,6,8,9,10,12]);if(d1===d2){cnt++;continue;}L=u5lcm(d1,d2);if(L>36){cnt++;continue;}a=ri(1,d1-1);c=ri(1,d2-1);break;}
@@ -5289,6 +5515,7 @@ E("u1-pk-add-unlike",1,["3.1"], 2, "gen", function(){
     u5fopts([N,L],[{p:[a+c,d1+d2],fb:"That adds the tops and the bottoms. Fractions can only be added once they share a denominator."},{p:[a*m1+c,L],fb:"That rewrites only the first fraction over "+L+". The second fraction must be rewritten too."},{p:[a+c*m2,L],fb:"That rewrites only the second fraction over "+L+". The first fraction must be rewritten too."}]),
     sol,{mode:"add-unlike",a:a,d1:d1,c:c,d2:d2});
 }, ["The parts are different sizes, so the fractions need a common denominator first.", "Start by finding the least common multiple of the two denominators."]);
+// LEVELBASIS: u1-pk-multiply-fractions=one cued step
 E("u1-pk-multiply-fractions",1,["3.1"], 1, "gen", function () {
   var P = null;
   for (var t = 0; t < 200 && !P; t++) {
@@ -5311,6 +5538,7 @@ E("u1-pk-multiply-fractions",1,["3.1"], 1, "gen", function () {
     ],
     solution, { mode: "mult-basic", n1: P.n1, d1: P.d1, n2: P.n2, d2: P.d2 });
 }, ["For multiplication, no common denominator is needed.", "Cancel any numerator with any denominator before you multiply."]);
+// LEVELBASIS: u1-pk-gcf=taught procedure, multi-step
 E("u1-pk-gcf",1,["3.1"], 2, "gen", function () {
   var gp = ri(0, 2), gn, tries = 0;
   if (gp === 0) gn = ri(2, 7); else gn = pick([1, 2, 3, 4, 5, 6]);
@@ -5344,6 +5572,7 @@ E("u1-pk-gcf",1,["3.1"], 2, "gen", function () {
   return mcq(prompt, u3M(keyRaw), shuffle(cands).slice(0, 3), sol,
     { t: "fac", g: gRaw, parts: [quo], v: "x" });
 });
+// LEVELBASIS: u1-pk-factor-monic=taught procedure, multi-step
 E("u1-pk-factor-monic",1,["3.1"], 2, "gen", function () {
   var v = pick(["x", "y"]);
   var r = u3Nz(-9, 9), s = u3Nz(-9, 9), guard = 0;
@@ -5358,6 +5587,7 @@ E("u1-pk-factor-monic",1,["3.1"], 2, "gen", function () {
     "The larger of the two constant terms is <b>" + ans + "</b>.";
   return numq(prompt, ans, 0.01, sol, { t: "pair", r: r, s: s, B: B, C: C });
 });
+// LEVELBASIS: u1-pk-diff-squares=one cued step
 E("u1-pk-diff-squares",1,["3.1"], 1, "gen", function () {
   var mode = pick(["pure", "pure", "twovar"]);
   if (mode === "twovar") {
@@ -5395,6 +5625,7 @@ E("u1-pk-diff-squares",1,["3.1"], 1, "gen", function () {
     u3M(keyRaw2), u3FacDistr("", facs, v, prod, 3), sol,
     { t: "fac", g: "", parts: facs, v: v });
 });
+// LEVELBASIS: u2-pk-domain-range=direct recall
 E("u2-pk-domain-range",2,["3.17"],1,"gen",function(){
   var a=pick([1,-1,2]),h=ri(-4,4),k=ri(-6,10);
   var correct=a>0?"Domain: all real numbers; Range: \\(y \\geq "+k+"\\)":"Domain: all real numbers; Range: \\(y \\leq "+k+"\\)";
@@ -5405,6 +5636,7 @@ E("u2-pk-domain-range",2,["3.17"],1,"gen",function(){
   q.figure=parSVG(a,-2*a*h,a*h*h+k,{marks:[{x:h,y:k}]});
   return q;
 });
+// LEVELBASIS: u2-pk-vertex-form-params=direct recall
 E("u2-pk-vertex-form-params",2,["3.17"],1,"var",varset([
   figArm(function(){return mcq("In \\(y = (x - 3)^2 + 5\\), what is the vertex?",
     "\\((3, 5)\\) — the graph of \\(y = x^2\\) shifted right \\(3\\) and up \\(5\\)",
@@ -5419,6 +5651,7 @@ E("u2-pk-vertex-form-params",2,["3.17"],1,"var",varset([
     ["\\(y = (x - 4)^2 + 2\\)","\\(y = (x + 4)^2 + 2\\)","\\(y = (x - 4)^2 - 2\\)"],
     "Left \\(4\\) means \\(h = -4\\), written \\((x - (-4)) = (x + 4)\\); down \\(2\\) means \\(k = -2\\).",{});},figVPParams3)
 ]));
+// LEVELBASIS: u2-pk-axis-from-intercepts=one cued step
 E("u2-pk-axis-from-intercepts",2,["3.17"],1,"gen",function(){
   var p=ri(-10,-1),q=ri(1,10);var mid=(p+q)/2;
   var frame=pick([
@@ -5428,6 +5661,7 @@ E("u2-pk-axis-from-intercepts",2,["3.17"],1,"gen",function(){
   qfig.figure=parSVG(1,-(p+q),p*q,{marks:[{x:p,y:0},{x:q,y:0}]});
   return qfig;
 });
+// LEVELBASIS: u2-pk-graph-description=taught procedure, multi-step
 E("u2-pk-graph-description",2,["3.17"],2,"gen",function(){
   var a=pick([1,-1,2,-2]),r1=pick([-5,-4,-3,-2,-1,1,2,3]),r2=pick([2,3,4,5,6]);
   if(r1===r2)r2=r2+1;
@@ -5443,6 +5677,7 @@ E("u2-pk-graph-description",2,["3.17"],2,"gen",function(){
   q.figure=parSVG(a,-a*(r1+r2),a*r1*r2,{marks:[{x:r1,y:0},{x:r2,y:0},{x:0,y:a*r1*r2}]});
   return q;
 });
+// LEVELBASIS: u2-pk-which-quadratic=direct recall
 E("u2-pk-which-quadratic",2,["3.17"],1,"var",varset([
   function(){return mcq("Which relation is quadratic?",
     "\\(y = (x + 2)(x - 5)\\)",["\\(y = 3x - 7\\)","\\(y = x^3 - x\\)","\\(y = \\sqrt{x + 1}\\)"],
@@ -5457,6 +5692,7 @@ E("u2-pk-which-quadratic",2,["3.17"],1,"var",varset([
     "\\(y = x^2 - 3x\\)",["\\(y = 7 - x\\)","\\(y = 2x^3\\)","\\(y = \\sqrt{x}\\)"],
     "\\(y = x^2 - 3x\\) has degree \\(2\\). The others are linear (degree \\(1\\)), cubic (degree \\(3\\)) and a square-root relation.");}
 ]));
+// LEVELBASIS: u3-pk-label-sides=direct recall
 E("u3-pk-label-sides",3,["7.1"], 1, "gen",function(){
   var ns=u7names(),X=ns[0],Y=ns[1],R=ns[2];
   var marked=pick([X,Y]),other=(marked===X?Y:X);
@@ -5498,6 +5734,7 @@ E("u3-pk-label-sides",3,["7.1"], 1, "gen",function(){
   q.figure=triSVG(4,3,5,{L:[X,Y,R],ang:angLab,side:[Y+R,X+R,X+Y]});
   return q;
 });
+// LEVELBASIS: u3-pk-ratio-def=one cued step
 E("u3-pk-ratio-def",3,["7.1"], 1, "gen",function(){
   var ns=u7names(),X=ns[0],Y=ns[1],R=ns[2];
   var t=pick(U7_TRIPLES),k=ri(1,5);
@@ -5524,6 +5761,7 @@ E("u3-pk-ratio-def",3,["7.1"], 1, "gen",function(){
   q.figure=triSVG(legYR,legXR,hyp,{L:[X,Y,R],side:[legYR+" "+unit,legXR+" "+unit,hyp+" "+unit]});
   return q;
 });
+// LEVELBASIS: u3-pk-find-side=one cued step
 E("u3-pk-find-side",3,["7.1"],1,"gen",function(){
   var V=pick(["A","B"]);
   var oppName=(V==="A"?"BC":"AC"),adjName=(V==="A"?"AC":"BC");
@@ -5567,6 +5805,7 @@ E("u3-pk-find-side",3,["7.1"],1,"gen",function(){
   q.figure=triSVG(V==="A"?oppV:adjV,V==="A"?adjV:oppV,hypV,{L:["A","B","C"],side:sLab,ang:aLab});
   return q;
 });
+// LEVELBASIS: u3-pk-solve-triangle=taught procedure, multi-step
 E("u3-pk-solve-triangle",3,["7.1"],2,"gen",function(){
   var fam=ri(1,4),facts,tasks=[];
   var P={fam:fam};
@@ -5666,6 +5905,7 @@ E("u3-pk-solve-triangle",3,["7.1"],2,"gen",function(){
    item, sides and angles only. No ambiguous case (see the guard inside
    u3-pk-sine-law-angle) and no multi-step problems. No CR marks, on the
    sibling entries' convention. */
+// LEVELBASIS: u3-pk-sine-law-side=one cued step
 E("u3-pk-sine-law-side",3,["7.1"],1,"gen",function(){
   var mode=ri(1,2),A=0,B=0,given=0,raw=0,C=0,aLen=0,bLen=0,cLen=0,tries=0;
   function deal(){
@@ -5695,6 +5935,7 @@ E("u3-pk-sine-law-side",3,["7.1"],1,"gen",function(){
   q.figure=fig;
   return q;
 });
+// LEVELBASIS: u3-pk-sine-law-angle=taught procedure, multi-step
 E("u3-pk-sine-law-angle",3,["7.1"],2,"gen",function(){
   /* Ambiguous-case guard: the target angle is dealt at least 8 degrees
      below the given angle A, so side b (opposite the target) stays below
@@ -5716,6 +5957,7 @@ E("u3-pk-sine-law-angle",3,["7.1"],2,"gen",function(){
   q.figure=triSVG(a,b,cLen,{L:["A","B","C"],ang:[A+"°","?",null],side:[a+" cm",u7f1(b)+" cm",null]});
   return q;
 });
+// LEVELBASIS: u3-pk-cosine-law-side=one cued step
 E("u3-pk-cosine-law-side",3,["7.1"],1,"gen",function(){
   var a=0,b=0,C=0,raw=0,tries=0;
   do{
@@ -5732,6 +5974,7 @@ E("u3-pk-cosine-law-side",3,["7.1"],1,"gen",function(){
   q.figure=triSVG(a,b,raw,{L:["A","B","C"],ang:[null,null,C+"°"],side:[a+" cm",b+" cm","?"]});
   return q;
 });
+// LEVELBASIS: u3-pk-cosine-law-angle=taught procedure, multi-step
 E("u3-pk-cosine-law-angle",3,["7.1"],2,"gen",function(){
   var Atar=0,b=0,c=0,a=0,tries=0;
   do{
@@ -5750,6 +5993,7 @@ E("u3-pk-cosine-law-angle",3,["7.1"],2,"gen",function(){
   q.figure=triSVG(a,b,c,{L:["A","B","C"],ang:["?",null,null],side:[u7f1(a)+" cm",b+" cm",c+" cm"]});
   return q;
 });
+// LEVELBASIS: u3-pk-params-characteristics=direct recall
 E("u3-pk-params-characteristics",3,["7.1"],1,"gen",function(){
   var mode=ri(0,2),a=pick([-3,-2,-1,1,2,3]),b=ri(-8,8)||3,c=ri(-9,9)||4;
   var eq="\\(y = "+(a<0?"-"+Math.abs(a):a)+"x^2"+(b>0?" + "+b+"x":" - "+Math.abs(b)+"x")+(c>0?" + "+c:" - "+Math.abs(c))+"\\)";
@@ -5780,6 +6024,7 @@ E("u3-pk-params-characteristics",3,["7.1"],1,"gen",function(){
   q.figure=parSVG(a,b,c,{});
   return q;
 });
+// LEVELBASIS: u4-pk-repeated-mult=direct recall
 E("u4-pk-repeated-mult",4,["4.1"], 1, "gen", function () {
   var b = ri(2, 12), e = ri(2, 6);
   var correct = u3MultStr(b, e);
@@ -5797,6 +6042,7 @@ E("u4-pk-repeated-mult",4,["4.1"], 1, "gen", function () {
     "The base is \\(" + b + "\\) and the exponent is \\(" + e + "\\), so write \\(" + b + "\\) as a factor \\(" + e + "\\) times: \\[ " + correct.replace("\\(", "").replace("\\)", "") + " \\] So the repeated multiplication is <b>" + correct + "</b>.",
     { mode: "power-to-repeated", b: b, e: e });
 }, ["The exponent tells you how many times the base appears as a factor.", "Write the base down, then keep multiplying by it until you have used the exponent count."]);
+// LEVELBASIS: u4-pk-two-laws=one cued step
 E("u4-pk-two-laws",4,["4.1"], 1, "gen", function () {
   var mode = pick(["prod", "quot", "powpow"]);
   var a, expr, val, steps;
@@ -5820,7 +6066,9 @@ E("u4-pk-two-laws",4,["4.1"], 1, "gen", function () {
     "Apply the exponent law first, then evaluate: \\[ \\begin{aligned} " + steps + " \\end{aligned} \\] So the value is <b>" + fmt(val) + "</b>.",
     { mode: "two-laws-" + mode, a: a });
 }, ["Use an exponent law to write the expression as one power first.", "Combine the exponents with the matching law, then evaluate that power."]);
-E("u4-pk-laws-integral",4,["4.1"],2,"gen",function(){
+// Level audit Nov 25, 2026: retagged 2 to 1. Each deal is one exponent law application (product, quotient, power, or power of a product), the Level 1 boundary test; compare u4-pk-two-laws at Level 1.
+// LEVELBASIS: u4-pk-laws-integral=one cued step
+E("u4-pk-laws-integral",4,["4.1"],1,"gen",function(){
   var mode=ri(1,6);
   if(mode===1){
     var a=ri(2,9),b=ri(2,9),t=0;
@@ -5890,6 +6138,7 @@ E("u4-pk-laws-integral",4,["4.1"],2,"gen",function(){
     " The simplified form is <b>\\("+c6+"y^{"+b6+"}\\)</b>.",
     {mode:mode,b:b6,c:c6,keyStr:key6});
 });
+// LEVELBASIS: u4-pk-rational-pattern=recognition test
 E("u4-pk-rational-pattern",4,["4.1"],1,"var",varset([
   function(){var key="The denominator \\(3\\) names the root and the numerator \\(2\\) names the power: \\(\\left(\\sqrt[3]{8}\\right)^2 = 2^2 = 4\\)";
     return mcq("Which explanation correctly shows why \\(8^{"+FR(2,3)+"}\\) equals \\(4\\)?",
@@ -5924,6 +6173,7 @@ E("u4-pk-rational-pattern",4,["4.1"],1,"var",varset([
     "The denominator \\(4\\) names a fourth root: \\(\\sqrt[4]{16} = 2\\) since \\(2^4 = 16\\). The numerator \\(3\\) then cubes it: \\(2^3 = 8\\). Numeric check: \\(\\left(\\sqrt[4]{16}\\right)^3 = 2^3 = 8 = 16^{"+FR(3,4)+"}\\). The value is <b>\\(8\\)</b>, from the root named by the denominator followed by the power named by the numerator.",
     {stmt:true,keyText:key});}
 ]));
+// LEVELBASIS: u5-pk-laws-rational=taught procedure, multi-step
 E("u5-pk-laws-rational",5,["1.1"],2,"gen",function(){
   var base=pick(["x","y","z","t"]),mode=ri(1,3);
   var p=ri(1,7),q=pick([2,3,4,5,6]),r=ri(1,7),s=pick([2,3,4,5,6]),t=0;
@@ -5958,6 +6208,7 @@ E("u5-pk-laws-rational",5,["1.1"],2,"gen",function(){
     " The simplified form is <b>"+key+"</b>.",
     {mode:mode,base:base,p:p,q:q,r:r,s:s,eN:eN,eD:eD,keyStr:key});
 });
+// LEVELBASIS: u5-pk-negative-exp=one cued step
 E("u5-pk-negative-exp",5,["1.1"],1,"gen",function(){
   var mode=ri(1,4);
   var pattern="The pattern behind negative exponents comes from dividing by the base at each step: as the exponent drops by \\(1\\), the value is divided by the base. Continuing the pattern past zero gives reciprocals, so \\(a^{-n} = "+FR(1,"a^n")+"\\) for \\(a \\ne 0\\). ";
@@ -5994,6 +6245,7 @@ E("u5-pk-negative-exp",5,["1.1"],1,"gen",function(){
     pattern+"The reciprocal \\("+FR(1,a4+"^{"+n4+"}")+"\\) is the power with the exponent negated: \\("+a4+"^{-"+n4+"}\\). The exponent is <b>\\(-"+n4+"\\)</b>.",
     {mode:mode,a:a4,n:n4,ans:-n4});
 });
+// LEVELBASIS: u5-pk-evaluate-exp=one cued step
 E("u5-pk-evaluate-exp",5,["1.1"],1,"gen",function(){
   var mode=ri(1,4);
   if(mode===1){
@@ -6044,6 +6296,7 @@ E("u5-pk-evaluate-exp",5,["1.1"],1,"gen",function(){
     " The value is <b>\\("+ans4+"\\)</b>.",
     {mode:mode,a:a4,p:p4,q:q4,ans:ans4});
 });
+// LEVELBASIS: u5-pk-rational-exp=one cued step
 E("u5-pk-rational-exp",5,["1.1"],1,"gen",function(){
   var n=ri(2,6),m=ri(1,9),t=0;
   while((u2gcd(m,n)!==1||m===n)&&t<200){m=ri(1,9);n=ri(2,6);t++;}
@@ -6081,6 +6334,7 @@ E("u5-pk-rational-exp",5,["1.1"],1,"gen",function(){
     " As a power, the expression is <b>\\("+b+"^{"+FR(m,n)+"}\\)</b>.",
     {mode:mode,b:b,m:m,n:n,keyStr:key2});
 });
+// LEVELBASIS: u6-pk-percent-of=one cued step
 E("u6-pk-percent-of",6,["1.6"], 1, "gen", function () {
   var mode = ri(0, 2);
   if (mode === 0) {
@@ -6109,6 +6363,7 @@ E("u6-pk-percent-of",6,["1.6"], 1, "gen", function () {
   var sol3 = "A percent under 1% is a small fraction of the whole: \\[ \\begin{aligned} " + pStr3 + "\\% \\text{ of } " + W3 + " &= " + fmt(p10 / 1000, 4) + " \\times " + W3 + " \\\\ &= " + fmt(ans3, 0) + " \\end{aligned} \\] So about <b>" + fmt(ans3, 0) + " residents</b> were born on a holiday.";
   return numq(prompt3, ans3, 0.01, sol3, { mode: "pct-of-small", p: pStr3, w: W3 });
 }, ["Turn the percent into a decimal first, then multiply by the whole amount.", "First write the percent as a decimal by dividing it by 100."]);
+// LEVELBASIS: u6-pk-percent-convert=direct recall
 E("u6-pk-percent-convert",6,["1.6"], 1, "gen", function () {
   var pool = [
     { s: "5", pn: 5, pd: 1 }, { s: "10", pn: 10, pd: 1 }, { s: "15", pn: 15, pd: 1 }, { s: "20", pn: 20, pd: 1 },
@@ -6149,6 +6404,7 @@ E("u6-pk-percent-convert",6,["1.6"], 1, "gen", function () {
   var sol2 = "Write the percent as a fraction out of 100, then reduce: \\[ \\begin{aligned} " + it.s + "\\% &= " + FR(it.pn, it.pd * 100) + " \\\\ &= " + fracTex + " \\end{aligned} \\] So \\(" + it.s + "\\%\\) as a fraction in lowest terms is <b>" + corr + "</b>.";
   return mcq("Express \\(" + it.s + "\\%\\) as a fraction in lowest terms.", { t: corr, fb: "Correct: the percent becomes a fraction out of 100, reduced to lowest terms." }, ds2, sol2, { mode: "pct-frac", p: it.s });
 }, ["Percent means out of 100, so every conversion starts from hundredths.", "First write the percent over 100, then turn it into a decimal or reduce the fraction."]);
+// LEVELBASIS: u6-pk-find-whole=taught procedure, multi-step
 E("u6-pk-find-whole",6,["1.6"], 2, "gen", function () {
   var pool = [[25, 60], [20, 80], [30, 90], [40, 150], [50, 70], [75, 120], [80, 200], [10, 240], [60, 300], [90, 400], [15, 200], [35, 260], [12, 250], [16, 150], [18, 200], [22, 150], [28, 250], [32, 200], [38, 150], [42, 200], [48, 250], [52, 200], [56, 150], [64, 200], [72, 250], [84, 150], [88, 200], [45, 180], [65, 140], [85, 220], [55, 160], [95, 300]];
   var pr = pick(pool), p = pr[0], W = pr[1], part = W * p / 100;
@@ -6161,6 +6417,7 @@ E("u6-pk-find-whole",6,["1.6"], 2, "gen", function () {
   var sol = "The part and its percent give the whole when the part is divided by the percent as a decimal: \\[ \\begin{aligned} \\text{whole} &= " + part + " \\div " + fmt(p / 100, 2) + " \\\\ &= " + W + " \\end{aligned} \\] So the whole is <b>" + W + " " + cx.unit + "</b>.";
   return numq(cx.q, W, 0.01, sol, { mode: "find-whole", p: p, part: part });
 }, ["The given amount is only the named percent of the whole, so the whole is larger.", "First write the percent as a decimal, then divide the part by that decimal."]);
+// LEVELBASIS: u6-pk-discount-then-tax=taught procedure, multi-step
 E("u6-pk-discount-then-tax",6,["1.6"], 2, "gen", function () {
   var items = ["winter jacket", "bicycle helmet", "pair of snowshoes", "school backpack", "set of curling gloves", "rain coat"];
   var item = pick(items), P = pick([60, 80, 100, 120, 160, 200, 240, 300, 400]), d = pick([10, 20, 25, 30, 40, 50]);
@@ -6168,6 +6425,7 @@ E("u6-pk-discount-then-tax",6,["1.6"], 2, "gen", function () {
   var sol = "Apply the discount first, then add HST of 15% to the sale price: \\[ \\begin{aligned} \\text{sale price} &= " + fmtF(P, 2) + " \\times " + fmt(1 - d / 100, 2) + " = " + fmtF(sale, 2) + " \\\\ \\text{final price} &= " + fmtF(sale, 2) + " \\times 1.15 = " + fmtF(fin, 2) + " \\end{aligned} \\] So the final price is <b>$" + fmtF(fin, 2) + "</b>.";
   return numq("A " + item + " is priced at $" + fmtF(P, 2) + ". It is on sale for " + d + "% off. HST of 15% is then added to the sale price. What is the final price, in dollars?", fin, 0.01, sol, { mode: "disc-tax", p: P, d: d });
 }, ["Combined percents act one after the other, and the second percent acts on the new amount.", "First take the discount off the full price to get the sale price."]);
+// LEVELBASIS: u6-pk-percent-change=one cued step
 E("u6-pk-percent-change",6,["1.6"], 1, "gen", function () {
   var inc = Math.random() < 0.5;
   var c = inc ? pick([5, 10, 15, 20, 25, 30, 40, 50, 60, 80, 100]) : pick([5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 80]);
@@ -6186,6 +6444,7 @@ E("u6-pk-percent-change",6,["1.6"], 1, "gen", function () {
   var sol = "Percent change compares the change with the starting amount: \\[ \\begin{aligned} \\text{change} &= " + fmt(diff, 0) + " \\\\ \\text{percent change} &= " + FR(fmt(diff, 0), O) + " \\times 100 = " + c + "\\% \\end{aligned} \\] So the percent " + (inc ? "increase" : "decrease") + " is <b>" + c + "%</b>.";
   return numq(prompt + " Give the percent as a number.", c, 0.01, sol, { mode: inc ? "pct-inc" : "pct-dec", c: c, o: O });
 }, ["Percent change always uses the starting amount as the whole, not the ending amount.", "First find the size of the change, then divide it by the starting amount."]);
+// LEVELBASIS: u7-pk-sort-numbers=recognition test
 E("u7-pk-sort-numbers",7,["2.1"],1,"gen",function(){
   function ratItem(){
     var kind=ri(1,5);
@@ -6239,6 +6498,7 @@ E("u7-pk-sort-numbers",7,["2.1"],1,"gen",function(){
     "Rational numbers are exactly the numbers that can be written as a ratio of two integers: fractions, terminating or repeating decimals, and roots that come out whole. A root of a number that is not a perfect power, the number \\(\\pi\\), and a decimal that continues without repeating are irrational. The "+(wantIrr?"irrational":"rational")+" number in the list is <b>"+target.str+"</b>.",
     {mode:mode,items:items,keyStr:target.str});
 });
+// LEVELBASIS: u7-pk-subsets=direct recall
 E("u7-pk-subsets",7,["2.1"],1,"var",varset([
   function(){var key="Integers: the whole numbers, their negatives, and zero";
     return mcq("What is the <b>most specific</b> subset of the real numbers that \\(-12\\) belongs to?",
@@ -6272,6 +6532,7 @@ E("u7-pk-subsets",7,["2.1"],1,"var",varset([
     "The subsets nest: natural numbers sit inside whole numbers, inside integers, inside rational numbers. So any integer \\(k\\) can be written as the ratio \\("+FR("k",1)+"\\), which makes it rational. The reverse claims fail: \\("+FR(1,2)+"\\) is rational but not an integer, \\(0\\) is whole but not natural, and irrational numbers cannot be written as ratios at all. The true statement is: <b>every integer is also a rational number</b>.",
     {stmt:true,keyText:key});}
 ]));
+// LEVELBASIS: u8-pk-sample-space=one cued step
 E("u8-pk-sample-space",8,["9.16"],1,"gen",function(){
   var mode=pick(["table","table","count","favcount"]);
   if(mode==="table"){
@@ -6320,6 +6581,7 @@ E("u8-pk-sample-space",8,["9.16"],1,"gen",function(){
     {t:String(tot),fb:"Yes: "+A[1]+" outcomes times "+B[1]+" outcomes gives "+tot+"."},ds3,
     "The events are independent, so multiply: \\("+A[1]+" \\times "+B[1]+" = "+tot+"\\). The sample space has <b>"+tot+"</b> outcomes.",{mode:"count"});
 },["For two independent events, multiply the outcome counts to size the sample space.","Start by counting the outcomes of each event on its own."]);
+// LEVELBASIS: u9-pk-product-rule=one cued step
 E("u9-pk-product-rule",9,["9.1"], 1, "gen", function () {
   var attempt = 0, cfg = null;
   while (attempt < 60 && !cfg) {
@@ -6352,6 +6614,7 @@ E("u9-pk-product-rule",9,["9.1"], 1, "gen", function () {
   function F2A(c) { return u7red(c.F * 6 + c.G * c.S, c.S * 6)[0]; }
   function F2B(c) { return u7red(c.F * 6 + c.G * c.S, c.S * 6)[1]; }
 }, ["Independent events do not affect each other, so the probability that both happen is a product.", "Find the probability of each event on its own first, then multiply the two fractions."]);
+// LEVELBASIS: u9-pk-two-draws=one cued step
 E("u9-pk-two-draws",9,["9.1"], 1, "gen", function () {
   var triples = [["red", "blue", "green"], ["red", "yellow", "blue"], ["white", "black", "orange"], ["purple", "green", "yellow"], ["blue", "orange", "pink"]];
   var pair = null;
@@ -6368,6 +6631,7 @@ E("u9-pk-two-draws",9,["9.1"], 1, "gen", function () {
   var sol = "Multiply for independent events, then check by counting outcomes: \\[ \\begin{aligned} P &= " + FR(pair[0], 10) + " \\times " + FR(pair[1], 10) + " \\\\ &= " + FR(ans, 100) + " \\\\ &= " + ans + "\\% \\end{aligned} \\] Counting check: there are \\(10 \\times 10 = 100\\) equally likely ordered pairs, and \\(" + pair[0] + " \\times " + pair[1] + " = " + ans + "\\) of them match, which agrees. So the probability is <b>" + ans + "%</b>.";
   return numq(prompt, ans, 0.01, sol, { mode: "two-draws", a: pair[0], b: pair[1] });
 }, ["Replacement keeps the bag the same for the second draw, so the two draws are independent.", "Write each draw as a fraction out of 10, multiply, then convert to a percent."]);
+// LEVELBASIS: u9-pk-prob-basic-b=one cued step
 E("u9-pk-prob-basic-b",9,["9.1"],1,"gen",function(){
   var mode=pick(["bag","bag","die","spinner","zero"]);
   if(mode==="zero"){
@@ -6407,6 +6671,7 @@ E("u9-pk-prob-basic-b",9,["9.1"],1,"gen",function(){
     {t:"\\("+cs3+"\\)",fb:"Yes: "+fav2+" of the "+total2+" marbles are "+colPick+", which simplifies to "+cs3+"."},ds3.slice(0,3),
     "Favourable outcomes: "+fav2+". Total outcomes: "+total2+". \\(P = "+FR(fav2,total2)+" = "+cs3+"\\). The probability is <b>\\("+cs3+"\\)</b>.",{mode:"bag"});
 },["Probability is favourable outcomes divided by total possible outcomes.","Start by counting the favourable outcomes and the total number of outcomes, then simplify the fraction."]);
+// LEVELBASIS: u9-pk-exp-vs-theor-b=one cued step
 E("u9-pk-exp-vs-theor-b",9,["9.1"],1,"gen",function(){
   var trials=pick([20,40,50,100]);var theo=pick([["rolling a 6 on a die",1,6],["flipping heads",1,2],["landing on one section of a four-section spinner",1,4],["drawing a red marble from 3 red and 2 blue",3,5]]);
   var expected=theo[1]/theo[2]*trials;var obs=Math.max(1,Math.round(expected+ri(-4,4)));var guard=0;while(obs===expected&&guard<10){obs=Math.max(1,Math.round(expected+ri(-4,4)));guard++;}
@@ -6427,6 +6692,7 @@ E("u9-pk-exp-vs-theor-b",9,["9.1"],1,"gen",function(){
     {t:"\\("+cs+"\\)",fb:"Yes: "+obs+" successes out of "+trials+" trials simplifies to "+cs+"."},ds,
     "Experimental probability is successes over trials. \\(P = "+FR(obs,trials)+" = "+cs+"\\). The experimental probability is <b>\\("+cs+"\\)</b>.",{mode:"expfrac"});
 },["Experimental probability comes from results: successes divided by trials.","Start by writing the observed count over the total number of trials."]);
+// LEVELBASIS: u9-pk-combined-decision=recognition test
 E("u9-pk-combined-decision",9,["9.1"], 1, "var", varset([
   function(){
     return mcq("A coach must choose a shooter for a final free throw. The chance from the chart counts equally likely outcomes, practice trials show the shooter made 18 of 20 shots this week, and the coach feels this player stays calm under pressure. Which option describes how the three kinds of probability combine in this decision?",
@@ -6541,4 +6807,11 @@ window.__BANK_CRMARKS={"u1-add-diff-den":2,"u1-add-same-den":2,"u1-context-cost"
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-add-diff-den":"b","u1-add-same-den":"a","u1-extraneous":"b","u1-npv-why":"b","u1-pk-add-unlike":"a","u1-pk-diff-squares":"b","u1-pk-gcf":"b","u1-pk-multiply-fractions":"a","u1-reverse-restrictions":"b","u1-simplify-quad":"b","u1-solve-quad-eq":"a","u1-sub-monomial-den":"b","u2-characteristics-equation":"a","u2-match-by-characteristics":"b","u2-match-equation-graph":"b","u2-model-decision":"b","u2-pk-domain-range":"b","u2-pk-graph-description":"a","u2-pk-vertex-form-params":"b","u2-pk-which-quadratic":"a","u2-scatter-type":"a","u2-sketch-match":"b","u2-zeros-and-intercept-cr":"b","u3-build-equation":"b","u3-characteristics-combo-cr":"a","u3-data-equation":"b","u3-graph-full-equation":"b","u3-match-eq-graph":"b","u3-periodic-or-sinusoidal":"a","u3-pk-label-sides":"a","u3-pk-params-characteristics":"a","u3-pk-ratio-def":"a","u4-app-decision":"b","u4-compare-models":"a","u4-growth-or-decay":"b","u4-match-by-description":"b","u4-match-graph":"b","u4-pk-laws-integral":"b","u4-pk-repeated-mult":"b","u5-condense-log":"b","u5-expand-log":"b","u5-match-graph":"b","u5-pk-laws-rational":"a","u5-pk-rational-exp":"a","u5-solve-with-logs":"a","u5-two-bases":"a","u6-add-rent-lease-buy":"a","u6-compare-costs":"a","u6-credit-fees":"a","u6-identify-compound":"b","u6-justify-decision":"b","u6-pk-percent-convert":"a","u6-rent-buy-lease":"a","u6-simple-vs-compound":"b","u7-applications":"b","u7-disjoint-check":"a","u7-error-identify":"b","u7-operations":"a","u7-pk-sort-numbers":"b","u7-pk-subsets":"a","u7-set-concepts":"b","u7-subset-relation":"a","u8-assumptions":"b","u8-comb-strategy":"b","u8-identical-effect":"b","u8-order-matters":"b","u8-perm-strategy":"b","u8-pk-sample-space":"a","u9-binomial-expected":"b","u9-binomial-identify":"b","u9-classify-events":"b","u9-compare-games":"a","u9-create-solve-game":"b","u9-decisions":"b","u9-dep-vs-indep":"b","u9-media-statements":"b","u9-odds-context":"a","u9-odds-vs-prob":"b","u9-pk-exp-vs-theor-b":"a","u9-pk-prob-basic-b":"a","u9-pk-product-rule":"a","u9-prob-comb":"a","u9-prob-comb-context":"a","u9-prob-comb-hard":"a","u9-prob-perm-context":"a","u9-represent-events":"a"};
+window.__BANK_BIMODAL={"u1-add-diff-den":"b","u1-add-same-den":"a","u1-extraneous":"b","u1-npv-quadratic":"a","u1-npv-why":"b","u1-pk-add-unlike":"a","u1-pk-diff-squares":"b","u1-pk-gcf":"b","u1-pk-multiply-fractions":"a","u1-reverse-restrictions":"b","u1-simplify-quad":"b","u1-solve-quad-eq":"a","u1-sub-monomial-den":"b","u2-characteristics-equation":"a","u2-match-by-characteristics":"b","u2-match-equation-graph":"b","u2-model-decision":"b","u2-pk-domain-range":"b","u2-pk-graph-description":"a","u2-pk-vertex-form-params":"b","u2-pk-which-quadratic":"a","u2-scatter-type":"a","u2-sketch-match":"b","u2-zeros-and-intercept-cr":"b","u3-build-equation":"b","u3-characteristics-combo-cr":"a","u3-data-equation":"b","u3-graph-full-equation":"b","u3-match-eq-graph":"b","u3-periodic-or-sinusoidal":"a","u3-pk-label-sides":"a","u3-pk-params-characteristics":"a","u3-pk-ratio-def":"a","u4-app-decision":"b","u4-compare-models":"a","u4-growth-or-decay":"b","u4-match-by-description":"b","u4-match-graph":"b","u4-pk-laws-integral":"b","u4-pk-repeated-mult":"b","u5-condense-log":"b","u5-expand-log":"b","u5-match-graph":"b","u5-pk-laws-rational":"a","u5-pk-rational-exp":"a","u5-solve-with-logs":"a","u5-two-bases":"a","u6-add-rent-lease-buy":"a","u6-compare-costs":"a","u6-credit-fees":"a","u6-identify-compound":"b","u6-justify-decision":"b","u6-pk-percent-convert":"a","u6-rent-buy-lease":"a","u6-simple-vs-compound":"b","u7-applications":"b","u7-disjoint-check":"a","u7-error-identify":"b","u7-operations":"a","u7-pk-sort-numbers":"b","u7-pk-subsets":"a","u7-set-concepts":"b","u7-subset-relation":"a","u8-assumptions":"b","u8-comb-strategy":"b","u8-identical-effect":"b","u8-order-matters":"b","u8-perm-strategy":"b","u8-pk-sample-space":"a","u9-binomial-expected":"b","u9-binomial-identify":"b","u9-classify-events":"b","u9-compare-games":"a","u9-create-solve-game":"b","u9-decisions":"b","u9-dep-vs-indep":"b","u9-media-statements":"b","u9-odds-context":"a","u9-odds-vs-prob":"b","u9-pk-exp-vs-theor-b":"a","u9-pk-prob-basic-b":"a","u9-pk-product-rule":"a","u9-prob-comb":"a","u9-prob-comb-context":"a","u9-prob-comb-hard":"a","u9-prob-perm-context":"a","u9-represent-events":"a"};
+/* ============ Level basis labels (generated) ============ */
+/* Built by assemble-bank.py from the LEVELBASIS comments at each
+   audited entry (November 25, 2026): the criterion that decided
+   the entry's level under the adopted criteria card, shown in
+   teacher mode beside the level on the question card. Entries
+   no audit has covered have no label. */
+window.__BANK_LEVELBASIS={"u1-add-diff-den":"taught procedure, multi-step","u1-add-same-den":"taught procedure, multi-step","u1-context-cost":"taught procedure, multi-step","u1-context-wind":"taught procedure, multi-step","u1-context-work":"taught procedure, multi-step","u1-create-equivalent":"one cued step","u1-div":"one cued step","u1-equiv-forms":"one cued step","u1-error-simplify":"one cued step","u1-extraneous":"taught procedure, multi-step","u1-lcd":"one cued step","u1-mult":"one cued step","u1-npv-equation":"one cued step","u1-npv-linear":"one cued step","u1-npv-operations":"direct recall","u1-npv-quadratic":"taught procedure, multi-step","u1-npv-simplified":"taught procedure, multi-step","u1-npv-why":"recognition test","u1-pk-add-unlike":"taught procedure, multi-step","u1-pk-diff-squares":"one cued step","u1-pk-factor-monic":"taught procedure, multi-step","u1-pk-frac-context":"one cued step","u1-pk-gcf":"taught procedure, multi-step","u1-pk-multiply-fractions":"one cued step","u1-reverse-restrictions":"path test","u1-simplify-gcf":"one cued step","u1-simplify-monomial":"one cued step","u1-simplify-quad":"taught procedure, multi-step","u1-solve-cross":"taught procedure, multi-step","u1-solve-quad-eq":"taught procedure, multi-step","u1-solve-simple":"one cued step","u1-strategy-compare":"recognition test","u1-sub-monomial-den":"taught procedure, multi-step","u1-two-step-simplify":"taught procedure, multi-step","u2-characteristics-equation":"direct recall","u2-correct-the-claim-cr":"taught procedure, multi-step","u2-degree-equation":"direct recall","u2-end-behaviour":"one cued step","u2-fit-value":"taught procedure, multi-step","u2-graph-characteristics":"direct recall","u2-interpret-model":"taught procedure, multi-step","u2-match-by-characteristics":"taught procedure, multi-step","u2-match-equation-graph":"indicator-named taught procedure","u2-model-change-cr":"taught procedure, multi-step","u2-model-decision":"taught procedure, multi-step","u2-model-multistep-cr":"taught procedure, multi-step","u2-pk-axis-from-intercepts":"one cued step","u2-pk-domain-range":"direct recall","u2-pk-graph-description":"taught procedure, multi-step","u2-pk-vertex-form-params":"direct recall","u2-pk-which-quadratic":"direct recall","u2-recover-and-predict-cr":"taught procedure, multi-step","u2-reverse-intercepts":"path test","u2-scatter-type":"taught procedure, multi-step","u2-sketch-match":"taught procedure, multi-step","u2-turning-points-graph":"direct recall","u2-y-intercept":"direct recall","u2-zeros-and-intercept-cr":"taught procedure, multi-step","u3-build-equation":"taught procedure, multi-step","u3-characteristics-combo-cr":"taught procedure, multi-step","u3-data-equation":"taught procedure, multi-step","u3-data-fit-params":"direct recall","u3-decimal-convert":"one cued step","u3-deg-to-rad":"one cued step","u3-eq-amplitude-period":"direct recall","u3-eq-phase-shift":"direct recall","u3-eq-range-midline":"direct recall","u3-evaluate-equation-cr":"taught procedure, multi-step","u3-ferris-interpret":"direct recall","u3-first-max-time-cr":"taught procedure, multi-step","u3-graph-amplitude":"direct recall","u3-graph-full-equation":"taught procedure, multi-step","u3-graph-period-midline":"direct recall","u3-graph-range":"direct recall","u3-match-eq-graph":"indicator-named taught procedure","u3-periodic-or-sinusoidal":"recognition test","u3-pk-cosine-law-angle":"taught procedure, multi-step","u3-pk-cosine-law-side":"one cued step","u3-pk-find-side":"one cued step","u3-pk-label-sides":"direct recall","u3-pk-params-characteristics":"direct recall","u3-pk-ratio-def":"one cued step","u3-pk-sine-law-angle":"taught procedure, multi-step","u3-pk-sine-law-side":"one cued step","u3-pk-solve-triangle":"taught procedure, multi-step","u3-rad-to-deg":"one cued step","u3-temp-model":"taught procedure, multi-step","u3-tide-predict":"taught procedure, multi-step","u4-app-decision":"taught procedure, multi-step","u4-compare-models":"taught procedure, multi-step","u4-compound-model":"taught procedure, multi-step","u4-data-fit-equation":"direct recall","u4-data-next-value":"one cued step","u4-eq-characteristics":"direct recall","u4-estimate-solution":"one cued step","u4-express-as-power":"one cued step","u4-find-base":"taught procedure, multi-step","u4-graph-characteristics":"direct recall","u4-growth-model-eval":"taught procedure, multi-step","u4-growth-or-decay":"one cued step","u4-half-life":"taught procedure, multi-step","u4-identify-exponential":"recognition test","u4-interpret-graph-model":"taught procedure, multi-step","u4-match-by-description":"taught procedure, multi-step","u4-match-graph":"taught procedure, multi-step","u4-pk-laws-integral":"one cued step","u4-pk-rational-pattern":"recognition test","u4-pk-repeated-mult":"direct recall","u4-pk-two-laws":"one cued step","u4-reverse-half-life":"taught procedure, multi-step","u4-solve-common-base":"one cued step","u4-solve-isolate":"taught procedure, multi-step","u4-solve-rewrite-base":"taught procedure, multi-step","u4-solve-two-sided":"taught procedure, multi-step","u5-catch-up":"taught procedure, multi-step","u5-condense-log":"taught procedure, multi-step","u5-context-model":"one cued step","u5-convert-form":"one cued step","u5-data-fit-log":"direct recall","u5-eq-char":"direct recall","u5-estimate-log":"one cued step","u5-evaluate-log":"direct recall","u5-evaluate-mixed":"direct recall","u5-expand-log":"taught procedure, multi-step","u5-graph-char":"direct recall","u5-growth-time":"taught procedure, multi-step","u5-interpret-graph":"direct recall","u5-law-numeric":"taught procedure, multi-step","u5-match-graph":"taught procedure, multi-step","u5-ph-scale":"direct recall","u5-pk-evaluate-exp":"one cued step","u5-pk-laws-rational":"taught procedure, multi-step","u5-pk-negative-exp":"one cued step","u5-pk-rational-exp":"one cued step","u5-richter-decibel":"one cued step","u5-simplify-eval":"taught procedure, multi-step","u5-solve-condense":"taught procedure, multi-step","u5-solve-log-basic":"one cued step","u5-solve-with-logs":"taught procedure, multi-step","u5-two-bases":"taught procedure, multi-step","u5-which-law":"recognition test","u6-add-rent-lease-buy":"taught procedure, multi-step","u6-amortization-read":"direct recall","u6-appreciate-depreciate":"one cued step","u6-compare-costs":"taught procedure, multi-step","u6-compare-frequency":"taught procedure, multi-step","u6-compound-amount":"one cued step","u6-cost-benefit":"taught procedure, multi-step","u6-credit-fees":"taught procedure, multi-step","u6-deferred-offer":"taught procedure, multi-step","u6-depreciation-value":"one cued step","u6-find-term":"taught procedure, multi-step","u6-identify-compound":"recognition test","u6-interest-earned":"one cued step","u6-justify-decision":"taught procedure, multi-step","u6-payments-term":"one cued step","u6-pk-discount-then-tax":"taught procedure, multi-step","u6-pk-find-whole":"taught procedure, multi-step","u6-pk-percent-change":"one cued step","u6-pk-percent-convert":"direct recall","u6-pk-percent-of":"one cued step","u6-present-value":"taught procedure, multi-step","u6-read-formula":"direct recall","u6-rent-buy-lease":"taught procedure, multi-step","u6-simple-interest":"one cued step","u6-simple-vs-compound":"recognition test","u6-total-cost-loan":"one cued step","u6-wcr-compound-loan-interest":"taught procedure, multi-step","u7-applications":"recognition test","u7-complement-elements":"one cued step","u7-deduction-mc":"path test","u7-disjoint-check":"taught procedure, multi-step","u7-error-correct":"taught procedure, multi-step","u7-error-identify":"taught procedure, multi-step","u7-error-venn":"one cued step","u7-exactly-two-cr":"taught procedure, multi-step","u7-operations":"taught procedure, multi-step","u7-pk-sort-numbers":"recognition test","u7-pk-subsets":"direct recall","u7-region-meaning":"one cued step","u7-relations-count-cr":"taught procedure, multi-step","u7-search-logic":"taught procedure, multi-step","u7-set-concepts":"recognition test","u7-subset-difference-cr":"one cued step","u7-subset-relation":"taught procedure, multi-step","u7-symmetric-difference-cr":"taught procedure, multi-step","u7-three-set-problem":"taught procedure, multi-step","u7-two-set-notation":"taught procedure, multi-step","u7-two-set-problem":"taught procedure, multi-step","u7-two-set-totals-cr":"taught procedure, multi-step","u7-venn-fill":"taught procedure, multi-step","u7-venn-missing":"taught procedure, multi-step","u7-venn-read":"direct recall","u7-venn-three-read":"direct recall","u8-arrange-all":"one cued step","u8-assumptions":"recognition test","u8-comb-r":"taught procedure, multi-step","u8-comb-strategy":"recognition test","u8-comb-two-group":"taught procedure, multi-step","u8-committee-atleast":"taught procedure, multi-step","u8-factorial-equation":"taught procedure, multi-step","u8-factorial-fraction":"taught procedure, multi-step","u8-factorial-value":"one cued step","u8-fcp-cases":"taught procedure, multi-step","u8-fcp-context":"one cued step","u8-fcp-pattern":"one cued step","u8-fcp-restricted":"taught procedure, multi-step","u8-fixed-position":"taught procedure, multi-step","u8-identical-effect":"recognition test","u8-identical-perm":"taught procedure, multi-step","u8-mixed-roles":"taught procedure, multi-step","u8-order-matters":"recognition test","u8-pathways":"taught procedure, multi-step","u8-pathways-context":"taught procedure, multi-step","u8-perm-or-comb":"one cued step","u8-perm-r":"taught procedure, multi-step","u8-perm-strategy":"recognition test","u8-pk-sample-space":"one cued step","u8-reverse-count":"taught procedure, multi-step","u8-together-apart":"taught procedure, multi-step","u8-tree-diagram":"one cued step","u8-tree-outcomes":"one cued step","u9-binomial-expected":"taught procedure, multi-step","u9-binomial-identify":"taught procedure, multi-step","u9-binomial-prob":"taught procedure, multi-step","u9-classify-events":"direct recall","u9-compare-games":"taught procedure, multi-step","u9-complementary":"boundary, ruling pending","u9-conditional":"taught procedure, multi-step","u9-context-prob":"one cued step","u9-convert-odds-prob":"one cued step","u9-create-problem":"one cued step","u9-create-solve-game":"path test","u9-decisions":"taught procedure, multi-step","u9-dep-vs-indep":"recognition test","u9-independent-pair-cr":"taught procedure, multi-step","u9-independent-prob":"one cued step","u9-me-or-not":"taught procedure, multi-step","u9-me-prob":"one cued step","u9-media-statements":"one cued step","u9-nonme-prob":"taught procedure, multi-step","u9-odds-context":"taught procedure, multi-step","u9-odds-vs-prob":"one cued step","u9-pk-combined-decision":"recognition test","u9-pk-exp-vs-theor-b":"one cued step","u9-pk-prob-basic-b":"one cued step","u9-pk-product-rule":"one cued step","u9-pk-two-draws":"one cued step","u9-prob-basics":"one cued step","u9-prob-comb":"taught procedure, multi-step","u9-prob-comb-context":"taught procedure, multi-step","u9-prob-comb-hard":"taught procedure, multi-step","u9-prob-odds-determine":"one cued step","u9-prob-perm-context":"taught procedure, multi-step","u9-represent-events":"taught procedure, multi-step","u9-same-colour-cr":"taught procedure, multi-step"};

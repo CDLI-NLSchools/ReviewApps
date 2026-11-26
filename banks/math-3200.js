@@ -402,6 +402,7 @@ function balDp(keyStr,ds){
   return ds.map(function(s,i){return padTo(s,best[i]);});
 }
 
+// LEVELBASIS: u1-divide-quotient=taught procedure, multi-step
 E("u1-divide-quotient",1,["3.2"],2,"gen",function(){
   var att=0, cf, a, sy;
   while(att<200){
@@ -426,6 +427,7 @@ E("u1-divide-quotient",1,["3.2"],2,"gen",function(){
 });
 
 /* ---------- 3.3: remainder from the remainder theorem (L1) ---------- */
+// LEVELBASIS: u1-remainder-value=one cued step
 E("u1-remainder-value",1,["3.3"],1,"gen",function(){
   var deg=pick([3,3,4]), cf=[], i;
   cf.push(pick([1,2,3,4,-2,-3]));
@@ -441,6 +443,7 @@ E("u1-remainder-value",1,["3.3"],1,"gen",function(){
 });
 
 /* ---------- 3.6: identify a polynomial function (L1) ---------- */
+// LEVELBASIS: u1-identify-polynomial=direct recall
 E("u1-identify-polynomial",1,["3.6"],1,"gen",function(){
   var form=ri(1,4), correct, why;
   if(form===1){ var cf=[pick([1,2,3,-2]), ri(-8,8), ri(-8,8), ri(-9,9)]; if(ri(0,1)) cf.push(ri(-9,9));
@@ -468,6 +471,7 @@ E("u1-identify-polynomial",1,["3.6"],1,"gen",function(){
 });
 
 /* ---------- 3.8: end behaviour from an equation (L1) ---------- */
+// LEVELBASIS: u1-end-behaviour=direct recall
 E("u1-end-behaviour",1,["3.8"],1,"gen",function(){
   var deg=ri(1,6), cf=[pick([-5,-4,-3,-2,-1,1,2,3,4,5])], i;
   for(i=1;i<=deg;i++) cf.push(ri(-9,9));
@@ -490,6 +494,7 @@ E("u1-end-behaviour",1,["3.8"],1,"gen",function(){
 });
 
 /* ---------- 3.1: how synthetic division relates to long division (L2, var) ---------- */
+// LEVELBASIS: u1-synthetic-relation=recognition test
 E("u1-synthetic-relation",1,["3.1"],1,"var",varset([
   function(){
     var a=pick([-3,-2,2,3]);
@@ -541,6 +546,7 @@ E("u1-synthetic-relation",1,["3.1"],1,"var",varset([
 ]));
 
 /* ---------- 3.2: full division result for a quartic (L2) ---------- */
+// LEVELBASIS: u1-divide-result=taught procedure, multi-step
 E("u1-divide-result",1,["3.2"],2,"gen",function(){
   var att=0, cf, a, sy;
   while(att<200){
@@ -566,6 +572,7 @@ E("u1-divide-result",1,["3.2"],2,"gen",function(){
 });
 
 /* ---------- 3.3: remainder theorem gives a point on the graph (L2) ---------- */
+// LEVELBASIS: u1-remainder-point=one cued step
 E("u1-remainder-point",1,["3.3"],1,"gen",function(){
   var att=0, cf, a, R;
   while(att<200){
@@ -584,6 +591,7 @@ E("u1-remainder-point",1,["3.3"],1,"gen",function(){
 });
 
 /* ---------- 3.4: which binomial is a factor (L2) ---------- */
+// LEVELBASIS: u1-which-factor=taught procedure, multi-step
 E("u1-which-factor",1,["3.4"],2,"gen",function(){
   var att=0, roots, rk, s, t, lead;
   while(att<200){
@@ -614,6 +622,7 @@ E("u1-which-factor",1,["3.4"],2,"gen",function(){
 });
 
 /* ---------- 3.4: find a coefficient from a known factor (L2) ---------- */
+// LEVELBASIS: u1-find-coefficient=taught procedure, multi-step
 E("u1-find-coefficient",1,["3.4"],2,"gen",function(){
   var vals=[-5,-4,-3,-2,-1,1,2,3,4,5];
   var trip=shuffle(vals).slice(0,3), a=trip[0], s=trip[1], t=trip[2];
@@ -633,6 +642,7 @@ E("u1-find-coefficient",1,["3.4"],2,"gen",function(){
 });
 
 /* ---------- 3.5: zeros from factored form (L2) ---------- */
+// LEVELBASIS: u1-zeros-from-factors=one cued step
 E("u1-zeros-from-factors",1,["3.5"],1,"gen",function(){
   var att=0, roots, lead, S0, S1, S2, S3;
   function setS(arr){ var c=arr.slice().sort(function(x,y){ return x-y; }); return "\\(\\{"+c.join(", ")+"\\}\\)"; }
@@ -662,6 +672,7 @@ E("u1-zeros-from-factors",1,["3.5"],1,"gen",function(){
 });
 
 /* ---------- 3.9: zeros, roots and intercepts are the same values (L2) ---------- */
+// LEVELBASIS: u1-zeros-roots-intercepts=direct recall
 E("u1-zeros-roots-intercepts",1,["3.9"],1,"gen",function(){
   var roots=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,3).sort(function(x,y){ return x-y; });
   var list=roots.join(", "), nlist=roots.map(function(r){ return -r; }).join(", ");
@@ -676,6 +687,7 @@ E("u1-zeros-roots-intercepts",1,["3.9"],1,"gen",function(){
 });
 
 /* ---------- 3.7: roles of the constant term and leading coefficient (L2) ---------- */
+// LEVELBASIS: u1-constant-leading=direct recall
 E("u1-constant-leading",1,["3.7"],1,"gen",function(){
   var att=0, deg, cf, a, d0, m;
   while(att<200){
@@ -697,6 +709,7 @@ E("u1-constant-leading",1,["3.7"],1,"gen",function(){
 });
 
 /* ---------- 3.10: multiplicity behaviour read from a graph (L2) ---------- */
+// LEVELBASIS: u1-multiplicity-graph=one cued step
 E("u1-multiplicity-graph",1,["3.10"],1,"gen",function(){
   var pair=shuffle([-4,-3,-2,-1,1,2,3,4]).slice(0,2), rd=pair[0], rs=pair[1];
   var a=pick([1,-1]);
@@ -716,6 +729,7 @@ E("u1-multiplicity-graph",1,["3.10"],1,"gen",function(){
 });
 
 /* ---------- 3.11: match a feature list to a graph (L2) ---------- */
+// LEVELBASIS: u1-sketch-features=taught procedure, multi-step
 E("u1-sketch-features",1,["3.11"],2,"gen",function(){
   var roots=shuffle([-4,-3,-2,-1,1,2,3,4]).slice(0,3).sort(function(x,y){ return x-y; });
   var a=pick([1,2,-1,-2]);
@@ -737,6 +751,7 @@ E("u1-sketch-features",1,["3.11"],2,"gen",function(){
 });
 
 /* ---------- 3.10: multiplicity statements from factored form (L3) ---------- */
+// LEVELBASIS: u1-multiplicity-statements=taught procedure, multi-step
 E("u1-multiplicity-statements",1,["3.10"],2,"gen",function(){
   var pair=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,2), p=pair[0], qq=pair[1];
   var a=pick([1,-1]);
@@ -750,6 +765,7 @@ E("u1-multiplicity-statements",1,["3.10"],2,"gen",function(){
 });
 
 /* ---------- 3.2 and 3.3: diagnose a synthetic division sign error (L3) ---------- */
+// LEVELBASIS: u1-error-synthetic=taught procedure, multi-step
 E("u1-error-synthetic",1,["3.2","3.3"],2,"gen",function(){
   var att=0, cf, a, R, SR, c0;
   while(att<200){
@@ -771,6 +787,7 @@ E("u1-error-synthetic",1,["3.2","3.3"],2,"gen",function(){
 });
 
 /* ---------- 3.12: modelling with polynomial functions (L3, var) ---------- */
+// LEVELBASIS: u1-modelling=taught procedure, multi-step
 E("u1-modelling",1,["3.12"],2,"var",varset([
   function(){
     return mcq("An open-top box is made from a rectangular sheet of cardboard that is 36 cm long and 24 cm wide. A square of side \\(x\\) cm is cut from each corner and the sides are folded up. Which expression gives the <b>volume</b>, in cubic centimetres, of the box?",
@@ -800,6 +817,7 @@ E("u1-modelling",1,["3.12"],2,"var",varset([
 ]));
 
 /* ---------- 3.13: equation of a cubic from its graph (L3) ---------- */
+// LEVELBASIS: u1-equation-from-graph=indicator-named taught procedure
 E("u1-equation-from-graph",1,["3.13"],2,"gen",function(){
   var att=0, roots, a, cf, y0, flipRoot;
   while(att<200){
@@ -831,6 +849,7 @@ E("u1-equation-from-graph",1,["3.13"],2,"gen",function(){
 });
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: two Level 2 CR entries (3 and 2 marks). The Unit 1 Level 2 CR pool held only 2-mark entries, so the 9-mark and 8-mark remainders behind the 5 and 6 Level 3 picks could not form. ---------- */
+// LEVELBASIS: u1-largest-zero-cr=taught procedure, multi-step
 E("u1-largest-zero-cr",1,["3.4","3.9"],2,"gen",function(){
   var roots=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,3);
   var given=roots[0], cf=u1FromRoots(1,roots.map(function(r){return [r,1];}));
@@ -843,7 +862,9 @@ E("u1-largest-zero-cr",1,["3.4","3.9"],2,"gen",function(){
     {roots:roots});
 });
 /* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
-E("u1-tableau-step-cr",1,["3.1"],2,"gen",function(){
+// LEVEL AUDIT 2026-11-25: retagged 2 to 1 (one cued multiply-and-add step inside a started tableau). See Level-Audit-Math-3200-2026-11-25.md.
+// LEVELBASIS: u1-tableau-step-cr=one cued step
+E("u1-tableau-step-cr",1,["3.1"],1,"gen",function(){
   var cf=[1,ri(-6,6),ri(-9,9),ri(-9,9)], a=pick([-4,-3,-2,-1,1,2,3,4]);
   var b1=cf[1]+a*cf[0], b2=cf[2]+a*b1;
   return numq("When \\(P(x) = "+u1PolyS(cf)+"\\) is divided by \\("+u1FacS(a)+"\\) using synthetic division, the bottom row of the setup starts \\("+cf[0]+", "+b1+", \\ldots\\) What is the <b>next entry</b> in the bottom row?",
@@ -996,6 +1017,7 @@ function u2setStr(pts){ /* a set of points as a math string, sorted by x then y 
 }
 
 /* ---------- inverses: 4.1 to 4.8 ---------- */
+// LEVELBASIS: u2-inv-which=direct recall
 E("u2-inv-which",2,["4.1"],1,"gen",function(){
   var form=pick(["lin","sqrt"]),correct,why;
   if(form==="lin"){
@@ -1022,6 +1044,7 @@ E("u2-inv-which",2,["4.1"],1,"gen",function(){
     "A function has an inverse that is also a function exactly when it passes the <b>horizontal line test</b>: every horizontal line meets the graph at most once. The correct choice qualifies because "+why+". Each of the other graphs is met twice by some horizontal line, so its inverse would pair one input with two different outputs.",
     {form:form});
 });
+// LEVELBASIS: u2-inv-figure=taught procedure, multi-step
 E("u2-inv-figure",2,["4.2","4.3","4.4"],2,"gen",function(){
   var pts,opts,tries=0;
   do{
@@ -1041,6 +1064,7 @@ E("u2-inv-figure",2,["4.2","4.3","4.4"],2,"gen",function(){
   q.figure=u2pointsSVG(pts);
   return q;
 });
+// LEVELBASIS: u2-inv-equation=taught procedure, multi-step
 E("u2-inv-equation",2,["4.5","4.6"],2,"gen",function(){
   if(ri(0,1)===0){
     var m=pick([2,3,4,-2,-3,-4]),b=ri(-9,9);
@@ -1070,6 +1094,7 @@ E("u2-inv-equation",2,["4.5","4.6"],2,"gen",function(){
     "Swap \\(x\\) and \\(y\\), then solve: \\[ \\begin{aligned} x &= ("+u2xarg(h).replace("x","y")+")^2"+u2pm0(k)+" \\\\ x"+u2pm0(-k)+" &= ("+u2xarg(h).replace("x","y")+")^2 \\\\ \\sqrt{x"+u2pm0(-k)+"} &= "+u2xarg(h).replace("x","y")+" \\\\ y &= "+h+" + \\sqrt{x"+u2pm0(-k)+"} \\end{aligned} \\] The positive root is used because the restricted domain of \\(f\\) keeps the inverse on the branch \\(y \\geq "+h+"\\).",
     {shape:"quad",h:h,k:k});
 });
+// LEVELBASIS: u2-inv-domran=direct recall
 E("u2-inv-domran",2,["4.7"],1,"gen",function(){
   var a,b,c,d,opts,tries=0;
   do{
@@ -1084,6 +1109,7 @@ E("u2-inv-domran",2,["4.7"],1,"gen",function(){
     "Forming the inverse swaps \\(x\\) and \\(y\\) in every point, so the domain and range trade places: the inverse has domain \\("+c+" \\leq x \\leq "+d+"\\) (the old range) and range \\("+a+" \\leq y \\leq "+b+"\\) (the old domain). The endpoints themselves do not change.",
     {a:a,b:b,c:c,d:d});
 });
+// LEVELBASIS: u2-inv-restrict=taught procedure, multi-step
 E("u2-inv-restrict",2,["4.8","4.1"],2,"var",varset([
   function(){var q=mcq("The function \\(f(x) = (x - 3)^2 + 2\\) has an inverse that is not a function. Which restriction on the domain of \\(f\\) makes its inverse a function?",
     "\\(x \\geq 3\\)",
@@ -1108,6 +1134,7 @@ E("u2-inv-restrict",2,["4.8","4.1"],2,"var",varset([
 ]));
 
 /* ---------- translations: 4.13 to 4.17 ---------- */
+// LEVELBASIS: u2-trans-describe=direct recall
 E("u2-trans-describe",2,["4.13","4.14"],1,"gen",function(){
   var amt=ri(2,12),form=ri(1,3),eq,dir;
   if(form===1){
@@ -1130,6 +1157,7 @@ E("u2-trans-describe",2,["4.13","4.14"],1,"gen",function(){
     "In \\(y = f(x) + k\\) and \\(y - k = f(x)\\), a positive \\(k\\) moves the graph up; in \\(y = f(x - h)\\), a positive \\(h\\) moves the graph right, because each input must be \\(h\\) larger to produce the same output. For "+eq+", the change is a translation of "+amt+" units "+dir+".",
     {form:form,amt:amt,dir:dir});
 });
+// LEVELBASIS: u2-trans-point=one cued step
 E("u2-trans-point",2,["4.15","4.16"],1,"gen",function(){
   var h=pick([-7,-6,-5,-4,-3,-2,2,3,4,5,6,7]);
   var k=pick([-7,-6,-5,-4,-3,-2,2,3,4,5,6,7]);
@@ -1146,6 +1174,7 @@ E("u2-trans-point",2,["4.15","4.16"],1,"gen",function(){
     "The equation "+eq+" applies the mapping \\((x, y)\\) to \\((x"+u2pm(h)+", y"+u2pm(k)+")\\). So \\("+u2pt(x0,y0)+"\\) maps to \\("+u2pt(x0+h,y0+k)+"\\) . Watch the horizontal sign: in the form \\(y - k = f(x - h)\\) the graph shifts by \\(+h\\) horizontally, even though the equation shows a subtraction inside \\(f\\).",
     {h:h,k:k,x0:x0,y0:y0});
 });
+// LEVELBASIS: u2-trans-equation=one cued step
 E("u2-trans-equation",2,["4.17","4.15"],1,"gen",function(){
   var base=pick(["sq","cu","abs","sqrt","rec"]);
   var sx=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
@@ -1168,6 +1197,7 @@ E("u2-trans-equation",2,["4.17","4.15"],1,"gen",function(){
 });
 
 /* ---------- stretches and the full transformation: 4.18 to 4.24 ---------- */
+// LEVELBASIS: u2-stretch-identify=direct recall
 E("u2-stretch-identify",2,["4.18","4.19"],1,"gen",function(){
   var base=pick(["sq","cu","abs","sqrt"]);
   var c=pick([-4,-3,-2,-1,1,2,3,4]);
@@ -1215,6 +1245,7 @@ E("u2-stretch-identify",2,["4.18","4.19"],1,"gen",function(){
   q.figure=fig;
   return q;
 });
+// LEVELBASIS: u2-stretch-point=one cued step
 E("u2-stretch-point",2,["4.20","4.21"],1,"gen",function(){
   var A=pick([[2,1],[3,1],[1,2],[1,3]]);
   var B=pick([[2,1],[3,1],[1,2],[1,3]]);
@@ -1233,6 +1264,7 @@ E("u2-stretch-point",2,["4.20","4.21"],1,"gen",function(){
     "The mapping for "+eq+" sends \\((x, y)\\) to \\((x \\div "+u2coefStr(B[0],B[1])+", "+u2coefStr(A[0],A[1])+"y)\\): the input factor divides the \\(x\\)-coordinate, and the outside coefficient multiplies the \\(y\\)-coordinate. So \\("+u2pt(x0,y0)+"\\) maps to "+correct+" .",
     {A:A,B:B,x0:x0,y0:y0});
 });
+// LEVELBASIS: u2-stretch-equation=one cued step
 E("u2-stretch-equation",2,["4.22"],1,"gen",function(){
   var base=pick(["sq","cu","sqrt"]);
   var c=pick([-4,-3,-2,-1,1,2,3,4]);
@@ -1274,6 +1306,7 @@ E("u2-stretch-equation",2,["4.22"],1,"gen",function(){
   qh.figure=u2origFig(base,c);
   return qh;
 });
+// LEVELBASIS: u2-full-equation=taught procedure, multi-step
 E("u2-full-equation",2,["4.23","4.24"],2,"gen",function(){
   var pattern=ri(0,3);
   var refl=pattern!==1;
@@ -1326,6 +1359,7 @@ E("u2-full-equation",2,["4.23","4.24"],2,"gen",function(){
     correct,dis,solText,
     {pattern:pattern,refl:refl,A:A,S:S,h:h,k:k});
 });
+// LEVELBASIS: u2-trans-zeros=path test
 E("u2-trans-zeros",2,["4.21","4.23"],3,"gen",function(){
   var B=pick([[2,1],[3,1],[1,2],[1,3]]);
   var p=B[0],q=B[1];
@@ -1354,6 +1388,7 @@ E("u2-trans-zeros",2,["4.21","4.23"],3,"gen",function(){
 });
 
 /* ---------- reflections: 4.40 to 4.47 ---------- */
+// LEVELBASIS: u2-refl-point=one cued step
 E("u2-refl-point",2,["4.40","4.45"],1,"gen",function(){
   var x=pick([-9,-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8,9]);
   var y=pick([-9,-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8,9]);
@@ -1375,6 +1410,7 @@ E("u2-refl-point",2,["4.40","4.45"],1,"gen",function(){
   q.figure=fnPlotSVG(null,-10,10,-10,10,{gx:2,gy:2,labelX:true,labelY:true,points:[[x,y]]});
   return q;
 });
+// LEVELBASIS: u2-refl-equation=one cued step
 E("u2-refl-equation",2,["4.41","4.42","4.43","4.44"],1,"gen",function(){
   var t=ri(1,3),axis=pick(["x","y"]);
   var f,negF,fNeg,negFNeg,fn;
@@ -1415,6 +1451,7 @@ E("u2-refl-equation",2,["4.41","4.42","4.43","4.44"],1,"gen",function(){
   q.figure=fnPlotSVG(fn,txr[0],txr[1],tw[0],tw[1],{gx:1,gy:tw[2],labelX:true,labelY:true});
   return q;
 });
+// LEVELBASIS: u2-refl-yx=judgement test
 E("u2-refl-yx",2,["4.46","4.47"],3,"var",varset([
   function(){return mcq("The graph of a function \\(f\\) is reflected in the line \\(y = x\\). The image graph does <b>not</b> pass the vertical line test. What must be true of \\(f\\)?",
     "\\(f\\) is not one-to-one",
@@ -1440,6 +1477,7 @@ E("u2-refl-yx",2,["4.46","4.47"],3,"var",varset([
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: one Level 3 CR entry (3 marks, opens the 6 pick with the existing 3-mark entry) and two Level 2 CR entries (3 and 2 marks). ---------- */
 /* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
+// LEVELBASIS: u2-find-stretch-cr=taught procedure, multi-step
 E("u2-find-stretch-cr",2,["4.17","4.24"],2,"gen",function(){
   var h=pick([-3,-2,-1,1,2,3]), u=ri(-4,4), v=pick([-6,-5,-4,-3,-2,2,3,4,5,6]), a=pick([-3,-2,2,3]), k=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
   var X=u+h, Y=a*v+k;
@@ -1449,6 +1487,7 @@ E("u2-find-stretch-cr",2,["4.17","4.24"],2,"gen",function(){
     "At this point the input to \\(f\\) is \\(("+X+") - ("+h+") = "+u+"\\), and \\(f("+u+") = "+v+"\\). On the transformed graph, that output is multiplied by \\(a\\) and then shifted by \\(("+k+")\\): \\[ a("+v+") + ("+k+") = "+Y+" \\] So \\(a("+v+") = "+(Y-k)+"\\), and \\(a = "+(Y-k)+" \\div "+v+" = \\)<b>"+a+"</b>.",
     {h:h,u:u,v:v,k:k});
 });
+// LEVELBASIS: u2-inverse-points-cr=taught procedure, multi-step
 E("u2-inverse-points-cr",2,["4.2","4.4"],2,"gen",function(){
   var xs=shuffle([-4,-3,-2,-1,0,1,2,3,4]).slice(0,5);
   var ys=shuffle([-5,-4,-3,-2,-1,1,2,3,4,5]).slice(0,5);
@@ -1463,6 +1502,7 @@ E("u2-inverse-points-cr",2,["4.2","4.4"],2,"gen",function(){
   return q;
 });
 function u2reflPoly(A,B,C){ var s=(A===1?"x^2":A===-1?"-x^2":A+"x^2"); s+=(B>0?" + ":" - ")+(Math.abs(B)===1?"x":Math.abs(B)+"x"); s+=(C>0?" + "+C:" - "+(-C)); return s; }
+// LEVELBASIS: u2-reflection-equation-cr=taught procedure, multi-step
 E("u2-reflection-equation-cr",2,["4.43","4.44"],2,"var",varset([
   function(){
     var a=pick([1,2,3]), b=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), c=pick([-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8]);
@@ -1578,6 +1618,7 @@ function u3svgSolve(form,a,c,sol){
   return out+'</svg>';
 }
 
+// LEVELBASIS: u3-sqrtx-table=one cued step
 E("u3-sqrtx-table",3,["4.10"],1,"gen",function(){
   var shape=ri(1,3);
   if(shape===3){
@@ -1609,6 +1650,7 @@ E("u3-sqrtx-table",3,["4.10"],1,"gen",function(){
     {v:v,shape:shape});
 });
 
+// LEVELBASIS: u3-start-point=direct recall
 E("u3-start-point",3,["4.11"],1,"gen",function(){
   var a=pick([-3,-2,-1,1,2,3]),b=pick([1,2,4]),h=0,k=0,t=0;
   while((h===0||k===0)&&t<60){h=ri(-6,6);k=ri(-6,6);t++;}
@@ -1622,6 +1664,7 @@ E("u3-start-point",3,["4.11"],1,"gen",function(){
   return q;
 });
 
+// LEVELBASIS: u3-transform-domain-range=direct recall
 E("u3-transform-domain-range",3,["4.11"],1,"gen",function(){
   var a=1,b=1,h=2,k=3,t=0;
   do{a=pick([-3,-2,-1,1,2,3]);b=pick([1,2,4]);h=ri(-6,6);k=ri(-6,6);t++;}
@@ -1647,6 +1690,7 @@ E("u3-transform-domain-range",3,["4.11"],1,"gen",function(){
 });
 
 /* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
+// LEVELBASIS: u3-sqrtf-evaluate=taught procedure, multi-step
 E("u3-sqrtf-evaluate",3,["4.12"],2,"gen",function(){
   var c=0,t=0;
   while(c===0&&t<40){c=ri(-9,9);t++;}
@@ -1669,6 +1713,7 @@ E("u3-sqrtf-evaluate",3,["4.12"],2,"gen",function(){
     {c:c,m:m,shape:shape});
 });
 
+// LEVELBASIS: u3-compare-domains=taught procedure, multi-step
 E("u3-compare-domains",3,["4.9"],2,"gen",function(){
   var r=pick([2,3,4,5,6,7]),n=r*r,shifted=pick([false,true]),h=shifted?pick([-3,-2,-1,1,2,3]):0;
   var base=shifted?"("+u3inside(-h)+")^2":"x^2",fstr=base+" - "+n;
@@ -1691,6 +1736,7 @@ E("u3-compare-domains",3,["4.9"],2,"gen",function(){
     {r:r,h:h,shape:shape});q.figure=u3figCompare(r,h,n,lo,hi);return q;
 });
 
+// LEVELBASIS: u3-intercept-solution=taught procedure, multi-step
 E("u3-intercept-solution",3,["4.25"],2,"gen",function(){
   var form=pick([1,2]),b=ri(2,6),a,sol,inn;
   if(form===1){a=ri(1,b*b-1);sol=b*b-a;inn=a;}
@@ -1705,6 +1751,7 @@ E("u3-intercept-solution",3,["4.25"],2,"gen",function(){
   return q;
 });
 
+// LEVELBASIS: u3-graphical-solve=taught procedure, multi-step
 E("u3-graphical-solve",3,["4.26"],2,"gen",function(){
   var form=pick([1,2]),c=pick([2,3,4,5]),a=0,sol=0,t=0;
   if(form===1){do{a=ri(0,12);t++;}while(a>=c*c&&t<60);sol=c*c-a;}
@@ -1719,6 +1766,7 @@ E("u3-graphical-solve",3,["4.26"],2,"gen",function(){
   return q;
 });
 
+// LEVELBASIS: u3-two-methods=recognition test
 E("u3-two-methods",3,["4.26"],2,"gen",function(){
   var a=ri(2,12),c=pick([2,3,4,5,6]),t=0;
   while(c*c<=a&&t<60){c=pick([2,3,4,5,6]);t++;}
@@ -1733,7 +1781,9 @@ E("u3-two-methods",3,["4.26"],2,"gen",function(){
     {a:a,c:c});
 });
 
-E("u3-recover-f-value",3,["4.12"],2,"gen",function(){
+// LEVEL AUDIT 2026-11-25: retagged 2 to 1 (one cued inversion, squaring the given value). See Level-Audit-Math-3200-2026-11-25.md.
+// LEVELBASIS: u3-recover-f-value=one cued step
+E("u3-recover-f-value",3,["4.12"],1,"gen",function(){
   var p=ri(-6,2),q=ri(p+2,8),side=pick([0,1]),off=ri(1,6),m=pick([3,4,5,6,7,8]);
   var tv=(side===0)?p-off:q+off;
   return mcq("For a certain function \\(f\\), the graph of \\(g(x) = \\sqrt{f(x)}\\) is defined for \\(x \\leq "+p+"\\) or \\(x \\geq "+q+"\\), and \\(g("+tv+") = "+m+"\\). What is the value of \\(f("+tv+")\\)?",
@@ -1743,6 +1793,7 @@ E("u3-recover-f-value",3,["4.12"],2,"gen",function(){
     {p:p,q:q,tv:tv,m:m});
 });
 
+// LEVELBASIS: u3-intercept-statement=direct recall
 E("u3-intercept-statement",3,["4.25"],1,"gen",function(){
   var form=pick([1,2]),b=ri(2,6),a,tv,inn;
   if(form===1){a=ri(1,b*b-1);tv=b*b-a;inn=a;}
@@ -1760,6 +1811,7 @@ E("u3-intercept-statement",3,["4.25"],1,"gen",function(){
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: two Level 3 CR entries (2 and 3 marks) and two Level 2 CR entries (3 and 2 marks). The unit had a single Level 3 CR entry and an all-2-mark Level 2 pool. ---------- */
 function u3facS(r){ return r===0?"x":(r>0?"(x - "+r+")":"(x + "+(-r)+")"); }
+// LEVELBASIS: u3-domain-from-quadratic-cr=taught procedure, multi-step
 E("u3-domain-from-quadratic-cr",3,["4.9"],2,"gen",function(){
   var p=ri(-6,2), q=p+ri(2,6), B=-(p+q), C=p*q;
   var fs="x^2";
@@ -1777,6 +1829,7 @@ E("u3-domain-from-quadratic-cr",3,["4.9"],2,"gen",function(){
   qq.figure=fnPlotSVG(fn3,p-2,q+2,Math.floor(vy)-2,Math.ceil(fy)+2,{gx:1,gy:(fy-vy>24?2:1),labelX:true,labelY:true,points:[[p,0],[q,0]]});
   return qq;
 });
+// LEVELBASIS: u3-recover-coefficient-cr=path test
 E("u3-recover-coefficient-cr",3,["4.12"],3,"gen",function(){
   var p=ri(-5,1), q=p+ri(3,7);
   var side=pick([0,1]), t=side===0? q+ri(1,5) : p-ri(1,5);
@@ -1786,6 +1839,7 @@ E("u3-recover-coefficient-cr",3,["4.12"],3,"gen",function(){
     "The endpoints of the domain are the zeros of \\(f\\), so \\(f(x) = "+u3facS(p)+u3facS(q)+"\\). Evaluating at \\(x = "+t+"\\): \\(f("+t+") = ("+t+" "+(p>=0?"- "+p:"+ "+(-p))+")("+t+" "+(q>=0?"- "+q:"+ "+(-q))+") = "+(t-p)+" \\times "+(t-q)+" = \\)<b>"+fv+"</b>.",
     {p:p,q:q,t:t});
 });
+// LEVELBASIS: u3-evaluate-transformed-cr=taught procedure, multi-step
 E("u3-evaluate-transformed-cr",3,["4.11"],2,"gen",function(){
   var b=pick([1,4]), s=b===1? ri(2,6) : pick([2,4,6]);
   var a=pick([2,3,-2,-3]), h=ri(-4,4), k=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
@@ -1797,6 +1851,7 @@ E("u3-evaluate-transformed-cr",3,["4.11"],2,"gen",function(){
     "At \\(x = "+t+"\\), the radicand is \\("+b+" \\times "+(t-h)+" = "+(s*s)+"\\), and \\(\\sqrt{"+(s*s)+"} = "+s+"\\). \\[ \\begin{aligned} g("+t+") &= "+a+"("+s+") "+ks+" \\\\ &= "+(a*s)+" "+ks+" \\\\ &= "+ans+" \\end{aligned} \\] So \\(g("+t+") = \\)<b>"+ans+"</b>.",
     {b:b,s:s,a:a,h:h,k:k});
 });
+// LEVELBASIS: u3-shift-from-intercept-cr=taught procedure, multi-step
 E("u3-shift-from-intercept-cr",3,["4.25"],2,"gen",function(){
   var b=ri(2,6), i=ri(-4,10); if(b*b-i===0) i=i-3;
   var c=b*b-i;
@@ -1808,6 +1863,7 @@ E("u3-shift-from-intercept-cr",3,["4.25"],2,"gen",function(){
 
 /* Bimodal build additions (Nov 19, 2026): two selected-response entries for Unit 3, placed on the thinnest indicators in the unit (4.10, with one existing entry, and 4.26, with two). SME-flagged for the specialist pass. */
 
+// LEVELBASIS: u3-add-sqrtx-point-sets=taught procedure, multi-step
 E("u3-add-sqrtx-point-sets",3,["4.10"],2,"gen",function(){
   var pools=[[4,5,6,7,8,9],[10,11,12,13,14,15],[16,17,18,19,20,21]];
   var pool=pick(pools);
@@ -1828,6 +1884,7 @@ E("u3-add-sqrtx-point-sets",3,["4.10"],2,"gen",function(){
     {roots:chosen});
 });
 
+// LEVELBASIS: u3-add-graphical-solve-mc=taught procedure, multi-step
 E("u3-add-graphical-solve-mc",3,["4.26"],2,"gen",function(){
   var c=pick([4,5,6,7]),form=pick([1,2]),sol;
   if(form===1)sol=ri(Math.max(11,c*c-9),c*c-1);
@@ -1850,6 +1907,7 @@ E("u3-add-graphical-solve-mc",3,["4.26"],2,"gen",function(){
 
 /* ---------- Backfill tranche, November 20, 2026: two written (constructed response) entries restoring the Unit 3 written pool for the Math 3200 compose gate. A recent build removed two entries from this unit's written pool, leaving the Unit 3 test at 24 of 25 marks and the pooled Units 2 and 3 paper at 44 of 50 marks; the 5-mark Level 2 entry on indicator 4.12 and the 2-mark Level 3 entry on indicator 4.26 below close that gap. SME-flagged for the specialist pass. ---------- */
 
+// LEVELBASIS: u3-sqrtf-multistep-cr=taught procedure, multi-step
 E("u3-sqrtf-multistep-cr",3,["4.12"],2,"var",varset([
   function(){
     var A=1,B=9,xa=16,m=7;
@@ -1886,6 +1944,7 @@ E("u3-sqrtf-multistep-cr",3,["4.12"],2,"var",varset([
   }
 ]));
 
+// LEVELBASIS: u3-radical-equation-critique-cr=judgement test
 E("u3-radical-equation-critique-cr",3,["4.26"],3,"var",varset([
   function(){
     var a=4,b=2,gen=5,ext=0;
@@ -2092,6 +2151,7 @@ function u4twoStr(kind, v) { /* exact string for twice a special ratio value */
 }
 
 /* ---- 7.1, 7.4: read a standard-position sketch (degrees, then radians as k pi) ---- */
+// LEVELBASIS: u4-sketch-standard-position=direct recall
 E("u4-sketch-standard-position", 4, ["7.1", "7.4"], 1, "gen", function () {
   var fig, q;
   if (Math.random() < 0.5) {
@@ -2117,6 +2177,7 @@ E("u4-sketch-standard-position", 4, ["7.1", "7.4"], 1, "gen", function () {
 });
 
 /* ---- 7.2, 7.3: one radian and the degree-radian relationship ---- */
+// LEVELBASIS: u4-one-radian=direct recall
 E("u4-one-radian", 4, ["7.2", "7.3"], 1, "var", varset([
   function () {
     return mcq("An angle measures exactly 1 radian. To the nearest tenth of a degree, its measure is",
@@ -2146,6 +2207,7 @@ E("u4-one-radian", 4, ["7.2", "7.3"], 1, "var", varset([
 ]));
 
 /* ---- 7.5: degrees to radians (exact for special angles, decimal otherwise) ---- */
+// LEVELBASIS: u4-deg-to-rad=one cued step
 E("u4-deg-to-rad", 4, ["7.5"], 1, "gen", function () {
   if (Math.random() < 0.55) {
     var d = pick([15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300, 315, 330, 345]);
@@ -2166,6 +2228,7 @@ E("u4-deg-to-rad", 4, ["7.5"], 1, "gen", function () {
 });
 
 /* ---- 7.6: radians to degrees (exact for special angles, decimal otherwise) ---- */
+// LEVELBASIS: u4-rad-to-deg=one cued step
 E("u4-rad-to-deg", 4, ["7.6"], 1, "gen", function () {
   if (Math.random() < 0.55) {
     var d = pick([15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300, 315, 330, 345]);
@@ -2185,6 +2248,7 @@ E("u4-rad-to-deg", 4, ["7.6"], 1, "gen", function () {
 });
 
 /* ---- 7.7, 7.8: coterminal angles and their general form ---- */
+// LEVELBASIS: u4-coterminal=one cued step
 E("u4-coterminal", 4, ["7.7", "7.8"], 1, "gen", function () {
   var mode = pick(["find", "find", "form"]);
   if (mode === "find") {
@@ -2228,6 +2292,7 @@ E("u4-coterminal", 4, ["7.7", "7.8"], 1, "gen", function () {
 });
 
 /* ---- 7.9: arc length a = r(theta), solved for each of the three quantities ---- */
+// LEVELBASIS: u4-arc-length=one cued step
 E("u4-arc-length", 4, ["7.9"], 1, "gen", function () {
   var mode = pick(["a", "a", "r", "t", "deg"]);
   if (mode === "a") {
@@ -2260,6 +2325,7 @@ E("u4-arc-length", 4, ["7.9"], 1, "gen", function () {
 });
 
 /* ---- 7.10, 7.11: the equation of a circle centred at the origin ---- */
+// LEVELBASIS: u4-circle-equation=direct recall
 E("u4-circle-equation", 4, ["7.10", "7.11"], 1, "gen", function () {
   var mode = pick(["r", "diam", "fromEq", "point", "sqrt"]);
   if (mode === "r") {
@@ -2299,6 +2365,7 @@ E("u4-circle-equation", 4, ["7.10", "7.11"], 1, "gen", function () {
 });
 
 /* ---- 7.12, 7.17: a point on the terminal arm (find a ratio, or find the angle) ---- */
+// LEVELBASIS: u4-point-ratios-angle=taught procedure, multi-step
 E("u4-point-ratios-angle", 4, ["7.12", "7.17"], 2, "gen", function () {
   var trip = pick([[3, 4, 5], [4, 3, 5], [5, 12, 13], [12, 5, 13], [8, 15, 17], [15, 8, 17], [7, 24, 25], [24, 7, 25], [20, 21, 29], [9, 40, 41]]);
   var sc = pick([1, 1, 2]), quad = ri(1, 4);
@@ -2330,6 +2397,7 @@ E("u4-point-ratios-angle", 4, ["7.12", "7.17"], 2, "gen", function () {
 });
 
 /* ---- 7.13: approximate value of a ratio (calculator work, 3 decimal places) ---- */
+// LEVELBASIS: u4-approx-ratio=one cued step
 E("u4-approx-ratio", 4, ["7.13"], 1, "gen", function () {
   var kind = pick(["sin", "cos", "tan"]);
   if (Math.random() < 0.5) {
@@ -2352,6 +2420,7 @@ E("u4-approx-ratio", 4, ["7.13"], 1, "gen", function () {
 });
 
 /* ---- 7.14: exact value of a ratio at a special angle ---- */
+// LEVELBASIS: u4-exact-special=direct recall
 E("u4-exact-special", 4, ["7.14"], 1, "gen", function () {
   var kind = pick(u4KINDS), d = pick(u4DEGS), ex = u4exact(kind, d);
   while (!ex) { d = pick(u4DEGS); ex = u4exact(kind, d); }
@@ -2374,6 +2443,7 @@ E("u4-exact-special", 4, ["7.14"], 1, "gen", function () {
 });
 
 /* ---- 7.16: angles in a domain from a given ratio value, quadrant specified ---- */
+// LEVELBASIS: u4-angle-from-ratio=recognition test
 E("u4-angle-from-ratio", 4, ["7.16"], 1, "gen", function () {
   var kind = pick(["sin", "cos", "tan"]);
   var signs = { sin: [1, 1, -1, -1], cos: [1, -1, -1, 1], tan: [1, -1, 1, -1] };
@@ -2401,6 +2471,7 @@ E("u4-angle-from-ratio", 4, ["7.16"], 1, "gen", function () {
 });
 
 /* ---- 7.18: the other ratios from one given ratio in a specified domain ---- */
+// LEVELBASIS: u4-other-ratios=taught procedure, multi-step
 E("u4-other-ratios", 4, ["7.18"], 2, "gen", function () {
   var trip = pick([[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25], [20, 21, 29], [9, 40, 41]]);
   var quad = ri(1, 4);
@@ -2424,6 +2495,7 @@ E("u4-other-ratios", 4, ["7.18"], 2, "gen", function () {
 });
 
 /* ---- 7.19, 7.15: problems in the standard-position and unit-circle setting, each with its diagram ---- */
+// LEVELBASIS: u4-ratio-problem=taught procedure, multi-step
 E("u4-ratio-problem", 4, ["7.19", "7.15"], 2, "gen", function () {
   var QN = ["I", "II", "III", "IV"];
   var DEFS = { sin: "\\frac{y}{r}", cos: "\\frac{x}{r}", tan: "\\frac{y}{x}", csc: "\\frac{r}{y}", sec: "\\frac{r}{x}", cot: "\\frac{x}{y}" };
@@ -2549,6 +2621,7 @@ E("u4-ratio-problem", 4, ["7.19", "7.15"], 2, "gen", function () {
 });
 
 /* ---- 7.34, 7.36: solve a trigonometric equation exactly; verify a solution ---- */
+// LEVELBASIS: u4-solve-equation-exact=taught procedure, multi-step
 E("u4-solve-equation-exact", 4, ["7.34", "7.36"], 2, "gen", function () {
   var kind = pick(["sin", "cos", "tan"]);
   var refPool = kind === "cos" ? [30, 45, 60, 90] : [0, 30, 45, 60];
@@ -2584,6 +2657,7 @@ E("u4-solve-equation-exact", 4, ["7.34", "7.36"], 2, "gen", function () {
 });
 
 /* ---- 7.35: approximate solutions of a trigonometric equation ---- */
+// LEVELBASIS: u4-solve-equation-approx=taught procedure, multi-step
 E("u4-solve-equation-approx", 4, ["7.35"], 2, "gen", function () {
   var kind = pick(["sin", "cos", "tan"]);
   var v = ri(12, 96) / 100 * pick([1, -1]);
@@ -2607,6 +2681,7 @@ E("u4-solve-equation-approx", 4, ["7.35"], 2, "gen", function () {
 });
 
 /* ---- 7.37: identify and correct errors in a worked solution ---- */
+// LEVELBASIS: u4-error-analysis=judgement test
 E("u4-error-analysis", 4, ["7.37"], 3, "var", varset([
   function () {
     return mcq("A student solves the equation \\(\\sin\\theta = \\frac{1}{2}\\) for \\(0 \\le \\theta < 2\\pi\\) and writes only \\(\\theta = \\frac{\\pi}{6}\\). What is the error in this solution?",
@@ -2647,6 +2722,7 @@ E("u4-error-analysis", 4, ["7.37"], 3, "var", varset([
 ]));
 
 /* ---- 7.10, 7.12: combine a circle equation with a quadrant and one coordinate ---- */
+// LEVELBASIS: u4-circle-point-reasoning=taught procedure, multi-step
 E("u4-circle-point-reasoning", 4, ["7.10", "7.12"], 2, "gen", function () {
   var trip = pick([[5, 3, 4], [13, 5, 12], [17, 8, 15], [25, 7, 24], [29, 20, 21], [41, 9, 40], [15, 9, 12], [10, 6, 8], [20, 12, 16]]);
   var R = trip[0], a = trip[1], b = trip[2];
@@ -2668,6 +2744,7 @@ E("u4-circle-point-reasoning", 4, ["7.10", "7.12"], 2, "gen", function () {
 });
 
 /* ---- 7.9, 7.3: compare arcs, transferring between degrees and radians ---- */
+// LEVELBASIS: u4-arc-compare=taught procedure, multi-step
 E("u4-arc-compare", 4, ["7.9", "7.3"], 2, "gen", function () {
   if (Math.random() < 0.5) {
     var thA = ri(7, 26) / 10, degB = ri(35, 160), radB = degB * Math.PI / 180;
@@ -2690,6 +2767,7 @@ E("u4-arc-compare", 4, ["7.9", "7.3"], 2, "gen", function () {
 });
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: one Level 3 CR entry (3 marks, opens the 6 pick with the existing 3-mark entry) and one Level 2 CR entry (3 marks, makes the 9-mark remainder reachable). ---------- */
+// LEVELBASIS: u4-repair-solution-cr=recognition test
 E("u4-repair-solution-cr",4,["7.37"],2,"var",varset([
   function(){
     return mcq("A student solves \\(\\sin x = \\frac{1}{2}\\) for \\(0 \\leq x < 2\\pi\\) and stops after writing \\(x = \\frac{\\pi}{6}\\), the value returned by the inverse sine key. What is the <b>complete</b> solution?",
@@ -2729,6 +2807,7 @@ E("u4-repair-solution-cr",4,["7.37"],2,"var",varset([
   }
 ]));
 /* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
+// LEVELBASIS: u4-angle-measures-cr=taught procedure, multi-step
 E("u4-angle-measures-cr",4,["7.16"],2,"var",varset([
   function(){
     var ref=Math.asin(3/5), ans=Math.PI+ref;
@@ -2806,6 +2885,7 @@ function u4nrSurd(n, d, b) { /* (n / d) * sqrt(b) as a KaTeX body, n and d posit
 }
 
 /* ---- 7.14: Numerical Response code from the parts of an exact value ---- */
+// LEVELBASIS: u4-nr-exact-code=taught procedure, multi-step
 E("u4-nr-exact-code", 4, ["7.14"], 2, "gen", function () {
   var rad = Math.random() < 0.5;
   function angS(d) { return rad ? u4radS(d) : d + "^\\circ"; }
@@ -2929,6 +3009,7 @@ function u5SetStr(xs){
   return "\\(\\{"+xs.map(function(x){return fmt(x)+"^\\circ";}).join(", ")+"\\}\\)";
 }
 
+// LEVELBASIS: u5-base-graph=direct recall
 E("u5-base-graph",5,["7.20","7.21"],1,"var",varset([
   function(){
     var q=mcq("What is the <b>period</b> of the function shown?",
@@ -2964,6 +3045,7 @@ E("u5-base-graph",5,["7.20","7.21"],1,"var",varset([
     q.figure=u5Plot(u5Fn(1,"cos",1,0,0),0,720,-1.6,1.6,{gx:90,gy:1,labelX:true,labelY:true});
     return q;}
 ]));
+// LEVELBASIS: u5-amplitude-a=direct recall
 E("u5-amplitude-a",5,["7.22"],1,"gen",function(){
   var trig=pick(["sin","cos"]),aS=pick([-9,-8,-7,-6,-5,-4,-3,-2,2,3,4,5,6,7,8,9]),b=pick([1,2,3]);
   var A=Math.abs(aS),bLab=(b===1?"":""+b);
@@ -2973,6 +3055,7 @@ E("u5-amplitude-a",5,["7.22"],1,"gen",function(){
     "The amplitude is the absolute value of the coefficient of the trigonometric function: \\(|"+aS+"| = "+A+"\\). The sign only reflects the graph, and the "+b+" inside the argument affects the period, not the amplitude. The amplitude is <b>"+A+"</b>.",
     {trig:trig,aS:aS,b:b});
 });
+// LEVELBASIS: u5-shift-k=one cued step
 E("u5-shift-k",5,["7.24"],1,"gen",function(){
   var trig=pick(["sin","cos"]),k=pick([-5,-4,-3,-2,-1,1,2,3,4,5]),ask=pick(["midline","max","min","range"]);
   var eq=u5Eq(1,trig,"",0,k);
@@ -3005,6 +3088,7 @@ E("u5-shift-k",5,["7.24"],1,"gen",function(){
     "The base function takes values from -1 to 1. Shifting "+(k>0?"up":"down")+" by "+Math.abs(k)+" moves the whole band: the lowest value is \\(-1 + ("+k+") = "+(k-1)+"\\) and the highest is \\(1 + ("+k+") = "+(k+1)+"\\). The range is <b>\\(["+(k-1)+", "+(k+1)+"]\\)</b>.",
     {trig:trig,k:k,ask:ask});
 });
+// LEVELBASIS: u5-period-b=one cued step
 E("u5-period-b",5,["7.23"],1,"gen",function(){
   var trig=pick(["sin","cos"]);
   if(Math.random()<0.25){
@@ -3029,6 +3113,7 @@ E("u5-period-b",5,["7.23"],1,"gen",function(){
     "The period is set by the coefficient of \\(x\\): \\[ \\begin{aligned} \\text{period} &= \\frac{360^\\circ}{b} \\\\ &= \\frac{360^\\circ}{"+(b===0.5?"\\frac{1}{2}":(b===1/3?"\\frac{1}{3}":b))+"} \\\\ &= "+P+"^\\circ \\end{aligned} \\] The amplitude and the vertical shift do not change the period. The period is <b>"+P+"°</b>.",
     {trig:trig,b:b,a:a,k:k,mode:"deg"});
 });
+// LEVELBASIS: u5-phase-h=direct recall
 E("u5-phase-h",5,["7.25"],1,"gen",function(){
   var trig=pick(["sin","cos"]),h=pick([15,30,45,60,90,-15,-30,-45,-60,-90]),b=pick([1,2,3]);
   var bLab=(b===1?"":""+b),A=Math.abs(h);
@@ -3040,6 +3125,7 @@ E("u5-phase-h",5,["7.25"],1,"gen",function(){
     "In the form \\(\\"+trig+" "+(b===1?"":b)+"(x - h)\\), the value \\(h = "+h+"^\\circ\\) is the phase shift. A positive \\(h\\) moves the graph to the right, and a negative \\(h\\) moves it to the left. Here the graph is <b>shifted "+A+"° to the "+dir+"</b>.",
     {trig:trig,h:h,b:b});
 });
+// LEVELBASIS: u5-characteristics=direct recall
 E("u5-characteristics",5,["7.27"],1,"gen",function(){
   var trig=pick(["sin","cos"]),a=pick([2,3,4]),b=pick([1,2]),h=pick([-60,-30,0,30,60]),k=pick([-2,-1,0,1,2,3]);
   var ask=pick(["amplitude","period","midline","range","phase"]);
@@ -3076,6 +3162,7 @@ E("u5-characteristics",5,["7.27"],1,"gen",function(){
   q.figure=u5Plot(fn,0,540,Math.min(k-a-1,-2),Math.max(k+a+1,2),{gx:90,gy:1,labelX:true,labelY:true});
   return q;
 });
+// LEVELBASIS: u5-eq-from-graph=taught procedure, multi-step
 E("u5-eq-from-graph",5,["7.28"],2,"gen",function(){
   var trig=pick(["sin","cos"]),a=pick([2,3,4]),b=pick([1,2]);
   var k=pick([-3,-2,-1,1,2,3]);var tries=0;
@@ -3092,6 +3179,7 @@ E("u5-eq-from-graph",5,["7.28"],2,"gen",function(){
   q.figure=u5Plot(u5Fn(a,trig,b,0,k),0,720,Math.min(k-a-1,-2),Math.max(k+a+1,2),{gx:90,gy:1,labelX:true,labelY:true});
   return q;
 });
+// LEVELBASIS: u5-key-points=one cued step
 E("u5-key-points",5,["7.26"],1,"gen",function(){
   var trig=pick(["sin","cos"]),a=pick([2,3,4,5]),b=pick([1,2,3]),h=pick([-30,0,30,60]),k=pick([-3,-2,-1,0,1,2,3]);
   var eq=u5Eq(a,trig,(b===1?"":""+b),h,k),ask=pick(["max","min","firstmax"]);
@@ -3115,6 +3203,7 @@ E("u5-key-points",5,["7.26"],1,"gen",function(){
     "The maximum occurs where the argument of the "+(trig==="sin"?"sine":"cosine")+" equals "+(trig==="sin"?"\\(90^\\circ\\)":"\\(0^\\circ\\)")+" (or a full cycle later): \\[ \\begin{aligned} "+b+"(x "+(h>=0?"- "+h:"+ "+(-h))+") &= "+(trig==="sin"?"90":"0")+"^\\circ \\\\ x &= "+x+"^\\circ \\end{aligned} \\] The smallest such value with \\(x \\ge 0^\\circ\\) is <b>"+x+"°</b>.",
     {trig:trig,a:a,b:b,h:h,k:k,ask:ask});
 });
+// LEVELBASIS: u5-tan-features=taught procedure, multi-step
 E("u5-tan-features",5,["7.32","7.33"],2,"gen",function(){
   var b=pick([1,2]),s=pick([1,-1]),h=pick([0,30]),L=pick([360,540,720,900]);
   var ask=pick(["period","asymcount","zerocount","range","domain"]);
@@ -3161,6 +3250,7 @@ E("u5-tan-features",5,["7.32","7.33"],2,"gen",function(){
     "Tangent is undefined where its argument equals \\(90^\\circ + 180^\\circ n\\). Solving \\("+b+"(x - "+h+"^\\circ) = 90^\\circ + 180^\\circ n\\) gives \\(x = "+fmt(st)+"^\\circ + "+fmt(step)+"^\\circ n\\), and these values are excluded from the domain: <b>"+corr+"</b>.",
     {b:b,s:s,h:h,ask:ask});
 });
+// LEVELBASIS: u5-which-solution=shortcut test
 E("u5-which-solution",5,["7.36","7.35"],1,"gen",function(){
   var trig=pick(["sin","cos"]);
   if(Math.random()<0.55){
@@ -3200,6 +3290,7 @@ E("u5-which-solution",5,["7.36","7.35"],1,"gen",function(){
     "Using the inverse function, one solution is \\(x = \\"+trig+"^{-1}("+c2+") \\approx "+fmt(chosen2,1)+"^\\circ\\), which rounds to <b>"+corr2+"°</b>. (A calculator or a graph gives this approximate value; the equation has no exact special-angle solution.)",
     {trig:trig,c:c2,fam:"approx"});
 });
+// LEVELBASIS: u5-solve-set=taught procedure, multi-step
 E("u5-solve-set",5,["7.34"],2,"gen",function(){
   var trig,b,sgn,c,D,S,candSets,tries=0;
   function sStr(arr){return u5SetStr(arr);}
@@ -3237,6 +3328,7 @@ E("u5-solve-set",5,["7.34"],2,"gen",function(){
     "First solve on one cycle, then account for the coefficient of \\(x\\): \\[ \\begin{aligned} \\"+trig+" "+(b===1?"":b)+"x &= "+(sgn===1?c.lab:negLab)+" \\\\ x &= "+S.map(function(v){return fmt(v)+"^\\circ";}).join(", ")+" \\end{aligned} \\] Checking each listed value in the original equation confirms the solution set <b>"+sStr(S)+"</b>.",
     {trig:trig,b:b,sgn:sgn,c:c.lab,D:D});
 });
+// LEVELBASIS: u5-general-solution=taught procedure, multi-step
 E("u5-general-solution",5,["7.38"],2,"gen",function(){
   var trig=pick(["sin","cos"]),b=pick([1,2,3]),a=pick([2,3]),ask=pick(["general","zeroslist","zeroscount"]);
   var eq=u5Eq(a,trig,(b===1?"":""+b),0,0);
@@ -3273,6 +3365,7 @@ E("u5-general-solution",5,["7.38"],2,"gen",function(){
 function u5ModEq(fnName,D,A,trig,bDeg,sign){
   return "\\("+fnName+"(t) = "+D+(sign<0?" - ":" + ")+(A===1?"":A)+"\\"+trig+"("+bDeg+"^\\circ t)\\)";
 }
+// LEVELBASIS: u5-model-build=taught procedure, multi-step
 E("u5-model-build",5,["7.31"],2,"gen",function(){
   var ctx=pick(["tide","wheel","buoy","temp"]),ask=pick(["equation","value"]);
   var A,D,P,b,fnName,unit,thing,startMax,stemEq,stemVal,tVal,tLab;
@@ -3311,6 +3404,7 @@ E("u5-model-build",5,["7.31"],2,"gen",function(){
     "Build the model first: midline "+D+", amplitude "+A+", starting at a "+(startMax?"maximum":"minimum")+", so \\("+fnName+"(t) = "+D+" "+(sign<0?"-":"+")+" "+A+"\\cos("+b+"^\\circ t)\\). Then \\[ \\begin{aligned} "+fnName+"("+fmt(tv)+") &= "+D+" "+(sign<0?"-":"+")+" "+A+"\\cos("+(360*tFrac)+"^\\circ) \\\\ &= "+D+" "+(sign<0?"-":"+")+" "+A+"("+fmt(cosv)+") \\\\ &= "+fmt(val)+" \\end{aligned} \\] The "+tLab+" is <b>"+fmt(val)+" "+unit+"</b>.",
     {ctx:ctx,A:A,D:D,P:P,ask:ask,tv:tv});
 });
+// LEVELBASIS: u5-model-conditions=taught procedure, multi-step
 E("u5-model-conditions",5,["7.29","7.30"],2,"gen",function(){
   var frame=pick([
     {what:"the height, in centimetres, of a piston in an engine as it pumps",per:"seconds"},
@@ -3326,6 +3420,7 @@ E("u5-model-conditions",5,["7.29","7.30"],2,"gen",function(){
     "A period of "+P+" forces \\(b = \\frac{360}{"+P+"} = "+b+"\\), which rules out the options with \\("+(2*b)+"x\\). A range of "+lo+" to "+hi+" forces amplitude \\(\\frac{"+hi+" - "+lo+"}{2} = "+A+"\\) and midline \\(\\frac{"+hi+" + "+lo+"}{2} = "+D+"\\), which rules out the option with amplitude "+(A+1)+". The function that satisfies both conditions is <b>"+corr+"</b>.",
     {P:P,A:A,lo:lo,trig:trig});
 });
+// LEVELBASIS: u5-graph-problem=taught procedure, multi-step
 E("u5-graph-problem",5,["7.29"],2,"gen",function(){
   var scen=pick(["tide","wheel","temp"]);
   var A=pick([2,3,4]),D=pick([6,8,10]),form=pick([1,-1,0]);
@@ -3370,7 +3465,9 @@ E("u5-graph-problem",5,["7.29"],2,"gen",function(){
   q.figure=fig;
   return q;
 });
-E("u5-tan-graph",5,["7.32"],2,"var",varset([
+// LEVEL AUDIT 2026-11-25: retagged 2 to 1 (read, count, or recognize one feature on a shown tangent graph). See Level-Audit-Math-3200-2026-11-25.md.
+// LEVELBASIS: u5-tan-graph=direct recall
+E("u5-tan-graph",5,["7.32"],1,"var",varset([
   function(){
     var q=mcq("Which function is shown in the graph?",
       "\\(y = \\tan x\\)",
@@ -3402,6 +3499,7 @@ E("u5-tan-graph",5,["7.32"],2,"var",varset([
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: three Level 2 CR entries (3, 2 and 2 marks). The Level 2 CR pool held only two 2-mark entries, so no remainder behind any Level 3 pick could form. ---------- */
 /* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
+// LEVELBASIS: u5-equation-evaluate-cr=taught procedure, multi-step
 E("u5-equation-evaluate-cr",5,["7.28","7.26"],2,"gen",function(){
   var P=pick([12,24,8]), A=pick([2,3,4,5]), h=pick([0,1,2,3]), k=pick([-3,-2,-1,1,2,3]);
   var phis;
@@ -3416,6 +3514,7 @@ E("u5-equation-evaluate-cr",5,["7.28","7.26"],2,"gen",function(){
     "The equation is \\(y = "+A+"\\sin "+bstr+arg+" "+ks+"\\), since \\(b = \\frac{2\\pi}{"+P+"} = "+bstr+"\\). At \\(x = "+t+"\\), the argument is \\("+bstr+" \\times "+(t-h)+" = "+ph[1]+"\\), and \\(\\sin "+ph[1]+" = "+ph[2]+"\\). So the value is \\("+A+" \\times "+ph[2]+" "+ks+" = \\)<b>"+fmt(ans,2)+"</b>.",
     {P:P,A:A,h:h,k:k,t:t});
 });
+// LEVELBASIS: u5-first-maximum-cr=taught procedure, multi-step
 E("u5-first-maximum-cr",5,["7.29"],2,"gen",function(){
   var o=pick([[12,"\\frac{\\pi}{6}"],[24,"\\frac{\\pi}{12}"],[8,"\\frac{\\pi}{4}"],[6,"\\frac{\\pi}{3}"],[16,"\\frac{\\pi}{8}"]]);
   var P=o[0], bstr=o[1], A=pick([2,3,4,5,6]), h=pick([0,1,2,3]), k=pick([5,8,10,12]);
@@ -3426,7 +3525,9 @@ E("u5-first-maximum-cr",5,["7.29"],2,"gen",function(){
     "The height is greatest when the sine factor equals 1, which first happens when its argument equals \\(\\frac{\\pi}{2}\\). The argument "+bstr+arg+" increases from 0, and it reaches \\(\\frac{\\pi}{2}\\) after one quarter of the period. The period is "+P+" minutes, so the first maximum occurs at \\(t = "+h+" + \\frac{"+P+"}{4} = \\)<b>"+fmt(t,2)+"</b> minutes.",
     {P:P,h:h});
 });
-E("u5-tan-asymptote-cr",5,["7.32","7.33"],2,"gen",function(){
+// LEVEL AUDIT 2026-11-25: retagged 2 to 1 (recall the first asymptote location, then one rearrangement). See Level-Audit-Math-3200-2026-11-25.md.
+// LEVELBASIS: u5-tan-asymptote-cr=one cued step
+E("u5-tan-asymptote-cr",5,["7.32","7.33"],1,"gen",function(){
   var o=pick([[2,"2x",Math.PI/4],[3,"3x",Math.PI/6],[4,"4x",Math.PI/8],[0.5,"\\frac{x}{2}",Math.PI]]);
   var b=o[0], bx=o[1], ans=o[2];
   return numq("What is the smallest positive value of \\(x\\) at which the graph of \\(y = \\tan "+bx+"\\) has a vertical asymptote? Give your answer in radians, to three decimal places.",
@@ -3618,6 +3719,7 @@ function u6exact(kind, deg) { /* exact string for a ratio at a special degree, o
 }
 
 /* ---- 7.39: identity versus equation ---- */
+// LEVELBASIS: u6-identity-or-equation=recognition test
 E("u6-identity-or-equation", 6, ["7.39"], 1, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var cat = pick(["id", "id", "id", "eq", "eq", "eq", "eq", "never", "never"]);
@@ -3675,6 +3777,7 @@ E("u6-identity-or-equation", 6, ["7.39"], 1, "gen", function () {
 });
 
 /* ---- 7.41: non-permissible values of a single expression ---- */
+// LEVELBASIS: u6-nonpermissible-basic=direct recall
 E("u6-nonpermissible-basic", 6, ["7.41"], 1, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var scaled = Math.random() < 0.45;
@@ -3714,6 +3817,7 @@ E("u6-nonpermissible-basic", 6, ["7.41"], 1, "gen", function () {
 });
 
 /* ---- 7.36: verify a value is a solution (reciprocal and squared forms) ---- */
+// LEVELBASIS: u6-verify-solution=shortcut test
 E("u6-verify-solution", 6, ["7.36"], 1, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var fam = pick(["sec2", "cscm2", "cot1", "tan2e3", "sin2e34", "cos2e12", "2sin", "sin2", "cos2"]);
@@ -3778,6 +3882,7 @@ function u6radBig(deg) { /* radian string body for any integer degree total, no 
 var u6FACTORS = [[1, 0], [1, 1], [1, -1], [2, 1], [2, -1], [1, 2], [1, -2]]; /* (a f - b), root b/a */
 
 /* ---- 7.34: solve a quadratic trigonometric equation ---- */
+// LEVELBASIS: u6-solve-quadratic=taught procedure, multi-step
 E("u6-solve-quadratic", 6, ["7.34"], 2, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var rad = Math.random() < 0.5;
@@ -3825,6 +3930,7 @@ E("u6-solve-quadratic", 6, ["7.34"], 2, "gen", function () {
 });
 
 /* ---- 7.34: solve an equation with a double angle ---- */
+// LEVELBASIS: u6-solve-double-angle=taught procedure, multi-step
 E("u6-solve-double-angle", 6, ["7.34"], 2, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var rad = Math.random() < 0.5;
@@ -3896,6 +4002,7 @@ E("u6-solve-double-angle", 6, ["7.34"], 2, "gen", function () {
 });
 
 /* ---- 7.34: solve using a reciprocal ratio or a Pythagorean substitution ---- */
+// LEVELBASIS: u6-solve-identity-sub=taught procedure, multi-step
 E("u6-solve-identity-sub", 6, ["7.34"], 2, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var rad = Math.random() < 0.5;
@@ -3955,6 +4062,7 @@ E("u6-solve-identity-sub", 6, ["7.34"], 2, "gen", function () {
 });
 
 /* ---- 7.35: approximate solutions from a graphed intersection ---- */
+// LEVELBASIS: u6-approx-solutions=one cued step
 E("u6-approx-solutions", 6, ["7.35"], 1, "gen", function () {
   var rad = Math.random() < 0.45;
   var fam = pick(["sinP", "sinN", "cos", "tanP", "tanN", "sin2"]);
@@ -3997,6 +4105,7 @@ E("u6-approx-solutions", 6, ["7.35"], 1, "gen", function () {
 });
 
 /* ---- 7.42: verify an identity numerically for a given value ---- */
+// LEVELBASIS: u6-numeric-verify=one cued step
 E("u6-numeric-verify", 6, ["7.42"], 1, "gen", function () {
   var rad = Math.random() < 0.45;
   var degs = [25, 40, 55, 70, 115, 140, 160, 200, 215, 290, 325];
@@ -4044,6 +4153,7 @@ function u6PairFns(trel,coef){ /* the two sides of a graphical-validity relation
   if(trel.indexOf("\\csc V")>=0)return [function(x){return S(x)/S(x);},function(x){return 1;}];
   return [S,C];
 }
+// LEVELBASIS: u6-graphical-validity=recognition test
 E("u6-graphical-validity", 6, ["7.40"], 1, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var rad = Math.random() < 0.5;
@@ -4093,6 +4203,7 @@ E("u6-graphical-validity", 6, ["7.40"], 1, "gen", function () {
 });
 
 /* ---- 7.41: non-permissible values of a full identity ---- */
+// LEVELBASIS: u6-nonpermissible-identity=taught procedure, multi-step
 E("u6-nonpermissible-identity", 6, ["7.41"], 2, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var T = pick([
@@ -4139,6 +4250,7 @@ E("u6-nonpermissible-identity", 6, ["7.41"], 2, "gen", function () {
 });
 
 /* ---- 7.43: choose a valid first step in a proof ---- */
+// LEVELBASIS: u6-proof-next-step=recognition test
 E("u6-proof-next-step", 6, ["7.43"], 2, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var fam = pick(["conj", "conj", "combine", "dblfrac", "expand", "factor", "tanconv", "pythnum"]);
@@ -4235,6 +4347,7 @@ function u6simpStr(a, b, v) { /* nicest single-form rendering of sin^a cos^b */
   if (!num) return "\\frac{1}{" + den + "}";
   return "\\frac{" + num + "}{" + den + "}";
 }
+// LEVELBASIS: u6-simplify-expression=taught procedure, multi-step
 E("u6-simplify-expression", 6, ["7.44"], 2, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   function neigh(a, b) {
@@ -4337,6 +4450,7 @@ var u6SC = { /* exact [n, r, d] for sin and cos at decomposition angles */
   120: { s: [1, 3, 2], c: [-1, 1, 2] }, 135: { s: [1, 2, 2], c: [-1, 2, 2] }, 150: { s: [1, 1, 2], c: [-1, 3, 2] }
 };
 var u6TANSC = { 30: "\\frac{\\sqrt{3}}{3}", 45: "1", 60: "\\sqrt{3}", 120: "-\\sqrt{3}", 135: "-1", 150: "-\\frac{\\sqrt{3}}{3}" };
+// LEVELBASIS: u6-exact-values=taught procedure, multi-step
 E("u6-exact-values", 6, ["7.45"], 2, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   if (Math.random() < 0.55) {
@@ -4417,6 +4531,7 @@ E("u6-exact-values", 6, ["7.45"], 2, "gen", function () {
 });
 
 /* ---- 7.37: identify the error in a worked solution ---- */
+// LEVELBASIS: u6-error-analysis=judgement test
 E("u6-error-analysis", 6, ["7.37"], 3, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var rad = Math.random() < 0.5;
@@ -4526,6 +4641,7 @@ function u6proofChainCR(idStr, forms, bad, expl, proofLead, proofForms) {
     "(a) The first invalid step is <b>Step " + bad + "</b>. (b) " + expl + " (c) A valid proof: " + proofLead + proof + "<b>Marking points (4 marks):</b> 1 mark for stating Step " + bad + ". 1 mark for the explanation in (b). 2 marks for a valid proof in (c): any correct sequence of steps that starts from one side of the identity and reaches the other side using only valid identities and algebra.",
     { bad: bad });
 }
+// LEVELBASIS: u6-proof-invalid-step=judgement test
 E("u6-proof-invalid-step", 6, ["7.43"], 3, "var", varset([
   function () { return u6proofChain("\\frac{1 - \\cos 2\\theta}{\\sin 2\\theta} = \\tan\\theta",
     ["\\frac{1 - \\cos 2\\theta}{\\sin 2\\theta}", "\\frac{2\\sin^2\\theta}{2\\sin\\theta\\cos\\theta}", "\\frac{2\\sin^2\\theta}{\\sin\\theta\\cos\\theta}", "\\frac{2\\sin\\theta}{\\cos\\theta}", "\\tan\\theta"], 2,
@@ -4565,6 +4681,7 @@ E("u6-proof-invalid-step", 6, ["7.43"], 3, "var", varset([
     "Step 1 expands the square incorrectly: the expansion of \\((\\sin\\theta + \\cos\\theta)^2\\) includes the cross term \\(2\\sin\\theta\\cos\\theta\\), which was omitted."); }
 ]));
 
+// LEVELBASIS: u6-proof-invalid-step-cr=judgement test
 E("u6-proof-invalid-step-cr", 6, ["7.43"], 3, "var", varset([
   function () { return u6proofChainCR("\\frac{1 - \\cos 2\\theta}{\\sin 2\\theta} = \\tan\\theta",
     ["\\frac{1 - \\cos 2\\theta}{\\sin 2\\theta}", "\\frac{2\\sin^2\\theta}{2\\sin\\theta\\cos\\theta}", "\\frac{2\\sin^2\\theta}{\\sin\\theta\\cos\\theta}", "\\frac{2\\sin\\theta}{\\cos\\theta}", "\\tan\\theta"], 2,
@@ -4629,6 +4746,7 @@ E("u6-proof-invalid-step-cr", 6, ["7.43"], 3, "var", varset([
 ]));
 
 /* ---- 7.46: why a numerical check cannot prove an identity ---- */
+// LEVELBASIS: u6-why-insufficient=judgement test
 E("u6-why-insufficient", 6, ["7.46"], 3, "gen", function () {
   var v = pick(["\\theta", "\\theta", "x"]);
   var rad = Math.random() < 0.5;
@@ -4659,6 +4777,7 @@ E("u6-why-insufficient", 6, ["7.46"], 3, "gen", function () {
 });
 
 /* ---------- Unit-test pool fix, Nov 9, 2026: two Level 3 CR entries (3 and 2 marks). The unit had a single Level 3 CR entry, so only one Level 3 pick path existed. ---------- */
+// LEVELBASIS: u6-lost-solutions-cr=recognition test
 E("u6-lost-solutions-cr",6,["7.37"],2,"var",varset([
   function(){
     return mcq("A student solves \\(\\sin x \\cos x = \\cos x\\) for \\(0 \\leq x < 2\\pi\\) by dividing both sides by \\(\\cos x\\), obtaining \\(\\sin x = 1\\) and the single solution \\(x = \\frac{\\pi}{2}\\). Dividing by an expression that can equal zero loses solutions. What is the <b>complete</b> solution?",
@@ -4688,6 +4807,7 @@ E("u6-lost-solutions-cr",6,["7.37"],2,"var",varset([
       {sc:"tansq"});
   }
 ]));
+// LEVELBASIS: u6-coincidence-check-cr=judgement test
 E("u6-coincidence-check-cr",6,["7.42","7.46"],3,"var",varset([
   function(){
     return mcq("To check the claim \\(\\sin 2x = 2\\sin x\\), a student substitutes \\(x = 0\\) and finds that both sides equal 0. What is the correct conclusion?",
@@ -4867,6 +4987,7 @@ function u6pfD4() {
 }
 
 /* ---- 7.43: prove an identity by the direct route (CR) ---- */
+// LEVELBASIS: u6-proof-direct=taught procedure, multi-step
 E("u6-proof-direct", 6, ["7.43"], 2, "var", varset([
   function () { return u6pfD1(); },
   function () { return u6pfD2(); },
@@ -4956,6 +5077,7 @@ function u6pfSC() {
 }
 
 /* ---- 7.43: prove an identity with one strategic step (CR) ---- */
+// LEVELBASIS: u6-proof-strategy=path test
 E("u6-proof-strategy", 6, ["7.43"], 3, "var", varset([
   function () { return u6pfSA(); },
   function () { return u6pfSB(); },
@@ -4996,6 +5118,7 @@ var u6NRTAN = { /* tan of each target as [a, s]: value = a + s * sqrt(3) */
    a sum, difference or double-angle identity: the Unit 4 families
    hold single recalled values, which would make a four-way match a
    recall exercise instead of identity work. */
+// LEVELBASIS: u6-nr-matching=taught procedure, multi-step
 E("u6-nr-matching", 6, ["7.45"], 2, "gen", function () {
   function stmtSC() {
     var T = pick([15, 75, 105, 165]), kind = pick(["sin", "cos"]);
@@ -5078,6 +5201,7 @@ E("u6-nr-matching", 6, ["7.45"], 2, "gen", function () {
    in both modes: a is a positive single digit (never a leading
    zero), b and c are single digits, and in mode P the fraction is
    in lowest terms with b squarefree, so the stated form is unique. */
+// LEVELBASIS: u6-nr-exact-code=taught procedure, multi-step
 E("u6-nr-exact-code", 6, ["7.45"], 2, "gen", function () {
   if (Math.random() < 0.5) {
     /* Mode T: tangent and cotangent forms, value = a +/- b sqrt(3) */
@@ -5248,6 +5372,7 @@ function u7expStr(a,base,exp,k){ /* content of y = a * base^{exp} + k, no delimi
   if(k>0)s+=" + "+k;else if(k<0)s+=" - "+Math.abs(k);
   return s;}
 
+// LEVELBASIS: u7-common-base-linear=taught procedure, multi-step
 E("u7-common-base-linear",7,["4.27"],2,"gen",function(){
   var fam=pick(["num","num","pow","pow","frac","coef"]);
   if(fam==="num"){
@@ -5300,6 +5425,7 @@ E("u7-common-base-linear",7,["4.27"],2,"gen",function(){
     {fam:fam,B:B4,a:a4,k:k4,m:m4});
 });
 
+// LEVELBASIS: u7-common-base-radical=taught procedure, multi-step
 E("u7-common-base-radical",7,["4.27"],2,"gen",function(){
   var fam=pick(["sqrt","sqrt","rootfrac","cbrt"]);
   if(fam==="sqrt"||fam==="rootfrac"){
@@ -5344,6 +5470,7 @@ E("u7-common-base-radical",7,["4.27"],2,"gen",function(){
     {fam:fam,B:B3,a:a3,b:b3,c:c3,d:d3});
 });
 
+// LEVELBASIS: u7-solve-nocommon-base=taught procedure, multi-step
 E("u7-solve-nocommon-base",7,["4.28"],2,"gen",function(){
   var fam=pick(["logs","logs","logs","logsAsm","bracket"]);
   if(fam==="logs"){
@@ -5387,6 +5514,7 @@ E("u7-solve-nocommon-base",7,["4.28"],2,"gen",function(){
     {fam:fam,a:a3,m:m3,T:T});
 });
 
+// LEVELBASIS: u7-growth-decay-amount=one cued step
 E("u7-growth-decay-amount",7,["4.29"],1,"gen",function(){
   var fam=pick(["half","half","double","pct"]);
   if(fam==="half"){
@@ -5442,6 +5570,7 @@ E("u7-growth-decay-amount",7,["4.29"],1,"gen",function(){
     {fam:fam,f:f,n:n,A0:A03});
 });
 
+// LEVELBASIS: u7-growth-decay-time=recognition test
 E("u7-growth-decay-time",7,["4.29"],1,"gen",function(){
   var fam=pick(["half","half","double","triple","pct"]);
   if(fam==="half"){
@@ -5476,6 +5605,7 @@ E("u7-growth-decay-time",7,["4.29"],1,"gen",function(){
     {fam:fam,f:f2,j:j3});
 });
 
+// LEVELBASIS: u7-model-equation=recognition test
 E("u7-model-equation",7,["4.30"],1,"gen",function(){
   var fam=pick(["period","period","pct"]);
   if(fam==="period"){
@@ -5518,6 +5648,7 @@ E("u7-model-equation",7,["4.30"],1,"gen",function(){
     {fam:fam,r:r,A0:A02});
 });
 
+// LEVELBASIS: u7-compound-amount=one cued step
 E("u7-compound-amount",7,["4.31"],1,"gen",function(){
   var spec=pick([
     {lab:"compounded annually",per:1,rates:[3,4,5,6,7,8,9,10],years:[2,3,4]},
@@ -5545,6 +5676,7 @@ E("u7-compound-amount",7,["4.31"],1,"gen",function(){
     {r:r,Y:Y,per:per,P:P});
 });
 
+// LEVELBASIS: u7-compound-setup=one cued step
 E("u7-compound-setup",7,["4.31"],1,"gen",function(){
   var spec=pick([
     {lab:"semi-annually",per:2,rates:[4,6,8,10,12]},
@@ -5562,6 +5694,7 @@ E("u7-compound-setup",7,["4.31"],1,"gen",function(){
     {j:j,Y:Y,per:per});
 });
 
+// LEVELBASIS: u7-identify-growth-decay=direct recall
 E("u7-identify-growth-decay",7,["4.48"],1,"gen",function(){
   var ask=pick(["decay","growth","yint","domain","range"]);
   if(ask==="decay"||ask==="growth"){
@@ -5601,6 +5734,7 @@ E("u7-identify-growth-decay",7,["4.48"],1,"gen",function(){
     "The power "+(typeof b4==="string"?"\\(\\left(\\frac{1}{3}\\right)^{x}\\)":"\\("+b4+"^{x}\\)")+" is always positive, and multiplying by \\("+a4+"\\) keeps it positive. The graph approaches \\(y = 0\\) but never reaches it, so the range is <b>\\(\\{y \\mid y > 0\\}\\)</b>.",{ask:ask});
 });
 
+// LEVELBASIS: u7-sketch-key-points=direct recall
 E("u7-sketch-key-points",7,["4.35"],1,"gen",function(){
   var c=pick([[2,1],[3,1],[4,1],[5,1],[10,1],[1,2],[1,3],[1,4],[2,3],[3,2],[5,2],[3,4]]);
   var cv=c[0]/c[1],a=pick([1,1,1,2,3]);
@@ -5634,7 +5768,9 @@ E("u7-sketch-key-points",7,["4.35"],1,"gen",function(){
   return q;
 });
 
-E("u7-transformed-graph",7,["4.36"],2,"gen",function(){
+// LEVEL AUDIT 2026-11-25: retagged 2 to 1 (read one characteristic from a transformed exponential). See Level-Audit-Math-3200-2026-11-25.md.
+// LEVELBASIS: u7-transformed-graph=direct recall
+E("u7-transformed-graph",7,["4.36"],1,"gen",function(){
   var c=pick([[2,1],[3,1],[5,1],[1,2],[1,3]]),cv=c[0]/c[1];
   var form=pick(["A","A","B","C"]);
   var a=form==="B"?1:pick([-3,-2,-1,1,1,2,3]);
@@ -5700,6 +5836,7 @@ E("u7-transformed-graph",7,["4.36"],2,"gen",function(){
   q2.figure=fig;return q2;
 });
 
+// LEVELBASIS: u7-characteristics=direct recall
 E("u7-characteristics",7,["4.48"],1,"gen",function(){
   var ask=pick(["true","asym","xint","range"]);
   if(ask==="true"){
@@ -5769,6 +5906,7 @@ E("u7-characteristics",7,["4.48"],1,"gen",function(){
     return q;
 });
 
+// LEVELBASIS: u7-compare-models=taught procedure, multi-step
 E("u7-compare-models",7,["4.30"],2,"gen",function(){
   var fam=pick(["growth","growth","decay","after"]);
   if(fam==="growth"||fam==="after"){
@@ -5802,6 +5940,7 @@ E("u7-compare-models",7,["4.30"],2,"gen",function(){
     {fam:fam,QA:QA,QB:QB,k:k3});
 });
 
+// LEVELBASIS: u7-model-from-data=taught procedure, multi-step
 E("u7-model-from-data",7,["4.30"],2,"gen",function(){
   var spec=pick([
     {f:[2,1],A0s:[15,25,40,60,90,120,200],ctx:"A researcher counts the bacteria in a dish.",unit:"bacteria",tu:"hours"},
@@ -5837,6 +5976,7 @@ E("u7-model-from-data",7,["4.30"],2,"gen",function(){
     "The starting value is \\("+A0+"\\) (at \\(t = 0\\)), and each value is the previous one multiplied by \\("+fStr+"\\): the ratios are all \\("+fStr+"\\). A constant ratio means an exponential model, <b>"+corrM+"</b>. The option with a \\(t\\) added on is linear and fits only the first step.",{ask:ask,f:f,A0:A0});
 });
 
+// LEVELBASIS: u7-traits-match-cr=taught procedure, multi-step
 E("u7-traits-match-cr",7,["4.48"],2,"gen",function(){
   var fam=pick(["decay","growth"]);
   var a=pick([2,3,4,5,6,8]);
@@ -5855,6 +5995,7 @@ E("u7-traits-match-cr",7,["4.48"],2,"gen",function(){
     {fam:fam,a:a,bp:bp,t:t});
 });
 
+// LEVELBASIS: u7-graph-point-value-cr=taught procedure, multi-step
 E("u7-graph-point-value-cr",7,["4.35"],2,"gen",function(){
   var bp=pick([[2,1],[3,1],[4,1],[5,1],[1,2],[1,3],[2,3],[3,2]]);
   var cv=bp[0]/bp[1];
@@ -5878,6 +6019,7 @@ E("u7-graph-point-value-cr",7,["4.35"],2,"gen",function(){
 
 /* Bimodal build additions (Nov 19, 2026): one written-form entry for Unit 7 (4 marks), on indicator 4.28, which has thin written coverage in the unit. SME-flagged for the specialist pass. */
 
+// LEVELBASIS: u7-wcr-log-time=taught procedure, multi-step
 E("u7-wcr-log-time",7,["4.28"],2,"gen",function(){
   var f=0,M=0,N0=0,t=0,tries=0,logM=0,logF=0,ans=0;
   do{
@@ -5992,6 +6134,7 @@ function u8invSVG(c){
   return s;
 }
 
+// LEVELBASIS: u8-convert-form=direct recall
 E("u8-convert-form",8,["1.1","1.2"],1,"gen",function(){
   var neg = Math.random() < 0.3;
   var mode = neg ? pick(["toExp","toLog"]) : pick(["toExp","toLog","meaning"]);
@@ -6030,6 +6173,7 @@ E("u8-convert-form",8,["1.1","1.2"],1,"gen",function(){
   return mcq("Write \\(" + expEq + "\\) in logarithmic form.", "\\(" + logEq + "\\)", dis2, sol, {mode:mode, b:b, e:e});
 });
 
+// LEVELBASIS: u8-exact-value=direct recall
 E("u8-exact-value",8,["1.3"],1,"gen",function(){
   var b, Astr, ans, steps;
   if (Math.random() < 0.4){
@@ -6049,6 +6193,7 @@ E("u8-exact-value",8,["1.3"],1,"gen",function(){
     "Look for the exponent that produces the argument from the base. " + steps, {b:b, ans:ans});
 });
 
+// LEVELBASIS: u8-sketch-log=direct recall
 E("u8-sketch-log",8,["4.38"],1,"gen",function(){
   var bases = [{v:2,s:"2"},{v:3,s:"3"},{v:4,s:"4"},{v:5,s:"5"},{v:6,s:"6"},{v:7,s:"7"},{v:10,s:"10"},
                {v:0.5,s:u8frac(1,2)},{v:1/3,s:u8frac(1,3)},{v:0.2,s:u8frac(1,5)}];
@@ -6080,6 +6225,7 @@ E("u8-sketch-log",8,["4.38"],1,"gen",function(){
     (inc ? "The base \\(" + cs + "\\) is greater than \\(1\\), so larger inputs need larger exponents: the graph rises." : "The base \\(" + cs + "\\) is between \\(0\\) and \\(1\\), so larger inputs need smaller exponents: the graph falls."), {ask:ask, c:cs});q.figure=u8logFig(C.v);return q;
 });
 
+// LEVELBASIS: u8-estimate-approx=one cued step
 E("u8-estimate-approx",8,["1.4","1.8"],1,"gen",function(){
   if (Math.random() < 0.5){
     var b = pick([2,3,5,10]);
@@ -6115,6 +6261,7 @@ E("u8-estimate-approx",8,["1.4","1.8"],1,"gen",function(){
     ans, 0.02, "Rewrite the argument using the given value. " + why, {mode:"given", bb:bb, m:m, form:form});
 });
 
+// LEVELBASIS: u8-laws-illustrate=direct recall
 E("u8-laws-illustrate",8,["1.5","1.6"],1,"gen",function(){
   var b = pick([2,3,5,10]);
   var law = pick(["product","quotient","power"]);
@@ -6154,6 +6301,7 @@ E("u8-laws-illustrate",8,["1.5","1.6"],1,"gen",function(){
   return mcq("Which equation illustrates " + lawName + " of logarithms?", corr, dis, sol, {mode:"pick", law:law, b:b});
 });
 
+// LEVELBASIS: u8-laws-equivalent=taught procedure, multi-step
 E("u8-laws-equivalent",8,["1.7"],2,"gen",function(){
   var b = pick([2,3,5,10]);
   var VS = pick([["x","y","z"],["m","n","p"],["a","b","c"],["p","q","r"]]);
@@ -6180,6 +6328,7 @@ E("u8-laws-equivalent",8,["1.7"],2,"gen",function(){
     {mode:"condense", b:b});
 });
 
+// LEVELBASIS: u8-solve-exp-logs=taught procedure, multi-step
 E("u8-solve-exp-logs",8,["4.28"],2,"gen",function(){
   var b = pick([2,3,4,5,7,8,9]);
   var blogS = u8LOG10S["" + b], blog = parseFloat(blogS);
@@ -6199,6 +6348,7 @@ E("u8-solve-exp-logs",8,["4.28"],2,"gen",function(){
     "The bases cannot be made the same, so take the common logarithm of both sides and use the power law to bring the exponent down: " + steps, {b:b, c:c});
 });
 
+// LEVELBASIS: u8-growth-time=recognition test
 E("u8-growth-time",8,["4.29"],1,"gen",function(){
   if (Math.random() < 0.55){
     var g = pick([2,3,4]), k = ri(2,6), L = pick([5,10,15,20,30]);
@@ -6221,6 +6371,7 @@ E("u8-growth-time",8,["4.29"],1,"gen",function(){
     {mode:"decay", H:H, kk:kk});
 });
 
+// LEVELBASIS: u8-finance-periods=taught procedure, multi-step
 E("u8-finance-periods",8,["4.31"],2,"gen",function(){
   var RATES = [{i:5, lg:"0.0212", f:"1.05"},{i:6, lg:"0.0253", f:"1.06"},{i:8, lg:"0.0334", f:"1.08"},{i:10, lg:"0.0414", f:"1.10"},{i:12, lg:"0.0492", f:"1.12"}];
   var MULT = [{m:2, lg:"0.3010"},{m:3, lg:"0.4771"},{m:4, lg:"0.6021"},{m:5, lg:"0.6990"}];
@@ -6239,6 +6390,7 @@ E("u8-finance-periods",8,["4.31"],2,"gen",function(){
     "With annual compounding the value is multiplied by \\(" + R.f + "\\) each year, so solve for the number of periods with logarithms: " + steps, {rate:R.i, mult:M.m});
 });
 
+// LEVELBASIS: u8-solve-log-eq=taught procedure, multi-step
 E("u8-solve-log-eq",8,["4.32"],2,"gen",function(){
   if (Math.random() < 0.5){
     var b = pick([2,3,4,5]), k = ri(1,3), a = ri(1,9), s = pick([1,-1]), x;
@@ -6260,6 +6412,7 @@ E("u8-solve-log-eq",8,["4.32"],2,"gen",function(){
     {mode:"sum", b:T.b, k:T.k, a:T.a});
 });
 
+// LEVELBASIS: u8-log-scales=one cued step
 E("u8-log-scales",8,["4.34"],1,"gen",function(){
   var mode = pick(["rdiff","rinv","pdiff","pinv"]);
   if (mode === "rdiff"){
@@ -6292,6 +6445,7 @@ E("u8-log-scales",8,["4.34"],1,"gen",function(){
     {mode:mode, d:dpn});
 });
 
+// LEVELBASIS: u8-transformed-log=taught procedure, multi-step
 E("u8-transformed-log",8,["4.39","4.49"],2,"gen",function(){
   var b = pick([2,3,5,10]);
   var a = pick([-3,-2,-1,1,2,3]);
@@ -6341,6 +6495,7 @@ E("u8-transformed-log",8,["4.39","4.49"],2,"gen",function(){
     {ask:ask, b:b});q.figure=u8tlogFig(b,a,h,k);return q;
 });
 
+// LEVELBASIS: u8-transformed-log-features=direct recall
 E("u8-transformed-log-features",8,["4.39","4.49"],1,"gen",function(){
   var b = pick([2,3,5,10]);
   var a = pick([-3,-2,-1,1,2,3]);
@@ -6390,6 +6545,7 @@ E("u8-transformed-log-features",8,["4.39","4.49"],1,"gen",function(){
     {ask:ask, b:b});q.figure=u8tlogFig(b,a,h,k);return q;
 });
 
+// LEVELBASIS: u8-model-log=taught procedure, multi-step
 E("u8-model-log",8,["4.30"],2,"var",varset([
   function(){
     return mcq("A bacteria culture starts with \\(300\\) cells and the population doubles every \\(4\\) hours. Which function gives the time \\(t\\), in hours, needed for the culture to reach \\(N\\) cells?",
@@ -6425,6 +6581,7 @@ E("u8-model-log",8,["4.30"],2,"var",varset([
   }
 ]));
 
+// LEVELBASIS: u8-extraneous=judgement test
 E("u8-extraneous",8,["4.33"],3,"gen",function(){
   var T = pick(u8tuples());
   var arg2 = T.fam === "minus" ? "(x - " + T.a + ")" : "(x + " + T.a + ")";
@@ -6463,6 +6620,7 @@ E("u8-extraneous",8,["4.33"],3,"gen",function(){
     sol, {mode:mode, b:T.b});
 });
 
+// LEVELBASIS: u8-inverse-graph=direct recall
 E("u8-inverse-graph",8,["4.37"],1,"gen",function(){
   var mode = pick(["exp2log","log2exp","reflect","swap","intercepts"]);
   if (mode === "reflect"){
@@ -6528,6 +6686,7 @@ E("u8-inverse-graph",8,["4.37"],1,"gen",function(){
     {mode:mode, c:c4, p:p});if(c4<=3)q.figure=u8invSVG(c4);return q;
 });
 
+// LEVELBASIS: u8-laws-error=taught procedure, multi-step
 E("u8-laws-error",8,["1.6","1.7"],2,"gen",function(){
   if (Math.random() < 0.6){
     var b = pick([2,3,5,10]);
@@ -6561,6 +6720,7 @@ E("u8-laws-error",8,["1.6","1.7"],2,"gen",function(){
 
 /* Bimodal build additions (Nov 19, 2026): two written-form entries for Unit 8 (5 marks each), on indicators 4.32 and 1.5/1.7, which have thin written coverage in the unit, and one selected-response entry on indicator 1.3, which has a single existing entry. SME-flagged for the specialist pass. */
 
+// LEVELBASIS: u8-wcr-log-difference=taught procedure, multi-step
 E("u8-wcr-log-difference",8,["4.32"],2,"gen",function(){
   var pr=pick([[2,1],[3,1],[2,2],[3,2]]),b=pr[0],k=pr[1],B=Math.pow(b,k);
   var x0=0,c=0,a=0,tries=0;
@@ -6578,6 +6738,7 @@ E("u8-wcr-log-difference",8,["4.32"],2,"gen",function(){
     {b:b,k:k,a:a,c:c});
 });
 
+// LEVELBASIS: u8-wcr-laws-evaluate=taught procedure, multi-step
 E("u8-wcr-laws-evaluate",8,["1.5","1.7"],2,"gen",function(){
   var b=pick([2,3,5,10]);
   var P=ri(4,32),Q=ri(4,32),R=ri(4,32);
@@ -6593,6 +6754,7 @@ E("u8-wcr-laws-evaluate",8,["1.5","1.7"],2,"gen",function(){
     {b:b,P:P,Q:Q,R:R});
 });
 
+// LEVELBASIS: u8-add-exact-log-value=taught procedure, multi-step
 E("u8-add-exact-log-value",8,["1.3"],2,"gen",function(){
   var fam=pick(["sqPos","sqNeg","cubePos","cubeNeg","intPos","intNeg"]);
   function opts(inner,disInners){return disInners.map(function(d){return "\\("+d+"\\)";});}
@@ -6727,6 +6889,7 @@ function u9pickSpec(allowMinus){
 }
 
 /* ---------- 3.15: the next row of Pascal's triangle (L1) ---------- */
+// LEVELBASIS: u9-pascal-next-row=one cued step
 E("u9-pascal-next-row",9,["3.15"],1,"gen",function(){
   var mode=pick(["miss","full","kth","miss","kth"]);
   var n=ri(3,8), row=u9row(n), next=u9row(n+1);
@@ -6757,6 +6920,7 @@ E("u9-pascal-next-row",9,["3.15"],1,"gen",function(){
 });
 
 /* ---------- 3.14, 3.16, 3.17: patterns in (x + y)^n, coefficients as combinations (L2) ---------- */
+// LEVELBASIS: u9-patterns-coefficients=taught procedure, multi-step
 E("u9-patterns-coefficients",9,["3.14","3.16","3.17"],2,"gen",function(){
   var mode=pick(["coef","coef","pos","count","expsum","xpat","why"]);
   if(mode==="coef"){
@@ -6810,6 +6974,7 @@ E("u9-patterns-coefficients",9,["3.14","3.16","3.17"],2,"gen",function(){
 });
 
 /* ---------- 3.18: full binomial expansions (L2) ---------- */
+// LEVELBASIS: u9-binomial-expand=taught procedure, multi-step
 E("u9-binomial-expand",9,["3.18"],2,"gen",function(){
   var att=0;
   while(att<80){
@@ -6835,6 +7000,7 @@ E("u9-binomial-expand",9,["3.18"],2,"gen",function(){
 });
 
 /* ---------- 3.19: a specific term of a binomial expansion (L2) ---------- */
+// LEVELBASIS: u9-binomial-term=taught procedure, multi-step
 E("u9-binomial-term",9,["3.19"],2,"gen",function(){
   var att=0;
   while(att<80){
@@ -6881,6 +7047,7 @@ E("u9-binomial-term",9,["3.19"],2,"gen",function(){
 });
 
 /* ---------- 9.1, 9.4: counting with lists and tree diagrams (L1) ---------- */
+// LEVELBASIS: u9-counting-organizers=direct recall
 E("u9-counting-organizers",9,["9.1","9.4"],1,"gen",function(){
   var mode=pick(["two","two","three","row","back"]);
   if(mode==="two"){
@@ -6936,6 +7103,7 @@ E("u9-counting-organizers",9,["9.1","9.4"],1,"gen",function(){
 });
 
 /* ---------- 9.3: the Fundamental Counting Principle (L2) ---------- */
+// LEVELBASIS: u9-fcp-apply=one cued step
 E("u9-fcp-apply",9,["9.3"],1,"gen",function(){
   var mode=pick(["meal","code","plate","stages","mealMC"]);
   if(mode==="mealMC"){
@@ -6998,6 +7166,7 @@ E("u9-fcp-apply",9,["9.3"],1,"gen",function(){
 });
 
 /* ---------- 9.2: why choices multiply rather than add (L3, var) ---------- */
+// LEVELBASIS: u9-why-multiply=judgement test
 E("u9-why-multiply",9,["9.2"],3,"var",varset([
   function(){
     return mcq("A diner offers 4 soups and 3 main dishes. Why is the number of soup-and-main pairs found by multiplying, \\(4 \\times 3\\), rather than by adding, \\(4 + 3\\)?",
@@ -7038,6 +7207,7 @@ E("u9-why-multiply",9,["9.2"],3,"var",varset([
 ]));
 
 /* ---------- 9.5: factorial notation and direct evaluation (L1) ---------- */
+// LEVELBASIS: u9-factorial-notation=direct recall
 E("u9-factorial-notation",9,["9.5"],1,"gen",function(){
   var mode=pick(["fact","quot","perm","which","whichexpr","quot","perm"]);
   if(mode==="fact"){
@@ -7086,6 +7256,7 @@ E("u9-factorial-notation",9,["9.5"],1,"gen",function(){
 });
 
 /* ---------- 9.5, 9.6: permutations in context (L2) ---------- */
+// LEVELBASIS: u9-perm-basic=one cued step
 E("u9-perm-basic",9,["9.5","9.6"],1,"gen",function(){
   var mode=pick(["all","all","taken","taken","takenMC"]);
   if(mode==="all"){
@@ -7130,6 +7301,7 @@ E("u9-perm-basic",9,["9.5","9.6"],1,"gen",function(){
 });
 
 /* ---------- 9.8: solving nP_r = k (L2) ---------- */
+// LEVELBASIS: u9-perm-solve=taught procedure, multi-step
 E("u9-perm-solve",9,["9.8"],2,"gen",function(){
   var mode=pick(["r2","r2","r3","r4","findr","npn"]);
   if(mode==="r2"||mode==="r3"||mode==="r4"){
@@ -7164,6 +7336,7 @@ E("u9-perm-solve",9,["9.8"],2,"gen",function(){
 });
 
 /* ---------- 9.9: permutations with identical elements (L2) ---------- */
+// LEVELBASIS: u9-identical-elements=one cued step
 E("u9-identical-elements",9,["9.9"],1,"gen",function(){
   var mode=pick(["tiles","tiles","compare","beads"]);
   if(mode==="compare"){
@@ -7212,6 +7385,7 @@ E("u9-identical-elements",9,["9.9"],1,"gen",function(){
 });
 
 /* ---------- 9.10: permutations with constraints (L3) ---------- */
+// LEVELBASIS: u9-perm-constraints=taught procedure, multi-step
 E("u9-perm-constraints",9,["9.10"],2,"gen",function(){
   var names=shuffle(["Maya","Liam","Noah","Ava","Ethan","Zoe","Owen","Ruby","Eli","Nora","Sam","Ivy"]);
   var A=names[0], B=names[1], C=names[2];
@@ -7260,6 +7434,7 @@ E("u9-perm-constraints",9,["9.10"],2,"gen",function(){
 });
 
 /* ---------- 9.11: permutation or combination (L3) ---------- */
+// LEVELBASIS: u9-perm-or-comb=taught procedure, multi-step
 E("u9-perm-or-comb",9,["9.11"],2,"gen",function(){
   var mode=pick(["values","values","expr","pair"]);
   var pScen=[
@@ -7311,8 +7486,10 @@ E("u9-perm-or-comb",9,["9.11"],2,"gen",function(){
     {n:n,r:r,isP:isP,mode:mode});
 });
 
-/* ---------- 9.12: combinations in context (L2) ---------- */
-E("u9-comb-basic",9,["9.12"],2,"gen",function(){
+/* ---------- 9.12: combinations in context (L1) ---------- */
+// LEVEL AUDIT 2026-11-25: Boundary, variants split across the line; levelled down 2 to 1 under the audit protocol. See Level-Audit-Math-3200-2026-11-25.md.
+// LEVELBASIS: u9-comb-basic=boundary, ruling pending
+E("u9-comb-basic",9,["9.12"],1,"gen",function(){
   var mode=pick(["single","single","two","include","mc"]);
   if(mode==="two"){
     var c=pick([
@@ -7355,8 +7532,10 @@ E("u9-comb-basic",9,["9.12"],2,"gen",function(){
     {n:n2,r:r2,mode:mode});
 });
 
-/* ---------- 9.14, 9.15: symmetry and solving combination equations (L2) ---------- */
-E("u9-comb-symmetry-solve",9,["9.14","9.15"],2,"gen",function(){
+/* ---------- 9.14, 9.15: symmetry and solving combination equations (L1) ---------- */
+// LEVEL AUDIT 2026-11-25: Boundary, variants split across the line; levelled down 2 to 1 under the audit protocol. See Level-Audit-Math-3200-2026-11-25.md.
+// LEVELBASIS: u9-comb-symmetry-solve=boundary, ruling pending
+E("u9-comb-symmetry-solve",9,["9.14","9.15"],1,"gen",function(){
   var mode=pick(["sym","sym","missing","why","solven2","solven3","smallerr"]);
   if(mode==="sym"){
     var n=ri(9,14), r=pick([2,3,4]), v=u9comb(n,r);
@@ -7416,6 +7595,7 @@ E("u9-comb-symmetry-solve",9,["9.14","9.15"],2,"gen",function(){
 });
 
 /* ---------- 9.7, 9.13: why n must be at least r (L3, var) ---------- */
+// LEVELBASIS: u9-why-n-ge-r=judgement test
 E("u9-why-n-ge-r",9,["9.7","9.13"],3,"var",varset([
   function(){
     return mcq("Why must \\(n \\ge r\\) in the notation \\("+u9permS("n","r")+"\\)?",
@@ -7461,6 +7641,7 @@ E("u9-why-n-ge-r",9,["9.7","9.13"],3,"var",varset([
    all numeric-answer entries. */
 /* ---------- Unit-test pool fix, Nov 9, 2026: two Level 1 MC generators (the unit's two mixed-mode generators could not reliably field four distinct Level 1 MC questions), one Level 2 CR entry (3 marks) and one Level 3 CR entry (3 marks, opens the 6 pick with the existing 3-mark entry). ---------- */
 /* Math span fix (Nov 21, 2026): bold answer restatements in this file's solutions moved outside the TeX spans (a tag inside a span defeats KaTeX auto-render and shows raw TeX); guarded by tests/gate-mathspan.js. */
+// LEVELBASIS: u9-fcp-meal-mc=one cued step
 E("u9-fcp-meal-mc",9,["9.3"],1,"gen",function(){
   var CTX=[
     "A cafeteria offers %a soups, %b main dishes and %c drinks. How many different meals, each consisting of one soup, one main dish and one drink, are possible?",
@@ -7477,6 +7658,7 @@ E("u9-fcp-meal-mc",9,["9.3"],1,"gen",function(){
     "Each stage is an independent choice, so the Fundamental Counting Principle says to multiply: \\("+a+" \\times "+b+" \\times "+c+" = \\)<b>"+key+"</b>.",
     {a:a,b:b,c:c});
 });
+// LEVELBASIS: u9-word-arrange-mc=one cued step
 E("u9-word-arrange-mc",9,["9.5"],1,"gen",function(){
   var w=pick(["MAPLE","TIGER","BRISK","PLANT","WOLF","FROG","BEAR","CAMP","JUMP","QUIZ"]);
   var n=w.length, key=u9fact(n);
@@ -7486,6 +7668,7 @@ E("u9-word-arrange-mc",9,["9.5"],1,"gen",function(){
     "The word "+w+" has "+n+" letters, all different, so the arrangements are the permutations of "+n+" objects: \\("+n+"! = \\)<b>"+u9big(key)+"</b>.",
     {w:w});
 });
+// LEVELBASIS: u9-two-group-cr=taught procedure, multi-step
 E("u9-two-group-cr",9,["9.12"],2,"gen",function(){
   var CTX=[
     function(n1,a,n2,b){ return "A library display will feature "+a+" novels chosen from "+n1+" available novels and "+b+" poetry collections chosen from "+n2+" available collections. How many different displays are possible?"; },
@@ -7499,6 +7682,7 @@ E("u9-two-group-cr",9,["9.12"],2,"gen",function(){
     "The two choices are independent, so multiply the two combination counts: \\[ \\binom{"+n1+"}{"+a+"} \\times \\binom{"+n2+"}{"+b+"} = "+c1+" \\times "+c2+" = "+u9big(ans)+" \\] So the count is <b>"+u9big(ans)+"</b>.",
     {n1:n1,a:a,n2:n2,b:b});
 });
+// LEVELBASIS: u9-not-adjacent-cr=taught procedure, multi-step
 E("u9-not-adjacent-cr",9,["9.10"],2,"gen",function(){
   var CTX=[
     function(n){ return n+" friends line up for a photo. In how many arrangements do two particular friends, Ava and Ben, <b>not</b> stand next to each other?"; },
@@ -7543,6 +7727,7 @@ function u9pathSVG(m,n,opt){
   out+='<text x="'+(X(m)+9)+'" y="'+(Y(n)+4)+'" font-size="12" fill="'+FIG_INK+'">B</text>';
   return out+'</svg>';
 }
+// LEVELBASIS: u9-pathways=taught procedure, multi-step
 E("u9-pathways",9,["9.12"],2,"gen",function(){
   var arm=pick(["plain","waypoint"]);
   if(arm==="plain"){
@@ -7568,6 +7753,7 @@ E("u9-pathways",9,["9.12"],2,"gen",function(){
 });
 
 /* ---------- 9.12: pathways in context, the blocked grid and the grid hidden in a story (L3) ---------- */
+// LEVELBASIS: u9-pathways-context=taught procedure, multi-step
 E("u9-pathways-context",9,["9.12"],2,"gen",function(){
   var arm=pick(["blocked","context","ctxwp"]);
   if(arm==="blocked"){
@@ -8083,6 +8269,7 @@ function u3PowDist(a, correctExp, pairs) {
   }
   return out;
 }
+// LEVELBASIS: u1-pk-factor-common=one cued step
 E("u1-pk-factor-common",1,["3.1"],1,"gen",function(){
   var att=0, d, k, A2, A1, A0, inside, origP;
   while(att<300){
@@ -8125,6 +8312,7 @@ E("u1-pk-factor-common",1,["3.1"],1,"gen",function(){
     "So the complete factorization is <b>\\("+key+"\\)</b>.",
     {d:d, k:k});
 });
+// LEVELBASIS: u1-pk-factor-trinomial=one cued step
 E("u1-pk-factor-trinomial",1,["3.1"],1,"gen",function(){
   var fam=pick(["monic","diffsq"]);
   if(fam==="monic"){
@@ -8169,6 +8357,7 @@ E("u1-pk-factor-trinomial",1,["3.1"],1,"gen",function(){
     "So the factorization is <b>\\("+key3+"\\)</b>.",
     {fam:fam});
 });
+// LEVELBASIS: u1-pk-factor-nonmonic=taught procedure, multi-step
 E("u1-pk-factor-nonmonic",1,["3.1"],2,"gen",function(){
   var fam="nonmonic";
     var att2=0, p,q,r,s,a2,b2,c2,key2;
@@ -8197,6 +8386,7 @@ E("u1-pk-factor-nonmonic",1,["3.1"],2,"gen",function(){
       "which matches the given trinomial, so the factorization is <b>\\("+key2+"\\)</b>.",
       {fam:fam});
 });
+// LEVELBASIS: u1-pk-factor-test=one cued step
 E("u1-pk-factor-test",1,["3.1"],1,"gen",function(){
   var isFac=Math.random()<0.5;
   var k=ri(-6,6); if(k===0) k=3;
@@ -8228,6 +8418,7 @@ E("u1-pk-factor-test",1,["3.1"],1,"gen",function(){
            : "Since \\(P("+k+") = "+val+" \\ne 0\\), division by \\("+u3BinS(k)+"\\) leaves a remainder of \\("+val+"\\), so <b>no</b>, \\("+u3BinS(k)+"\\) is not a factor."),
     {k:k, val:val});
 });
+// LEVELBASIS: u1-pk-solve-strategies=taught procedure, multi-step
 E("u1-pk-solve-strategies",1,["3.1"],2,"gen",function(){
   var fam=pick(["sqroot","sqroot","factor","formula","cts"]);
   if(fam==="sqroot"){
@@ -8299,6 +8490,7 @@ E("u1-pk-solve-strategies",1,["3.1"],2,"gen",function(){
     "So the solutions are <b>\\(x = "+t1+"\\)</b> and <b>\\(x = "+t2+"\\)</b>.",
     {fam:fam});
 });
+// LEVELBASIS: u1-pk-discriminant-k=taught procedure, multi-step
 E("u1-pk-discriminant-k",1,["3.1"],2,"gen",function(){
   var mode=pick(["constK","constK","linK","leadK","givenD"]);
   if(mode==="constK"){
@@ -8349,6 +8541,7 @@ E("u1-pk-discriminant-k",1,["3.1"],2,"gen",function(){
     "Taking the positive value, <b>\\(b = "+b0+"\\)</b>.",
     {mode:mode});
 });
+// LEVELBASIS: u2-pk-vertex-read=direct recall
 E("u2-pk-vertex-read",2,["4.1"],1,"gen",function(){
   var a=pick([1,2,3,-1,-2,-3]);
   var p=0, q=0;
@@ -8361,6 +8554,7 @@ E("u2-pk-vertex-read",2,["4.1"],1,"gen",function(){
   qv.figure=parSVG(a,-2*a*p,a*p*p+q,{marks:[{x:p,y:q}]});
   return qv;
 });
+// LEVELBASIS: u2-pk-vertex-standard=taught procedure, multi-step
 E("u2-pk-vertex-standard",2,["4.1"],2,"var",varset([
   function(){
   var a=pick([1,2,3,-1,-2]);
@@ -8404,6 +8598,7 @@ E("u2-pk-vertex-standard",2,["4.1"],2,"var",varset([
     return qfig;
   }
 ]));
+// LEVELBASIS: u2-pk-complete-square=taught procedure, multi-step
 E("u2-pk-complete-square",2,["4.1"],2,"gen",function(){
   var fam=pick(["convert","verify"]);
   var a=1, p=0, q=0, b=0, c=0, key="", att=0, dis=[];
@@ -8443,6 +8638,7 @@ E("u2-pk-complete-square",2,["4.1"],2,"gen",function(){
   return mcq("Which function represents the <b>same function</b> as \\(y = "+u2Std(a,b,c)+"\\)?",
     key, dis, sol, {fam:fam, a:a, p:p, q:q});
 });
+// LEVELBASIS: u2-pk-npv-basic=one cued step
 E("u2-pk-npv-basic",2,["4.1"],1,"gen",function(){
   var shape=pick(["mono","binom","factored","factored3"]);
   if(shape==="mono"){
@@ -8477,6 +8673,7 @@ E("u2-pk-npv-basic",2,["4.1"],1,"gen",function(){
     "The denominator is zero when any one of its factors is zero: \\(x = "+r1+"\\), \\(x = "+r2+"\\), or \\(x = "+r3+"\\). So the non-permissible values are <b>\\("+cor4+"\\)</b>.",
     {shape:shape,roots:[r1,r2,r3]});
 });
+// LEVELBASIS: u2-pk-npv-quadratic=taught procedure, multi-step
 E("u2-pk-npv-quadratic",2,["4.1"],2,"gen",function(){
   var shape=pick(["trinom","trinom","dos"]);
   if(shape==="dos"){
@@ -8496,6 +8693,7 @@ E("u2-pk-npv-quadratic",2,["4.1"],2,"gen",function(){
     "Factor the denominator, then set each factor equal to zero: \\[ \\begin{aligned} "+u5quad(1,b,cc)+" &= 0 \\\\ "+u5par(1,-r1)+u5par(1,-r2)+" &= 0 \\\\ x &= "+r1+" \\text{ or } x = "+r2+" \\end{aligned} \\] So the non-permissible values are <b>\\("+cor2+"\\)</b>.",
     {shape:shape,roots:[r1,r2]});
 });
+// LEVELBASIS: u3-pk-defined-values=one cued step
 E("u3-pk-defined-values",3,["4.25"],1,"gen",function(){
   var shape=pick(["pos","pos","neg","denom"]);
   var c0=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
@@ -8529,6 +8727,7 @@ E("u3-pk-defined-values",3,["4.25"],1,"gen",function(){
     "The radicand sits in a denominator, so it must be strictly positive: zero would make the denominator zero, and a negative radicand has no real square root. \\[ \\begin{aligned} x"+u4sgn(-c0)+" &> 0 \\\\ x &> "+c0+" \\end{aligned} \\] So the expression is defined for <b>\\(x > "+c0+"\\)</b>.",
     {n:n,c0:c0,shape:shape});
 });
+// LEVELBASIS: u3-pk-solve-radical=taught procedure, multi-step
 E("u3-pk-solve-radical",3,["4.9"],2,"gen",function(){
   var shape=pick(["basic","linear","isolated","twoRad"]);
   if(shape==="basic"){
@@ -8562,6 +8761,7 @@ E("u3-pk-solve-radical",3,["4.9"],2,"gen",function(){
     "Restrictions: both radicands must be non-negative, so \\(x \\geq "+(-av)+"\\) and \\(x \\geq "+fmt(bv/2,1)+"\\). Square both sides and solve: \\[ \\begin{aligned} \\sqrt{x + "+av+"} &= \\sqrt{2x"+u4sgn(-bv)+"} \\\\ x + "+av+" &= 2x"+u4sgn(-bv)+" \\\\ x &= "+xv+" \\end{aligned} \\] Check: both radicands equal \\("+(xv+av)+"\\), which is non-negative, so the root is <b>\\(x = "+xv+"\\)</b>.",
     {a:av,b:bv,shape:shape});
 });
+// LEVELBASIS: u3-pk-verify-roots=one cued step
 E("u3-pk-verify-roots",3,["4.9"],1,"gen",function(){
   var shape=pick(["simple","simple","validStmt","extrValue"]);
   if(shape==="simple"){
@@ -8589,6 +8789,7 @@ E("u3-pk-verify-roots",3,["4.9"],1,"gen",function(){
     "Substitute into the original equation: \\[ \\begin{aligned} \\sqrt{"+s+u4sgn(bb2)+"} &= \\sqrt{"+(kk*kk)+"} \\\\ &= "+kk+" \\end{aligned} \\] The left side gives <b>"+kk+"</b>. The right side at \\(x = "+s+"\\) is \\("+s+" - "+cc+" = "+(-kk)+"\\), which is different, so this substitution shows \\(x = "+s+"\\) is not a root.",
     {c:cc,s:s,r:r2,shape:shape});
 });
+// LEVELBASIS: u3-pk-extraneous-why=judgement test
 E("u3-pk-extraneous-why",3,["4.9"],3,"gen",function(){
   var c=ri(2,8),k=ri(1,4),s=c-k,r=2*c+1-s,b=c*c-r*s;
   var eq="\\sqrt{x"+u4sgn(b)+"} = x - "+c;
@@ -8618,6 +8819,7 @@ E("u3-pk-extraneous-why",3,["4.9"],3,"gen",function(){
     "Substitute each value into the original equation. At \\(x = "+r+"\\): the left side is \\(\\sqrt{"+(r+b)+"} = \\sqrt{"+((r-c)*(r-c))+"} = "+(r-c)+"\\) and the right side is \\("+r+" - "+c+" = "+(r-c)+"\\), so it checks. At \\(x = "+s+"\\): the left side is \\(\\sqrt{"+(k*k)+"} = "+k+"\\) but the right side is \\("+s+" - "+c+" = "+(-k)+"\\), so it fails. The extraneous value is <b>\\(x = "+s+"\\)</b>.",
     {c:c,k:k,s:s,r:r,shape:shape});
 });
+// LEVELBASIS: u3-pk-which-is-solution=one cued step
 E("u3-pk-which-is-solution",3,["4.9"], 1, "gen", function () {
   var a = ri(2, 7), x0 = ri(-6, 9), b = ri(-9, 9);
   var c = a * x0 + b;
@@ -8630,6 +8832,7 @@ E("u3-pk-which-is-solution",3,["4.9"], 1, "gen", function () {
   var sol = "Substitute the value and compare the two sides: \\[ \\begin{aligned} " + n5lin(a, b) + " &= " + fmt(a) + "(" + fmt(x0) + ")" + (b >= 0 ? "+" + fmt(b) : "-" + fmt(-b)) + " \\\\ &= " + fmt(c) + " \\end{aligned} \\] Both sides match, so the solution is <b>\\(x = " + fmt(x0) + "\\)</b>.";
   return mcq("Which value is the solution of \\(" + n5lin(a, b) + " = " + fmt(c) + "\\)?", { t: fmt(x0), fb: "Correct: substituting it makes both sides equal." }, cands, sol, { mode: "which-sol", a: a, b: b, c: c });
 }, ["A solution is a value that makes both sides equal when it is substituted.", "First substitute one value and work out the left side, then compare it with the right side."]);
+// LEVELBASIS: u4-pk-read-sketch=direct recall
 E("u4-pk-read-sketch",4,["7.1"], 1, "gen", function () {
   var pool = [];
   for (var d = 20; d <= 340; d += 5) if (d % 90 !== 0) pool.push(d);
@@ -8643,6 +8846,7 @@ E("u4-pk-read-sketch",4,["7.1"], 1, "gen", function () {
   q.figure = u1armSVG(deg);
   return q;
 });
+// LEVELBASIS: u4-pk-same-reference=direct recall
 E("u4-pk-same-reference",4,["7.1"], 1, "gen", function () {
   if (Math.random() < 0.5) {
     var r = pick([15, 20, 25, 30, 35, 40, 50, 55, 60, 65, 70, 75, 80]);
@@ -8672,6 +8876,7 @@ E("u4-pk-same-reference",4,["7.1"], 1, "gen", function () {
     "The angle " + deg + "° terminates in Quadrant " + ["I", "II", "III", "IV"][q - 1] + ". " + how + " The reflection is in <b>" + corr + "</b>.",
     { mode: "reflect", deg: deg });
 });
+// LEVELBASIS: u4-pk-point-distance=one cued step
 E("u4-pk-point-distance",4,["7.1"], 1, "gen", function () {
   var bases = [[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25], [20, 21, 29], [9, 40, 41]];
   var bs = pick(bases), s = ri(1, 3);
@@ -8683,6 +8888,7 @@ E("u4-pk-point-distance",4,["7.1"], 1, "gen", function () {
     "The distance from the origin to P is the hypotenuse of a right triangle with legs \\(|" + x + "|\\) and \\(|" + y + "|\\). The Pythagorean theorem gives: \\[ \\begin{aligned} r^2 &= (" + x + ")^2 + (" + y + ")^2 \\\\ &= " + (x * x) + " + " + (y * y) + " \\\\ &= " + (r * r) + " \\\\ r &= " + r + " \\end{aligned} \\] The distance is <b>" + r + "</b>.",
     { x: x, y: y });
 });
+// LEVELBASIS: u4-pk-point-ratios=taught procedure, multi-step
 E("u4-pk-point-ratios",4,["7.1"], 2, "gen", function () {
   var bases = [[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25], [20, 21, 29]];
   var bs = pick(bases);
@@ -8702,6 +8908,7 @@ E("u4-pk-point-ratios",4,["7.1"], 2, "gen", function () {
     "First find the distance from the origin: \\(r = \\sqrt{(" + x + ")^2 + (" + y + ")^2} = " + r + "\\). Using \\(" + defn + "\\): \\[ \\begin{aligned} \\" + kd + " \\theta &= " + corr.slice(2, -2) + " \\end{aligned} \\] The exact value is <b>" + corr + "</b>.",
     { x: x, y: y, kind: kind });
 });
+// LEVELBASIS: u4-pk-exact-values=taught procedure, multi-step
 E("u4-pk-exact-values",4,["7.1"], 2, "gen", function () {
   var degs = [120, 135, 150, 210, 225, 240, 300, 315, 330, 30, 45, 60];
   var deg = pick(degs), kind = pick(["sin", "cos", "tan"]);
@@ -8727,6 +8934,7 @@ E("u4-pk-exact-values",4,["7.1"], 2, "gen", function () {
     cotNote + "The reference angle for " + deg + "° is " + ref + "°, and the angle terminates in Quadrant " + ["I", "II", "III", "IV"][q - 1] + ", where \\(" + kd + "\\) is " + (ex.v < 0 ? "negative" : "positive") + ". Since \\(" + kd + " " + ref + "^\\circ = " + (u1exact(kind, ref) || {}).s + "\\), the value is \\[ \\begin{aligned} " + kd + " " + deg + "^\\circ &= " + ex.s + " \\end{aligned} \\] The exact value is <b>" + corr + "</b>.",
     { deg: deg, pres: pres, kind: kind });
 });
+// LEVELBASIS: u4-pk-solve-equation=taught procedure, multi-step
 E("u4-pk-solve-equation",4,["7.1"], 2, "gen", function () {
   function pairFmt(p) { return "\\(\\theta = " + p[0] + "^\\circ\\) or \\(\\theta = " + p[1] + "^\\circ\\)"; }
   function pairFor(ratio, ref, sign) {
@@ -8800,6 +9008,7 @@ E("u4-pk-solve-equation",4,["7.1"], 2, "gen", function () {
     "The reference angle is \\(" + rd2 + "^{-1}(" + fmt(av) + ") \\approx " + ref + "^\\circ\\). The ratio \\(" + rd2 + "\\) is " + (sign > 0 ? "positive" : "negative") + " in the quadrants that give the solutions \\(\\theta = " + corrP2[0] + "^\\circ\\) and \\(\\theta = " + corrP2[1] + "^\\circ\\). The solutions are <b>" + corr2 + "</b>.",
     { mode: "dec", ratio: ratio, a: aStr });
 });
+// LEVELBASIS: u5-pk-effect-of-a=direct recall
 E("u5-pk-effect-of-a",5,["7.20"],1,"gen",function(){
   var pool=[{d:"2",v:2},{d:"3",v:3},{d:"4",v:4},{d:"5",v:5},{d:"-2",v:-2},{d:"-3",v:-3},
             {d:"\\frac{1}{2}",v:0.5},{d:"\\frac{1}{3}",v:1/3},{d:"\\frac{1}{4}",v:0.25},
@@ -8837,6 +9046,7 @@ E("u5-pk-effect-of-a",5,["7.20"],1,"gen",function(){
   qe2.figure=u2EffectPanels([{d:"",v:1},it]);
   return qe2;
 });
+// LEVELBASIS: u5-pk-translations=direct recall
 E("u5-pk-translations",5,["7.20"],1,"var",varset([
   function(){
   var fam=pick(["p","q","both"]);
@@ -8890,6 +9100,7 @@ E("u5-pk-translations",5,["7.20"],1,"var",varset([
     return qfig;
   }
 ]));
+// LEVELBASIS: u5-pk-simplify-basic=one cued step
 E("u5-pk-simplify-basic",5,["7.20"],1,"gen",function(){
   var mode=pick(["mono","binom"]);
   if(mode==="mono"){
@@ -8919,6 +9130,7 @@ E("u5-pk-simplify-basic",5,["7.20"],1,"gen",function(){
     "The factor \\("+u5par(1,-r)+"\\) appears in both the numerator and the denominator, so it divides out: \\[ \\begin{aligned} "+expr2+" &= "+cor2+" \\end{aligned} \\] The simplified form is <b>\\("+cor2+"\\)</b>, for \\("+u5npvStr([r,s])+"\\).",
     {mode:mode,k:k,r:r,s:s});
 });
+// LEVELBASIS: u5-pk-lcd-choose=one cued step
 E("u5-pk-lcd-choose",5,["7.20"],1,"gen",function(){
   var mode=pick(["shared","shared","power","coeff","triple"]);
   function threeRoots(){var rs=u5twoRoots(),r=rs[0],s=rs[1],t=pick(U5NZ),g=0;while((t===r||t===s)&&g<60){t=pick(U5NZ);g++;}return [r,s,t];}
@@ -8972,6 +9184,7 @@ E("u5-pk-lcd-choose",5,["7.20"],1,"gen",function(){
     "Write out the factors of the three denominators: \\("+g1+"\\), \\("+g2+"\\) and \\("+g3+"\\). Across the three denominators, the different factors are \\("+u5fac(r4,1)+"\\), \\("+u5fac(s4,1)+"\\) and \\("+u5fac(t4,1)+"\\), and each one appears at most once in any single denominator, so the LCD takes each of them once: \\["+cor4+"\\] The lowest common denominator is <b>\\("+cor4+"\\)</b>. Multiplying all three denominators together would use every factor twice.",
     {mode:mode,dens:[{c:1,f:[[r4,1],[s4,1]]},{c:1,f:[[s4,1],[t4,1]]},{c:1,f:[[r4,1],[t4,1]]}],lcd:{c:1,f:[[r4,1],[s4,1],[t4,1]]}});
 });
+// LEVELBASIS: u5-pk-complex-fraction=one cued step
 E("u5-pk-complex-fraction",5,["7.20"],1,"gen",function(){
   var mode=pick(["numeric","singleVar","binomial"]);
   if(mode==="numeric"){
@@ -9004,6 +9217,7 @@ E("u5-pk-complex-fraction",5,["7.20"],1,"gen",function(){
     "Divide the numerator by the denominator: multiply by the reciprocal of \\("+u5frac("1",u5lin(1,a3))+"\\). \\[ \\begin{aligned} "+expr3+" &= "+u5frac("1",u5lin(1,-a3))+" \\div "+u5frac("1",u5lin(1,a3))+" \\\\ &= "+u5frac("1",u5lin(1,-a3))+" \\times "+u5frac(u5lin(1,a3),"1")+" \\\\ &= "+cor3+" \\end{aligned} \\] The simplified fraction is <b>\\("+cor3+"\\)</b>, for \\("+u5npvStr([-a3,a3])+"\\).",
     {mode:mode,a:a3});
 });
+// LEVELBASIS: u6-pk-simplify-trinomial=taught procedure, multi-step
 E("u6-pk-simplify-trinomial",6,["7.34"],2,"gen",function(){
   var mode=pick(["both","binomialDen"]);
   var r=pick(U5NZ),s=pick(U5NZ),tt=pick(U5NZ),t=0;
@@ -9032,6 +9246,7 @@ E("u6-pk-simplify-trinomial",6,["7.34"],2,"gen",function(){
     "Factor the numerator: \\("+numQ+" = "+u5par(1,-r)+u5par(1,-s)+"\\). The factor \\("+u5par(1,-r)+"\\) also appears in the denominator, so it divides out: \\[ \\begin{aligned} "+u5frac(numQ,""+k+u5par(1,-r))+" &= "+u5frac(u5par(1,-r)+u5par(1,-s),""+k+u5par(1,-r))+" \\\\ &= "+cor2+" \\end{aligned} \\] The simplified form is <b>\\("+cor2+"\\)</b>, for \\(x \\ne "+r+"\\).",
     {mode:mode,r:r,s:s,t:tt,k:k});
 });
+// LEVELBASIS: u6-pk-multiply=taught procedure, multi-step
 E("u6-pk-multiply",6,["7.34"],2,"gen",function(){
   var mode=pick(["poly","poly","mono"]);
   if(mode==="mono"){
@@ -9065,6 +9280,7 @@ E("u6-pk-multiply",6,["7.34"],2,"gen",function(){
     "Factor first, then divide out the common factors before multiplying. The trinomial factors as \\("+u5par(1,-r)+u5par(1,-u)+"\\), and the factor \\("+u5par(1,-s)+"\\) appears in a numerator and a denominator: \\[ \\begin{aligned} "+expr2+" &= "+u5frac(u5par(1,-r)+u5par(1,-u),u5lin(1,-tt))+" \\end{aligned} \\] The product is <b>\\("+cor2+"\\)</b>, for \\("+u5npvStr([s,tt])+"\\).",
     {mode:mode,r:r,u:u,s:s,t:tt});
 });
+// LEVELBASIS: u6-pk-divide=taught procedure, multi-step
 E("u6-pk-divide",6,["7.34"],2,"gen",function(){
   var mode=pick(["poly","poly2","mono"]);
   if(mode==="mono"){
@@ -9113,6 +9329,7 @@ E("u6-pk-divide",6,["7.34"],2,"gen",function(){
     "Factor the numerator of the first expression: \\("+numQ+" = "+u5par(1,-r2)+u5par(1,-u2)+"\\). Then multiply by the reciprocal of the divisor: \\[ \\begin{aligned} "+expr3+" &= "+u5frac(numQ,u5lin(1,-s2))+" \\times "+u5frac(u5lin(1,-s2),u5lin(1,-u2))+" \\\\ &= "+cor3+" \\end{aligned} \\] The factors \\("+u5par(1,-s2)+"\\) and \\("+u5par(1,-u2)+"\\) both divide out, leaving just \\("+cor3+"\\). The quotient is <b>\\("+cor3+"\\)</b>, for \\("+u5npvStr([s2,u2])+"\\).",
     {mode:mode,r:r2,u:u2,s:s2});
 });
+// LEVELBASIS: u6-pk-add-subtract=taught procedure, multi-step
 E("u6-pk-add-subtract",6,["7.34"],2,"gen",function(){
   var mode=pick(["mono","binom","binom"]);
   if(mode==="mono"){
@@ -9152,6 +9369,7 @@ E("u6-pk-add-subtract",6,["7.34"],2,"gen",function(){
     "The denominators share no factor, so the lowest common denominator is \\("+u5par(1,-r)+u5par(1,-s)+"\\). Give each fraction that denominator, then combine the numerators: \\[ \\begin{aligned} "+expr2+" &= "+u5frac(p+u5par(1,-s),u5par(1,-r)+u5par(1,-s))+" "+op2+" "+u5frac(q+u5par(1,-r),u5par(1,-r)+u5par(1,-s))+" \\\\ &= "+u5frac(numBody,u5par(1,-r)+u5par(1,-s))+" \\end{aligned} \\] The numerator is \\("+numBody+"\\); it shares no factor with the denominator, so nothing cancels. The result is <b>\\("+cor2+"\\)</b>, for \\("+u5npvStr([r,s])+"\\).",
     {mode:mode,op:op2,p:p,q:q,r:r,s:s});
 });
+// LEVELBASIS: u6-pk-sign-statements=direct recall
 E("u6-pk-sign-statements",6,["7.34"], 1, "gen", function () {
   var q = pick([1, 2, 3, 4]);
   var deg = q === 1 ? ri(8, 82) : q === 2 ? ri(98, 172) : q === 3 ? ri(188, 262) : ri(278, 352);
@@ -9172,6 +9390,7 @@ E("u6-pk-sign-statements",6,["7.34"], 1, "gen", function () {
     "The angle " + deg + "° terminates in Quadrant " + ["I", "II", "III", "IV"][q - 1] + ", where " + signs + ". The true statement is <b>" + corr + "</b>.",
     { deg: deg });
 });
+// LEVELBASIS: u7-pk-laws-integral=taught procedure, multi-step
 E("u7-pk-laws-integral",7,["4.27"],2,"gen",function(){
   var mode=ri(1,6);
   if(mode===1){
@@ -9242,6 +9461,7 @@ E("u7-pk-laws-integral",7,["4.27"],2,"gen",function(){
     " The simplified form is <b>\\("+c6+"y^{"+b6+"}\\)</b>.",
     {mode:mode,b:b6,c:c6,keyStr:key6});
 });
+// LEVELBASIS: u7-pk-laws-rational=taught procedure, multi-step
 E("u7-pk-laws-rational",7,["4.27"],2,"gen",function(){
   var base=pick(["x","y","z","t"]),mode=ri(1,3);
   var p=ri(1,7),q=pick([2,3,4,5,6]),r=ri(1,7),s=pick([2,3,4,5,6]),t=0;
@@ -9276,6 +9496,7 @@ E("u7-pk-laws-rational",7,["4.27"],2,"gen",function(){
     " The simplified form is <b>"+key+"</b>.",
     {mode:mode,base:base,p:p,q:q,r:r,s:s,eN:eN,eD:eD,keyStr:key});
 });
+// LEVELBASIS: u7-pk-negative-exp=one cued step
 E("u7-pk-negative-exp",7,["4.27"],1,"gen",function(){
   var mode=ri(1,4);
   var pattern="The pattern behind negative exponents comes from dividing by the base at each step: as the exponent drops by \\(1\\), the value is divided by the base. Continuing the pattern past zero gives reciprocals, so \\(a^{-n} = "+FR(1,"a^n")+"\\) for \\(a \\ne 0\\). ";
@@ -9312,6 +9533,7 @@ E("u7-pk-negative-exp",7,["4.27"],1,"gen",function(){
     pattern+"The reciprocal \\("+FR(1,a4+"^{"+n4+"}")+"\\) is the power with the exponent negated: \\("+a4+"^{-"+n4+"}\\). The exponent is <b>\\(-"+n4+"\\)</b>.",
     {mode:mode,a:a4,n:n4,ans:-n4});
 });
+// LEVELBASIS: u7-pk-recip-features=taught procedure, multi-step
 E("u7-pk-recip-features",7,["4.27"],2,"gen",function(){
   var fam=pick(["va-linear","va-linear","va-quad","domain-range","point"]);
   if(fam==="va-linear"){
@@ -9365,6 +9587,7 @@ E("u7-pk-recip-features",7,["4.27"],2,"gen",function(){
     "A point \\((a, b)\\) on \\(y = f(x)\\) gives the value \\(f(a) = "+y0+"\\). On the reciprocal function the same x-value appears with the reciprocal of the y-value: \\(\\frac{1}{"+y0+"} = "+recipDisp+"\\). So the corresponding point is \\("+ptRaw(x0,recipDisp)+"\\)",
     {fam:fam, x:x0, y:y0, rev:rev});
 });
+// LEVELBASIS: u7-pk-reciprocal-values=one cued step
 E("u7-pk-reciprocal-values",7,["4.27"],1,"gen",function(){
   var fr=function(p,q){return "\\(\\frac{"+p+"}{"+q+"}\\)";};
   var frI=function(p,q){return "\\frac{"+p+"}{"+q+"}";};
@@ -9395,6 +9618,7 @@ E("u7-pk-reciprocal-values",7,["4.27"],1,"gen",function(){
     "The reciprocal of \\(-"+frI(p,q)+"\\) flips the fraction over and keeps the negative sign: the reciprocal is \\(-"+frI(q,p)+"\\). The answer is <b>\\(-"+frI(q,p)+"\\)</b>.",
     {mode:"fraction",p:p,q:q});
 }, ["The reciprocal flips the number over.", "The sign does not change when you take a reciprocal."]);
+// LEVELBASIS: u8-pk-rational-exp=one cued step
 E("u8-pk-rational-exp",8,["1.1"],1,"gen",function(){
   var n=ri(2,6),m=ri(1,9),t=0;
   while((u2gcd(m,n)!==1||m===n)&&t<200){m=ri(1,9);n=ri(2,6);t++;}
@@ -9432,6 +9656,7 @@ E("u8-pk-rational-exp",8,["1.1"],1,"gen",function(){
     " As a power, the expression is <b>\\("+b+"^{"+FR(m,n)+"}\\)</b>.",
     {mode:mode,b:b,m:m,n:n,keyStr:key2});
 });
+// LEVELBASIS: u8-pk-rational-pattern=recognition test
 E("u8-pk-rational-pattern",8,["1.1"],1,"var",varset([
   function(){var key="The denominator \\(3\\) names the root and the numerator \\(2\\) names the power: \\(\\left(\\sqrt[3]{8}\\right)^2 = 2^2 = 4\\)";
     return mcq("Which explanation correctly shows why \\(8^{"+FR(2,3)+"}\\) equals \\(4\\)?",
@@ -9466,6 +9691,7 @@ E("u8-pk-rational-pattern",8,["1.1"],1,"var",varset([
     "The denominator \\(4\\) names a fourth root: \\(\\sqrt[4]{16} = 2\\) since \\(2^4 = 16\\). The numerator \\(3\\) then cubes it: \\(2^3 = 8\\). Numeric check: \\(\\left(\\sqrt[4]{16}\\right)^3 = 2^3 = 8 = 16^{"+FR(3,4)+"}\\). The value is <b>\\(8\\)</b>, from the root named by the denominator followed by the power named by the numerator.",
     {stmt:true,keyText:key});}
 ]));
+// LEVELBASIS: u8-pk-evaluate-exp=one cued step
 E("u8-pk-evaluate-exp",8,["1.1"],1,"gen",function(){
   var mode=ri(1,4);
   if(mode===1){
@@ -9516,6 +9742,7 @@ E("u8-pk-evaluate-exp",8,["1.1"],1,"gen",function(){
     " The value is <b>\\("+ans4+"\\)</b>.",
     {mode:mode,a:a4,p:p4,q:q4,ans:ans4});
 });
+// LEVELBASIS: u8-pk-product-law=one cued step
 E("u8-pk-product-law",8,["1.1"], 1, "gen", function () {
   var a = ri(2, 9), m = ri(2, 6), n = ri(1, 6);
   if (m === 2 && n === 2) n = 3;
@@ -9531,6 +9758,7 @@ E("u8-pk-product-law",8,["1.1"], 1, "gen", function () {
     "The bases match, so add the exponents: \\[ \\begin{aligned} " + a + "^{" + m + "}\\times " + a + "^{" + n + "} &= " + a + "^{" + m + "+" + n + "} \\\\ &= " + a + "^{" + (m + n) + "} \\end{aligned} \\] So the single power is <b>\\(" + a + "^{" + (m + n) + "}\\)</b>.",
     { mode: "product-law", a: a, m: m, n: n });
 }, ["Check whether the bases match. Matching bases use the product law.", "Add the two exponents and keep the same base."]);
+// LEVELBASIS: u8-pk-sqrt-eval=one cued step
 E("u8-pk-sqrt-eval",8,["1.1"],1,"gen",function(){
   var a=ri(3,15);
   if(ri(0,1)===0){
@@ -9546,6 +9774,7 @@ E("u8-pk-sqrt-eval",8,["1.1"],1,"gen",function(){
     "A negative number squared gives a positive result: \\((-"+a+")^2 = (-"+a+") \\times (-"+a+") = "+(a*a)+"\\). The answer is <b>\\("+(a*a)+"\\)</b>.",
     {mode:"square-of-negative",a:a,ans:a*a});
 }, ["Work out the square first, then the root.", "Squaring a negative number gives a positive result."]);
+// LEVELBASIS: u9-pk-binom-expand=taught procedure, multi-step
 E("u9-pk-binom-expand",9,["3.14"], 2, "gen", function () {
   var A = [ri(1, 3), u3Nz(-5, 5)];
   var B = [ri(1, 3), u3Nz(-5, 5), u3Nz(-6, 6)];
@@ -9558,6 +9787,7 @@ E("u9-pk-binom-expand",9,["3.14"], 2, "gen", function () {
   return mcq(prompt, u3M(keyRaw), u3DistrCoeffs(prod, "x", 3), sol,
     { t: "expand", P: u3TermsOf(A, "x"), Q: u3TermsOf(B, "x") });
 });
+// LEVELBASIS: u9-pk-monomial-expand=direct recall
 E("u9-pk-monomial-expand",9,["3.14"], 1, "gen", function () {
   var mode = ri(0, 2), P, Q, pdesc;
   if (mode === 0) {
@@ -9587,6 +9817,7 @@ E("u9-pk-monomial-expand",9,["3.14"], 1, "gen", function () {
     "The expanded form is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), distr.slice(0, 3), sol, { t: "expand", P: P, Q: Q });
 });
+// LEVELBASIS: u9-pk-binomial-expand=taught procedure, multi-step
 E("u9-pk-binomial-expand",9,["3.14"], 2, "gen", function () {
   var v = pick(["x", "x", "y"]);
   var A = [ri(1, 3), u3Nz(-6, 6)], B = [ri(1, 3), u3Nz(-6, 6)];
@@ -9599,14 +9830,18 @@ E("u9-pk-binomial-expand",9,["3.14"], 2, "gen", function () {
   return mcq(prompt, u3M(keyRaw), u3DistrCoeffs(prod, v, 3), sol,
     { t: "expand", P: u3TermsOf(A, v), Q: u3TermsOf(B, v) });
 });
-E("u9-bridge-codes", 9, ["9.1"], 2, "gen", function(){
+// LEVEL AUDIT 2026-11-25: retagged 2 to 1 (dealt item is one counting principle product, at par with u9-fcp-apply). See Level-Audit-Math-3200-2026-11-25.md.
+// LEVELBASIS: u9-bridge-codes=one cued step
+E("u9-bridge-codes", 9, ["9.1"], 1, "gen", function(){
   var A=ri(3,6), B=ri(4,9), C=ri(3,6), AB=A*B, N=AB*C;
   return numq("A code has three positions. The first position can be any of "+A+" letters, the second position can be any of "+B+" digits, and the third position can be any of "+A+" letters. How many different codes are there?",
     N, 0,
     "Work through the positions in order. For each of the "+A+" choices for the first letter, there are "+B+" choices for the digit, so the first two positions can be filled in "+A+" × "+B+" = "+AB+" ways. For each of those "+AB+" starts, there are "+C+" choices for the last letter, giving "+AB+" × "+C+" = <b>"+N+"</b> codes in all.",
     {A:A,B:B,C:C});
 }, ["Take one position at a time: how many choices are there for the first position, then for the second?", "Each choice for one position can be paired with every choice for the next position."]);
-E("u9-bridge-lineup", 9, ["9.1"], 2, "gen", function(){
+// LEVEL AUDIT 2026-11-25: retagged 2 to 1 (dealt item is a direct factorial count, at par with u9-perm-basic). See Level-Audit-Math-3200-2026-11-25.md.
+// LEVELBASIS: u9-bridge-lineup=one cued step
+E("u9-bridge-lineup", 9, ["9.1"], 1, "gen", function(){
   var n=ri(3,5), facts=[], p=1;
   for(var k=n;k>=1;k--){ facts.push(k); p*=k; }
   return numq(n+" different books are placed in a row on a shelf. How many different orders can the books be in?",
@@ -9614,7 +9849,9 @@ E("u9-bridge-lineup", 9, ["9.1"], 2, "gen", function(){
     "Fill the spots one at a time. There are "+n+" choices for the first spot. Once one book is placed, "+(n-1)+" books remain for the second spot, and the choices keep dropping by one as the row fills. Writing the counts in order gives "+facts.join(" × ")+" = <b>"+p+"</b> different orders.",
     {n:n});
 }, ["How many choices are there for the first spot? After one book is placed, how many remain for the second?", "Keep going spot by spot until the row is full, then combine the counts."]);
-E("u9-bridge-tree", 9, ["9.1"], 2, "gen", function(){
+// LEVEL AUDIT 2026-11-25: retagged 2 to 1 (dealt item is a two-stage tree count, at par with u9-counting-organizers). See Level-Audit-Math-3200-2026-11-25.md.
+// LEVELBASIS: u9-bridge-tree=one cued step
+E("u9-bridge-tree", 9, ["9.1"], 1, "gen", function(){
   var s=ri(3,5), N=s*2;
   var d3=(s*s===s*3)?(2*s+2):(s*s);
   var key={t:String(N), fb:"Yes. The tree has "+s+" branches for the spinner, and each one splits into 2 for the coin, giving "+s+" × 2 = "+N+" combined outcomes."};
@@ -9626,7 +9863,9 @@ E("u9-bridge-tree", 9, ["9.1"], 2, "gen", function(){
     "The tree begins with "+s+" branches, one for each section of the spinner. From the end of each spinner branch, the coin adds 2 branches, heads and tails, so each spinner outcome leads to 2 combined outcomes. In all there are "+s+" × 2 = <b>"+N+"</b> combined outcomes.",
     {s:s});
 }, ["How many branches does the tree start with, one for each spinner section?", "From each spinner branch, how many coin branches grow?"]);
-E("u9-bridge-places", 9, ["9.1"], 2, "gen", function(){
+// LEVEL AUDIT 2026-11-25: retagged 2 to 1 (dealt item is a direct permutation count, at par with u9-perm-basic). See Level-Audit-Math-3200-2026-11-25.md.
+// LEVELBASIS: u9-bridge-places=one cued step
+E("u9-bridge-places", 9, ["9.1"], 1, "gen", function(){
   var r=ri(5,8), N=r*(r-1)*(r-2);
   return numq("A race has "+r+" runners. In how many different ways can first place, second place and third place be filled?",
     N, 0,
@@ -9705,3 +9944,10 @@ window.__BANK_CRMARKS={"u1-constant-leading":2,"u1-divide-quotient":2,"u1-divide
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
 window.__BANK_BIMODAL={"u1-constant-leading":"b","u1-divide-quotient":"b","u1-divide-result":"b","u1-equation-from-graph":"b","u1-error-synthetic":"a","u1-identify-polynomial":"b","u1-multiplicity-statements":"b","u1-pk-factor-common":"b","u1-pk-factor-nonmonic":"b","u1-pk-factor-test":"b","u1-pk-factor-trinomial":"b","u1-pk-solve-strategies":"b","u1-sketch-features":"b","u1-synthetic-relation":"b","u1-which-factor":"b","u1-zeros-roots-intercepts":"a","u2-full-equation":"b","u2-inv-equation":"b","u2-inv-restrict":"a","u2-inv-which":"a","u2-pk-complete-square":"a","u2-pk-npv-basic":"b","u2-pk-npv-quadratic":"a","u2-pk-vertex-read":"a","u2-pk-vertex-standard":"a","u2-refl-yx":"b","u2-reflection-equation-cr":"b","u2-trans-zeros":"a","u3-add-graphical-solve-mc":"a","u3-add-sqrtx-point-sets":"a","u3-compare-domains":"a","u3-domain-from-quadratic-cr":"b","u3-intercept-statement":"b","u3-pk-defined-values":"b","u3-pk-extraneous-why":"b","u3-pk-which-is-solution":"a","u3-recover-f-value":"a","u3-two-methods":"b","u4-arc-compare":"b","u4-circle-point-reasoning":"a","u4-error-analysis":"b","u4-other-ratios":"a","u4-pk-exact-values":"a","u4-pk-point-ratios":"a","u4-pk-read-sketch":"a","u4-pk-same-reference":"a","u4-pk-solve-equation":"b","u4-point-ratios-angle":"a","u4-repair-solution-cr":"a","u4-solve-equation-exact":"a","u5-eq-from-graph":"a","u5-general-solution":"b","u5-model-conditions":"b","u5-pk-complex-fraction":"b","u5-pk-effect-of-a":"b","u5-pk-lcd-choose":"b","u5-pk-simplify-basic":"b","u5-pk-translations":"b","u5-solve-set":"a","u5-tan-graph":"a","u6-coincidence-check-cr":"b","u6-error-analysis":"b","u6-exact-values":"a","u6-graphical-validity":"b","u6-identity-or-equation":"a","u6-lost-solutions-cr":"a","u6-nonpermissible-identity":"a","u6-pk-add-subtract":"b","u6-pk-divide":"b","u6-pk-multiply":"b","u6-pk-sign-statements":"a","u6-pk-simplify-trinomial":"b","u6-proof-next-step":"b","u6-simplify-expression":"b","u6-solve-double-angle":"a","u6-solve-identity-sub":"a","u6-solve-quadratic":"a","u6-why-insufficient":"b","u7-characteristics":"b","u7-common-base-linear":"a","u7-common-base-radical":"a","u7-compare-models":"a","u7-identify-growth-decay":"b","u7-pk-laws-integral":"b","u7-pk-laws-rational":"b","u7-pk-recip-features":"b","u7-pk-reciprocal-values":"a","u7-solve-nocommon-base":"a","u7-traits-match-cr":"b","u7-transformed-graph":"b","u8-add-exact-log-value":"a","u8-extraneous":"b","u8-laws-equivalent":"b","u8-laws-error":"b","u8-laws-illustrate":"b","u8-model-log":"b","u8-pk-product-law":"a","u8-pk-rational-exp":"a","u8-pk-sqrt-eval":"a","u9-binomial-expand":"b","u9-bridge-tree":"a","u9-perm-or-comb":"a","u9-perm-solve":"a","u9-pk-binom-expand":"b","u9-pk-binomial-expand":"b","u9-pk-monomial-expand":"b","u9-why-multiply":"b","u9-why-n-ge-r":"b"};
+/* ============ Level basis labels (generated) ============ */
+/* Built by assemble-bank.py from the LEVELBASIS comments at each
+   audited entry (November 25, 2026): the criterion that decided
+   the entry's level under the adopted criteria card, shown in
+   teacher mode beside the level on the question card. Entries
+   no audit has covered have no label. */
+window.__BANK_LEVELBASIS={"u1-constant-leading":"direct recall","u1-divide-quotient":"taught procedure, multi-step","u1-divide-result":"taught procedure, multi-step","u1-end-behaviour":"direct recall","u1-equation-from-graph":"indicator-named taught procedure","u1-error-synthetic":"taught procedure, multi-step","u1-find-coefficient":"taught procedure, multi-step","u1-identify-polynomial":"direct recall","u1-largest-zero-cr":"taught procedure, multi-step","u1-modelling":"taught procedure, multi-step","u1-multiplicity-graph":"one cued step","u1-multiplicity-statements":"taught procedure, multi-step","u1-pk-discriminant-k":"taught procedure, multi-step","u1-pk-factor-common":"one cued step","u1-pk-factor-nonmonic":"taught procedure, multi-step","u1-pk-factor-test":"one cued step","u1-pk-factor-trinomial":"one cued step","u1-pk-solve-strategies":"taught procedure, multi-step","u1-remainder-point":"one cued step","u1-remainder-value":"one cued step","u1-sketch-features":"taught procedure, multi-step","u1-synthetic-relation":"recognition test","u1-tableau-step-cr":"one cued step","u1-which-factor":"taught procedure, multi-step","u1-zeros-from-factors":"one cued step","u1-zeros-roots-intercepts":"direct recall","u2-find-stretch-cr":"taught procedure, multi-step","u2-full-equation":"taught procedure, multi-step","u2-inv-domran":"direct recall","u2-inv-equation":"taught procedure, multi-step","u2-inv-figure":"taught procedure, multi-step","u2-inv-restrict":"taught procedure, multi-step","u2-inv-which":"direct recall","u2-inverse-points-cr":"taught procedure, multi-step","u2-pk-complete-square":"taught procedure, multi-step","u2-pk-npv-basic":"one cued step","u2-pk-npv-quadratic":"taught procedure, multi-step","u2-pk-vertex-read":"direct recall","u2-pk-vertex-standard":"taught procedure, multi-step","u2-refl-equation":"one cued step","u2-refl-point":"one cued step","u2-refl-yx":"judgement test","u2-reflection-equation-cr":"taught procedure, multi-step","u2-stretch-equation":"one cued step","u2-stretch-identify":"direct recall","u2-stretch-point":"one cued step","u2-trans-describe":"direct recall","u2-trans-equation":"one cued step","u2-trans-point":"one cued step","u2-trans-zeros":"path test","u3-add-graphical-solve-mc":"taught procedure, multi-step","u3-add-sqrtx-point-sets":"taught procedure, multi-step","u3-compare-domains":"taught procedure, multi-step","u3-domain-from-quadratic-cr":"taught procedure, multi-step","u3-evaluate-transformed-cr":"taught procedure, multi-step","u3-graphical-solve":"taught procedure, multi-step","u3-intercept-solution":"taught procedure, multi-step","u3-intercept-statement":"direct recall","u3-pk-defined-values":"one cued step","u3-pk-extraneous-why":"judgement test","u3-pk-solve-radical":"taught procedure, multi-step","u3-pk-verify-roots":"one cued step","u3-pk-which-is-solution":"one cued step","u3-radical-equation-critique-cr":"judgement test","u3-recover-coefficient-cr":"path test","u3-recover-f-value":"one cued step","u3-shift-from-intercept-cr":"taught procedure, multi-step","u3-sqrtf-evaluate":"taught procedure, multi-step","u3-sqrtf-multistep-cr":"taught procedure, multi-step","u3-sqrtx-table":"one cued step","u3-start-point":"direct recall","u3-transform-domain-range":"direct recall","u3-two-methods":"recognition test","u4-angle-from-ratio":"recognition test","u4-angle-measures-cr":"taught procedure, multi-step","u4-approx-ratio":"one cued step","u4-arc-compare":"taught procedure, multi-step","u4-arc-length":"one cued step","u4-circle-equation":"direct recall","u4-circle-point-reasoning":"taught procedure, multi-step","u4-coterminal":"one cued step","u4-deg-to-rad":"one cued step","u4-error-analysis":"judgement test","u4-exact-special":"direct recall","u4-nr-exact-code":"taught procedure, multi-step","u4-one-radian":"direct recall","u4-other-ratios":"taught procedure, multi-step","u4-pk-exact-values":"taught procedure, multi-step","u4-pk-point-distance":"one cued step","u4-pk-point-ratios":"taught procedure, multi-step","u4-pk-read-sketch":"direct recall","u4-pk-same-reference":"direct recall","u4-pk-solve-equation":"taught procedure, multi-step","u4-point-ratios-angle":"taught procedure, multi-step","u4-rad-to-deg":"one cued step","u4-ratio-problem":"taught procedure, multi-step","u4-repair-solution-cr":"recognition test","u4-sketch-standard-position":"direct recall","u4-solve-equation-approx":"taught procedure, multi-step","u4-solve-equation-exact":"taught procedure, multi-step","u5-amplitude-a":"direct recall","u5-base-graph":"direct recall","u5-characteristics":"direct recall","u5-eq-from-graph":"taught procedure, multi-step","u5-equation-evaluate-cr":"taught procedure, multi-step","u5-first-maximum-cr":"taught procedure, multi-step","u5-general-solution":"taught procedure, multi-step","u5-graph-problem":"taught procedure, multi-step","u5-key-points":"one cued step","u5-model-build":"taught procedure, multi-step","u5-model-conditions":"taught procedure, multi-step","u5-period-b":"one cued step","u5-phase-h":"direct recall","u5-pk-complex-fraction":"one cued step","u5-pk-effect-of-a":"direct recall","u5-pk-lcd-choose":"one cued step","u5-pk-simplify-basic":"one cued step","u5-pk-translations":"direct recall","u5-shift-k":"one cued step","u5-solve-set":"taught procedure, multi-step","u5-tan-asymptote-cr":"one cued step","u5-tan-features":"taught procedure, multi-step","u5-tan-graph":"direct recall","u5-which-solution":"shortcut test","u6-approx-solutions":"one cued step","u6-coincidence-check-cr":"judgement test","u6-error-analysis":"judgement test","u6-exact-values":"taught procedure, multi-step","u6-graphical-validity":"recognition test","u6-identity-or-equation":"recognition test","u6-lost-solutions-cr":"recognition test","u6-nonpermissible-basic":"direct recall","u6-nonpermissible-identity":"taught procedure, multi-step","u6-nr-exact-code":"taught procedure, multi-step","u6-nr-matching":"taught procedure, multi-step","u6-numeric-verify":"one cued step","u6-pk-add-subtract":"taught procedure, multi-step","u6-pk-divide":"taught procedure, multi-step","u6-pk-multiply":"taught procedure, multi-step","u6-pk-sign-statements":"direct recall","u6-pk-simplify-trinomial":"taught procedure, multi-step","u6-proof-direct":"taught procedure, multi-step","u6-proof-invalid-step":"judgement test","u6-proof-invalid-step-cr":"judgement test","u6-proof-next-step":"recognition test","u6-proof-strategy":"path test","u6-simplify-expression":"taught procedure, multi-step","u6-solve-double-angle":"taught procedure, multi-step","u6-solve-identity-sub":"taught procedure, multi-step","u6-solve-quadratic":"taught procedure, multi-step","u6-verify-solution":"shortcut test","u6-why-insufficient":"judgement test","u7-characteristics":"direct recall","u7-common-base-linear":"taught procedure, multi-step","u7-common-base-radical":"taught procedure, multi-step","u7-compare-models":"taught procedure, multi-step","u7-compound-amount":"one cued step","u7-compound-setup":"one cued step","u7-graph-point-value-cr":"taught procedure, multi-step","u7-growth-decay-amount":"one cued step","u7-growth-decay-time":"recognition test","u7-identify-growth-decay":"direct recall","u7-model-equation":"recognition test","u7-model-from-data":"taught procedure, multi-step","u7-pk-laws-integral":"taught procedure, multi-step","u7-pk-laws-rational":"taught procedure, multi-step","u7-pk-negative-exp":"one cued step","u7-pk-recip-features":"taught procedure, multi-step","u7-pk-reciprocal-values":"one cued step","u7-sketch-key-points":"direct recall","u7-solve-nocommon-base":"taught procedure, multi-step","u7-traits-match-cr":"taught procedure, multi-step","u7-transformed-graph":"direct recall","u7-wcr-log-time":"taught procedure, multi-step","u8-add-exact-log-value":"taught procedure, multi-step","u8-convert-form":"direct recall","u8-estimate-approx":"one cued step","u8-exact-value":"direct recall","u8-extraneous":"judgement test","u8-finance-periods":"taught procedure, multi-step","u8-growth-time":"recognition test","u8-inverse-graph":"direct recall","u8-laws-equivalent":"taught procedure, multi-step","u8-laws-error":"taught procedure, multi-step","u8-laws-illustrate":"direct recall","u8-log-scales":"one cued step","u8-model-log":"taught procedure, multi-step","u8-pk-evaluate-exp":"one cued step","u8-pk-product-law":"one cued step","u8-pk-rational-exp":"one cued step","u8-pk-rational-pattern":"recognition test","u8-pk-sqrt-eval":"one cued step","u8-sketch-log":"direct recall","u8-solve-exp-logs":"taught procedure, multi-step","u8-solve-log-eq":"taught procedure, multi-step","u8-transformed-log":"taught procedure, multi-step","u8-transformed-log-features":"direct recall","u8-wcr-laws-evaluate":"taught procedure, multi-step","u8-wcr-log-difference":"taught procedure, multi-step","u9-binomial-expand":"taught procedure, multi-step","u9-binomial-term":"taught procedure, multi-step","u9-bridge-codes":"one cued step","u9-bridge-lineup":"one cued step","u9-bridge-places":"one cued step","u9-bridge-tree":"one cued step","u9-comb-basic":"boundary, ruling pending","u9-comb-symmetry-solve":"boundary, ruling pending","u9-counting-organizers":"direct recall","u9-factorial-notation":"direct recall","u9-fcp-apply":"one cued step","u9-fcp-meal-mc":"one cued step","u9-identical-elements":"one cued step","u9-not-adjacent-cr":"taught procedure, multi-step","u9-pascal-next-row":"one cued step","u9-pathways":"taught procedure, multi-step","u9-pathways-context":"taught procedure, multi-step","u9-patterns-coefficients":"taught procedure, multi-step","u9-perm-basic":"one cued step","u9-perm-constraints":"taught procedure, multi-step","u9-perm-or-comb":"taught procedure, multi-step","u9-perm-solve":"taught procedure, multi-step","u9-pk-binom-expand":"taught procedure, multi-step","u9-pk-binomial-expand":"taught procedure, multi-step","u9-pk-monomial-expand":"direct recall","u9-two-group-cr":"taught procedure, multi-step","u9-why-multiply":"judgement test","u9-why-n-ge-r":"judgement test","u9-word-arrange-mc":"one cued step"};
