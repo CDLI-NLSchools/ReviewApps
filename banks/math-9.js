@@ -2339,7 +2339,7 @@ var u3tFracs = [[1, 2], [1, 3], [2, 3], [1, 4], [3, 4], [1, 5], [2, 5], [3, 5], 
 var u3tFracsSmall = [[1, 2], [1, 3], [2, 3], [1, 4], [3, 4], [2, 5], [1, 5], [3, 5]];
 
 E("u3-repeated-product-form", 3, ["3.6"], 1, "gen", function () {
-  var mode = pick(["neg", "neg", "frac", "frac", "negfrac"]);
+  var mode = "neg"; /* Nov 26, 2026 (Jason's ruling, Math 9 guide audit 1b): fraction base modes removed. The guide's Unit 3 work uses integral bases; rational bases are a Mathematics 1201 extension. */
   var factor, powerInner, altFactor, altFb;
   var e = ri(2, 4);
   if (mode === "neg") {
@@ -2383,7 +2383,7 @@ E("u3-repeated-product-form", 3, ["3.6"], 1, "gen", function () {
 }, ["The exponent tells you how many times the whole base appears as a factor.", "Write the base down exactly as it appears, brackets and sign included, then repeat it."]);
 
 E("u3-power-from-product", 3, ["3.7"], 1, "gen", function () {
-  var mode = pick(["neg", "neg", "frac", "frac", "negfrac"]);
+  var mode = "neg"; /* Nov 26, 2026 (Jason's ruling, Math 9 guide audit 1b): fraction base modes removed. The guide's Unit 3 work uses integral bases; rational bases are a Mathematics 1201 extension. */
   var factor, correctInner, ds;
   if (mode === "neg") {
     var b = ri(2, 9), c = ri(2, 5);
@@ -2430,7 +2430,7 @@ E("u3-power-from-product", 3, ["3.7"], 1, "gen", function () {
 }, ["Count the factors first. That count becomes the exponent.", "Write the repeated factor exactly as the base, sign included, then use your count as the exponent."]);
 
 E("u3-evaluate-power-neg", 3, ["3.10"], 1, "gen", function () {
-  var mode = pick(["neg", "neg", "one", "negone", "frac"]);
+  var mode = pick(["neg", "neg", "one", "negone"]); /* Nov 26, 2026 (Jason's ruling, Math 9 guide audit 1b): fraction base modes removed. The guide's Unit 3 work uses integral bases; rational bases are a Mathematics 1201 extension. */
   var stemVerb = pick(["Evaluate", "What is the value of", "Find the value of"]);
   if (mode === "frac") {
     var f = pick([[1, 2], [1, 3], [2, 3], [3, 4], [1, 4], [2, 5], [3, 5], [1, 5], [5, 6], [3, 8]]);
@@ -2607,7 +2607,7 @@ E("u3-power-model-var", 3, ["3.4"], 1, "var", varset([
 ]), ["Read the base from the dots along one side or one layer first.", "Count the dimensions next: a flat grid has two, a layered build has three."]);
 
 E("u3-zero-pattern", 3, ["3.9"], 1, "gen", function () {
-  var mode = pick(["int", "int", "frac", "neg"]);
+  var mode = pick(["int", "int", "neg"]); /* Nov 26, 2026 (Jason's ruling, Math 9 guide audit 1b): fraction base modes removed. The guide's Unit 3 work uses integral bases; rational bases are a Mathematics 1201 extension. */
   var lines = [], baseTxt, lastStep, baseOpt, recipOpt;
   if (mode === "int") {
     var a = ri(2, 9), s = pick([3, 4, 5]);
