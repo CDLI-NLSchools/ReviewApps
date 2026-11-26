@@ -4832,12 +4832,7 @@ E("u8-mixed-point-num", 8, ["10.13"], 3, "gen", function () {
 // CRMARKS: u5-ratio-part-percent-gap=3
 // CRMARKS: u6-decimal-coefficient-gap=2
 // CRMARKS: u6-two-points-evaluate-gap=3
-// CRMARKS: u7-expected-count-gap=2
-// CRMARKS: u7-missing-mean-value-gap=2
-// CRMARKS: u7-mean-difference-gap=3
 // CRMARKS: u7-two-colours-twice-gap=3
-// CRMARKS: u7-survey-scale-gap=3
-// CRMARKS: u7-combined-mean-gap=3
 // CRMARKS: u7-critique-the-claim=3
 // CRMARKS: u8-hidden-cubes-gap=2
 // CRMARKS: u8-rotated-side-view-gap=3
@@ -5187,43 +5182,6 @@ E("u6-two-points-evaluate-gap", 6, ["7.2", "7.3"], 2, "gen", function(){
 }, ["The two points hide the rate of change, which must be recovered before the relation can be used.", "Find the rate of change from the two points first, then build the relation and substitute the new x."]);
 
 /* Unit 7: Data Analysis and Probability */
-E("u7-expected-count-gap", 7, ["12.4", "12.2"], 2, "gen", function(){
-  var S=pick([4,5,8,10,20]), F=ri(1,S-1);
-  var colour=pick(["red","blue","green","gold","purple","orange"]);
-  var k=ri(3,12), N=2*S*k, ans=F*k;
-  return numq("A coin is tossed and a spinner with "+S+" equal sections, "+F+" of them "+colour+", is spun at the same time. This pair of actions is repeated "+N+" times. How many times would you expect heads and "+colour+" to occur together?", ans, 0.01,
-    "The toss and the spin are independent, so multiply their probabilities, then scale by the number of repeats: \\[ \\begin{aligned} P &= "+FR(1,2)+" \\times "+FR(F,S)+" \\\\ &= "+FR(F,2*S)+" \\\\ \\text{expected} &= "+FR(F,2*S)+" \\times "+N+" \\\\ &= "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
-    {mode:"expected-count", S:S, F:F, N:N});
-}, ["An expected count starts from the probability of the combined event.", "Multiply the two separate probabilities first, then multiply by the number of repeats."]);
-
-E("u7-missing-mean-value-gap", 7, ["11.1"], 2, "gen", function(){
-  var vals=null, fifth=0, mean=0;
-  for(var att=0; att<400 && !vals; att++){
-    var vs=[ri(4,30), ri(4,30), ri(4,30), ri(4,30)], f=ri(4,30);
-    var tot=vs[0]+vs[1]+vs[2]+vs[3]+f;
-    if(tot%5===0){ vals=vs; fifth=f; mean=tot/5; }
-  }
-  if(!vals){ vals=[12,18,10,20]; fifth=15; mean=15; }
-  var sum4=vals[0]+vals[1]+vals[2]+vals[3];
-  return numq("A player scored "+vals[0]+", "+vals[1]+", "+vals[2]+" and "+vals[3]+" points in the first four games of a tournament. The mean score over five games was "+mean+" points. How many points did the player score in the fifth game?", fifth, 0.01,
-    "The mean fixes the five-game total first: \\[ \\begin{aligned} \\text{total} &= 5 \\times "+mean+" \\\\ &= "+(5*mean)+" \\end{aligned} \\] The first four games total "+sum4+" points, so the fifth game is \\("+(5*mean)+" - "+sum4+" = "+fifth+"\\). The answer is <b>"+fifth+"</b>.",
-    {mode:"missing-mean-value", vals:vals.join(","), mean:mean});
-}, ["A mean over five games fixes the total of all five scores, not just the missing one.", "Multiply the mean by five to get the total, then subtract the four known scores."]);
-
-E("u7-mean-difference-gap", 7, ["11.1"], 2, "gen", function(){
-  var A=null, B=null, meanA=0, meanB=0, ans=0;
-  for(var att=0; att<400 && !A; att++){
-    var as=[ri(5,25), ri(5,25), ri(5,25), ri(5,25), ri(5,25)];
-    var bs=[ri(5,25), ri(5,25), ri(5,25), ri(5,25), ri(5,25)];
-    var sa=as.reduce(function(x,y){return x+y;},0), sb=bs.reduce(function(x,y){return x+y;},0);
-    if(Math.abs(sa-sb)>=5){ A=as; B=bs; meanA=sa/5; meanB=sb/5; ans=Math.round(Math.abs(meanA-meanB)*10)/10; }
-  }
-  if(!A){ A=[10,12,14,16,18]; B=[6,8,10,12,14]; meanA=14; meanB=10; ans=4; }
-  return numq("Two players record their points in five games. Player One scored "+A.join(", ")+". Player Two scored "+B.join(", ")+". By how many points do the two mean scores differ?", ans, 0.01,
-    "Find each mean separately: \\[ \\begin{aligned} \\text{mean One} &= "+fmt(meanA,1)+" \\\\ \\text{mean Two} &= "+fmt(meanB,1)+" \\end{aligned} \\] The difference is \\("+fmt(Math.max(meanA,meanB),1)+" - "+fmt(Math.min(meanA,meanB),1)+" = "+fmt(ans,1)+"\\). The answer is <b>"+fmt(ans,1)+"</b>.",
-    {mode:"mean-difference", A:A.join(","), B:B.join(",")});
-}, ["Each data set has its own mean, and the question compares the two means.", "Total each set of five scores and divide by five, then subtract the smaller mean from the larger."]);
-
 E("u7-two-colours-twice-gap", 7, ["12.4", "12.1"], 2, "gen", function(){
   var a=ri(6,14); if(a===10) a=11;
   var b=20-a;
@@ -5234,30 +5192,6 @@ E("u7-two-colours-twice-gap", 7, ["12.4", "12.1"], 2, "gen", function(){
     "Same colour can happen two ways, and the draws are independent: \\[ \\begin{aligned} P &= "+FR(a,20)+" \\times "+FR(a,20)+" + "+FR(b,20)+" \\times "+FR(b,20)+" \\\\ &= "+FR(a*a,400)+" + "+FR(b*b,400)+" \\\\ &= "+fmt(ans)+"\\% \\end{aligned} \\] The answer is <b>"+fmt(ans)+"%</b>.",
     {mode:"two-colours-twice", a:a, b:b});
 }, ["Same colour has more than one way to happen, and each way is a product of two draws.", "Find the probability of the first colour twice and of the second colour twice, then add them."]);
-
-E("u7-survey-scale-gap", 7, ["12.2"], 2, "gen", function(){
-  var n=pick([20,25,40,50]), s=ri(2,n-2);
-  var mult=ri(6,18), N=n*mult, ans=s*mult;
-  var mode=pick(["walk to school","take the bus to school","bring a lunch from home"]);
-  return numq("In a survey, "+s+" of the "+n+" students asked said they "+mode+". The whole school has "+N+" students. Based on the survey, how many students in the school would you expect to "+mode+"?", ans, 0.01,
-    "The survey gives a proportion first: \\("+FR(s,n)+"\\) of students. Scale that proportion to the whole school: \\[ \\begin{aligned} \\text{expected} &= "+FR(s,n)+" \\times "+N+" \\\\ &= "+ans+" \\end{aligned} \\] The answer is <b>"+ans+"</b>.",
-    {mode:"survey-scale", n:n, s:s, N:N});
-}, ["The survey fraction describes the sample, and the question asks about the whole school.", "Write the survey result as a fraction first, then multiply it by the school population."]);
-
-E("u7-combined-mean-gap", 7, ["11.1"], 2, "gen", function(){
-  var n1=0, m1=0, n2=0, m2=0, ans=0, ok=false;
-  for(var att=0; att<400 && !ok; att++){
-    n1=pick([4,5,6]); m1=ri(8,20); n2=pick([4,5,6]); m2=ri(8,20);
-    if(m1===m2) continue;
-    var tot=n1*m1+n2*m2, cnt=n1+n2;
-    if((2*tot)%cnt!==0) continue;
-    ans=tot/cnt; ok=true;
-  }
-  if(!ok){ n1=5; m1=14; n2=5; m2=18; ans=16; }
-  return numq("Group One has "+n1+" students with a mean quiz score of "+m1+". Group Two has "+n2+" students with a mean quiz score of "+m2+". What is the mean quiz score of the two groups combined?", ans, 0.01,
-    "Recover each group total from its mean before combining: \\[ \\begin{aligned} \\text{total One} &= "+n1+" \\times "+m1+" = "+(n1*m1)+" \\\\ \\text{total Two} &= "+n2+" \\times "+m2+" = "+(n2*m2)+" \\\\ \\text{combined mean} &= \\frac{"+(n1*m1+n2*m2)+"}{"+(n1+n2)+"} \\\\ &= "+fmt(ans)+" \\end{aligned} \\] The answer is <b>"+fmt(ans)+"</b>.",
-    {mode:"combined-mean", n1:n1, m1:m1, n2:n2, m2:m2});
-}, ["A combined mean is a total divided by a total, not the average of the two means.", "Multiply each mean by its group size to get the group totals, then add the totals and the group sizes."]);
 
 E("u7-two-events-mc-gap", 7, ["12.3", "12.4"], 2, "gen", function(){
   var S1=0, F1=0, S2=0, F2=0, ok=false;
@@ -5384,18 +5318,21 @@ E("u8-changed-side-view-gap", 8, ["10.15", "10.9"], 2, "gen", function(){
   return q;
 }, ["The added cubes change one stack before the side view is read, so update the map first.", "Add the new cubes to the named stack, then take the tallest stack in each row and add them."]);
 
-/* Prior knowledge flags (Nov 13, 2026): the entries named
-   below assess Math 7 outcomes (working with the mean of a data set, Math 7 indicators 11.6 and 11.9), and nothing on this
-   course's indicator list (Jason's assessed-target standard;
-   see the prior knowledge audit and its re-test). The pkFlag
-   property is set here in the bank module the way the enrich
-   flags are set in Math 2201's bank-u7.js; assembly carries
-   it into banks/math-8.js verbatim, and the shell's isPK
-   reads it alongside PK-coded indicators. Flagged entries
-   stay in practice pools by default and leave them only
-   when a teacher turns prior knowledge off in Advanced
-   tools. */
-BANK.forEach(function(e){if(["u7-missing-mean-value-gap","u7-mean-difference-gap","u7-combined-mean-gap"].indexOf(e.id)>=0)e.pkFlag=true;});
+/* REMOVED Nov 26, 2026 (Jason's ruling on the Math 8 guide audit, findings D2 and D3):
+   u7-survey-scale-gap and u7-expected-count-gap were dropped from this bank.
+   Survey prediction (scaling a sample to a population) has no indicator home
+   in this guide and sat under probability code 12.2, whose own entry
+   (u7-context-for-probability) remains; expected counts belong to the
+   Grade 7 experimental probability work and are covered in the Math 7 bank
+   (u7-expected-count-cr), and code 12.4 keeps its independent-events entries. */
+/* REMOVED Nov 26, 2026 (Jason's ruling on the Math 8 guide audit, finding D1):
+   u7-missing-mean-value-gap, u7-mean-difference-gap and u7-combined-mean-gap
+   were dropped from this bank. They assess Math 7 central tendency outcomes
+   (Math 7 indicators 11.6 and 11.9) and sat in Math 8 Unit 7 under graphing
+   code 11.1, which they do not address; the same question types are covered
+   in the Math 7 bank under their own indicators (u7-mean-basic,
+   u7-gap-missing-mean-cr, u7-central-problem-cr). They had carried a pkFlag
+   since Nov 13, 2026 under the note this comment replaces. */
 
 /* ----- bank-pk.js ----- */
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
@@ -7592,10 +7529,17 @@ BANK.forEach(function (e) { var t = PKT8D7[e.id]; if (t) { e.pkFlag = true; e.pk
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-best-estimate":3,"u1-calc-approx":3,"u1-diagonal-mc-gap":2,"u1-diagonal-square":3,"u1-estimate-between":2,"u1-factors-root":2,"u1-fence-perimeter-gap":3,"u1-garden-diagonal-gap":2,"u1-grid-distance-gap":2,"u1-hypotenuse":3,"u1-is-right":2,"u1-ladder-context":2,"u1-missing-leg":3,"u1-perfect-square-region":2,"u1-pk-carroll-cell":2,"u1-pk-divisibility-why":2,"u1-pk-factor-list":2,"u1-pk-square-area":2,"u1-pkf-order-below":2,"u1-pkf-order-line":2,"u1-pkf-square-between":2,"u1-pythag-model":2,"u1-right-test-decide":3,"u1-shortcut-saving-gap":3,"u1-sqrt-perfect":2,"u1-square-of-number":2,"u1-square-plot-perimeter":2,"u1-square-side-perimeter-gap":3,"u1-triple-find":2,"u1-two-ladders-gap":3,"u1-why-approx":2,"u2-chain-negative-divisor-gap":3,"u2-div-2by1":3,"u2-div-2by2":3,"u2-div-model-groups":2,"u2-div-share-change":2,"u2-fifth-day-temp-gap":3,"u2-identify-operation":2,"u2-missing-factor-follow-gap":3,"u2-mixed-problem":2,"u2-mult-model-chips":2,"u2-mult-problem":3,"u2-ooo-brackets-num":3,"u2-ooo-evaluate-mc":2,"u2-ooo-num":2,"u2-pk-add-basic":2,"u2-pk-add-context":2,"u2-pk-mixed-chain":2,"u2-pk-order-ops-dec":3,"u2-pk-sub-basic":2,"u2-pkf-add-regroup":2,"u2-pkf-add-three":2,"u2-pkf-below-line":2,"u2-pkf-below-temp":2,"u2-pkf-div-2digit":2,"u2-pkf-div-exact":2,"u2-pkf-div-remainder":2,"u2-pkf-fact-halving":2,"u2-pkf-fact-recall":2,"u2-pkf-fact-skip":2,"u2-pkf-mult-2by1":2,"u2-pkf-mult-2by2":2,"u2-pkf-mult-zeros":2,"u2-pkf-ooo-basic":2,"u2-pkf-ooo-brackets":2,"u2-pkf-ooo-chain":2,"u2-pkf-sub-regroup":2,"u2-product-sign-apply":2,"u2-quotient-sign-apply":2,"u2-sign-product-problem":2,"u2-square-minus-product-gap":2,"u2-two-divers-gap":3,"u3-area-decimal-gap":2,"u3-area-model-product":2,"u3-bottles-roundup-gap":3,"u3-chain-mc-gap":2,"u3-chain-subtract-product-gap":3,"u3-context-divide-expression":2,"u3-context-multiply-expression":2,"u3-divide-frac-by-frac":2,"u3-divide-mixed-cr":3,"u3-divide-word-cr":2,"u3-estimate-product-benchmark":2,"u3-estimate-quotient-benchmark":2,"u3-estimate-reasoning-var":3,"u3-identify-operation":2,"u3-mixed-multistep-cr":3,"u3-model-division-bar":3,"u3-model-frac-times-whole":2,"u3-model-whole-div-frac":2,"u3-mult-div-chain-cr":2,"u3-multiply-mixed-cr":3,"u3-multiply-two-fractions":2,"u3-order-of-ops-fractions":2,"u3-pk-add-mixed":2,"u3-pk-add-unlike":2,"u3-pk-common-denominator":2,"u3-pk-simplify-fraction":2,"u3-pk-sub-mixed":2,"u3-pk-sub-unlike":2,"u3-pkf-add-like":2,"u3-pkf-equiv-divide":2,"u3-pkf-equiv-target":2,"u3-pkf-sub-like":2,"u3-successive-fractions":3,"u4-base-volume-link":2,"u4-faces-identify":2,"u4-holds-most":2,"u4-net-build-parts":2,"u4-net-choose":2,"u4-net-match":2,"u4-net-predict":2,"u4-open-box-sa-gap":3,"u4-pk-add-sub-decimals":2,"u4-pk-area-circle":2,"u4-pk-area-parallelogram":2,"u4-pk-area-triangle":2,"u4-pk-mult-decimals":2,"u4-position-volume":3,"u4-sa-cylinder":3,"u4-sa-from-net":2,"u4-sa-missing-edge":3,"u4-sa-open-tank":3,"u4-sa-problem-wrap":2,"u4-sa-rect-prism":3,"u4-sa-tri-prism":3,"u4-tank-litres-gap":2,"u4-vol-cylinder-diam":2,"u4-vol-missing-height":2,"u4-vol-rect-prism":2,"u4-vol-tri-prism":2,"u5-better-buy":3,"u5-decimal-convert":2,"u5-discount-then-tax":3,"u5-down-then-up-gap":3,"u5-express-rate":2,"u5-find-the-whole":3,"u5-find-whole-mc-gap":2,"u5-fraction-convert":2,"u5-grid-fractional-percent":2,"u5-grid-over-100":2,"u5-identify-rate-example":2,"u5-identify-ratio-simplest":2,"u5-meaning-of-ratio-ab":2,"u5-mixed-forms-order":3,"u5-part-to-whole-fraction":2,"u5-percent-change":3,"u5-percent-convert":2,"u5-percent-of-number":3,"u5-percent-of-percent":2,"u5-percent-of-percent-quantity":2,"u5-pk-div-decimals":2,"u5-pk-frac-to-decimal":2,"u5-pk-percent-convert":2,"u5-pk-percent-of":2,"u5-pk-simplify-fraction":2,"u5-pkf-write-percent":2,"u5-rate-problem-solve":2,"u5-ratio-as-percent":2,"u5-ratio-part-percent-gap":3,"u5-ratio-problem-solve":2,"u5-shaded-grid-read":2,"u5-successive-percents":3,"u5-three-term-ratio":2,"u5-two-term-ratio":2,"u5-unit-rate-cost-gap":3,"u5-why-rate-not-percent":2,"u6-add-correct-first-step":3,"u6-add-table-describe":3,"u6-construct-graph-points":2,"u6-decimal-coefficient-gap":2,"u6-describe-graph":3,"u6-graph-extend-pair":2,"u6-identify-error":3,"u6-missing-ordered-pair":2,"u6-missing-ordered-pair-backward":2,"u6-model-equation":3,"u6-pk-evaluate-expression":2,"u6-pk-graph-relation":3,"u6-pk-inspection-trial":2,"u6-pk-read-point":2,"u6-pk-solve-other-forms":2,"u6-pk-solve-two-step":2,"u6-pk-table-missing":2,"u6-pk-verify-two-step":3,"u6-pkf-model-problem":3,"u6-pkf-substitute-check":2,"u6-solve-context-problem":3,"u6-solve-distributive":3,"u6-solve-div-plus":2,"u6-solve-group-problem":3,"u6-solve-one-step":2,"u6-solve-two-step":3,"u6-two-points-evaluate-gap":3,"u6-verify-conclusion":3,"u6-verify-left-side":2,"u6-visual-step":2,"u7-add-choose-graph-gen":2,"u7-apparent-height-ratio":2,"u7-apply-rule-percent":2,"u7-choose-graph-basic":2,"u7-combined-mean-gap":3,"u7-critique-the-claim":3,"u7-deep-critique":3,"u7-expected-count-gap":2,"u7-fix-the-graph":2,"u7-mean-difference-gap":3,"u7-misleading-format":2,"u7-missing-mean-value-gap":2,"u7-name-the-trick":3,"u7-pk-exp-vs-theor":2,"u7-pk-graph-quantities":2,"u7-pk-outlier-find":2,"u7-pk-range-basic":2,"u7-pk-sample-space":2,"u7-product-rule-intro":2,"u7-same-colour-twice":3,"u7-survey-scale-gap":3,"u7-two-colours-twice-gap":3,"u7-two-draws-percent":3,"u7-two-events-mc-gap":2,"u7-two-spinners-decimal":3,"u8-around-point-num":3,"u8-build-from-views":2,"u8-build-max-num":3,"u8-changed-side-view-gap":3,"u8-combo-transform":3,"u8-cube-volume-gap":3,"u8-cubes-total-num":3,"u8-env-views-var":2,"u8-front-squares-num":3,"u8-front-view-choice":2,"u8-hidden-cubes-gap":2,"u8-irregular-angle-num":2,"u8-match-object":3,"u8-mixed-point-num":2,"u8-pk-protractor-read":2,"u8-pk-reflect-point":2,"u8-pk-transform-describe":2,"u8-rotate-front-num":2,"u8-rotate-predict":2,"u8-rotated-side-view-gap":3,"u8-tess-transform":2,"u8-tiles-at-point-gap":3,"u8-top-view-choice":2};
+window.__BANK_CRMARKS={"u1-best-estimate":3,"u1-calc-approx":3,"u1-diagonal-mc-gap":2,"u1-diagonal-square":3,"u1-estimate-between":2,"u1-factors-root":2,"u1-fence-perimeter-gap":3,"u1-garden-diagonal-gap":2,"u1-grid-distance-gap":2,"u1-hypotenuse":3,"u1-is-right":2,"u1-ladder-context":2,"u1-missing-leg":3,"u1-perfect-square-region":2,"u1-pk-carroll-cell":2,"u1-pk-divisibility-why":2,"u1-pk-factor-list":2,"u1-pk-square-area":2,"u1-pkf-order-below":2,"u1-pkf-order-line":2,"u1-pkf-square-between":2,"u1-pythag-model":2,"u1-right-test-decide":3,"u1-shortcut-saving-gap":3,"u1-sqrt-perfect":2,"u1-square-of-number":2,"u1-square-plot-perimeter":2,"u1-square-side-perimeter-gap":3,"u1-triple-find":2,"u1-two-ladders-gap":3,"u1-why-approx":2,"u2-chain-negative-divisor-gap":3,"u2-div-2by1":3,"u2-div-2by2":3,"u2-div-model-groups":2,"u2-div-share-change":2,"u2-fifth-day-temp-gap":3,"u2-identify-operation":2,"u2-missing-factor-follow-gap":3,"u2-mixed-problem":2,"u2-mult-model-chips":2,"u2-mult-problem":3,"u2-ooo-brackets-num":3,"u2-ooo-evaluate-mc":2,"u2-ooo-num":2,"u2-pk-add-basic":2,"u2-pk-add-context":2,"u2-pk-mixed-chain":2,"u2-pk-order-ops-dec":3,"u2-pk-sub-basic":2,"u2-pkf-add-regroup":2,"u2-pkf-add-three":2,"u2-pkf-below-line":2,"u2-pkf-below-temp":2,"u2-pkf-div-2digit":2,"u2-pkf-div-exact":2,"u2-pkf-div-remainder":2,"u2-pkf-fact-halving":2,"u2-pkf-fact-recall":2,"u2-pkf-fact-skip":2,"u2-pkf-mult-2by1":2,"u2-pkf-mult-2by2":2,"u2-pkf-mult-zeros":2,"u2-pkf-ooo-basic":2,"u2-pkf-ooo-brackets":2,"u2-pkf-ooo-chain":2,"u2-pkf-sub-regroup":2,"u2-product-sign-apply":2,"u2-quotient-sign-apply":2,"u2-sign-product-problem":2,"u2-square-minus-product-gap":2,"u2-two-divers-gap":3,"u3-area-decimal-gap":2,"u3-area-model-product":2,"u3-bottles-roundup-gap":3,"u3-chain-mc-gap":2,"u3-chain-subtract-product-gap":3,"u3-context-divide-expression":2,"u3-context-multiply-expression":2,"u3-divide-frac-by-frac":2,"u3-divide-mixed-cr":3,"u3-divide-word-cr":2,"u3-estimate-product-benchmark":2,"u3-estimate-quotient-benchmark":2,"u3-estimate-reasoning-var":3,"u3-identify-operation":2,"u3-mixed-multistep-cr":3,"u3-model-division-bar":3,"u3-model-frac-times-whole":2,"u3-model-whole-div-frac":2,"u3-mult-div-chain-cr":2,"u3-multiply-mixed-cr":3,"u3-multiply-two-fractions":2,"u3-order-of-ops-fractions":2,"u3-pk-add-mixed":2,"u3-pk-add-unlike":2,"u3-pk-common-denominator":2,"u3-pk-simplify-fraction":2,"u3-pk-sub-mixed":2,"u3-pk-sub-unlike":2,"u3-pkf-add-like":2,"u3-pkf-equiv-divide":2,"u3-pkf-equiv-target":2,"u3-pkf-sub-like":2,"u3-successive-fractions":3,"u4-base-volume-link":2,"u4-faces-identify":2,"u4-holds-most":2,"u4-net-build-parts":2,"u4-net-choose":2,"u4-net-match":2,"u4-net-predict":2,"u4-open-box-sa-gap":3,"u4-pk-add-sub-decimals":2,"u4-pk-area-circle":2,"u4-pk-area-parallelogram":2,"u4-pk-area-triangle":2,"u4-pk-mult-decimals":2,"u4-position-volume":3,"u4-sa-cylinder":3,"u4-sa-from-net":2,"u4-sa-missing-edge":3,"u4-sa-open-tank":3,"u4-sa-problem-wrap":2,"u4-sa-rect-prism":3,"u4-sa-tri-prism":3,"u4-tank-litres-gap":2,"u4-vol-cylinder-diam":2,"u4-vol-missing-height":2,"u4-vol-rect-prism":2,"u4-vol-tri-prism":2,"u5-better-buy":3,"u5-decimal-convert":2,"u5-discount-then-tax":3,"u5-down-then-up-gap":3,"u5-express-rate":2,"u5-find-the-whole":3,"u5-find-whole-mc-gap":2,"u5-fraction-convert":2,"u5-grid-fractional-percent":2,"u5-grid-over-100":2,"u5-identify-rate-example":2,"u5-identify-ratio-simplest":2,"u5-meaning-of-ratio-ab":2,"u5-mixed-forms-order":3,"u5-part-to-whole-fraction":2,"u5-percent-change":3,"u5-percent-convert":2,"u5-percent-of-number":3,"u5-percent-of-percent":2,"u5-percent-of-percent-quantity":2,"u5-pk-div-decimals":2,"u5-pk-frac-to-decimal":2,"u5-pk-percent-convert":2,"u5-pk-percent-of":2,"u5-pk-simplify-fraction":2,"u5-pkf-write-percent":2,"u5-rate-problem-solve":2,"u5-ratio-as-percent":2,"u5-ratio-part-percent-gap":3,"u5-ratio-problem-solve":2,"u5-shaded-grid-read":2,"u5-successive-percents":3,"u5-three-term-ratio":2,"u5-two-term-ratio":2,"u5-unit-rate-cost-gap":3,"u5-why-rate-not-percent":2,"u6-add-correct-first-step":3,"u6-add-table-describe":3,"u6-construct-graph-points":2,"u6-decimal-coefficient-gap":2,"u6-describe-graph":3,"u6-graph-extend-pair":2,"u6-identify-error":3,"u6-missing-ordered-pair":2,"u6-missing-ordered-pair-backward":2,"u6-model-equation":3,"u6-pk-evaluate-expression":2,"u6-pk-graph-relation":3,"u6-pk-inspection-trial":2,"u6-pk-read-point":2,"u6-pk-solve-other-forms":2,"u6-pk-solve-two-step":2,"u6-pk-table-missing":2,"u6-pk-verify-two-step":3,"u6-pkf-model-problem":3,"u6-pkf-substitute-check":2,"u6-solve-context-problem":3,"u6-solve-distributive":3,"u6-solve-div-plus":2,"u6-solve-group-problem":3,"u6-solve-one-step":2,"u6-solve-two-step":3,"u6-two-points-evaluate-gap":3,"u6-verify-conclusion":3,"u6-verify-left-side":2,"u6-visual-step":2,"u7-add-choose-graph-gen":2,"u7-apparent-height-ratio":2,"u7-apply-rule-percent":2,"u7-choose-graph-basic":2,"u7-critique-the-claim":3,"u7-deep-critique":3,"u7-fix-the-graph":2,"u7-misleading-format":2,"u7-name-the-trick":3,"u7-pk-exp-vs-theor":2,"u7-pk-graph-quantities":2,"u7-pk-outlier-find":2,"u7-pk-range-basic":2,"u7-pk-sample-space":2,"u7-product-rule-intro":2,"u7-same-colour-twice":3,"u7-two-colours-twice-gap":3,"u7-two-draws-percent":3,"u7-two-events-mc-gap":2,"u7-two-spinners-decimal":3,"u8-around-point-num":3,"u8-build-from-views":2,"u8-build-max-num":3,"u8-changed-side-view-gap":3,"u8-combo-transform":3,"u8-cube-volume-gap":3,"u8-cubes-total-num":3,"u8-env-views-var":2,"u8-front-squares-num":3,"u8-front-view-choice":2,"u8-hidden-cubes-gap":2,"u8-irregular-angle-num":2,"u8-match-object":3,"u8-mixed-point-num":2,"u8-pk-protractor-read":2,"u8-pk-reflect-point":2,"u8-pk-transform-describe":2,"u8-rotate-front-num":2,"u8-rotate-predict":2,"u8-rotated-side-view-gap":3,"u8-tess-transform":2,"u8-tiles-at-point-gap":3,"u8-top-view-choice":2};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
 window.__BANK_BIMODAL={"u1-best-estimate":"a","u1-diagonal-mc-gap":"a","u1-estimate-between":"a","u1-factors-root":"a","u1-is-right":"a","u1-perfect-square-region":"a","u1-pk-carroll-cell":"a","u1-pk-divisibility-why":"b","u1-pk-factor-list":"a","u1-pk-square-area":"a","u1-pkf-order-below":"a","u1-pkf-order-line":"a","u1-pkf-square-between":"a","u1-pythag-model":"a","u1-right-test-decide":"b","u1-sqrt-perfect":"a","u1-square-of-number":"a","u1-why-approx":"b","u2-div-model-groups":"a","u2-div-share-change":"a","u2-identify-operation":"a","u2-mult-model-chips":"a","u2-ooo-evaluate-mc":"a","u2-pk-add-basic":"a","u2-pk-add-context":"a","u2-pk-mixed-chain":"a","u2-pk-order-ops-dec":"a","u2-pk-sub-basic":"a","u2-pkf-add-regroup":"a","u2-pkf-add-three":"a","u2-pkf-below-line":"a","u2-pkf-below-temp":"a","u2-pkf-div-2digit":"a","u2-pkf-div-exact":"a","u2-pkf-div-remainder":"a","u2-pkf-fact-halving":"a","u2-pkf-fact-recall":"a","u2-pkf-fact-skip":"a","u2-pkf-mult-2by1":"a","u2-pkf-mult-2by2":"a","u2-pkf-mult-zeros":"a","u2-pkf-ooo-basic":"a","u2-pkf-ooo-brackets":"a","u2-pkf-ooo-chain":"a","u2-pkf-sub-regroup":"a","u2-product-sign-apply":"a","u2-quotient-sign-apply":"a","u3-area-model-product":"a","u3-chain-mc-gap":"a","u3-context-divide-expression":"a","u3-context-multiply-expression":"a","u3-divide-frac-by-frac":"a","u3-estimate-product-benchmark":"a","u3-estimate-quotient-benchmark":"a","u3-estimate-reasoning-var":"a","u3-identify-operation":"a","u3-model-frac-times-whole":"a","u3-model-whole-div-frac":"a","u3-multiply-two-fractions":"a","u3-pk-add-mixed":"a","u3-pk-add-unlike":"a","u3-pk-common-denominator":"a","u3-pk-simplify-fraction":"a","u3-pk-sub-mixed":"a","u3-pk-sub-unlike":"a","u3-pkf-add-like":"a","u3-pkf-equiv-divide":"a","u3-pkf-equiv-target":"a","u3-pkf-sub-like":"a","u3-successive-fractions":"a","u4-base-volume-link":"b","u4-faces-identify":"a","u4-holds-most":"a","u4-net-build-parts":"a","u4-net-choose":"a","u4-net-match":"a","u4-net-predict":"a","u4-pk-add-sub-decimals":"a","u4-pk-area-circle":"a","u4-pk-area-parallelogram":"a","u4-pk-area-triangle":"a","u4-pk-mult-decimals":"a","u4-position-volume":"a","u4-sa-from-net":"a","u4-sa-missing-edge":"a","u4-vol-missing-height":"a","u4-vol-rect-prism":"a","u5-better-buy":"a","u5-decimal-convert":"a","u5-express-rate":"a","u5-find-whole-mc-gap":"a","u5-fraction-convert":"a","u5-grid-fractional-percent":"a","u5-grid-over-100":"a","u5-identify-rate-example":"a","u5-identify-ratio-simplest":"a","u5-meaning-of-ratio-ab":"b","u5-mixed-forms-order":"a","u5-part-to-whole-fraction":"a","u5-percent-convert":"a","u5-percent-of-percent":"a","u5-pk-div-decimals":"a","u5-pk-frac-to-decimal":"a","u5-pk-percent-convert":"a","u5-pk-percent-of":"a","u5-pk-simplify-fraction":"a","u5-pkf-write-percent":"a","u5-ratio-as-percent":"a","u5-shaded-grid-read":"a","u5-successive-percents":"a","u5-three-term-ratio":"a","u5-two-term-ratio":"a","u5-why-rate-not-percent":"b","u6-add-correct-first-step":"b","u6-add-table-describe":"b","u6-construct-graph-points":"a","u6-describe-graph":"b","u6-identify-error":"b","u6-model-equation":"b","u6-pk-evaluate-expression":"a","u6-pk-graph-relation":"b","u6-pk-inspection-trial":"a","u6-pk-read-point":"a","u6-pk-solve-other-forms":"a","u6-pk-solve-two-step":"a","u6-pk-table-missing":"a","u6-pk-verify-two-step":"b","u6-pkf-model-problem":"b","u6-pkf-substitute-check":"a","u6-solve-one-step":"a","u6-verify-conclusion":"b","u6-verify-left-side":"a","u6-visual-step":"a","u7-add-choose-graph-gen":"a","u7-choose-graph-basic":"a","u7-deep-critique":"b","u7-misleading-format":"b","u7-pk-exp-vs-theor":"a","u7-pk-graph-quantities":"a","u7-pk-outlier-find":"a","u7-pk-range-basic":"a","u7-pk-sample-space":"a","u7-product-rule-intro":"a","u7-two-events-mc-gap":"a","u8-build-from-views":"a","u8-combo-transform":"a","u8-env-views-var":"b","u8-front-view-choice":"a","u8-match-object":"b","u8-pk-protractor-read":"a","u8-pk-reflect-point":"a","u8-pk-transform-describe":"a","u8-rotate-predict":"a","u8-tess-transform":"a","u8-top-view-choice":"a"};
+/* ============ Level basis labels (generated) ============ */
+/* Built by assemble-bank.py from the LEVELBASIS comments at each
+   audited entry (November 25, 2026): the criterion that decided
+   the entry's level under the adopted criteria card, shown in
+   teacher mode beside the level on the question card. Entries
+   no audit has covered have no label. */
+window.__BANK_LEVELBASIS={};
