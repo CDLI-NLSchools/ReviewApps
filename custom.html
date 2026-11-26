@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Load your own questions — Review Apps demo</title>
+<link rel="stylesheet" href="katex/katex.min.css">
+<style>
+  :root{ --ink:#1c2733; --mut:#5b6b7a; --line:#d7dee5; --card:#ffffff; --bg:#f2f5f8;
+         --accent:#0b6e4f; --amber:#9a6a00; --amberbg:#fff4d6; --blue:#14549e; --bluebg:#e3eefb;
+         --red:#a4261f; --redbg:#fbe7e5; --greenbg:#e2f3ea; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); }
+  main{ max-width:880px; margin:0 auto; padding:18px 14px 60px; }
+  h1{ font-size:1.45rem; margin:6px 0 2px; }
+  .sub{ color:var(--mut); margin:0 0 14px; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin:14px 0; }
+  .card h2{ margin:0 0 8px; font-size:1.08rem; }
+  button{ font:inherit; border:1px solid var(--line); background:#fff; border-radius:9px; padding:8px 14px; cursor:pointer; }
+  button:hover{ border-color:#aeb9c4; }
+  button.primary{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
+  button:disabled{ opacity:.45; cursor:default; }
+  textarea, input[type=text], input[type=number]{ font:inherit; width:100%; padding:9px; border:1px solid var(--line); border-radius:9px; }
+  textarea{ min-height:110px; }
+  .drop{ border:2px dashed var(--line); border-radius:12px; padding:18px; text-align:center; color:var(--mut); margin:10px 0; }
+  .drop.over{ border-color:var(--accent); color:var(--ink); background:var(--greenbg); }
+  .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .grow{ flex:1 1 200px; }
+  .status{ margin-top:10px; }
+  .err{ color:var(--red); } .ok{ color:var(--accent); }
+  .problems{ background:var(--redbg); border:1px solid #eec5c1; border-radius:10px; padding:10px 14px; margin:10px 0; }
+  .problems ul{ margin:6px 0 2px; padding-left:20px; }
+  .qcard{ border:1px solid var(--line); border-radius:12px; padding:14px; margin:12px 0; background:#fff; }
+  .qcard.excluded{ opacity:.55; }
+  .qhead{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:8px; }
+  .badge{ font-size:.78rem; font-weight:600; border-radius:999px; padding:2px 9px; }
+  .b-type{ background:#eef1f4; color:var(--ink); }
+  .b-fig{ background:var(--amberbg); color:var(--amber); }
+  .b-solved{ background:var(--bluebg); color:var(--blue); }
+  .b-key{ background:var(--greenbg); color:var(--accent); }
+  .b-err{ background:var(--redbg); color:var(--red); }
+  .qtext{ white-space:pre-wrap; line-height:1.45; }
+  .opts{ list-style:none; margin:10px 0 4px; padding:0; }
+  .opts li{ border:1px solid var(--line); border-radius:9px; padding:8px 10px; margin:6px 0; display:flex; gap:9px; align-items:flex-start; }
+  .opts li.key{ border-color:var(--accent); background:var(--greenbg); }
+  .opts li.picked{ border-color:var(--blue); background:var(--bluebg); }
+  .opts li.wrongpick{ border-color:var(--red); background:var(--redbg); }
+  .opts .otext{ white-space:pre-wrap; flex:1; }
+  .note{ background:var(--amberbg); border-radius:8px; padding:8px 10px; margin:8px 0; white-space:pre-wrap; }
+  .warnline{ color:var(--amber); margin:4px 0; }
+  .errline{ color:var(--red); margin:4px 0; }
+  details{ margin:8px 0; } summary{ cursor:pointer; color:var(--blue); }
+  .sol{ white-space:pre-wrap; line-height:1.45; background:#f7f9fa; border-radius:8px; padding:10px; margin-top:6px; }
+  .figwrap{ margin:10px 0; } .figwrap svg{ max-width:100%; height:auto; }
+  .small{ font-size:.88rem; color:var(--mut); }
+  .selfrow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .result{ font-weight:700; margin:8px 0; }
+  .hidden{ display:none; }
+  footer{ color:var(--mut); font-size:.88rem; margin-top:26px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Load your own questions</h1>
+  <p class="sub">A demo for teachers. Load a question set made with the Gemini recipe, check every question, then practise it. The set lives only in this page: nothing is uploaded, and the Review Apps banks do not change.</p>
+
+  <section class="card" id="loadCard">
+    <h2>1. Load a set</h2>
+    <div class="row">
+      <input type="file" id="fileIn" accept=".json,.txt,application/json,text/plain" class="grow">
+    </div>
+    <div class="drop" id="dropZone">or drop the file here</div>
+    <label class="small" for="pasteIn">or paste the text</label>
+    <textarea id="pasteIn" placeholder="Paste the set text here, including the JSON block"></textarea>
+    <div class="row" style="margin-top:10px">
+      <button class="primary" id="loadPasteBtn">Load pasted text</button>
+      <span class="status" id="loadStatus"></span>
+    </div>
+  </section>
+
+  <section class="card hidden" id="reviewHead">
+    <h2>2. Check the set</h2>
+    <div id="setSummary"></div>
+    <div class="problems hidden" id="problemsBox"><strong>Problems to fix before practising</strong><ul id="problemsList"></ul></div>
+    <div class="row" style="margin-top:10px">
+      <label class="grow small">Course or subject (for submissions)<input type="text" id="subCourse"></label>
+      <label class="grow small">Suggested unit or topic (for submissions)<input type="text" id="subUnit"></label>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <label class="grow small">Your name (optional)<input type="text" id="subName"></label>
+      <label class="grow small">School (optional)<input type="text" id="subSchool"></label>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button class="primary" id="startBtn">Start practice</button>
+      <span class="small">Questions with a diagram in the original are listed first. Check those keys closely.</span>
+    </div>
+  </section>
+
+  <div id="reviewList"></div>
+
+  <section class="card hidden" id="practiceCard">
+    <h2>3. Practise</h2>
+    <div class="small" id="progLine"></div>
+    <div id="practiceBody"></div>
+  </section>
+
+  <section class="card hidden" id="summaryCard">
+    <h2>Set complete</h2>
+    <div id="summaryBody"></div>
+    <div class="row" style="margin-top:10px">
+      <button id="againBtn">Practise again</button>
+      <button id="backBtn">Back to checking the set</button>
+    </div>
+  </section>
+
+  <footer>This is a demonstration page. Sets are not saved: closing the tab ends the set. Questions you submit go to a pool for consideration; every submitted question is verified, tagged and levelled before anything joins a bank.</footer>
+</main>
+
+<script src="katex/katex.min.js"></script>
+<script src="katex/contrib/auto-render.min.js"></script>
+<script>
+"use strict";
+/* ---------- core (no DOM access in this section) ---------- */
+var SUBMIT_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd6XwHOTQaNozbBPpXellINwuATDjf8wu9g5Wj03rcirgNIJg/formResponse";
+var SUBMIT_ENTRIES = { question: "entry.5061816", setTitle: "entry.1055972098",
+  course: "entry.1323502826", unit: "entry.195800385", name: "entry.458752406", school: "entry.1873622729" };
+
+function extractJSON(text){
+  if (typeof text !== "string") throw new Error("Nothing to load.");
+  var t = text.trim();
+  try { return JSON.parse(t); } catch(e) {}
+  var m = t.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (m) { try { return JSON.parse(m[1].trim()); } catch(e) {} }
+  var a = t.indexOf("{"), b = t.lastIndexOf("}");
+  if (a >= 0 && b > a) { try { return JSON.parse(t.slice(a, b + 1)); } catch(e) {} }
+  throw new Error("No readable question set found in that text.");
+}
+
+function parseNumAnswer(v){
+  if (typeof v === "number") return isFinite(v) ? v : null;
+  if (typeof v !== "string") return null;
+  var s = v.replace(/[$,%\s]/g, "").replace(/,/g, "");
+  if (s === "") return null;
+  var n = Number(s);
+  return isFinite(n) ? n : null;
+}
+
+function decimalsOf(v){
+  var s = String(v);
+  var i = s.indexOf(".");
+  return i < 0 ? 0 : (s.length - i - 1);
+}
+
+function numTolerance(answerRaw){
+  var d = decimalsOf(answerRaw);
+  return d > 0 ? Math.pow(10, -d) : 0.5;
+}
+
+function validateSet(obj){
+  var out = { title: "", items: [], globalErrors: [] };
+  if (!obj || typeof obj !== "object" || Array.isArray(obj)) { out.globalErrors.push("The set is not a JSON object."); return out; }
+  out.title = typeof obj.title === "string" ? obj.title : "";
+  if (!Array.isArray(obj.questions)) { out.globalErrors.push("The set has no questions list."); return out; }
+  if (!obj.questions.length) out.globalErrors.push("The questions list is empty.");
+  var seen = {};
+  obj.questions.forEach(function(q, idx){
+    var it = { raw: q, n: "", type: "", errors: [], warnings: [], include: true,
+               key: null, keyChanged: false, submitted: false, hadFigure: false, keySource: "solved", note: "" };
+    if (!q || typeof q !== "object") { it.errors.push("This entry is not a question object."); it.n = "item " + (idx + 1); out.items.push(it); return; }
+    it.n = (q.n === undefined || q.n === null || q.n === "") ? ("item " + (idx + 1)) : String(q.n);
+    if (seen[it.n]) it.errors.push("Label " + it.n + " is used more than once in this set.");
+    seen[it.n] = true;
+    it.type = q.type;
+    if (["mc", "num", "written"].indexOf(it.type) < 0) it.errors.push("Type is not one of mc, num, written.");
+    if (typeof q.question !== "string" || !q.question.trim()) it.errors.push("The question text is empty.");
+    if (typeof q.solution !== "string" || !q.solution.trim()) it.warnings.push("No worked solution was provided.");
+    it.hadFigure = q.hadFigure === true;
+    it.keySource = (q.keySource === "key") ? "key" : "solved";
+    if (q.keySource !== undefined && q.keySource !== "key" && q.keySource !== "solved")
+      it.warnings.push("Answer source was not clear; treated as solved by Gemini.");
+    it.note = typeof q.note === "string" ? q.note : "";
+    if (q.answer === undefined || q.answer === null || q.answer === "") it.errors.push("No answer was provided.");
+    if (it.type === "mc"){
+      if (!Array.isArray(q.options) || q.options.length < 2) it.errors.push("A multiple choice question needs at least two options.");
+      else {
+        q.options.forEach(function(o, oi){ if (typeof o !== "string" || !o.trim()) it.errors.push("Option " + (oi + 1) + " is empty."); });
+        if (q.options.indexOf(q.answer) >= 0) it.key = q.answer;
+        else {
+          var trimHit = null;
+          q.options.forEach(function(o){ if (typeof o === "string" && typeof q.answer === "string" && o.trim() === q.answer.trim()) trimHit = o; });
+          if (trimHit !== null) { it.key = trimHit; it.warnings.push("The answer matched an option only after stray spaces were ignored; the option's exact text is being used."); }
+          else it.errors.push("The answer is not one of the options. The set cannot be practised until this is fixed in the review step.");
+        }
+      }
+      if (it.key === null && q.answer !== undefined && q.answer !== null) it.key = q.answer;
+    } else if (it.type === "num"){
+      var nv = parseNumAnswer(q.answer);
+      if (nv === null) it.errors.push("The numeric answer does not read as a number.");
+      it.key = q.answer;
+    } else if (it.type === "written"){
+      it.key = q.answer;
+    }
+    it.include = it.errors.length === 0;
+    out.items.push(it);
+  });
+  return out;
+}
+</script>
+<script>
+"use strict";
+/* ---------- page wiring ---------- */
+var SET = null, practice = null;
+
+function $(id){ return document.getElementById(id); }
+function el(tag, cls, text){
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined) n.textContent = text;
+  return n;
+}
+function mathIn(node){
+  if (window.renderMathInElement) renderMathInElement(node, {
+    delimiters: [ {left: "\\(", right: "\\)", display: false}, {left: "\\[", right: "\\]", display: true} ],
+    throwOnError: false });
+}
+function sanitizeSVG(s){
+  try {
+    var doc = new DOMParser().parseFromString(s, "image/svg+xml");
+    var root = doc.documentElement;
+    if (!root || root.tagName.toLowerCase() !== "svg") return null;
+    var bad = root.querySelectorAll("script, foreignObject, animate, set, a");
+    for (var i = 0; i < bad.length; i++) bad[i].remove();
+    var all = root.querySelectorAll("*");
+    for (var j = 0; j < all.length; j++){
+      var attrs = all[j].attributes;
+      for (var k = attrs.length - 1; k >= 0; k--){
+        var nm = attrs[k].name.toLowerCase(), val = attrs[k].value || "";
+        if (nm.indexOf("on") === 0) all[j].removeAttribute(attrs[k].name);
+        if ((nm === "href" || nm === "xlink:href") && val.trim().charAt(0) !== "#") all[j].removeAttribute(attrs[k].name);
+      }
+    }
+    return new XMLSerializer().serializeToString(root);
+  } catch(e) { return null; }
+}
+function badges(it){
+  var row = el("div", "qhead");
+  row.appendChild(el("strong", null, "Question " + it.n));
+  row.appendChild(el("span", "badge b-type", it.type === "mc" ? "Multiple choice" : it.type === "num" ? "Numeric" : "Written"));
+  if (it.hadFigure) row.appendChild(el("span", "badge b-fig", "Original had a diagram"));
+  row.appendChild(it.keySource === "key" ? el("span", "badge b-key", "Answer from the test key") : el("span", "badge b-solved", "Answer solved by Gemini"));
+  if (it.errors.length) row.appendChild(el("span", "badge b-err", "Has a problem"));
+  return row;
+}
+function figureBlock(it){
+  if (typeof it.raw.svg !== "string" || it.raw.svg.indexOf("<svg") < 0) return null;
+  var clean = sanitizeSVG(it.raw.svg);
+  if (!clean) return null;
+  var w = el("div", "figwrap"); w.innerHTML = clean;
+  return w;
+}
+function solutionBlock(it){
+  var d = el("details");
+  d.appendChild(el("summary", null, "Worked solution"));
+  d.appendChild(el("div", "sol", typeof it.raw.solution === "string" ? it.raw.solution : ""));
+  mathIn(d);
+  return d;
+}
+function submitQuestion(it, btn){
+  var q = {};
+  Object.keys(it.raw).forEach(function(k){ q[k] = it.raw[k]; });
+  q.answer = it.key;
+  var body = new URLSearchParams();
+  body.set(SUBMIT_ENTRIES.question, JSON.stringify(q, null, 2));
+  body.set(SUBMIT_ENTRIES.setTitle, SET.title || "");
+  body.set(SUBMIT_ENTRIES.course, $("subCourse").value || "");
+  body.set(SUBMIT_ENTRIES.unit, $("subUnit").value || "");
+  body.set(SUBMIT_ENTRIES.name, $("subName").value || "");
+  body.set(SUBMIT_ENTRIES.school, $("subSchool").value || "");
+  btn.disabled = true; btn.textContent = "Sending...";
+  fetch(SUBMIT_URL, { method: "POST", mode: "no-cors",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: body.toString() })
+    .then(function(){ it.submitted = true; btn.textContent = "Submitted to the pool"; })
+    .catch(function(){ btn.disabled = false; btn.textContent = "Submit to Review Apps"; });
+}
+
+function renderReview(){
+  var list = $("reviewList"); list.innerHTML = "";
+  var order = SET.items.map(function(it, i){ return i; });
+  order.sort(function(a, b){
+    var fa = SET.items[a].hadFigure ? 0 : 1, fb = SET.items[b].hadFigure ? 0 : 1;
+    return fa - fb || a - b;
+  });
+  order.forEach(function(idx){
+    var it = SET.items[idx];
+    var card = el("div", "qcard" + (it.include ? "" : " excluded"));
+    card.appendChild(badges(it));
+    var qt = el("div", "qtext", typeof it.raw.question === "string" ? it.raw.question : "");
+    card.appendChild(qt); mathIn(qt);
+    var fig = figureBlock(it); if (fig) card.appendChild(fig);
+    if (it.note) card.appendChild(el("div", "note", "Gemini's note: " + it.note));
+    it.warnings.forEach(function(w){ card.appendChild(el("div", "warnline", "Check: " + w)); });
+    it.errors.forEach(function(e){ card.appendChild(el("div", "errline", "Problem: " + e)); });
+    if (it.type === "mc" && Array.isArray(it.raw.options)){
+      var ul = el("ul", "opts");
+      it.raw.options.forEach(function(opt){
+        var li = el("li", opt === it.key ? "key" : "");
+        var radio = document.createElement("input");
+        radio.type = "radio"; radio.name = "key-" + idx; radio.checked = opt === it.key;
+        radio.addEventListener("change", function(){
+          it.key = opt; it.keyChanged = (opt !== it.raw.answer);
+          renderReview();
+        });
+        li.appendChild(radio);
+        var ot = el("span", "otext", opt); li.appendChild(ot); mathIn(ot);
+        if (opt === it.key) li.appendChild(el("span", "badge b-key", "Answer"));
+        ul.appendChild(li);
+      });
+      card.appendChild(ul);
+      if (it.keyChanged) card.appendChild(el("div", "warnline", "You changed the answer from the one Gemini gave."));
+    } else if (it.type === "num" || it.type === "written"){
+      var lab = el("label", "small", it.type === "num" ? "Answer (editable)" : "Model answer (editable)");
+      var inp = document.createElement("input"); inp.type = "text"; inp.value = it.key === null ? "" : String(it.key);
+      inp.addEventListener("change", function(){ it.key = inp.value; it.keyChanged = (inp.value !== String(it.raw.answer)); renderSummaryLine(); });
+      lab.appendChild(inp); card.appendChild(lab);
+    }
+    card.appendChild(solutionBlock(it));
+    var row = el("div", "row");
+    var inc = el("label", "small");
+    var cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = it.include;
+    cb.disabled = it.errors.length > 0;
+    cb.addEventListener("change", function(){ it.include = cb.checked; card.className = "qcard" + (it.include ? "" : " excluded"); renderSummaryLine(); });
+    inc.appendChild(cb); inc.appendChild(document.createTextNode(" Include in practice"));
+    row.appendChild(inc);
+    var sb = el("button", null, it.submitted ? "Submitted to the pool" : "Submit to Review Apps");
+    sb.disabled = it.submitted;
+    sb.addEventListener("click", function(){ submitQuestion(it, sb); });
+    row.appendChild(sb);
+    card.appendChild(row);
+    list.appendChild(card);
+  });
+  renderSummaryLine();
+}
+
+function renderSummaryLine(){
+  if (!SET) return;
+  var total = SET.items.length;
+  var fig = SET.items.filter(function(i){ return i.hadFigure; }).length;
+  var solved = SET.items.filter(function(i){ return i.keySource === "solved"; }).length;
+  var bad = SET.items.filter(function(i){ return i.errors.length; }).length;
+  var inc = SET.items.filter(function(i){ return i.include && !i.errors.length; }).length;
+  $("setSummary").textContent = (SET.title ? SET.title + ". " : "") + total + " questions loaded. " +
+    fig + " had a diagram in the original. " + solved + " answers were solved by Gemini rather than taken from a key. " +
+    inc + " included for practice.";
+  var probs = [];
+  SET.items.forEach(function(it){ it.errors.forEach(function(e){ probs.push("Question " + it.n + ": " + e); }); });
+  SET.globalErrors.forEach(function(e){ probs.push(e); });
+  var box = $("problemsBox"), ul = $("problemsList");
+  ul.innerHTML = "";
+  probs.forEach(function(p){ ul.appendChild(el("li", null, p)); });
+  box.className = probs.length ? "problems" : "problems hidden";
+  $("startBtn").disabled = inc === 0;
+}
+
+function loadText(text){
+  var st = $("loadStatus");
+  try {
+    var obj = extractJSON(text);
+    SET = validateSet(obj);
+    practice = null;
+    $("practiceCard").className = "card hidden";
+    $("summaryCard").className = "card hidden";
+    $("reviewHead").className = "card";
+    renderReview();
+    st.className = "status ok";
+    st.textContent = "Loaded: " + SET.items.length + " questions.";
+  } catch(e) {
+    st.className = "status err";
+    st.textContent = e.message;
+  }
+}
+
+/* ---------- practice ---------- */
+function startPractice(){
+  var queue = SET.items.filter(function(i){ return i.include && !i.errors.length; });
+  var badNum = queue.filter(function(i){ return i.type === "num" && parseNumAnswer(i.key) === null; });
+  if (badNum.length){ alert("A numeric answer no longer reads as a number: " + badNum.map(function(i){ return "Question " + i.n; }).join(", ") + ". Fix it in the checking step first."); return; }
+  practice = { queue: queue, idx: 0, results: [] };
+  $("summaryCard").className = "card hidden";
+  $("practiceCard").className = "card";
+  renderPractice();
+  $("practiceCard").scrollIntoView({ behavior: "smooth" });
+}
+function recordAndNext(outcome){
+  practice.results.push(outcome);
+  practice.idx++;
+  if (practice.idx >= practice.queue.length) renderSummary();
+  else renderPractice();
+}
+function renderPractice(){
+  var body = $("practiceBody"); body.innerHTML = "";
+  var it = practice.queue[practice.idx];
+  $("progLine").textContent = "Question " + (practice.idx + 1) + " of " + practice.queue.length + " (set question " + it.n + ")";
+  var qt = el("div", "qtext", typeof it.raw.question === "string" ? it.raw.question : "");
+  body.appendChild(qt); mathIn(qt);
+  var fig = figureBlock(it); if (fig) body.appendChild(fig);
+  var done = el("div");
+  if (it.type === "mc"){
+    var picked = null;
+    var ul = el("ul", "opts");
+    it.raw.options.forEach(function(opt){
+      var li = el("li");
+      var ot = el("span", "otext", opt); li.appendChild(ot); mathIn(ot);
+      li.addEventListener("click", function(){
+        if (done.dataset.finished) return;
+        picked = opt;
+        Array.prototype.forEach.call(ul.children, function(c){ c.className = ""; });
+        li.className = "picked";
+      });
+      ul.appendChild(li);
+    });
+    body.appendChild(ul);
+    var chk = el("button", "primary", "Check");
+    var res = el("div", "result");
+    chk.addEventListener("click", function(){
+      if (picked === null || done.dataset.finished) return;
+      done.dataset.finished = "1";
+      var correct = picked === it.key;
+      Array.prototype.forEach.call(ul.children, function(c, ci){
+        if (it.raw.options[ci] === it.key) c.className = "key";
+        else if (it.raw.options[ci] === picked) c.className = "wrongpick";
+      });
+      res.className = "result " + (correct ? "ok" : "err");
+      res.textContent = correct ? "Correct." : "Not quite. The answer is highlighted.";
+      body.appendChild(solutionBlock(it));
+      var nx = el("button", "primary", practice.idx + 1 >= practice.queue.length ? "Finish" : "Next question");
+      nx.addEventListener("click", function(){ recordAndNext({ n: it.n, kind: "mc", correct: correct }); });
+      body.appendChild(nx);
+    });
+    body.appendChild(chk); body.appendChild(res);
+  } else if (it.type === "num"){
+    var inp = document.createElement("input"); inp.type = "text"; inp.placeholder = "Your answer";
+    body.appendChild(inp);
+    var chk2 = el("button", "primary", "Check");
+    var res2 = el("div", "result");
+    chk2.addEventListener("click", function(){
+      if (done.dataset.finished) return;
+      var v = parseNumAnswer(inp.value);
+      if (v === null) { res2.className = "result err"; res2.textContent = "Enter a number first."; return; }
+      done.dataset.finished = "1";
+      var key = parseNumAnswer(it.key);
+      var correct = Math.abs(v - key) <= numTolerance(it.key);
+      res2.className = "result " + (correct ? "ok" : "err");
+      res2.textContent = correct ? "Correct." : "Not quite. The answer is " + it.key + ".";
+      body.appendChild(solutionBlock(it));
+      var nx = el("button", "primary", practice.idx + 1 >= practice.queue.length ? "Finish" : "Next question");
+      nx.addEventListener("click", function(){ recordAndNext({ n: it.n, kind: "num", correct: correct }); });
+      body.appendChild(nx);
+    });
+    body.appendChild(chk2); body.appendChild(res2);
+  } else {
+    var ta = document.createElement("textarea"); ta.placeholder = "Write your answer here first";
+    body.appendChild(ta);
+    var show = el("button", "primary", "Check against the model answer");
+    show.addEventListener("click", function(){
+      if (done.dataset.finished) return;
+      if (!ta.value.trim()) { alert("Write an answer first, then check it."); return; }
+      done.dataset.finished = "1";
+      body.appendChild(el("div", "qtext", "Model answer: " + it.key));
+      body.appendChild(solutionBlock(it));
+      body.appendChild(el("div", "small", "How did you do?"));
+      var row = el("div", "selfrow");
+      [["I got it", 2], ["I got part of it", 1], ["I missed it", 0]].forEach(function(pair){
+        var b = el("button", null, pair[0]);
+        b.addEventListener("click", function(){ recordAndNext({ n: it.n, kind: "written", self: pair[1] }); });
+        row.appendChild(b);
+      });
+      body.appendChild(row);
+    });
+    body.appendChild(show);
+  }
+  body.appendChild(done);
+}
+function renderSummary(){
+  $("practiceCard").className = "card hidden";
+  var sc = $("summaryCard"); sc.className = "card";
+  var body = $("summaryBody"); body.innerHTML = "";
+  var auto = practice.results.filter(function(r){ return r.kind !== "written"; });
+  var autoRight = auto.filter(function(r){ return r.correct; }).length;
+  var written = practice.results.filter(function(r){ return r.kind === "written"; });
+  var wFull = written.filter(function(r){ return r.self === 2; }).length;
+  var wPart = written.filter(function(r){ return r.self === 1; }).length;
+  body.appendChild(el("p", null, "Auto-checked questions: " + autoRight + " of " + auto.length + " correct."));
+  if (written.length) body.appendChild(el("p", null, "Written questions (your own rating): " + wFull + " full, " + wPart + " part, " + (written.length - wFull - wPart) + " missed, of " + written.length + "."));
+  var missed = practice.results.filter(function(r){ return (r.kind !== "written" && !r.correct) || (r.kind === "written" && r.self === 0); });
+  if (missed.length) body.appendChild(el("p", null, "Worth another look: " + missed.map(function(r){ return "Question " + r.n; }).join(", ") + "."));
+  sc.scrollIntoView({ behavior: "smooth" });
+}
+
+/* ---------- boot ---------- */
+if ($("loadCard")){
+  $("fileIn").addEventListener("change", function(){
+    var f = $("fileIn").files[0];
+    if (f) f.text().then(loadText);
+  });
+  var dz = $("dropZone");
+  dz.addEventListener("dragover", function(e){ e.preventDefault(); dz.className = "drop over"; });
+  dz.addEventListener("dragleave", function(){ dz.className = "drop"; });
+  dz.addEventListener("drop", function(e){
+    e.preventDefault(); dz.className = "drop";
+    var f = e.dataTransfer.files[0];
+    if (f) f.text().then(loadText);
+  });
+  $("loadPasteBtn").addEventListener("click", function(){ loadText($("pasteIn").value); });
+  $("startBtn").addEventListener("click", startPractice);
+  $("againBtn").addEventListener("click", startPractice);
+  $("backBtn").addEventListener("click", function(){
+    $("summaryCard").className = "card hidden";
+    $("reviewHead").scrollIntoView({ behavior: "smooth" });
+  });
+}
+</script>
+</body>
+</html>
