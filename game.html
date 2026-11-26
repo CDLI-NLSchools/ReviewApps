@@ -76,6 +76,8 @@
   .avatars button{font-size:1.7rem;padding:8px 12px;background:#fff;border:2px solid #c4cedd;border-radius:12px;}
   .avatars button.sel{border-color:#31435f;background:#dbe7ff;}
   .myname{font-size:1.6rem;font-weight:700;}
+  .setbox{border:2px dashed #aeb9c9;border-radius:12px;padding:14px 16px;margin:14px 0;background:#fbfcfe;}
+  .setbox h2{margin-top:0;}
   .note{background:#fff7e6;border:1px solid #e3c98a;border-radius:10px;padding:12px 14px;}
   .err{background:#fdecea;border:1px solid #e5a19c;border-radius:10px;padding:12px 14px;}
   .ok{background:#eafaf0;border:1px solid #9fd4b2;border-radius:10px;padding:12px 14px;}
@@ -118,6 +120,20 @@
     <div class="card" id="hostSetup">
       <h2>Game setup</h2>
       <div id="preflight" class="note">Checking the connection to the game service…</div>
+      <div class="setbox" id="setBox">
+        <h2>Play a set I built</h2>
+        <p>Built a set in the Review Apps ahead of time and shared it? Paste its share link here, or type its six character set code, and the game plays that set: same questions, same order. This is the set code from the Review Apps, not the room code. Students still join with the room code, which is created when you start.</p>
+        <div class="rowflex">
+          <input type="text" id="setCodeInput" placeholder="Set code or share link" style="flex:1;min-width:240px;">
+          <button type="button" id="loadSetBtn">Load the set</button>
+        </div>
+        <p style="margin:8px 0 0;font-size:.92rem;"><a href="https://cdli-nlschools.github.io/ReviewApps/" target="_blank" rel="noopener">Build a set in the Review Apps</a></p>
+        <p id="setLoadMsg"></p>
+        <div id="setConfirm" class="ok hidden">
+          <p id="setConfirmText" style="margin:0 0 10px;"></p>
+          <button type="button" class="alt" id="clearSetBtn">Clear the set and use the picks below</button>
+        </div>
+      </div>
       <label class="f" for="courseSel">Course</label>
       <select id="courseSel"></select>
       <label class="f">Mode</label>
@@ -407,18 +423,22 @@ var COURSE = null, BANK = null;
    frame purely as its question engine, and deals from that frame's
    BANK. Nothing in index.html is modified; if the game page is ever
    deleted, the shell is exactly as it was. */
+function engineFrame() {
+  var ifr = $("engineFrame");
+  if (!ifr) {
+    ifr = document.createElement("iframe");
+    ifr.id = "engineFrame";
+    ifr.style.cssText = "position:absolute;width:0;height:0;border:0;visibility:hidden;";
+    document.body.appendChild(ifr);
+  }
+  return ifr;
+}
 function loadCourse(courseId) {
   return new Promise(function (resolve, reject) {
     COURSE = window.COURSES[courseId];
     if (!COURSE) { reject(new Error("Unknown course")); return; }
     if (BANK && window.__gameBankFor === courseId) { resolve(BANK); return; }
-    var ifr = $("engineFrame");
-    if (!ifr) {
-      ifr = document.createElement("iframe");
-      ifr.id = "engineFrame";
-      ifr.style.cssText = "position:absolute;width:0;height:0;border:0;visibility:hidden;";
-      document.body.appendChild(ifr);
-    }
+    var ifr = engineFrame();
     var tries = 0, done = false;
     function check() {
       if (done) return;
@@ -475,6 +495,163 @@ function questionPayload(dealt) {
     indicators: (dealt.entry.indicators || []).slice(), level: dealt.entry.level
   };
 }
+
+/* ---------------- set-code hosting (November 25, 2026) ----------------
+   A teacher can build an exact set in the Review Apps, share it, and
+   play that set here: on the host setup screen they paste the share
+   link or type the set's six character code. Code resolution mirrors
+   the shell's own lookup (CODE_REGISTRY and tCodeOpenFetch in
+   index.html): the registry snapshot code-registry.json, served
+   beside this page, and the registry sheet's gviz feed, queried in
+   parallel, first hit wins. The resolved set address then loads into
+   the same hidden engine frame the banks use, and the shell's own
+   boot rebuilds the exact set there (seeded sets deal from their
+   seed and scope; token sets rebuild from their tokens). The game
+   reads the dealt questions out of the frame, in set order. */
+var SET_REGISTRY = {
+  sheetId: "1O1B-_vodjxbgZLKI4DnqiX9anYEcufDWbrSEC8coHDY",
+  sheetTab: "Form Responses 1",
+  snapshotUrl: "code-registry.json"
+};
+var SET_CODE_RE = /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/;
+function fetchSetSnapshotCodes() {
+  var attempt;
+  try {
+    if (typeof fetch !== "function") throw new Error("no fetch");
+    attempt = fetch(SET_REGISTRY.snapshotUrl).then(function (r) {
+      if (!r.ok) throw new Error("snapshot read failed");
+      return r.json();
+    }).then(function (data) {
+      var src = (data && data.codes) || {}, codes = {}, n = 0;
+      Object.keys(src).forEach(function (code) {
+        var q = String(src[code]);
+        if (SET_CODE_RE.test(code) && q.indexOf("course=") >= 0 && q.indexOf("set=") >= 0) { codes[code] = q; n++; }
+      });
+      return { ok: true, codes: codes, rows: n };
+    });
+  } catch (e) { attempt = Promise.reject(e); }
+  return attempt.then(function (res) { return res; }, function () { return { ok: false, codes: {}, rows: 0 }; });
+}
+function fetchSetSheetCodes() {
+  var url = "https://docs.google.com/spreadsheets/d/" + SET_REGISTRY.sheetId + "/gviz/tq?tqx=out:json&sheet=" + encodeURIComponent(SET_REGISTRY.sheetTab);
+  var attempt;
+  try {
+    if (typeof fetch !== "function") throw new Error("no fetch");
+    attempt = fetch(url).then(function (r) { return r.text(); }).then(function (txt) {
+      var a = txt.indexOf("{"), b = txt.lastIndexOf("}");
+      if (a < 0 || b <= a) throw new Error("registry response not understood");
+      var data = JSON.parse(txt.slice(a, b + 1));
+      var rows = (data.table && data.table.rows) || [], codes = {}, n = 0;
+      rows.forEach(function (row) {
+        var c = row.c || [];
+        var code = c[1] && c[1].v ? String(c[1].v).toUpperCase().replace(/[^A-Z0-9]/g, "") : "";
+        var q = c[2] && c[2].v ? String(c[2].v) : "";
+        if (SET_CODE_RE.test(code) && q.indexOf("course=") >= 0 && q.indexOf("set=") >= 0) { codes[code] = q; n++; }
+      });
+      return { ok: true, codes: codes, rows: n };
+    });
+  } catch (e) { attempt = Promise.reject(e); }
+  return attempt.then(function (res) { return res; }, function () { return { ok: false, codes: {}, rows: 0 }; });
+}
+function resolveSetCode(code) {
+  return new Promise(function (resolve) {
+    var settled = 0, done = false;
+    function fin() { settled++; if (settled >= 2 && !done) { done = true; resolve(null); } }
+    function tryHit(q) { if (q && !done) { done = true; resolve(q); } }
+    fetchSetSnapshotCodes().then(function (s) { tryHit(s && s.codes ? s.codes[code] : null); fin(); }, function () { fin(); });
+    fetchSetSheetCodes().then(function (s) { tryHit(s && s.codes ? s.codes[code] : null); fin(); }, function () { fin(); });
+  });
+}
+/* What the teacher pasted: a bare six character code, a short
+   codeopen link (take its code), or a full set link (take its whole
+   set address, the query string, as it stands). */
+function parseSetInput(raw) {
+  var v = String(raw == null ? "" : raw).trim();
+  if (!v) return { error: "Paste the share link from the Review Apps, or type the six character set code." };
+  if (/^https?:\/\//i.test(v) || v.indexOf("?") >= 0) {
+    var qi = v.indexOf("?");
+    var qs = qi >= 0 ? v.slice(qi + 1) : "";
+    var hash = qs.indexOf("#"); if (hash >= 0) qs = qs.slice(0, hash);
+    var p = new URLSearchParams(qs);
+    var co = (p.get("codeopen") || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+    if (co) {
+      if (SET_CODE_RE.test(co)) return { code: co };
+      return { error: "The code in that link is not a set code the game can open. Check the link and try again." };
+    }
+    if (p.get("set") || p.get("seed")) return { address: qs };
+    return { error: "That link does not carry a set. Copy the share link from the set in the Review Apps and paste it here." };
+  }
+  var code = v.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (SET_CODE_RE.test(code)) return { code: code };
+  return { error: "That does not look like a set code or a set link. Paste the share link from the Review Apps, or type the six character set code." };
+}
+/* The questions a rebuilt set left in the frame, in set order:
+   practice sets land in the shell's `current`, sheets in
+   sheetState.items, exams as examState's selected response items
+   followed by its constructed response items. Each question is the
+   object the shell itself renders, bank entry riding along as
+   _entry. */
+function frameSetQuestions(w) {
+  try {
+    if (w.current && w.current.length) return w.current.slice();
+    if (w.sheetState && w.sheetState.items && w.sheetState.items.length) return w.sheetState.items.slice();
+    if (w.examState && w.examState.ex) {
+      var out = [];
+      (w.examState.ex.srItems || []).forEach(function (it) { out.push(it.q); });
+      (w.examState.ex.crItems || []).forEach(function (it) { out.push(it.q); });
+      if (out.length) return out;
+    }
+  } catch (e) {}
+  return null;
+}
+function loadSetFrame(address) {
+  return new Promise(function (resolve, reject) {
+    var params = new URLSearchParams(address);
+    var courseId = params.get("course");
+    if (!courseId || !window.COURSES[courseId]) { reject(new Error("That set names a course this game does not carry. Check the link and try again.")); return; }
+    var setParam = params.get("set");
+    var ifr = engineFrame();
+    var startDoc = null;
+    try { startDoc = ifr.contentDocument; } catch (e) {}
+    var tries = 0, done = false;
+    function check() {
+      if (done) return;
+      var w = null;
+      try { w = ifr.contentWindow; } catch (e) {}
+      if (w) {
+        var fresh = true;
+        try { fresh = ifr.contentDocument !== startDoc; } catch (e) {}
+        var lp = null;
+        try { lp = new URLSearchParams(w.location.search || ""); } catch (e) {}
+        if (fresh && lp && lp.get("course") === courseId && (!setParam || lp.get("set") === setParam) &&
+            w.__COURSE && w.__COURSE.id === courseId && w.BANK && w.BANK.length) {
+          var qs = frameSetQuestions(w);
+          if (qs) {
+            done = true;
+            COURSE = window.COURSES[courseId]; BANK = w.BANK; window.__gameBankFor = courseId;
+            resolve({ courseId: courseId, questions: qs });
+            return;
+          }
+        }
+      }
+      if (++tries > 200) { done = true; reject(new Error("The set did not load. Check the link and try again.")); return; }
+      setTimeout(check, 200);
+    }
+    ifr.src = "index.html?" + address;
+    check();
+  });
+}
+/* Convert rebuilt frame questions to the game's dealt shape, the
+   same {entry, q} pairs the scope deal produces. Rally plays
+   multiple choice only, so the rest are counted as skipped by the
+   caller. Order is the set's own order; nothing is reshuffled. */
+function setQuestionsToDealt(qs) {
+  var dealt = [];
+  (qs || []).forEach(function (q) {
+    if (q && q.type === "mc" && q.options && q.options.length >= 2 && q._entry) dealt.push({ entry: q._entry, q: q });
+  });
+  return dealt;
+}
 </script>
 <script>
 "use strict";
@@ -486,7 +663,7 @@ var Host = {
   settings: null, questions: [], dealt: [], usedPrompts: {},
   answers: {}, expected: {}, scores: {}, perQ: [], timerInt: null,
   cur: -1, phase: "setup", mastery: null, reviewList: [],
-  lightsInt: null, currentStartedAt: 0,
+  lightsInt: null, currentStartedAt: 0, loadedSet: null,
 
   setup: function () {
     var sel = $("courseSel");
@@ -497,6 +674,16 @@ var Host = {
     sel.addEventListener("change", function () { self.courseChanged(); });
     document.querySelectorAll('input[name="mode"]').forEach(function (r) {
       r.addEventListener("change", function () { self.modeChanged(); });
+    });
+    $("loadSetBtn").addEventListener("click", function () { self.loadSet(); });
+    $("clearSetBtn").addEventListener("click", function () { self.clearSet(); });
+    $("setCodeInput").addEventListener("input", function () {
+      if (self.loadedSet) {
+        self.loadedSet = null;
+        $("setConfirm").classList.add("hidden");
+        $("setLoadMsg").textContent = "The set was cleared because the code changed. Load a set, or create the room from the picks below.";
+        self.courseChanged();
+      }
     });
     $("createRoomBtn").addEventListener("click", function () { self.createRoom(); });
     $("cancelRoomBtn").addEventListener("click", function () { self.cancelRoom(); });
@@ -553,8 +740,72 @@ var Host = {
   selectedLevels: function () { return Array.prototype.map.call($("levelChecks").querySelectorAll("input:checked"), function (cb) { return +cb.value; }); },
   selectedIndicators: function () { return Array.prototype.map.call($("indChecks").querySelectorAll("input:checked"), function (cb) { return cb.value; }); },
 
+  loadSet: function () {
+    var self = this;
+    var msg = $("setLoadMsg");
+    var parsed = parseSetInput($("setCodeInput").value);
+    if (parsed.error) { msg.className = "err"; msg.textContent = parsed.error; return; }
+    msg.className = ""; msg.textContent = "Loading the set…";
+    $("loadSetBtn").disabled = true;
+    $("setConfirm").classList.add("hidden");
+    var addrP = parsed.address ? Promise.resolve(parsed.address) : resolveSetCode(parsed.code);
+    addrP.then(function (address) {
+      if (!address) throw new Error("That set code could not be opened. Check the code and try again. If the set was shared just now, it may still be registering.");
+      return loadSetFrame(address);
+    }).then(function (res) {
+      $("loadSetBtn").disabled = false;
+      var dealt = setQuestionsToDealt(res.questions);
+      var total = res.questions.length;
+      if (!dealt.length) {
+        self.loadedSet = null;
+        msg.className = "err";
+        msg.textContent = "That set has " + total + (total === 1 ? " question" : " questions") + ", and none of them are multiple choice, so there is nothing for Rally to play. Build a set with multiple choice questions and try its code.";
+        return;
+      }
+      self.loadedSet = { courseId: res.courseId, dealt: dealt, totalInSet: total };
+      self._bankOk = true; self._maybeEnable();
+      msg.className = ""; msg.textContent = "";
+      var c = window.COURSES[res.courseId];
+      var skipped = total - dealt.length;
+      var line = "Set loaded: " + (c.title || c.shortName) + ". " + total + " questions in your set, " + dealt.length + " playable in Rally";
+      line += skipped ? "; " + skipped + " written or numeric " + (skipped === 1 ? "question" : "questions") + " will be skipped." : ", and all of them will play.";
+      line += " The set plays in its own order as a fixed list with Showcase scoring, whatever the mode above says. Create the room when you are ready.";
+      $("setConfirmText").textContent = line;
+      $("setConfirm").classList.remove("hidden");
+    }).catch(function (e) {
+      $("loadSetBtn").disabled = false;
+      msg.className = "err";
+      msg.textContent = (e && e.message) || "The set did not load. Check the link and try again.";
+    });
+  },
+  clearSet: function () {
+    this.loadedSet = null;
+    $("setConfirm").classList.add("hidden");
+    var msg = $("setLoadMsg");
+    msg.className = ""; msg.textContent = "";
+    $("setCodeInput").value = "";
+    this.courseChanged();
+  },
+  createRoomFromSet: function () {
+    var ls = this.loadedSet;
+    var c = window.COURSES[ls.courseId];
+    var seen = {}, units = [];
+    ls.dealt.forEach(function (d) { var u = d.entry.unit; if (!seen[u]) { seen[u] = 1; units.push(u); } });
+    var settings = {
+      mode: "showcase", courseId: ls.courseId, courseName: c.shortName,
+      units: units, levels: [1, 2, 3], includePK: true,
+      timerSec: +$("timerSel").value, showStem: $("stemToggle").checked,
+      count: ls.dealt.length,
+      threshold: +$("thresholdSel").value,
+      indicators: []
+    };
+    this.usedPrompts = {};
+    this.dealt = ls.dealt.slice();
+    this.openRoom(settings);
+  },
   createRoom: function () {
     var self = this;
+    if (this.loadedSet) { this.createRoomFromSet(); return; }
     var units = this.selectedUnits(), levels = this.selectedLevels();
     if (!units.length) { $("setupMsg").textContent = "Pick at least one unit."; return; }
     var mode = document.querySelector('input[name="mode"]:checked').value;
@@ -581,6 +832,11 @@ var Host = {
       if (this.dealt.length < Math.min(3, settings.count)) { $("setupMsg").textContent = "That scope holds only " + this.dealt.length + " multiple choice questions. Widen the units or levels."; return; }
       settings.count = this.dealt.length;
     }
+    this.openRoom(settings);
+  },
+  openRoom: function (settings) {
+    var self = this;
+    var mode = settings.mode;
     this.settings = settings;
     var code = randStr(6);
     this.code = code;
