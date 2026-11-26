@@ -4001,6 +4001,7 @@ E("u6-graph-describe", 6, ["7.5"], 2, "gen", function () {
 }, ["The start value is where the line crosses the y-axis.", "Pick two neighbouring plotted points and find how much y rises from one to the next."]);
 
 // 8. L2, 7.6: one graph drawn, choose its equation.
+/* Solution reworked Nov 26, 2026 (Jason's ruling 3 on the Math 9 guide audit): the guide prescribes matching a graph to an equation by testing ordered pairs from the graph, and defers the slope y-intercept matching method to Grade 10. Prompt, options and key unchanged. */
 E("u6-graph-equation", 6, ["7.6"], 2, "gen", function () {
   var ctxs = [
     { x: "hours", y: "km", xl: "hours", yl: "km" },
@@ -4015,7 +4016,7 @@ E("u6-graph-equation", 6, ["7.6"], 2, "gen", function () {
   var xmax = pick([4, 5, 6]), ymax = b + m * xmax;
   var pts = []; for (var k = 0; k <= xmax; k++) pts.push({ x: k, y: b + m * k });
   var corr = "\\(y = " + u6lin(m, b, "x") + "\\)";
-  var sol = "Read the start from the y-intercept and the step from two points on the line: \\[ \\begin{aligned} \\text{start} &= " + fmt(b) + " \\\\ \\text{step} &= " + fmt(b + 2 * m) + " - " + fmt(b + m) + " = " + fmt(m) + " \\end{aligned} \\] So the equation of the line is <b>" + corr + "</b>.";
+  var sol = "Test points from the graph in the equation. The line passes through (0, " + fmt(b) + ") and (1, " + fmt(b + m) + "). For \\(y = " + u6lin(m, b, "x") + "\\): at \\(x = 0\\), \\(y = " + fmt(m) + " \\times 0 + " + fmt(b) + " = " + fmt(b) + "\\), which matches the graph; at \\(x = 1\\), \\(y = " + fmt(m) + " + " + fmt(b) + " = " + fmt(b + m) + "\\), which also matches. The other equations fail at one of these two points. So the equation of the line is <b>" + corr + "</b>.";
   var q = mcq("The graph shows a linear relation. The x-axis is measured in " + ctx.x + " and the y-axis in " + ctx.y + ". Which equation matches the graphed line?",
     { t: corr, fb: "Correct. The line starts at " + fmt(b) + " and rises by " + fmt(m) + " for each step in x." },
     [
@@ -4025,7 +4026,7 @@ E("u6-graph-equation", 6, ["7.6"], 2, "gen", function () {
     ], sol, { mode: "graph-equation", b: b, m: m, ctx: ctx.x, xmax: xmax });
   q.figure = u6graph({ xmax: xmax, ymax: ymax, xlab: ctx.xl, ylab: ctx.yl, lines: [{ pts: pts.map(function (p) { return [p.x, p.y]; }) }], points: pts });
   return q;
-}, ["Start with the y-intercept: it is the constant in the equation.", "Then find the step: how much y changes when x grows by 1."]);
+}, ["Pick two points that the line passes through and test them in each equation.", "Start with the point where the line crosses the y-axis, then test a second point the same way."]);
 
 // 9. L2, 7.7, CR 2: sloped, horizontal or vertical graph; choose a point on it.
 E("u6-point-on-graph", 6, ["7.7"], 1, "gen", function () {
@@ -7250,14 +7251,15 @@ E("u6-gap-slope-table-cr", 6, ["7.4", "7.2"], 2, "gen", function () {
 }, ["The step size is hidden in the differences between neighbouring y values.", "Subtract two neighbouring y values to find the step as the first step."]);
 
 // PG. L2, 7.7/7.8, CR 2: missing coordinate of a point on the line through two given points.
+/* Solution reworked Nov 26, 2026 (Jason's ruling 3 on the Math 9 guide audit): the guide does not introduce the term "slope" or the slope formula until Grade 10, so the solution now works in the unit's own pattern language (the change in y split evenly across the steps in x). Prompt and key unchanged. */
 E("u6-gap-missing-coord-cr", 6, ["7.7", "7.8"], 2, "gen", function () {
   var m = ri(2, 5), b = ri(1, 12);
   var x1 = ri(0, 3), x2 = x1 + ri(2, 4), x3 = x2 + ri(2, 5);
   var y1 = b + m * x1, y2 = b + m * x2, ans = b + m * x3;
   var prompt = "The points (" + x1 + ", " + y1 + ") and (" + x2 + ", " + y2 + ") lie on a straight line. The point (" + x3 + ", y) is also on the same line. What is the value of y?";
-  var sol = "Find the slope from the two given points first, then extend the pattern to the new x: \\[ \\begin{aligned} \\text{slope} &= \\frac{" + y2 + " - " + y1 + "}{" + x2 + " - " + x1 + "} = " + m + " \\\\ y &= " + y2 + " + " + m + "(" + x3 + " - " + x2 + ") = " + ans + " \\end{aligned} \\] The answer is <b>" + ans + "</b>.";
+  var sol = "Between the two given points, x increases by " + (x2 - x1) + " while y increases by " + (y2 - y1) + ", so the change splits evenly: each step of 1 in x adds " + m + " to y. From x = " + x2 + " to x = " + x3 + " is " + (x3 - x2) + " more steps, adding " + m + " \\times " + (x3 - x2) + " = " + (m * (x3 - x2)) + ": \\[ \\begin{aligned} y &= " + y2 + " + " + (m * (x3 - x2)) + " \\\\ &= " + ans + " \\end{aligned} \\] The answer is <b>" + ans + "</b>.";
   return numq(prompt, ans, 0.01, sol, { mode: "gap-missing-coord", m: m, x3: x3 });
-}, ["The rate of the line must be worked out from the two complete points before the incomplete point can be used.", "Divide the change in y by the change in x for the two given points as the first step."]);
+}, ["Work out how much y grows between the two given points, and over how many steps in x that growth is split.", "Split the growth in y evenly across the steps in x to find what each single step adds, then keep stepping to the new x."]);
 
 // PG. L2, 7.2/7.10, CR 3: break-even point of two cost plans (set equal, then solve).
 E("u6-gap-break-even-cr", 6, ["7.2", "7.10"], 2, "gen", function () {
