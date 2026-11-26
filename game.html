@@ -1582,6 +1582,14 @@ var Play = {
     this.lastState = "reveal"; this.lastQn = room.qn;
     if (this.timerInt) clearInterval(this.timerInt);
     var qn = room.qn, mine = this.myAnswers[qn];
+    if (mine == null) {
+      /* Reveal tidy (Nov 26, 2026): the pick may live only in the room
+         record (the student's tab reloaded after they answered, wiping
+         this page's memory). Restore it the way renderQuestion does,
+         so a counted answer is not reported as "No answer that time". */
+      var rec = ((room.answers || {})[qn] || {})[this.pid];
+      if (rec && rec.c != null) { mine = rec.c; this.myAnswers[qn] = rec.c; }
+    }
     var q = room.question || {};
     var ok = mine != null && mine === room.correct;
     var pts = ((room.reveal || {}).points || {})[this.pid] || 0;
@@ -1589,6 +1597,7 @@ var Play = {
     this.myDetail[qn] = { indicators: q.indicators || [], ok: !!ok };
     var html = "<h2>" + (mine == null ? "No answer that time" : ok ? "Correct" : "Not this time") + "</h2>";
     if (mine != null) html += '<p class="bigstat">+' + pts + " points</p>";
+    if (mine != null) html += "<p>You picked <b>" + "ABCD"[mine] + "</b>: " + (q.options || [])[mine] + "</p>";
     html += "<p>The correct answer was <b>" + "ABCD"[room.correct] + "</b>: " + (q.options || [])[room.correct] + "</p>";
     html += "<p>Your score: <b>" + rk.score + "</b> · Rank: <b>" + rk.rank + " of " + rk.of + "</b></p>";
     html += "<p class='sub'>The board shows how the class split. Worked solutions come at the end and in your practice set.</p>";
