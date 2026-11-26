@@ -604,12 +604,40 @@ function frameSetQuestions(w) {
   } catch (e) {}
   return null;
 }
-function loadSetFrame(address) {
+/* A throwaway set code drawn from the registry alphabet, used only
+   as the session storage key for a pasted long set link (which
+   carries no code of its own). Mirrors the shell's own mint. */
+function mintStashCode() {
+  var alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789", s = "";
+  for (var i = 0; i < 6; i++) s += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+  return s;
+}
+function loadSetFrame(address, code) {
   return new Promise(function (resolve, reject) {
     var params = new URLSearchParams(address);
     var courseId = params.get("course");
     if (!courseId || !window.COURSES[courseId]) { reject(new Error("That set names a course this game does not carry. Check the link and try again.")); return; }
     var setParam = params.get("set");
+    /* A long set address cannot be navigated to directly: the server
+       refuses it (Nov 26, 2026: the 11,513 character frame address of
+       a raw frozen sheet set came back "414 URI Too Long", so the
+       set failed to load even though its code had resolved). The
+       Review Apps shell never navigates to a long address either: it
+       stashes the address in session storage under the set's code
+       and opens the short codeopen address, and the shell page
+       installs the stash as its payload. Do the same here: over the
+       shell's own 7000 character threshold, stash the address under
+       the teacher's code when there is one (so the frame could still
+       resolve that code from the registry if the stash were lost),
+       or under a drawn code for a pasted link, and open the short
+       address. Short addresses keep the direct navigation. */
+    var direct = ("index.html?" + address).length <= 7000;
+    var stashCode = null;
+    if (!direct) {
+      stashCode = (code && SET_CODE_RE.test(code)) ? code : mintStashCode();
+      try { sessionStorage.setItem("raCodePayload", JSON.stringify({ code: stashCode, q: address })); }
+      catch (e) { direct = true; }
+    }
     var ifr = engineFrame();
     var startDoc = null;
     try { startDoc = ifr.contentDocument; } catch (e) {}
@@ -623,7 +651,8 @@ function loadSetFrame(address) {
         try { fresh = ifr.contentDocument !== startDoc; } catch (e) {}
         var lp = null;
         try { lp = new URLSearchParams(w.location.search || ""); } catch (e) {}
-        if (fresh && lp && lp.get("course") === courseId && (!setParam || lp.get("set") === setParam) &&
+        var atSet = direct ? (!setParam || lp.get("set") === setParam) : (lp.get("codeopen") === stashCode);
+        if (fresh && lp && lp.get("course") === courseId && atSet &&
             w.__COURSE && w.__COURSE.id === courseId && w.BANK && w.BANK.length) {
           var qs = frameSetQuestions(w);
           if (qs) {
@@ -637,7 +666,7 @@ function loadSetFrame(address) {
       if (++tries > 200) { done = true; reject(new Error("The set did not load. Check the link and try again.")); return; }
       setTimeout(check, 200);
     }
-    ifr.src = "index.html?" + address;
+    ifr.src = direct ? ("index.html?" + address) : ("index.html?course=" + encodeURIComponent(courseId) + "&codeopen=" + stashCode);
     check();
   });
 }
@@ -751,7 +780,7 @@ var Host = {
     var addrP = parsed.address ? Promise.resolve(parsed.address) : resolveSetCode(parsed.code);
     addrP.then(function (address) {
       if (!address) throw new Error("That set code could not be opened. Check the code and try again. If the set was shared just now, it may still be registering.");
-      return loadSetFrame(address);
+      return loadSetFrame(address, parsed.code);
     }).then(function (res) {
       $("loadSetBtn").disabled = false;
       var dealt = setQuestionsToDealt(res.questions);
