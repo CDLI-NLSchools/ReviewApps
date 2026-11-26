@@ -3677,7 +3677,7 @@ E("u3-factor-product", 3, ["3.9", "3.11"], 2, "gen", function () {
 E("u3-factor-gcf-first", 3, ["3.9", "3.10"], 2, "gen", function () {
   var g0 = ri(2, 6);
   var mode = pick(["tri", "tri", "ds"]);
-  var keyRaw, poly, quoRaw, quoCoeffs, facs, note;
+  var keyRaw, poly, quoRaw, quoCoeffs, facs, note, gF;
   if (mode === "tri") {
     var r = u3Nz(-7, 7), s = u3Nz(-7, 7);
     var B = r + s, C = r * s;
@@ -3686,34 +3686,44 @@ E("u3-factor-gcf-first", 3, ["3.9", "3.10"], 2, "gen", function () {
     quoCoeffs = [1, B, C];
     quoRaw = u3PC(quoCoeffs, "x");
     facs = [[1, Math.min(r, s)], [1, Math.max(r, s)]];
+    gF = g0;
     keyRaw = g0 + u3FacRaw("", facs, "x");
     note = "Inside the brackets, the two numbers multiply to \\(" + C + "\\) and add to \\(" + B + "\\)";
   } else {
     var a = ri(1, 3), b = ri(1, 7);
     poly = u3PC([g0 * a * a, 0, -g0 * b * b], "x");
-    quoCoeffs = [a * a, 0, -b * b];
+    /* Fix (Nov 26, 2026, Jason's QA flag on a 12x^2 - 12 deal): when
+       gcd(a, b) > 1 the two binomials still share that factor, so the
+       true greatest common factor is g0 * gcd(a, b)^2, not g0. The old
+       key (e.g. 3(2x + 2)(2x - 2)) expanded correctly but was not
+       factored completely. Extract the full factor and reduce the
+       binomials; the under-factored form stays on as a distractor. */
+    var dab = u3GCD(a, b), a1 = a / dab, b1 = b / dab;
+    gF = g0 * dab * dab;
+    quoCoeffs = [a1 * a1, 0, -b1 * b1];
     quoRaw = u3PC(quoCoeffs, "x");
-    facs = [[a, b], [a, -b]];
-    keyRaw = g0 + u3FacRaw("", facs, "x");
-    note = "Inside the brackets is a difference of squares, \\((" + a + "x)^2 - " + b + "^2\\)";
+    facs = [[a1, b1], [a1, -b1]];
+    keyRaw = gF + u3FacRaw("", facs, "x");
+    note = "Inside the brackets is a difference of squares, \\((" + a1 + "x)^2 - " + b1 + "^2\\)";
   }
   var cands = [], seen = {};
   function addC(s) { if (s !== keyRaw && !seen[s]) { seen[s] = 1; cands.push(u3M(s)); } }
-  addC(g0 + "(" + quoRaw + ")");
-  u3FacDistr(String(g0), facs, "x", mode === "tri" ? [1, facs[0][1] + facs[1][1], facs[0][1] * facs[1][1]] : u3FacExpand(facs), 3)
+  addC(gF + "(" + quoRaw + ")");
+  if (mode === "ds") addC(g0 + u3FacRaw("", [[a, b], [a, -b]], "x"));
+  u3FacDistr(String(gF), facs, "x", mode === "tri" ? [1, facs[0][1] + facs[1][1], facs[0][1] * facs[1][1]] : u3FacExpand(facs), 3)
     .forEach(function (s) { addC(s.replace(/^\\\(|\\\)$/g, "")); });
   var divs = [];
-  for (var d = 1; d < g0; d++) if (g0 % d === 0) divs.push(d);
+  for (var d = 1; d < gF; d++) if (gF % d === 0) divs.push(d);
   if (divs.length) {
-    var dv2 = pick(divs), sc2 = g0 / dv2;
+    var dv2 = pick(divs), sc2 = gF / dv2;
     addC(dv2 + "(" + u3PC(quoCoeffs.map(function (x) { return x * sc2; }), "x") + ")");
   }
   var prompt = "Factor the polynomial \\(" + poly + "\\) completely.";
-  var sol = "First remove the greatest common factor, \\(" + g0 + "\\), then factor what remains. " + note + "." +
-    u3Alg([poly + " &= " + g0 + "(" + quoRaw + ")", "&= " + keyRaw]) +
+  var sol = "First remove the greatest common factor, \\(" + gF + "\\), then factor what remains. " + note + "." +
+    u3Alg([poly + " &= " + gF + "(" + quoRaw + ")", "&= " + keyRaw]) +
     "Factored completely, the polynomial is <b>" + u3M(keyRaw) + "</b>.";
   return mcq(prompt, u3M(keyRaw), shuffle(cands).slice(0, 3), sol,
-    { t: "fac", g: String(g0), parts: facs, v: "x" });
+    { t: "fac", g: String(gF), parts: facs, v: "x" });
 });
 
 /* ============ 14. difference of squares (3.14, L2) ============ */
@@ -8631,3 +8641,10 @@ window.__BANK_CRMARKS={"u1-composite":3,"u1-composite-sa":2,"u1-convert-between"
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
 window.__BANK_BIMODAL={"u1-convert-between":"a","u1-convert-choice":"a","u1-convert-si":"a","u1-estimate":"a","u1-justify-unit":"b","u1-linear-problem":"a","u1-pk-area-circle":"a","u1-pk-circumference":"a","u1-pk-estimate-count":"a","u1-pk-estimate-reasonable":"a","u1-pk-pythag-model":"b","u1-pk-sa-from-net":"a","u1-pk-vol-rect-prism":"a","u1-read-instrument":"a","u1-reasonable":"b","u1-referent":"a","u1-sa-choice":"a","u1-strategy":"b","u1-unit-analysis":"b","u1-vol-choice":"a","u1-vol-relation":"a","u2-index":"b","u2-laws-integral":"b","u2-laws-rational":"b","u2-order-irrational":"b","u2-perfect":"a","u2-pk-between-two":"a","u2-pk-decimal-to-fraction":"a","u2-pk-divisible-by":"a","u2-pk-estimate-between":"a","u2-pk-factor-list":"b","u2-pk-factors-root":"a","u2-pk-frac-to-decimal":"a","u2-pk-order-four":"a","u2-pk-parentheses-sign":"a","u2-pk-product-law":"a","u2-pk-repeated-mult":"a","u2-pk-root-between":"a","u2-pk-sqrt-perfect":"a","u2-pk-square-of-number":"a","u2-prime-factor":"a","u2-radical-entire":"a","u2-rational-exp":"a","u2-rational-pattern":"b","u2-sort-numbers":"a","u2-zero-one":"b","u3-area-model":"b","u3-binom-tri-expand":"b","u3-binomial-expand":"b","u3-factor-error":"b","u3-factor-gcf-first":"b","u3-factor-hard":"b","u3-factor-product":"b","u3-factorable-k":"a","u3-gcf":"b","u3-monomial-expand":"b","u3-mult-error":"b","u3-mult-factor-rel":"b","u3-pk-add":"b","u3-pk-addsub-xy":"b","u3-pk-degree":"a","u3-pk-divide-monomial":"b","u3-pk-multiply-monomial":"b","u3-pk-parts":"a","u3-pk-subtract":"b","u3-strategy":"b","u3-two-digit":"b","u4-connect-points":"b","u4-dr-linear":"a","u4-fn-convert":"b","u4-fn-notation":"b","u4-graph-data":"a","u4-indep-dep":"a","u4-intercept-count":"b","u4-match-representations":"b","u4-match-slope-intercept":"b","u4-pk-evaluate-expression":"a","u4-pk-graph-describe":"b","u4-pk-pattern-figure":"a","u4-pk-point-on-graph":"a","u4-pk-table-equation":"a","u4-represent":"b","u4-situation-graph":"b","u4-sketch-fn":"b","u4-sketch-situation":"b","u4-sort-graphs":"a","u5-another-point":"a","u5-compare-forms":"b","u5-draw-line":"b","u5-eq-parallel-perp":"b","u5-eq-two-points":"b","u5-equivalent":"b","u5-graph-form":"a","u5-graph-strategy":"b","u5-identify-form":"a","u5-match-graphs":"b","u5-pk-construct-graph":"a","u5-pk-express-rate":"a","u5-pk-graph-equation":"a","u5-pk-two-term-ratio":"a","u5-pk-which-is-solution":"a","u5-rewrite-form":"b","u5-slope-any-two":"b","u5-slope-hv":"b","u5-slope-rise-run":"a","u5-slope-sign":"b","u6-add-count-standard":"a","u6-add-strategy-choice":"b","u6-add-term-meaning":"b","u6-intersection":"b","u6-model":"b","u6-pk-balance-model":"a","u6-pk-context-equation":"a","u6-pk-table-equation":"a","u6-pk-which-is-solution":"a","u6-relate":"b","u6-solution-count":"a","u6-strategy":"b","u6-verify":"b","u6-word-problem":"a","u7-add-identify-side":"a","u7-add-ramp-angle":"a","u7-add-ratio-345":"a","u7-add-solve-hypotenuse":"a","u7-choose-ratio":"a","u7-label-sides":"a","u7-pk-is-right":"a","u7-ratio-def":"a","u7-ratio-similar":"b"};
+/* ============ Level basis labels (generated) ============ */
+/* Built by assemble-bank.py from the LEVELBASIS comments at each
+   audited entry (November 25, 2026): the criterion that decided
+   the entry's level under the adopted criteria card, shown in
+   teacher mode beside the level on the question card. Entries
+   no audit has covered have no label. */
+window.__BANK_LEVELBASIS={};
