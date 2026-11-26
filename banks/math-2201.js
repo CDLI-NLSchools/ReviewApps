@@ -12054,7 +12054,12 @@ E("u3-border",3,["4.3"],3,"gen",function(){
   q.figure=borderSVG(L,W);
   return q;
 });
-E("u3-formula-repair",3,["4.9"],3,"gen",function(){
+/* Level retagged 3 to 2, Nov 26, 2026 (Jason's ruling, from his
+   Report a Problem report): the student spots that the shown
+   first line departs from the quadratic formula, then runs the
+   taught procedure; a set method applied, Level 2 under the
+   criteria card. */
+E("u3-formula-repair",3,["4.9"],2,"gen",function(){
   function pair(r1,r2){var lo=Math.min(r1,r2),hi=Math.max(r1,r2);return "\\(x = "+lo+"\\) and \\(x = "+hi+"\\)";}
   var m=0,n=0,a=1,b=0,c=0,D=0,sq=0,tmpl=0,tries=0,ok=false,keyS="",stuS="",othS="",flipS="";
   while(!ok&&tries<400){tries++;
@@ -12078,6 +12083,12 @@ E("u3-formula-repair",3,["4.9"],3,"gen",function(){
     "The quadratic formula needs \\(-b\\) in the numerator and \\(2a\\) in the denominator: \\(x = \\frac{"+(-b)+" \\pm \\sqrt{"+D+"}}{"+(2*a)+"} = \\frac{"+(-b)+" \\pm "+sq+"}{"+(2*a)+"}\\), which gives <b>"+keyS+"</b>. The student\u2019s first line already departs from the formula, so their roots are wrong even though the arithmetic after it was consistent.",
     {m:m,n:n,a:a,tmpl:tmpl});
 });
+/* Solution rewritten Nov 26, 2026 (Jason's Report a Problem
+   report): the repeated-root solution now opens with why, in
+   the guide's language (the roots coincide when the square
+   root component of the quadratic formula is zero), and takes
+   k directly from k^2 (k = \pm 12 for the 144 deal) instead of
+   routing through 2\sqrt{ac}. Key and options unchanged. */
 E("u3-discriminant-parameter",3,["4.7"],3,"gen",function(){
   if(Math.random()<0.5){
     var pairs=[[1,9],[1,16],[1,25],[1,36],[2,8],[2,18],[4,9]];
@@ -12088,7 +12099,7 @@ E("u3-discriminant-parameter",3,["4.7"],3,"gen",function(){
       "For what values of \\(k\\) does \\("+(a===1?"":a)+"x^2 + kx + "+c+" = 0\\) have two equal real roots?",
       "For what values of \\(k\\) does \\("+(a===1?"":a)+"x^2 + kx + "+c+" = 0\\) have a repeated root?"];
     return mcq(pick(stems),os4(2*rt),[os4(rt),os4(2*ac),os4(ac)],
-      "A single repeated solution means \\(b^2 - 4ac = 0\\): \\(k^2 - 4("+a+")("+c+") = 0\\), so \\(k^2 = "+(4*ac)+"\\) and \\(k = \\pm 2\\sqrt{"+ac+"}\\), giving <b>"+os4(2*rt)+"</b>. Both signs work, because only \\(k^2\\) appears in \\(b^2 - 4ac\\).",
+      "The two roots coincide when the square root component of the quadratic formula, \\(b^2 - 4ac\\), is zero. With \\(a = "+a+"\\), \\(b = k\\) and \\(c = "+c+"\\): \\(k^2 - 4("+a+")("+c+") = 0\\), so \\(k^2 = "+(4*ac)+"\\) and \\(k = \\pm "+(2*rt)+"\\), giving <b>"+os4(2*rt)+"</b>. Both signs work, because only \\(k^2\\) appears in the component.",
       {a:a,c:c});
   }
   var bs=[6,8,10,12,14];var b=pick(bs);var th=b*b/4;var off=ri(1,8);
@@ -13543,3 +13554,10 @@ window.__BANK_CRMARKS={"u1-ambiguous-count":3,"u1-ambiguous-design":3,"u1-angle-
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
 window.__BANK_BIMODAL={"u1-ambiguous-count":"a","u1-ambiguous-design":"b","u1-angle-placement":"b","u1-corner-check":"a","u1-cosine-angle-mc":"a","u1-cosine-side-mc":"a","u1-crane-spread":"a","u1-crossing-distance":"a","u1-diagram-ambiguous-fit":"a","u1-diagram-both-laws":"b","u1-diagram-chain-setup":"b","u1-diagram-complete-plan":"b","u1-diagram-first-step":"b","u1-diagram-flaw-hunt":"b","u1-diagram-givens":"b","u1-diagram-law-pair":"b","u1-diagram-match":"b","u1-diagram-missing-mark":"b","u1-diagram-read-value":"a","u1-diagram-supplement":"b","u1-diagram-two-unknowns":"b","u1-diagram-unknown":"b","u1-double-plot":"a","u1-farm-lanes":"a","u1-gate-diagonal":"a","u1-harbour-chain":"a","u1-kite-spar":"a","u1-law-choice":"b","u1-law-choice-context":"a","u1-law-diagram-choice":"b","u1-law-formula":"b","u1-mislabeled-diagram":"b","u1-pairing-diagram":"b","u1-pk-hypotenuse-pick":"a","u1-pk-label-sides":"a","u1-pk-opposite-read":"a","u1-pk-other-angle-ratio":"a","u1-pk-pythagoras":"a","u1-pk-ratio-decimal":"a","u1-pk-ratio-def":"a","u1-pk-ratio-equation":"a","u1-pk-ratio-from-figure":"a","u1-pk-ratio-letters":"b","u1-pk-ratio-unreduced":"a","u1-pk-right-check":"a","u1-pk-role-from-diagram":"a","u1-pk-role-value":"b","u1-pk-role-words":"a","u1-pk-solve-scene":"a","u1-pk-two-angles-roles":"a","u1-sine-angle-mc":"a","u1-sine-side-mc":"a","u1-sketch-values":"b","u2-axis-from-graph":"a","u2-axis-from-vertex-form":"a","u2-axis-standard-mc":"a","u2-concavity":"a","u2-domain-context":"a","u2-domain-range":"b","u2-dr-from-graph":"b","u2-dr-standard-form":"b","u2-dr-vertex-form":"b","u2-effect-of-a":"a","u2-effect-of-c":"b","u2-eq-from-characteristics":"a","u2-eq-from-table":"a","u2-eq-intercepts-standard":"a","u2-equation-from-graph":"a","u2-expand-vertex-form":"a","u2-factored-double-root":"a","u2-factored-from-graph":"a","u2-factored-with-a":"a","u2-function-from-vertex-point":"a","u2-graph-description":"a","u2-graph-features":"a","u2-intercepts-read-graph":"a","u2-intercepts-set":"b","u2-match-graph-standard":"b","u2-match-graph-vertex-form":"b","u2-params-characteristics":"a","u2-pk-dr-linear":"a","u2-pk-dr-segment-graph":"b","u2-pk-graph-data":"a","u2-pk-graph-form":"a","u2-pk-line-equation-from-graph":"a","u2-point-on-graph":"a","u2-range-context-mc":"a","u2-revenue-build":"b","u2-revenue-model":"b","u2-signs-from-graph":"a","u2-sketch-points":"b","u2-standard-to-factored":"a","u2-vertex-form-from-graph":"a","u2-vertex-form-params":"b","u2-vertex-from-table":"a","u2-vertex-graph-mc":"a","u2-vertex-interpret":"b","u2-which-quadratic":"a","u2-widest-graph":"a","u2-y-intercept-point":"a","u2-zeros-from-factored":"a","u3-discriminant":"b","u3-discriminant-nature":"b","u3-discriminant-parameter":"b","u3-equation-fraction-roots":"b","u3-equation-from-roots":"b","u3-exact-roots":"b","u3-factor-nonmonic":"b","u3-formula-repair":"a","u3-model-number":"b","u3-pk-binom-tri-expand":"b","u3-pk-expand-square":"b","u3-pk-gcf":"b","u3-pk-gcf-binomial":"b","u3-pk-radical-coefficient":"a","u3-pk-radical-mixed":"a","u3-roots-zeros":"b","u3-solve-fraction-roots":"a","u3-vertex-intercepts":"a","u4-add-unlike":"a","u4-binomial-square":"b","u4-closest-integer":"a","u4-combine-multi":"a","u4-defined-two-radicals":"a","u4-diagonal-radical":"a","u4-difference-simplify":"a","u4-divide-radicals":"a","u4-equation-both-sides":"a","u4-extraneous":"b","u4-mixed-to-entire-fraction":"a","u4-model-equation-two-step":"b","u4-multiply-mixed":"a","u4-no-solution-equation":"a","u4-order":"a","u4-order-mixed-index":"b","u4-pk-laws-integral":"b","u4-pk-laws-rational":"b","u4-pk-radical-entire":"a","u4-pk-radical-mixed":"a","u4-pk-which-is-solution":"a","u4-product-simplify":"a","u4-rationalize-binomial":"b","u4-rationalize-cube-root":"a","u4-reciprocal-sum":"a","u4-simplify-add":"a","u4-simplify-fraction-radicand":"a","u4-triangle-perimeter":"a","u4-variable-cube":"b","u4-variable-entire":"a","u4-variable-mixed":"b","u4-width-radical":"a","u5-ad-claim":"b","u5-ci-infer-mean":"b","u5-ci-majority":"b","u5-ci-samplesize":"b","u5-ci-significance":"b","u5-compare-normal-shift":"b","u5-isnormal":"b","u5-isnormal-data":"b","u5-media":"b","u5-media-position":"b","u5-media-ratio-claim":"b","u5-normal-centre-facts":"a","u5-pk-freq-mean":"a","u5-position-argument":"b","u5-sd-decisions":"b","u5-sd-interpret":"b","u5-sd-interpret-context":"b","u5-sd-match-set":"a","u5-sd-meaning":"b","u5-sd-transform":"b","u5-z-compare":"b","u6-add-area-effect":"a","u6-add-model-height":"a","u6-add-photo-dimension":"a","u6-add-slope-rate":"b","u6-area2d-mc":"a","u6-better-buy":"b","u6-draw-pick":"a","u6-formula-mc":"a","u6-interpret-var":"b","u6-model-sa-mc":"a","u6-model2d-gen":"b","u6-model2d-pick":"b","u6-model3d-gen":"b","u6-model3d-pick":"b","u6-plan-room-mc":"a","u6-poster-dimensions":"b","u6-rate-context-match":"b","u6-rate-context-mc":"a","u6-rate-context-pick":"b","u6-rate-difference":"b","u6-rate-factors-pick":"b","u6-rate-factors-why":"b","u6-rate-graph-pick":"b","u6-sail-scale-mc":"a","u6-sf2d-mc":"a","u6-sf3d-mc":"a","u6-slope-rate":"b","u6-unit-price-mc":"a","u7-converse-contrapositive":"b","u7-converse-truth":"b","u7-deductive-chain":"a","u7-logic-var":"b","u7-pattern-equation":"a","u7-pk-conjecture":"b","u7-pk-counterexample":"b","u7-pk-pattern-figure":"a","u7-pk-table-equation":"a","u7-pk-valid-chain":"a","u7-proof-error":"b","u7-proof-order":"b","u7-proof-valid":"b","u7-race-order":"a","u7-trick-step":"b","u7-trick-valid":"b","u7-valid-argument":"b","u7-valid-chains":"b","u8-add-gable-angle":"a","u8-add-parallel-decision":"b","u8-angle-chase":"a","u8-congruent":"b","u8-construct-order":"b","u8-correspondence":"a","u8-error-gen":"b","u8-error-var":"b","u8-multi-angle":"a","u8-nonpar-pick":"b","u8-parallel-check":"b","u8-pk-angle-measure":"a","u8-pk-parallel-decision":"b","u8-pk-transversal-pairs":"a","u8-proof-reason":"b"};
+/* ============ Level basis labels (generated) ============ */
+/* Built by assemble-bank.py from the LEVELBASIS comments at each
+   audited entry (November 25, 2026): the criterion that decided
+   the entry's level under the adopted criteria card, shown in
+   teacher mode beside the level on the question card. Entries
+   no audit has covered have no label. */
+window.__BANK_LEVELBASIS={};

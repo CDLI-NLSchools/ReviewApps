@@ -1475,7 +1475,11 @@ E("u3-law-then-sum-difference", 3, ["3.13", "3.14"], 3, "gen", function () {
     { mode: "law-then-" + word, a: a, m: m, n: n, p: p });
 }, ["Simplify any power that needs a law before you combine values.", "Start with the power of a power, then evaluate each part."]);
 
-E("u3-explanations-var", 3, ["3.5", "3.8"], 3, "var", varset([
+/* Level retagged 3 to 2, Nov 26, 2026 (Jason's ruling on a dealt
+   instance: "this is level 2, at best"): each variant asks the
+   student to recognize the taught meaning of a power or of the
+   base, a set method applied, not a path the student must find. */
+E("u3-explanations-var", 3, ["3.5", "3.8"], 2, "var", varset([
   function () {
     return mcq("Which explanation shows why \\(2^{3}\\) and \\(3^{2}\\) have different values?",
       { t: "\\(2^{3}=2\\times 2\\times 2=8\\) while \\(3^{2}=3\\times 3=9\\)", fb: "Correct. The repeated multiplication is different in each power." },
@@ -2749,7 +2753,12 @@ E("u3-laws-mixed-eval", 3, ["3.12"], 3, "gen", function () {
     { mode: "topup-mixed-powpow", a: t.a, b: t.b, p: t.p });
 }, ["Sort the expression into steps: one law at a time, starting inside the brackets.", "Apply the power of a product or power of a quotient law first, then combine what is left."]);
 
-E("u3-error-two-laws", 3, ["3.15"], 3, "gen", function () {
+/* Level retagged 3 to 2, Nov 26, 2026 (Jason's ruling on a dealt
+   instance): the question never asks the student to identify or
+   explain the error, so the error framing can be ignored and the
+   student simply applies the two exponent laws in sequence, a
+   taught procedure; with a calculator allowed, just barely 2. */
+E("u3-error-two-laws", 3, ["3.15"], 2, "gen", function () {
   var fam = pick(["prod", "quot"]);
   var a = ri(2, 6), m = ri(2, 4), n = ri(2, 3), p = ri(2, 4);
   if (m === 2 && n === 2) n = 3;
