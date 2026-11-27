@@ -20,6 +20,11 @@ Usage:
 --source defaults to the live sheet's gviz feed; a local file path
 is accepted so the transformation can be tested against a fixture.
 --out defaults to code-registry.json beside the repo root.
+
+Codes listed in tools/registry-demoted-codes.txt are left out of the
+snapshot. Demotion is snapshot-only: the codes stay in the sheet, and
+the app falls back to the sheet for any code the snapshot lacks, so a
+demoted code still resolves. See that file's header for the why.
 """
 
 import argparse
@@ -79,6 +84,19 @@ def parse_codes(text):
     return codes
 
 
+def load_demoted():
+    """Codes to keep out of the snapshot (they still resolve by sheet)."""
+    path = Path(__file__).resolve().parent / "registry-demoted-codes.txt"
+    if not path.exists():
+        return set()
+    demoted = set()
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#"):
+            demoted.add(line.upper())
+    return demoted
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--source", default=None, help="gviz URL or local fixture file")
@@ -92,6 +110,11 @@ def main():
         else Path(__file__).resolve().parent.parent / "code-registry.json"
     )
     codes = parse_codes(read_source(source))
+    demoted = load_demoted()
+    dropped = sorted(c for c in codes if c in demoted)
+    if dropped:
+        print(f"demoted codes excluded from snapshot: {len(dropped)}")
+        codes = {c: q for c, q in codes.items() if c not in demoted}
     payload = {"v": 1, "codes": {k: codes[k] for k in sorted(codes)}}
     text = json.dumps(payload, separators=(",", ":"), ensure_ascii=False) + "\n"
     previous = out.read_text(encoding="utf-8") if out.exists() else None
