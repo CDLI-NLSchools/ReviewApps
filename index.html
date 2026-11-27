@@ -4646,6 +4646,18 @@ function tTok(q){
    fails, resolution falls back to the sheet exactly as before; the
    sheet stays the authority for the not-recognized answer, and a
    failed sheet read still answers unavailable rather than wrong.
+   Row validation hardened (Nov 27, 2026): the mint form is a
+   public endpoint, so registryRowOK below now checks more than
+   the code's shape: the payload must name a registered course and
+   carry either a set value in the app's own token grammar (every
+   token a stream token or a decodable raw token) or a seed alias.
+   The sync applies the same checks plus bank entry existence, a
+   demotion list and a burst guard before a row may enter the
+   snapshot; rows failing here resolve nowhere, and rows failing
+   only there still resolve through this sheet path. The old
+   substring test also silently dropped seeded print codes (their
+   payloads carry seed= and no set=); the seed branch below fixes
+   that, so a typed seeded code now resolves like any other.
    Minting: at the first render of a printed set with the print option
    on, the app draws a random code from the unambiguous alphabet (the
    pack alphabet: no 0/O, 1/I/L), checks it best-effort against both
@@ -4680,6 +4692,40 @@ var CODE_REGISTRY={
   dateEntry:"entry.478786540"
 };
 var CODE_ALPHABET="ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+function registryRowOK(code,q){
+  /* Grammar-level registry row validation (Nov 27, 2026), shared
+     by the sheet and snapshot reads. Bank entry existence is the
+     sync script's layer, not this one: banks are not loaded here,
+     and a code whose entries have since left the bank must still
+     resolve and deal its surviving questions. */
+  if(!/^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/.test(code))return false;
+  var p;try{p=new URLSearchParams(q);}catch(e){return false;}
+  var course=p.get("course");
+  if(!course)return false;
+  if(typeof window!=="undefined"&&window.COURSES&&!window.COURSES[course])return false;
+  var sv=p.get("set");
+  if(sv){
+    var m=sv.match(/^(s|e|p)(\*)?:([^:]+):([\s\S]+)$/);
+    if(!m)return false;
+    var toks=m[4].split(/[,;]/),i,tok;
+    for(i=0;i<toks.length;i++){
+      tok=toks[i];if(!tok)continue;
+      if(/^[a-z0-9-]+\.\d+\.\d+[MNT]$/.test(tok))continue;
+      var at=tok.indexOf("@");
+      if(at>0&&/^[a-z0-9-]+$/.test(tok.slice(0,at))){
+        try{
+          var b64=tok.slice(at+1).replace(/-/g,"+").replace(/_/g,"/");
+          while(b64.length%4)b64+="=";
+          var raw=JSON.parse(atob(b64));
+          if(raw&&raw.p!==undefined&&raw.t!==undefined&&raw.s!==undefined)continue;
+        }catch(e){}
+      }
+      return false;
+    }
+    return true;
+  }
+  return !!p.get("seed");
+}
 var _sheetCodesPromise=null,_sheetCodesCache=null,_printCode=null;
 function fetchSheetCodes(){
   if(_sheetCodesPromise)return _sheetCodesPromise;
@@ -4696,7 +4742,7 @@ function fetchSheetCodes(){
         var c=row.c||[];
         var code=c[1]&&c[1].v?String(c[1].v).toUpperCase().replace(/[^A-Z0-9]/g,""):"";
         var q=c[2]&&c[2].v?String(c[2].v):"";
-        if(/^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/.test(code)&&q.indexOf("course=")>=0&&q.indexOf("set=")>=0){codes[code]=q;n++;}
+        if(registryRowOK(code,q)){codes[code]=q;n++;}
       });
       return {ok:true,codes:codes,rows:n};
     });
@@ -4717,7 +4763,7 @@ function fetchSnapshotCodes(){
       var src=(data&&data.codes)||{},codes={},n=0;
       Object.keys(src).forEach(function(code){
         var q=String(src[code]);
-        if(/^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/.test(code)&&q.indexOf("course=")>=0&&q.indexOf("set=")>=0){codes[code]=q;n++;}
+        if(registryRowOK(code,q)){codes[code]=q;n++;}
       });
       return {ok:true,codes:codes,rows:n};
     });

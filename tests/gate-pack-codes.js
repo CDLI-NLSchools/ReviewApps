@@ -570,18 +570,26 @@ async function part4() {
   ok(regMatch && regMatch[1].indexOf("code-registry.json") >= 0,
      "snapshot layer: the registry config names the snapshot file");
   const snapFn = extractFn(html, "fetchSnapshotCodes");
+  /* Nov 27, 2026: fetchSnapshotCodes validates through the shared
+     registryRowOK, so the extraction carries it too. The vm also
+     needs window and atob for that validator. */
+  const okFn = extractFn(html, "registryRowOK");
   function runSnapFetch(fetchImpl) {
-    const ctx = { URLSearchParams, console, fetch: fetchImpl };
+    const ctx = { URLSearchParams, console, fetch: fetchImpl, atob, window: { COURSES: { "math-2201": {} } } };
     vm.createContext(ctx);
     vm.runInContext("var CODE_REGISTRY=" + regMatch[1] + ";\n" +
-                    "var _snapshotCodesPromise=null,_snapshotCodesCache=null;\n" + snapFn +
+                    "var _snapshotCodesPromise=null,_snapshotCodesCache=null;\n" + okFn + "\n" + snapFn +
                     "\nthis.__p=fetchSnapshotCodes();", ctx);
     return ctx.__p;
   }
+  /* Fixture payloads carry a real token from Nov 27, 2026: the
+     hardened registry validation (registryRowOK in the shell, the
+     same checks in the generator) rejects a set value with no
+     tokens, so the toy "s:abc" no longer stands for a valid row. */
   const canned = { v: 1, codes: {
-    "ABC234": "course=math-2201&set=s%3Aabc",
-    "BAD0O1": "course=math-2201&set=s%3Aabc",
-    "SHORT": "course=math-2201&set=s%3Aabc",
+    "ABC234": "course=math-2201&set=s%3Aabc%3Au1-pk-hypotenuse-pick.0.0M",
+    "BAD0O1": "course=math-2201&set=s%3Aabc%3Au1-pk-hypotenuse-pick.0.0M",
+    "SHORT": "course=math-2201&set=s%3Aabc%3Au1-pk-hypotenuse-pick.0.0M",
     "NOSET2": "course=math-2201&unit=1"
   } };
   let res = await runSnapFetch(() => Promise.resolve({ ok: true, json: () => Promise.resolve(canned) }));
@@ -595,10 +603,10 @@ async function part4() {
   const os = require("os"), path = require("path");
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "regsync-"));
   const fixture = "google.visualization.Query.setResponse({\"version\":\"0.6\",\"reqId\":\"0\",\"status\":\"ok\",\"table\":{\"cols\":[{\"label\":\"Timestamp\"},{\"label\":\"Code\"},{\"label\":\"Params\"}],\"rows\":[" +
-    "{\"c\":[{\"v\":\"2026-11-18 10:00:00\"},{\"v\":\"XYZ234\"},{\"v\":\"course=math-2201&unit=1&set=s%3Aabc\"}]}," +
-    "{\"c\":[{\"v\":\"2026-11-18 10:01:00\"},{\"v\":\"BAD 01\"},{\"v\":\"course=math-2201&set=s%3Aabc\"}]}," +
+    "{\"c\":[{\"v\":\"2026-11-18 10:00:00\"},{\"v\":\"XYZ234\"},{\"v\":\"course=math-2201&unit=1&set=s%3Aabc%3Au1-pk-hypotenuse-pick.0.0M\"}]}," +
+    "{\"c\":[{\"v\":\"2026-11-18 10:01:00\"},{\"v\":\"BAD 01\"},{\"v\":\"course=math-2201&set=s%3Aabc%3Au1-pk-hypotenuse-pick.0.0M\"}]}," +
     "{\"c\":[{\"v\":\"2026-11-18 10:02:00\"},{\"v\":\"NOSET2\"},{\"v\":\"course=math-2201&unit=1\"}]}," +
-    "{\"c\":[{\"v\":\"2026-11-18 10:03:00\"},{\"v\":\"ABC234\"},{\"v\":\"course=sci-9&set=e%3Axyz\"}]}" +
+    "{\"c\":[{\"v\":\"2026-11-18 10:03:00\"},{\"v\":\"ABC234\"},{\"v\":\"course=sci-9&set=e%3Axyz%3As9-u1-moon-motion.0.0M\"}]}" +
     "]}});";
   fs.writeFileSync(path.join(tmp, "fixture.txt"), fixture);
   execFileSync("python3", [ROOT + "/tools/sync-code-registry.py", "--source", path.join(tmp, "fixture.txt"),
@@ -606,7 +614,7 @@ async function part4() {
   const gen = JSON.parse(fs.readFileSync(path.join(tmp, "out.json"), "utf8"));
   ok(gen.v === 1 && Object.keys(gen.codes).join(",") === "ABC234,XYZ234",
      "snapshot layer: the generator keeps exactly the valid rows, keys sorted");
-  ok(gen.codes["XYZ234"] === "course=math-2201&unit=1&set=s%3Aabc",
+  ok(gen.codes["XYZ234"] === "course=math-2201&unit=1&set=s%3Aabc%3Au1-pk-hypotenuse-pick.0.0M",
      "snapshot layer: the generator carries the set parameters unchanged");
 
   /* the seeded snapshot committed in the repo is well formed */
@@ -614,8 +622,12 @@ async function part4() {
   const codes = seeded.codes || {};
   const keys = Object.keys(codes);
   ok(seeded.v === 1 && keys.length > 0, "snapshot layer: the seeded snapshot exists and is not empty");
+  /* Nov 27, 2026: a seeded entry may carry a seed alias instead of
+     a set value (the old substring rule silently dropped those
+     codes from every snapshot); either form passes. */
   ok(keys.every(k => /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/.test(k) &&
-                     String(codes[k]).indexOf("course=") >= 0 && String(codes[k]).indexOf("set=") >= 0),
+                     String(codes[k]).indexOf("course=") >= 0 &&
+                     (String(codes[k]).indexOf("set=") >= 0 || String(codes[k]).indexOf("seed=") >= 0)),
      "snapshot layer: every seeded entry passes the registry validation");
 }
 
