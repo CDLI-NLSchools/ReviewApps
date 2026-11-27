@@ -4432,6 +4432,7 @@ E("u7-add-choisir-diagramme", 7, ["11.3"], 2, "gen", function () {
 // CRMARKS: u8-cubes-total-num=3
 // CRMARKS: u8-front-squares-num=3
 // CRMARKS: u8-irregular-angle-num=2
+// CRMARKS: u8-irregular-tessellate=2
 // CRMARKS: u8-mixed-point-num=2
 // CRMARKS: u8-rotate-front-num=2
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
@@ -4977,6 +4978,80 @@ E("u8-irregular-angle-num", 8, ["10.5"], 1, "gen", function () {
   qf.figure = u8Svg(120, 120, u8RegPoly(60, 60, 30, 4, 10), "Une tuile en quadrilatère irrégulier");
   return qf;
 }, ["Les angles intérieurs d'un quadrilatère totalisent toujours 360 degrés.", "Additionne d'abord les trois angles donnés, puis soustrais de 360."]);
+
+// 13A. 10.5 L2 gen MC, CR 2: which irregular polygons tessellate, justified by angle measurements.
+// Authored November 27, 2026 on Jason's ruling: after the D5 retagging, 10.5 had no regular entry
+// (its only carrier, u8-irregular-angle-num above, is prior knowledge). Every verdict rests on the
+// angle test: copies tessellate only if their angles can meet around a point and add to exactly 360.
+E("u8-irregular-tessellate", 8, ["10.5"], 2, "gen", function () {
+  var DIVS = [36, 40, 45, 60, 72, 90, 120];
+  function quadAngles() {
+    for (var att = 0; att < 200; att++) {
+      var a = ri(60, 140), b = ri(60, 140), c = ri(60, 140), d = 360 - a - b - c;
+      if (d < 55 || d > 145) continue;
+      var angs = [a, b, c, d];
+      if (new Set(angs).size < 3) continue;
+      if (angs.every(function (x) { return DIVS.indexOf(x) >= 0; })) continue;
+      return angs;
+    }
+    return [85, 95, 110, 70];
+  }
+  function triAngles() {
+    for (var att = 0; att < 200; att++) {
+      var a = ri(35, 110), b = ri(35, 110), c = 180 - a - b;
+      if (c < 30 || c > 120) continue;
+      var angs = [a, b, c];
+      if (new Set(angs).size < 3) continue;
+      if (angs.every(function (x) { return DIVS.indexOf(x) >= 0; })) continue;
+      return angs;
+    }
+    return [50, 60, 70];
+  }
+  function listDeg(angs) {
+    return angs.slice(0, -1).map(function (x) { return fmtD(x); }).join(" degrés, ") + " degrés et " + fmtD(angs[angs.length - 1]) + " degrés";
+  }
+  var mode = pick(["quad", "tri", "hexno", "set"]);
+  if (mode === "quad") {
+    var qa = quadAngles();
+    return mcq("Une tuile en quadrilatère irrégulier a des angles intérieurs de " + listDeg(qa) + ". Des copies congrues de cette tuile peuvent-elles recouvrir un plancher sans laisser de vides et sans chevauchements ?",
+      { t: "Oui. Ses quatre angles totalisent 360 degrés, donc un angle de chaque sorte peut se rencontrer en un point et le remplir exactement.", fb: "Exact : les quatre angles remplissent le point exactement." },
+      [{ t: "Oui, parce que chacun de ses angles divise 360 degrés exactement.", fb: "Les angles ici ne divisent pas tous 360 ; les quatre angles remplissent le point ensemble." },
+       { t: "Non. Seuls les polygones réguliers peuvent former un dallage.", fb: "Les polygones irréguliers peuvent aussi former un dallage ; tout quadrilatère le fait." },
+       { t: "Non. Ses angles sont tous différents, donc ses copies laisseraient des vides.", fb: "Des angles différents conviennent quand ils totalisent exactement 360 autour d'un point." }],
+      "Pour que des copies d'une tuile recouvrent un plancher sans vides et sans chevauchements, les angles qui se rencontrent en chaque point doivent totaliser exactement 360 degrés. Les quatre angles intérieurs totalisent \\[ \\begin{aligned} " + fmtD(qa[0]) + "° + " + fmtD(qa[1]) + "° + " + fmtD(qa[2]) + "° + " + fmtD(qa[3]) + "° &= 360° \\end{aligned} \\] donc un angle de chaque sorte peut se rencontrer en chaque point et le remplir exactement. Donc le quadrilatère <b>forme un dallage</b>.",
+      { mode: "quad", angles: qa });
+  }
+  if (mode === "tri") {
+    var ta = triAngles();
+    return mcq("Une tuile en triangle irrégulier a des angles intérieurs de " + listDeg(ta) + ". Des copies congrues de cette tuile peuvent-elles recouvrir un plancher sans laisser de vides et sans chevauchements ?",
+      { t: "Oui. Deux copies de chaque angle peuvent se rencontrer en un point, et 2 × (" + fmtD(ta[0]) + " + " + fmtD(ta[1]) + " + " + fmtD(ta[2]) + ") = 360 degrés.", fb: "Exact : deux copies de chaque angle donnent 360 autour d'un point." },
+      [{ t: "Non. Ses angles totalisent 180 degrés, et non 360 degrés, donc ils ne peuvent pas remplir un point.", fb: "Des copies se rencontrent en un point, donc chaque angle y apparaît plus d'une fois." },
+       { t: "Non. Seuls les triangles équilatéraux peuvent former un dallage.", fb: "Tout triangle forme un dallage, pas seulement les triangles équilatéraux." },
+       { t: "Oui, parce que chacun de ses angles divise 360 degrés exactement.", fb: "Les angles ici ne divisent pas tous 360 ; les angles fonctionnent en combinaison." }],
+      "Pour que des copies d'une tuile recouvrent un plancher sans vides et sans chevauchements, les angles qui se rencontrent en chaque point doivent totaliser exactement 360 degrés. Les trois angles intérieurs totalisent 180 degrés, donc deux copies de chaque angle qui se rencontrent en un point totalisent \\[ \\begin{aligned} 2 \\times (" + fmtD(ta[0]) + "° + " + fmtD(ta[1]) + "° + " + fmtD(ta[2]) + "°) &= 2 \\times 180° \\\\ &= 360° \\end{aligned} \\] ce qui remplit le point exactement. Donc le triangle <b>forme un dallage</b>.",
+      { mode: "tri", angles: ta });
+  }
+  if (mode === "hexno") {
+    var pair = pick([[100, 140], [105, 135]]);
+    var ha = [pair[0], pair[1], pair[0], pair[1], pair[0], pair[1]];
+    var s3 = [3 * pair[0], 2 * pair[0] + pair[1], pair[0] + 2 * pair[1], 3 * pair[1]];
+    return mcq("Une tuile en hexagone irrégulier a des angles intérieurs de " + listDeg(ha) + ". Des copies congrues de cette tuile peuvent-elles recouvrir un plancher sans laisser de vides et sans chevauchements ?",
+      { t: "Non. Aucune combinaison de ses angles ne totalise exactement 360 degrés, donc ses angles ne peuvent pas remplir l'espace autour d'un point.", fb: "Exact : aucune rencontre de ses angles ne peut remplir un point." },
+      [{ t: "Oui. Ses six angles totalisent 720 degrés, et 720 est un multiple de 360.", fb: "Le total des six angles n'est pas le critère ; les angles autour de chaque point doivent totaliser 360." },
+       { t: "Oui. Il a six côtés, et les hexagones réguliers forment un dallage.", fb: "Les angles de 120 degrés d'un hexagone régulier divisent 360 ; les angles de cette tuile ne se combinent pas pour donner 360." },
+       { t: "Non. Un polygone irrégulier ne peut jamais former un dallage.", fb: "Les triangles et les quadrilatères irréguliers forment un dallage ; cet hexagone échoue à cause de ses angles." }],
+      "Pour que des copies d'une tuile recouvrent un plancher sans vides et sans chevauchements, les angles qui se rencontrent en chaque point doivent totaliser exactement 360 degrés. Seulement trois de ses angles peuvent se rencontrer en un point : deux totalisent au plus " + fmtD(2 * pair[1]) + " degrés, et quatre totalisent au moins " + fmtD(4 * pair[0]) + " degrés. Les totaux possibles avec trois angles sont \\[ \\begin{aligned} " + fmtD(s3[0]) + "°, \\quad " + fmtD(s3[1]) + "°, \\quad " + fmtD(s3[2]) + "°, \\quad " + fmtD(s3[3]) + "° \\end{aligned} \\] et aucun n'est 360 degrés, donc un vide ou un chevauchement est inévitable. Donc l'hexagone <b>ne forme pas un dallage</b>.",
+      { mode: "hexno", angles: ha });
+  }
+  var qa2 = quadAngles(), ta2 = triAngles(), pa = [95, 105, 110, 115, 115];
+  return mcq("Trois tuiles irrégulières sont sur une table. La tuile 1 est un quadrilatère dont les angles intérieurs sont de " + listDeg(qa2) + ". La tuile 2 est un triangle dont les angles intérieurs sont de " + listDeg(ta2) + ". La tuile 3 est un pentagone dont les angles intérieurs sont de " + listDeg(pa) + ". Lesquelles de ces tuiles peuvent recouvrir un plancher en copies congrues, sans vides et sans chevauchements ?",
+    { t: "Les tuiles 1 et 2 seulement.", fb: "Exact : le quadrilatère et le triangle réussissent le critère des angles ; le pentagone échoue." },
+    [{ t: "Les trois tuiles.", fb: "Les angles du pentagone ne peuvent pas remplir un point, donc il ne peut pas former un dallage." },
+     { t: "La tuile 1 seulement.", fb: "Le triangle forme aussi un dallage : deux copies de chaque angle donnent 360 autour d'un point." },
+     { t: "Les tuiles 1 et 3 seulement.", fb: "Le pentagone échoue au critère des angles, et le triangle le réussit." }],
+    "Les angles qui se rencontrent en chaque point doivent totaliser exactement 360 degrés. Tuile 1 : ses quatre angles totalisent " + fmtD(qa2[0]) + "° + " + fmtD(qa2[1]) + "° + " + fmtD(qa2[2]) + "° + " + fmtD(qa2[3]) + "° = 360°, donc un angle de chaque sorte remplit chaque point, et elle forme un dallage. Tuile 2 : ses angles totalisent 180°, donc deux copies de chaque angle totalisent 360° en chaque point, et elle forme un dallage. Tuile 3 : au plus trois de ses angles peuvent se rencontrer en un point, parce que les quatre plus petits totalisent déjà 95° + 105° + 110° + 115° = 425°, et ses trois plus grands angles totalisent seulement 110° + 115° + 115° = 340°, ce qui est moins que 360°, donc ses angles ne peuvent jamais remplir un point. Donc les tuiles qui forment un dallage sont <b>les tuiles 1 et 2 seulement</b>.",
+    { mode: "set", quad: qa2, tri: ta2, penta: pa });
+}, ["Les angles autour d'un point totalisent exactement 360 degrés.", "Vérifie si les angles, ou des copies des angles, peuvent être combinés pour donner exactement 360."]);
 
 // 14. 10.7 L2 gen MC with figure: which single transformation maps tile 1 to tile 2.
 E("u8-tess-transform", 8, ["10.7"], 1, "gen", function () {
@@ -5701,7 +5776,7 @@ BANK.forEach(function(e){if(ENRICH8FR.indexOf(e.id)>=0)e.enrich=true;});
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-best-estimate":3,"u1-calc-approx":3,"u1-diagonal-mc-gap":2,"u1-diagonal-square":3,"u1-estimate-between":2,"u1-factors-root":2,"u1-fence-perimeter-gap":3,"u1-garden-diagonal-gap":2,"u1-grid-distance-gap":2,"u1-hypotenuse":3,"u1-is-perfect-square":2,"u1-is-right":2,"u1-ladder-context":2,"u1-missing-leg":3,"u1-perfect-square-region":2,"u1-pythag-model":2,"u1-right-test-decide":3,"u1-root-between-numbers":2,"u1-shortcut-saving-gap":3,"u1-sqrt-perfect":2,"u1-square-of-number":2,"u1-square-plot-perimeter":2,"u1-square-side-perimeter-gap":3,"u1-triple-find":2,"u1-two-ladders-gap":3,"u1-why-approx":2,"u2-chain-negative-divisor-gap":3,"u2-context-reasoning-var":3,"u2-div-2by1":3,"u2-div-2by2":3,"u2-div-context-match":2,"u2-div-model-groups":2,"u2-div-partage-changement":2,"u2-fifth-day-temp-gap":3,"u2-identify-operation":2,"u2-missing-factor-follow-gap":3,"u2-mixed-problem":2,"u2-mult-context-match":2,"u2-mult-model-chips":2,"u2-mult-problem":3,"u2-ooo-brackets-num":3,"u2-ooo-evaluate-mc":2,"u2-ooo-num":2,"u2-product-sign-apply":2,"u2-quotient-sign-apply":2,"u2-sign-product-problem":2,"u2-square-minus-product-gap":2,"u2-two-divers-gap":3,"u3-area-decimal-gap":2,"u3-area-model-product":2,"u3-bottles-roundup-gap":3,"u3-chain-mc-gap":2,"u3-chain-subtract-product-gap":3,"u3-context-divide-expression":2,"u3-context-multiply-expression":2,"u3-divide-frac-by-frac":2,"u3-divide-mixed-cr":3,"u3-divide-word-cr":2,"u3-estimate-product-benchmark":2,"u3-estimate-quotient-benchmark":2,"u3-estimate-reasoning-var":3,"u3-identify-operation":2,"u3-mixed-multistep-cr":3,"u3-model-division-bar":3,"u3-model-frac-times-whole":2,"u3-model-whole-div-frac":2,"u3-mult-div-chain-cr":2,"u3-multiply-mixed-cr":3,"u3-multiply-two-fractions":2,"u3-order-of-ops-fractions":2,"u3-successive-fractions":3,"u4-base-volume-link":2,"u4-faces-identify":2,"u4-holds-most":2,"u4-net-build-parts":2,"u4-net-match":2,"u4-net-predict":2,"u4-open-box-sa-gap":3,"u4-position-volume":3,"u4-sa-cylinder":3,"u4-sa-from-net":2,"u4-sa-missing-edge":3,"u4-sa-open-tank":3,"u4-sa-problem-wrap":2,"u4-sa-rect-prism":3,"u4-sa-tri-prism":3,"u4-tank-litres-gap":2,"u4-vol-cylinder-diam":2,"u4-vol-missing-height":2,"u4-vol-rect-prism":2,"u4-vol-tri-prism":2,"u5-better-buy":3,"u5-context-extreme-percent":2,"u5-context-for-rate-ab":2,"u5-context-for-ratio-ab":2,"u5-decimal-convert":2,"u5-discount-then-tax":3,"u5-down-then-up-gap":3,"u5-express-rate":2,"u5-find-the-whole":3,"u5-find-whole-mc-gap":2,"u5-fraction-convert":2,"u5-grid-fractional-percent":2,"u5-grid-over-100":2,"u5-identify-rate-example":2,"u5-identify-ratio-simplest":2,"u5-meaning-of-ratio-ab":2,"u5-mixed-forms-order":3,"u5-part-to-whole-fraction":2,"u5-percent-change":3,"u5-percent-convert":2,"u5-percent-of-number":3,"u5-percent-of-percent":2,"u5-percent-of-percent-quantity":2,"u5-rate-problem-solve":2,"u5-ratio-as-percent":2,"u5-ratio-part-percent-gap":3,"u5-ratio-problem-solve":2,"u5-shaded-grid-read":2,"u5-successive-percents":3,"u5-three-term-ratio":2,"u5-two-term-ratio":2,"u5-unit-rate-cost-gap":3,"u5-why-rate-not-percent":2,"u6-add-premiere-etape":3,"u6-add-tableau-relation":3,"u6-construct-graph-points":2,"u6-decimal-coefficient-gap":2,"u6-describe-graph":3,"u6-graph-extend-pair":2,"u6-identify-error":3,"u6-missing-ordered-pair":2,"u6-missing-ordered-pair-backward":2,"u6-model-equation":3,"u6-solve-context-problem":3,"u6-solve-distributive":3,"u6-solve-div-plus":2,"u6-solve-group-problem":3,"u6-solve-one-step":2,"u6-solve-two-step":3,"u6-two-points-evaluate-gap":3,"u6-verify-conclusion":3,"u6-verify-left-side":2,"u6-visual-step":2,"u7-add-choisir-diagramme":3,"u7-advantages-disadvantages":2,"u7-apparent-height-ratio":2,"u7-apply-rule-percent":2,"u7-choose-graph-basic":2,"u7-context-for-probability":3,"u7-deep-critique":3,"u7-fix-the-graph":2,"u7-misleading-format":2,"u7-name-the-trick":3,"u7-product-rule-intro":2,"u7-same-colour-twice":3,"u7-two-colours-twice-gap":3,"u7-two-draws-percent":3,"u7-two-events-mc-gap":2,"u7-two-spinners-decimal":3,"u8-around-point-num":3,"u8-build-from-views":3,"u8-build-max-num":3,"u8-changed-side-view-gap":3,"u8-combo-transform":3,"u8-create-tess-var":2,"u8-cube-volume-gap":3,"u8-cubes-total-num":3,"u8-env-tess-var":2,"u8-env-views-var":2,"u8-front-squares-num":3,"u8-hidden-cubes-gap":2,"u8-irregular-angle-num":2,"u8-match-object":3,"u8-mixed-point-num":2,"u8-new-shape-var":3,"u8-regular-tessellates-var":2,"u8-rotate-front-num":2,"u8-rotate-predict":2,"u8-rotated-side-view-gap":3,"u8-tess-transform":2,"u8-tiles-at-point-gap":3};
+window.__BANK_CRMARKS={"u1-best-estimate":3,"u1-calc-approx":3,"u1-diagonal-mc-gap":2,"u1-diagonal-square":3,"u1-estimate-between":2,"u1-factors-root":2,"u1-fence-perimeter-gap":3,"u1-garden-diagonal-gap":2,"u1-grid-distance-gap":2,"u1-hypotenuse":3,"u1-is-perfect-square":2,"u1-is-right":2,"u1-ladder-context":2,"u1-missing-leg":3,"u1-perfect-square-region":2,"u1-pythag-model":2,"u1-right-test-decide":3,"u1-root-between-numbers":2,"u1-shortcut-saving-gap":3,"u1-sqrt-perfect":2,"u1-square-of-number":2,"u1-square-plot-perimeter":2,"u1-square-side-perimeter-gap":3,"u1-triple-find":2,"u1-two-ladders-gap":3,"u1-why-approx":2,"u2-chain-negative-divisor-gap":3,"u2-context-reasoning-var":3,"u2-div-2by1":3,"u2-div-2by2":3,"u2-div-context-match":2,"u2-div-model-groups":2,"u2-div-partage-changement":2,"u2-fifth-day-temp-gap":3,"u2-identify-operation":2,"u2-missing-factor-follow-gap":3,"u2-mixed-problem":2,"u2-mult-context-match":2,"u2-mult-model-chips":2,"u2-mult-problem":3,"u2-ooo-brackets-num":3,"u2-ooo-evaluate-mc":2,"u2-ooo-num":2,"u2-product-sign-apply":2,"u2-quotient-sign-apply":2,"u2-sign-product-problem":2,"u2-square-minus-product-gap":2,"u2-two-divers-gap":3,"u3-area-decimal-gap":2,"u3-area-model-product":2,"u3-bottles-roundup-gap":3,"u3-chain-mc-gap":2,"u3-chain-subtract-product-gap":3,"u3-context-divide-expression":2,"u3-context-multiply-expression":2,"u3-divide-frac-by-frac":2,"u3-divide-mixed-cr":3,"u3-divide-word-cr":2,"u3-estimate-product-benchmark":2,"u3-estimate-quotient-benchmark":2,"u3-estimate-reasoning-var":3,"u3-identify-operation":2,"u3-mixed-multistep-cr":3,"u3-model-division-bar":3,"u3-model-frac-times-whole":2,"u3-model-whole-div-frac":2,"u3-mult-div-chain-cr":2,"u3-multiply-mixed-cr":3,"u3-multiply-two-fractions":2,"u3-order-of-ops-fractions":2,"u3-successive-fractions":3,"u4-base-volume-link":2,"u4-faces-identify":2,"u4-holds-most":2,"u4-net-build-parts":2,"u4-net-match":2,"u4-net-predict":2,"u4-open-box-sa-gap":3,"u4-position-volume":3,"u4-sa-cylinder":3,"u4-sa-from-net":2,"u4-sa-missing-edge":3,"u4-sa-open-tank":3,"u4-sa-problem-wrap":2,"u4-sa-rect-prism":3,"u4-sa-tri-prism":3,"u4-tank-litres-gap":2,"u4-vol-cylinder-diam":2,"u4-vol-missing-height":2,"u4-vol-rect-prism":2,"u4-vol-tri-prism":2,"u5-better-buy":3,"u5-context-extreme-percent":2,"u5-context-for-rate-ab":2,"u5-context-for-ratio-ab":2,"u5-decimal-convert":2,"u5-discount-then-tax":3,"u5-down-then-up-gap":3,"u5-express-rate":2,"u5-find-the-whole":3,"u5-find-whole-mc-gap":2,"u5-fraction-convert":2,"u5-grid-fractional-percent":2,"u5-grid-over-100":2,"u5-identify-rate-example":2,"u5-identify-ratio-simplest":2,"u5-meaning-of-ratio-ab":2,"u5-mixed-forms-order":3,"u5-part-to-whole-fraction":2,"u5-percent-change":3,"u5-percent-convert":2,"u5-percent-of-number":3,"u5-percent-of-percent":2,"u5-percent-of-percent-quantity":2,"u5-rate-problem-solve":2,"u5-ratio-as-percent":2,"u5-ratio-part-percent-gap":3,"u5-ratio-problem-solve":2,"u5-shaded-grid-read":2,"u5-successive-percents":3,"u5-three-term-ratio":2,"u5-two-term-ratio":2,"u5-unit-rate-cost-gap":3,"u5-why-rate-not-percent":2,"u6-add-premiere-etape":3,"u6-add-tableau-relation":3,"u6-construct-graph-points":2,"u6-decimal-coefficient-gap":2,"u6-describe-graph":3,"u6-graph-extend-pair":2,"u6-identify-error":3,"u6-missing-ordered-pair":2,"u6-missing-ordered-pair-backward":2,"u6-model-equation":3,"u6-solve-context-problem":3,"u6-solve-distributive":3,"u6-solve-div-plus":2,"u6-solve-group-problem":3,"u6-solve-one-step":2,"u6-solve-two-step":3,"u6-two-points-evaluate-gap":3,"u6-verify-conclusion":3,"u6-verify-left-side":2,"u6-visual-step":2,"u7-add-choisir-diagramme":3,"u7-advantages-disadvantages":2,"u7-apparent-height-ratio":2,"u7-apply-rule-percent":2,"u7-choose-graph-basic":2,"u7-context-for-probability":3,"u7-deep-critique":3,"u7-fix-the-graph":2,"u7-misleading-format":2,"u7-name-the-trick":3,"u7-product-rule-intro":2,"u7-same-colour-twice":3,"u7-two-colours-twice-gap":3,"u7-two-draws-percent":3,"u7-two-events-mc-gap":2,"u7-two-spinners-decimal":3,"u8-around-point-num":3,"u8-build-from-views":3,"u8-build-max-num":3,"u8-changed-side-view-gap":3,"u8-combo-transform":3,"u8-create-tess-var":2,"u8-cube-volume-gap":3,"u8-cubes-total-num":3,"u8-env-tess-var":2,"u8-env-views-var":2,"u8-front-squares-num":3,"u8-hidden-cubes-gap":2,"u8-irregular-angle-num":2,"u8-irregular-tessellate":2,"u8-match-object":3,"u8-mixed-point-num":2,"u8-new-shape-var":3,"u8-regular-tessellates-var":2,"u8-rotate-front-num":2,"u8-rotate-predict":2,"u8-rotated-side-view-gap":3,"u8-tess-transform":2,"u8-tiles-at-point-gap":3};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
