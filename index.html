@@ -4266,7 +4266,11 @@ function tCodeOpenVia(q,sp){
 }
 function tCodeOpenBoot(){
   tCodeOpenBanner("off");
+  /* Seed-alias payloads (Nov 27, 2026): a code that resolves to a settings plus seed address is a student front-door arrival, the same as a code typed in the home page box, so its print mode moves aside to tmode and the seeded set draws as practice. The fetch path used to dispatch mode=sheet straight to the sheet builder, and the applied scope was then clobbered (below), so a seeded code resolved and landed on an empty picker; seeded codes only began resolving at all when the registry validation admitted seed aliases the same day. */
+  try{var qp=new URLSearchParams(window.__QPAYLOAD||"");if(qp.get("seed")&&!qp.get("set")){var qm=qp.get("mode");if(qm==="sheet"||qm==="exam"){qp.set("tmode",qm);qp.delete("mode");window.__QPAYLOAD=qp.toString();}}}catch(e){}
   var touched=applyURL();
+  /* The start functions read their scope back from the picker form (readUnits and readInds inside settings), which the normal boot syncs from state right after applyURL. This boot runs at fetch resolution, after the picker was rendered, so sync the form here or the applied units are overwritten by the unchecked boxes and the dispatch deals nothing. */
+  try{if(typeof unitCheckboxes==="function")unitCheckboxes();if(typeof renderIndicators==="function")renderIndicators();}catch(e){}
   if(new URLSearchParams(window.__QPAYLOAD||location.search).get("set")&&tRebuildFromURL()){tNoteOpenedSet(tOpenedCodeHere());tCodeTeacherBar();return;}
   if(touched&&new URLSearchParams(window.__QPAYLOAD||location.search).get("nostart")!=="1"&&(new URLSearchParams(window.__QPAYLOAD||location.search).get("unit")||new URLSearchParams(window.__QPAYLOAD||location.search).get("preset")||new URLSearchParams(window.__QPAYLOAD||location.search).get("indicator"))){
     var m=new URLSearchParams(window.__QPAYLOAD||location.search).get("mode");
