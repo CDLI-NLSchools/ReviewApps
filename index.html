@@ -9191,7 +9191,8 @@ $("presetAll").addEventListener("click",function(){setPreset(window.__COURSE&&wi
    themselves. The row stays hidden in courses with no
    testMap, absent rather than greyed out (spec Section 4.4). */
 function testNameFor(n){return L9("Test "+n,"Test de pratique "+n);}
-function testScopeLabel(ts){return (UNITS[ts.unit]||"")+" "+testNameFor(ts.test);}
+function testLabelFor(ts){try{var tm=(window.__COURSE&&window.__COURSE.testMap&&window.__COURSE.testMap[ts.unit])||[];for(var k=0;k<tm.length;k++){if(tm[k].test===ts.test)return tm[k].label||"";}}catch(e){}return "";}
+function testScopeLabel(ts){var lb=testLabelFor(ts);return (UNITS[ts.unit]||"")+" "+testNameFor(ts.test)+(lb?L9(": "," : ")+lb:"");}
 function testShortLine(ex){var n=ex.srItems.length+ex.crItems.length;return L9("This test's practice bank is still growing, so this set has "+n+" questions.","La banque de pratique de ce test est encore en croissance, alors cette série compte "+n+" questions.");}
 function tTestSelSync(){
   var row=$("testScopeRow");if(!row)return;
@@ -9207,7 +9208,7 @@ function tTestSelSync(){
     var u=sel?sel.unit:(us.value?+us.value:+Object.keys(C.testMap)[0]);
     us.value=String(u);
     var list=C.testMap[u]||[];
-    ts.innerHTML='<option value="">'+L9("Choose a test","Choisis un test")+"</option>"+list.map(function(t){return '<option value="'+t.test+'">'+testNameFor(t.test)+"</option>";}).join("");
+    ts.innerHTML='<option value="">'+L9("Choose a test","Choisis un test")+"</option>"+list.map(function(t){return '<option value="'+t.test+'">'+testNameFor(t.test)+(t.label?L9(": "," : ")+t.label:"")+"</option>";}).join("");
     ts.value=sel?String(sel.test):"";
   }
   if(note)note.textContent=sel?L9("Practice set for "+testScopeLabel(sel)+", built from the same indicators that test covers.","Série de pratique pour "+testScopeLabel(sel)+", construite à partir des mêmes notions que couvre ce test."):"";
@@ -9266,7 +9267,7 @@ function oTestSync(){
   var showNum=false;
   if(oTestSel&&oTestSel.kind!=="preset"&&C&&C.testMap&&C.testMap[oTestSel.unit]){
     var list=C.testMap[oTestSel.unit]||[];
-    ns.innerHTML='<option value="">'+L9("Whole unit","Unité entière")+"</option>"+list.map(function(t){return '<option value="'+t.test+'">'+testNameFor(t.test)+"</option>";}).join("");
+    ns.innerHTML='<option value="">'+L9("Whole unit","Unité entière")+"</option>"+list.map(function(t){return '<option value="'+t.test+'">'+testNameFor(t.test)+(t.label?L9(": "," : ")+t.label:"")+"</option>";}).join("");
     ns.value=oTestSel.kind==="test"?String(oTestSel.test):"";
     showNum=true;
   }
