@@ -116,6 +116,18 @@ window.COURSES = {
 
   unitTest: { total: 25, sr: 11, cr: 14 },
 
+  /* Test blueprint (Spec-Test-Shaped-Practice-2026-11-19.md Appendix A; Physics maps
+     adopted November 27, 2026 on the owner's ruling, per the November 21, 2026 proposal). */
+  testMap: {
+    1: [ { test: 1, inds: ["PH12.5.1", "PH12.5.2", "PH12.5.3", "PH12.5.4", "PH12.5.5"] } ],
+    2: [ { test: 1, inds: ["PH12.6.1", "PH12.6.2"] },
+      { test: 2, inds: ["PH12.6.3", "PH12.6.4"] } ],
+    3: [ { test: 1, inds: ["PH12.7.1", "PH12.7.2", "PH12.7.3", "PH12.7.4", "PH12.7.5"] },
+      { test: 2, inds: ["PH12.7.6", "PH12.7.7", "PH12.7.8", "PH12.7.9", "PH12.7.10"] } ],
+    4: [ { test: 1, inds: ["PH12.8.1", "PH12.8.2", "PH12.8.3"] },
+      { test: 2, inds: ["PH12.8.4", "PH12.8.5", "PH12.8.6", "PH12.8.7", "PH12.8.8"] } ]
+  },
+
   /* Reference panels, built from the Physics 3204 data sheet on record
      (constants and the equation groups: gravitation, Coulomb, circuits,
      magnetic force, transformers, photon energy, photoelectric,
@@ -320,6 +332,19 @@ window.COURSES = {
   },
 
   unitTest: { total: 25, sr: 11, cr: 14 },
+
+  /* Test blueprint (Spec-Test-Shaped-Practice-2026-11-19.md Appendix A; Physics maps
+     adopted November 27, 2026 on the owner's ruling, per the November 21, 2026 proposal). */
+  testMap: {
+    1: [ { test: 1, inds: ["PH11.5.1", "PH11.5.2", "PH11.5.3"] } ],
+    2: [ { test: 1, inds: ["PH11.6.1", "PH11.6.2"] },
+      { test: 2, inds: ["PH11.6.3", "PH11.6.4", "PH11.6.5"] } ],
+    3: [ { test: 1, inds: ["PH11.7.1", "PH11.7.2", "PH11.7.3", "PH11.7.4", "PH11.7.5", "PH11.7.6", "PH11.7.7", "PH11.7.8"] },
+      { test: 2, inds: ["PH11.7.9", "PH11.7.10", "PH11.7.11", "PH11.7.12"] },
+      { test: 3, inds: ["PH11.7.13", "PH11.7.14", "PH11.7.15", "PH11.7.16"] } ],
+    4: [ { test: 1, inds: ["PH11.8.1", "PH11.8.2", "PH11.8.3", "PH11.8.4"] },
+      { test: 2, inds: ["PH11.8.5", "PH11.8.6", "PH11.8.7", "PH11.8.8", "PH11.8.9"] } ]
+  },
 
   /* Reference panels carried verbatim from the standalone app. The
      same open QA item applies there and here: panels versus the
