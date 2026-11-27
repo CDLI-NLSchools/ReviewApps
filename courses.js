@@ -5546,14 +5546,10 @@ window.COURSES = {
     "11.4": "Fournir un exemple de situation dans lequel la population peut être utilisée pour répondre à une question et justifier ce choix",
     "11.5": "Fournir un exemple de question dans lequel une limitation empêche le choix d’une population, et décrire la limitation, ex. : trop cher, pas assez de temps, ressources limitées",
     "11.6": "Identifier et critiquer un exemple donné dans lesquels une généralisation à partir d’un échantillon peut ou ne peut pas être valide pour cette population",
-    "11.7": "Créer une grille pour évaluer un projet qui inclut l’évaluation : • d’une question d’enquête; • le choix d’une méthode de collecte de données qui inclut des considérations sociales; • la sélection d’une population ou d’un échantillon et justifier le choix de cette sélection; • la présentation des données recueillies; • les conclusions pour répondre à la question",
-    "11.8": "Développer un plan de projet qui décrit : • une question d’enquête; • la méthode de collecte de données qui inclut des considérations sociales; • la méthode de sélection d’une population ou d’un échantillon; • la méthode utilisée pour la collecte de données; • les méthodes pour la présentation et l’analyse des données",
-    "11.9": "Compléter le projet selon le plan, tirer des conclusions et les communiquer à un auditoire",
-    "11.10": "Autoévaluer le projet complété en appliquant la grille"
   },
 
   /* Indicator placements verbatim from the standalone app
-     (UNIT_IND at line 660): 108 placements. */
+     (UNIT_IND at line 660): 108 placements in the standalone; 104 here since November 26, 2026, when indicators 11.7 to 11.10 left the scope under Jason's ruling 5 on the Math 9 guide audit, mirroring the English bank. */
   unitInd: {
     "1": [
       "3.1",
@@ -5675,11 +5671,7 @@ window.COURSES = {
       "11.3",
       "11.4",
       "11.5",
-      "11.6",
-      "11.7",
-      "11.8",
-      "11.9",
-      "11.10"
+      "11.6"
     ]
   },
 

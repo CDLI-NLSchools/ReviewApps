@@ -1288,6 +1288,11 @@ function u3gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}retu
 function u3simp(n,d){var g=u3gcd(n,d);return [n/g,d/g];}
 function u3fr(n,d){var s=u3simp(n,d);return "\\("+FR(s[0],s[1])+"\\)";}
 function u3isRep(n,d){var s=u3simp(n,d),x=s[1];while(x%2===0)x/=2;while(x%5===0)x/=5;return x>1;}
+/* Longueur de la période de n/d (26 novembre 2026, décision 6 sur le
+   constat B7 de l'audit) : 0 quand le nombre décimal est fini, sinon
+   l'ordre multiplicatif de 10 modulo le dénominateur débarrassé de ses
+   facteurs 2 et 5. */
+function u3repLen(n,d){var s=u3simp(n,d),x=s[1];while(x%2===0)x/=2;while(x%5===0)x/=5;if(x===1)return 0;var r=1,len=0;do{r=(r*10)%x;len++;}while(r!==1&&len<100);return len;}
 function u3decStr(v){return "0,"+v+"...";}
 function u3repStr(n,d){
   if(d===9)return "0,"+n+""+n+""+n+"...";
@@ -1556,14 +1561,14 @@ E("u3-match-decimals", 3, ["3.9","3.11"], 2, "var", varset([
     {t:"\\("+FR(4,11)+"\\) = 0,3636...", fb:"Oui : 4 divisé par 11 donne 0,3636..., avec 36 qui se répète."},
     [{t:"\\("+FR(2,11)+"\\) = 0,211", fb:"2/11 = 0,1818... : vérifie en divisant."},
      {t:"\\("+FR(5,9)+"\\) = 0,59", fb:"5/9 = 0,555... : vérifie en divisant."},
-     {t:"\\("+FR(3,7)+"\\) = 0,37", fb:"3/7 = 0,428571... : vérifie en divisant."}],
-    "Divise chaque numérateur par son dénominateur : 2/11 = 0,1818..., 4/11 = 0,3636..., 5/9 = 0,555..., 3/7 = 0,428571.... Seul <b>4/11 = 0,3636...</b> correspond.", {s:4}); },
+     {t:"\\("+FR(5,11)+"\\) = 0,511", fb:"5/11 = 0,4545... : vérifie en divisant."}],
+    "Divise chaque numérateur par son dénominateur : 2/11 = 0,1818..., 4/11 = 0,3636..., 5/9 = 0,555..., 5/11 = 0,4545.... Seul <b>4/11 = 0,3636...</b> correspond.", {s:4}); },
   function(){ return mcq("Quel appariement d'une fraction à son nombre décimal est correct ?",
     {t:"\\("+FR(5,6)+"\\) = 0,8333...", fb:"Oui : 5 divisé par 6 donne 0,8333..., avec 3 qui se répète."},
     [{t:"\\("+FR(4,9)+"\\) = 0,49", fb:"4/9 = 0,444... : les chiffres de la fraction ne sont pas son nombre décimal."},
      {t:"\\("+FR(7,12)+"\\) = 0,712", fb:"7/12 = 0,58333... : vérifie en divisant."},
-     {t:"\\("+FR(2,7)+"\\) = 0,27", fb:"2/7 = 0,285714... : vérifie en divisant."}],
-    "Divise chaque numérateur par son dénominateur : 5/6 = 0,8333..., 4/9 = 0,444..., 7/12 = 0,58333..., 2/7 = 0,285714.... Seul <b>5/6 = 0,8333...</b> correspond.", {s:5}); },
+     {t:"\\("+FR(7,11)+"\\) = 0,711", fb:"7/11 = 0,6363... : vérifie en divisant."}],
+    "Divise chaque numérateur par son dénominateur : 5/6 = 0,8333..., 4/9 = 0,444..., 7/12 = 0,58333..., 7/11 = 0,6363.... Seul <b>5/6 = 0,8333...</b> correspond.", {s:5}); },
   function(){ return mcq("Quel appariement d'une fraction à son nombre décimal est correct ?",
     {t:"\\("+FR(1,9)+"\\) = 0,111...", fb:"Oui : 1 divisé par 9 donne 0,111..., qui se répète."},
     [{t:"\\("+FR(3,10)+"\\) = 0,31", fb:"3/10 = 0,3 exactement : vérifie les valeurs de position."},
@@ -1574,10 +1579,15 @@ E("u3-match-decimals", 3, ["3.9","3.11"], 2, "var", varset([
 
 E("u3-sort-repeat-term", 3, ["3.10","3.11"], 2, "gen", function(){
   var wantRep=ri(0,1)===0, guard=0;
+  /* Contrainte, 26 novembre 2026 (décision 6 sur le constat B7 de
+     l'audit) : le guide limite les nombres décimaux périodiques évalués
+     à 1 ou 2 chiffres périodiques, donc un tirage périodique n'est
+     accepté que si la longueur de sa période est 1 ou 2. */
   function drawFrac(rep){
     for(var t=0;t<300;t++){
       var d=ri(3,40), n=ri(1,d-1);
-      if(u3isRep(n,d)===rep)return [n,d];
+      if(rep){ if(u3isRep(n,d)&&u3repLen(n,d)<=2)return [n,d]; }
+      else if(!u3isRep(n,d))return [n,d];
     }
     return rep?[1,3]:[1,4];
   }
@@ -1735,7 +1745,10 @@ E("u3-frontend-sum", 3, ["6.1","6.4"], 2, "gen", function(){
   }
   ds=precPair(corStr,ds);
   var expr=isSum?(fmtD(A,1)+" + "+fmtD(B,2)+" + "+fmtD(C,3)):(fmtD(C,3)+" - "+fmtD(A,1));
-  var fe=isSum?("les premiers chiffres donnent environ "+Math.floor(A)+" + 0 + "+Math.floor(C)):("les premiers chiffres donnent environ "+Math.floor(C)+" - "+Math.floor(A));
+  // Correctif, 26 novembre 2026 (Signaler un problème, 25 novembre) : B peut atteindre 1,89, donc son
+  // premier chiffre n'est pas toujours 0; on utilise floor(B) pour qu'un B de 1,49 se lise « 3 + 1 + 250 »,
+  // comme la stratégie des premiers chiffres est enseignée.
+  var fe=isSum?("les premiers chiffres donnent environ "+Math.floor(A)+" + "+Math.floor(B)+" + "+Math.floor(C)):("les premiers chiffres donnent environ "+Math.floor(C)+" - "+Math.floor(A));
   return mcq("Les chiffres de la réponse à "+expr+" sont "+digits+". À l'aide de la stratégie des premiers chiffres, où la virgule décimale doit-elle aller ?",
     {t:corStr, fb:"Oui : "+fe+", ce qui correspond à cette place."},
     ds,
@@ -1811,16 +1824,28 @@ E("u3-frontend-prod-quot", 3, ["6.2","6.3"], 2, "gen", function(){
 }, ["La stratégie des premiers chiffres utilise les premiers chiffres pour juger de la taille de la réponse.", "Commence par multiplier ou diviser seulement les nombres entiers du début."]);
 
 E("u3-div-decimals", 3, ["6.8"], 1, "gen", function(){
+  /* Correctif, 26 novembre 2026 (élément de qualité des tirages relevé
+     dans l'audit du guide de Math 7) : le mode à diviseur décimal
+     empruntait les contextes de nombre d'objets ci-dessous, ce qui
+     donnait des énoncés absurdes comme « coupée en 0,6 morceaux
+     égaux ». Un diviseur décimal est une taille, pas un nombre, donc ce
+     mode a maintenant ses propres contextes et une réponse en nombre
+     entier d'objets; le mode à diviseur entier et ses trois contextes
+     sont inchangés. */
   var ctxs=[
     {s:"Une corde de %D m de long est coupée en %V morceaux égaux. Quelle est la longueur de chaque morceau, en mètres ?"},
     {s:"Un groupe paie %D $ pour la location d'une fourgonnette, partagée également entre %V amis. Combien chaque ami paie-t-il ?"},
     {s:"Une cruche contient %D L de jus, versés également dans %V bouteilles. Combien de litres y a-t-il dans chaque bouteille ?"}
   ];
+  var decCtxs=[
+    {s:"Une corde de %D m de long est coupée en morceaux qui mesurent chacun %V m de long. Combien de morceaux sont coupés ?"},
+    {s:"Une cruche contient %D L de jus. On le verse dans des bouteilles qui contiennent chacune %V L. Combien de bouteilles sont remplies ?"}
+  ];
   var useDecDiv=ri(0,1)===0;
   var dv=useDecDiv?ri(3,9)/10:ri(3,9);
-  var q=ri(125,2400)/100;
+  var q=useDecDiv?ri(4,30):ri(125,2400)/100;
   var dvd=q*dv;
-  var c=pick(ctxs);
+  var c=pick(useDecDiv?decCtxs:ctxs);
   var prompt=c.s.replace("%D",fmtD(dvd,3)).replace("%V",fmtD(dv,1));
   var money=c.s.indexOf("$")>=0;
   var pool=[q*10,q/10,q+dv,q- dv];
@@ -4220,9 +4245,10 @@ E("u7-two-event-pct-cr",7,["12.4","12.5","12.7"],1,"gen",function(){
   else if(fam==="twospin"){var s3=pick([3,4,5]);var k3=ri(1,s3);fav=1;total=s3*s3;desc="on fait tourner une roulette à "+s3+" sections deux fois, et le résultat est la section "+k3+" les deux fois";}
   else {var t=ri(2,8);fav=t<=7?t-1:13-t;total=36;desc="on lance deux dés, et le résultat est un total de "+t;}
   var pct=fav/total*100;
+  var pctR=Math.round(pct*100)/100; /* 26 novembre 2026 : la solution affiche le pourcentage pré-arrondi, qui correspond à la réponse (correction de qualité des questions distribuées, tirée de l'audit du guide de Math 7; portée de la banque anglaise le même jour). */
   return numq(opener+", "+desc+". Quelle est la probabilité théorique de ce résultat, en pourcentage ?",
     Math.round(pct*100)/100,0.02,
-    "L'espace échantillonnal combiné compte "+total+" résultats également probables, et "+fav+" d'entre eux correspondent. \\[ \\begin{aligned} P &= "+FR(fav,total)+" \\\\ &= "+fmtD(pct)+"\\% \\end{aligned} \\] La probabilité est <b>"+fmtD(pct)+" %</b>.",
+    "L'espace échantillonnal combiné compte "+total+" résultats également probables, et "+fav+" d'entre eux correspondent. \\[ \\begin{aligned} P &= "+FR(fav,total)+" \\\\ &= "+fmtD(pctR,2)+"\\% \\end{aligned} \\] La probabilité est <b>"+fmtD(pctR,2)+" %</b>.",
     {mode:"pct",total:total,fav:fav});
 },["Note d'abord la taille de l'espace échantillonnal combiné : multiplie les résultats de chaque évènement.","Commence par compter tous les résultats combinés, puis ceux qui correspondent."]);
 E("u7-sample-space",7,["12.3","12.4"],1,"gen",function(){
@@ -5011,19 +5037,13 @@ E("u8-construct-verify",8,["10.13","10.14","10.15"],3,"var",varset([
 // CRMARKS: u2-gap-chain-target-cr=2
 // CRMARKS: u2-gap-missing-start-cr=2
 // CRMARKS: u2-gap-mean-target-cr=3
-// CRMARKS: u2-gap-order-ops-cr=3
 // CRMARKS: u2-gap-round-trip-cr=3
 // CRMARKS: u3-gap-discount-total-cr=2
-// CRMARKS: u3-gap-tickets-left-cr=2
-// CRMARKS: u3-gap-decimal-fraction-cr=3
 // CRMARKS: u3-gap-compare-difference-cr=3
 // CRMARKS: u4-gap-area-diameter-cr=2
 // CRMARKS: u4-gap-rect-minus-circle-cr=2
 // CRMARKS: u4-gap-revolutions-cr=3
-// CRMARKS: u5-gap-recipe-total-cr=2
 // CRMARKS: u5-gap-sub-mixed-dec-cr=2
-// CRMARKS: u5-gap-grams-cr=3
-// CRMARKS: u5-gap-frac-of-frac-cr=3
 // CRMARKS: u6-gap-two-step-cr=2
 // CRMARKS: u6-gap-both-sides-cr=2
 // CRMARKS: u6-gap-divide-form-cr=3
@@ -5032,15 +5052,26 @@ E("u8-construct-verify",8,["10.13","10.14","10.15"],3,"var",varset([
 // CRMARKS: u7-gap-median-range-cr2=2
 // CRMARKS: u7-gap-joint-pct-cr=3
 // CRMARKS: u7-gap-expected-pct-cr=3
-// CRMARKS: u8-gap-angle-chain-cr=2
-// CRMARKS: u8-gap-pythagoras-cr=2
 // CRMARKS: u8-gap-rotate-cr=3
 // CRMARKS: u8-gap-grid-area-cr=3
-// CRMARKS: u8-gap-parallel-angle-cr=3
-// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
-// CRMARKS: u2-gap-order-ops-sr=2
-// Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
-// BIMODAL: u2-gap-order-ops-sr=a
+/* Retraits, 26 novembre 2026 (décisions de Jason à la suite de l'audit du
+   guide de Math 7, Guide-Audit-Math-7-2026-11-26.md). Dix entrées
+   retirées, avec leurs lignes CRMARKS (et, pour u2-gap-order-ops-sr, sa
+   ligne BIMODAL) :
+   - Décision 1 (retrait; audit B2, un élément réellement inadapté) :
+     u8-gap-pythagoras-cr.
+   - Décision 2 (audit B1; envisagées pour la banque de 8e année et déjà
+     couvertes là par les éléments 11, 12 et 14 de bank-u2.js sous
+     l'indicateur 6.27, donc rien n'a été porté) : u2-gap-order-ops-cr,
+     u2-gap-order-ops-sr.
+   - Décision 4 (éléments inadaptés; audit B5, la famille de la
+     multiplication de fractions) : u3-gap-tickets-left-cr,
+     u3-gap-decimal-fraction-cr, u5-gap-recipe-total-cr, u5-gap-grams-cr,
+     u5-gap-frac-of-frac-cr.
+   - Décision 5 (éléments inadaptés; audit B6) : u8-gap-angle-chain-cr,
+     u8-gap-parallel-angle-cr.
+   Porté de la banque anglaise le même jour pour garder les deux banques
+   alignées. */
 /* ===== Pool-gap fill, November 9, 2026 ===== */
 /* New Level 2 entries added to close the unit-test CR remainder gaps.
    Every CR entry below always returns numq(...). */
@@ -5108,35 +5139,12 @@ E("u2-gap-mean-target-cr", 2, ["6.29"], 2, "gen", function(){
     {vals:vals,m:m});
 }, ["La moyenne n'est que la première étape; la question demande aussi la distance par rapport à une valeur cible.", "Commence par additionner les quatre températures, en surveillant les signes."]);
 
-E("u2-gap-order-ops-cr", 2, ["6.29"], 2, "gen", function(){
-  var r=pick([2,3,4,5]), q0=ri(2,9), diff=r*q0, p=ri(5,20), qq=p-diff, s=ri(2,12);
-  var ans=-q0+s;
-  return numq("Évalue \\(("+p+" - "+u2Sg(qq)+") \\div ("+(-r)+") + "+s+"\\). Montre la priorité des opérations que tu suis.", ans, 0,
-    "Fais d'abord les parenthèses, puis la division, puis l'addition. \\[ \\begin{aligned} ("+p+" - "+u2Sg(qq)+") \\div ("+(-r)+") + "+s+" &= "+diff+" \\div ("+(-r)+") + "+s+" \\\\ &= "+(-q0)+" + "+s+" \\\\ &= "+ans+" \\end{aligned} \\] La réponse est <b>"+ans+"</b>.",
-    {p:p,qq:qq,r:r,s:s});
-}, ["Suis la priorité des opérations : parenthèses, puis division, puis addition, et surveille le signe quand tu divises par un nombre négatif.", "Commence par évaluer les parenthèses."]);
-
 E("u2-gap-round-trip-cr", 2, ["6.26","6.28"], 2, "gen", function(){
   var p1=-ri(2,15), p2=ri(2,18), dist=p2-p1, ans=2*dist;
   return numq("Un ascenseur part de l'étage "+p1+", monte jusqu'à l'étage "+p2+", puis revient à l'étage "+p1+". Combien d'étages l'ascenseur parcourt-il en tout ? Montre ton travail.", ans, 0,
     "La distance aller est la différence des deux positions, et le retour couvre la même distance. \\[ \\begin{aligned} \\text{aller} &= "+p2+" - "+u2Sg(p1)+" = "+dist+" \\\\ \\text{total} &= 2 \\times "+dist+" = "+ans+" \\end{aligned} \\] La réponse est <b>"+ans+"</b>.",
     {p1:p1,p2:p2});
 }, ["Trouve d'abord la distance aller entre les deux positions signées; l'aller-retour vaut deux fois cette distance.", "Commence par soustraire le numéro d'étage le plus bas du numéro le plus haut."]);
-
-E("u2-gap-order-ops-sr", 2, ["6.29"], 2, "gen", function(){
-  var a=ri(8,17), b=ri(2,a-3), c=ri(2,5), d=ri(2,10);
-  var base=a-b, ans=base*(-c)+d;
-  var signErr=base*c+d, orderErr=a+b*c+d, arithErr=ans+pick([2,-2,c+1]);
-  var cands=[signErr,orderErr,arithErr]; var seen={}; seen[String(ans)]=1; var ds=[];
-  var fbs={}; fbs[String(signErr)]="Cela garde la grandeur mais laisse tomber le signe négatif du multiplicateur."; fbs[String(orderErr)]="Cela multiplie avant de faire les parenthèses; les parenthèses viennent en premier."; fbs[String(arithErr)]="La méthode est bonne, mais il y a une erreur de calcul dans les dernières étapes.";
-  cands.forEach(function(z){ if(!seen[String(z)]&&ds.length<3){ seen[String(z)]=1; ds.push({t:String(z), fb:fbs[String(z)]||"Vérifie les parenthèses et le signe du produit."}); } });
-  var g=2; while(ds.length<3){ var z=ans+g; if(!seen[String(z)]){ seen[String(z)]=1; ds.push({t:String(z), fb:"Vérifie d'abord les parenthèses, puis le signe du produit."}); } g++; }
-  return mcq("Que vaut \\(("+a+" - "+b+") \\times ("+(-c)+") + "+d+"\\) ?",
-    {t:String(ans), fb:"Exact : les parenthèses donnent "+base+", le produit est "+(base*(-c))+", et ajouter "+d+" donne "+ans+"."},
-    ds,
-    "Fais d'abord les parenthèses, puis la multiplication, puis l'addition. \\[ \\begin{aligned} ("+a+" - "+b+") \\times ("+(-c)+") + "+d+" &= "+base+" \\times ("+(-c)+") + "+d+" \\\\ &= "+(base*(-c))+" + "+d+" \\\\ &= "+ans+" \\end{aligned} \\] La réponse est <b>"+ans+"</b>.",
-    {a:a,b:b,c:c,d:d});
-}, ["Fais d'abord les parenthèses, puis la multiplication, puis l'addition.", "Commence par évaluer les parenthèses."]);
 
 /* --- Unit 3 pool-gap fill --- */
 E("u3-gap-discount-total-cr", 3, ["6.12","6.11"], 2, "gen", function(){
@@ -5147,22 +5155,6 @@ E("u3-gap-discount-total-cr", 3, ["6.12","6.11"], 2, "gen", function(){
     "Trouve d'abord le montant du rabais, puis soustrais-le du prix. \\[ \\begin{aligned} \\text{rabais} &= "+p+"\\,\\% \\text{ de } "+P+" = "+disc+" \\\\ \\text{montant payé} &= "+P+" - "+disc+" = "+ans+" \\end{aligned} \\] La réponse est <b>"+ans+" $</b>.",
     {P:P,p:p});
 }, ["Trouve d'abord le montant du pourcentage; le montant payé est ce qui reste après l'avoir enlevé.", "Commence par calculer le rabais en dollars."]);
-
-E("u3-gap-tickets-left-cr", 3, ["6.9"], 2, "gen", function(){
-  var pr=pick([[1,3],[2,3],[1,4],[3,4],[1,6],[5,6],[1,8],[3,8],[5,8],[7,8],[2,5],[3,5]]);
-  var n=pr[0], d=pr[1], T=d*ri(6,14), part=T*n/d, ans=T-part;
-  return numq("Une école imprime "+T+" billets de tirage. Le matin, \\("+FR(n,d)+"\\) des billets sont vendus. Combien de billets reste-t-il à vendre ? Montre ton travail.", ans, 0,
-    "Trouve d'abord combien de billets ont été vendus, puis enlève ce nombre du total. \\[ \\begin{aligned} \\text{vendus} &= "+FR(n,d)+" \\text{ de } "+T+" = "+part+" \\\\ \\text{restants} &= "+T+" - "+part+" = "+ans+" \\end{aligned} \\] La réponse est <b>"+ans+"</b>.",
-    {n:n,d:d,T:T});
-}, ["Trouve d'abord la partie qui a été vendue; ce qui reste est le complément de cette partie.", "Commence par trouver la fraction du total de billets."]);
-
-E("u3-gap-decimal-fraction-cr", 3, ["3.12"], 2, "gen", function(){
-  var pr=pick([[1,2],[1,4],[3,4],[1,5],[2,5],[3,5],[4,5],[1,8],[3,8],[5,8]]);
-  var n=pr[0], d=pr[1], dec=n/d, Q=d*ri(6,14), ans=Q*n/d;
-  return numq("Écris "+fmtD(dec,3)+" sous forme de fraction irréductible, puis trouve cette fraction de "+Q+" kilogrammes. Donne le montant final, en kilogrammes. Montre ton travail.", ans, 0,
-    "Sous forme de fraction, \\("+fmtD(dec,3)+" = "+FR(n,d)+"\\) sous forme irréductible. Applique cette fraction à la quantité. \\[ \\begin{aligned} "+FR(n,d)+" \\text{ de } "+Q+" &= "+Q+" \\div "+d+" \\times "+n+" \\\\ &= "+ans+" \\end{aligned} \\] La réponse est <b>"+ans+"</b>.",
-    {n:n,d:d,Q:Q});
-}, ["Convertis d'abord le nombre décimal en fraction; ensuite seulement tu peux l'appliquer à la quantité.", "Commence par écrire le nombre décimal sous forme de fraction sur 10, 100 ou 1000, puis réduis-la."]);
 
 E("u3-gap-compare-difference-cr", 3, ["3.5","3.3"], 2, "gen", function(){
   var pr=pick([[3,4],[5,8],[7,8],[2,5],[4,5],[9,10],[3,5],[1,4],[7,10],[3,8]]);
@@ -5200,14 +5192,6 @@ E("u4-gap-revolutions-cr", 4, ["9.7","9.10"], 2, "gen", function(){
 }, ["Un tour de roue couvre une circonférence; trouve d'abord cette distance, puis multiplie-la et convertis les unités.", "Commence par utiliser le rayon pour trouver la circonférence."]);
 
 /* --- Unit 5 pool-gap fill --- */
-E("u5-gap-recipe-total-cr", 5, ["6.23","6.17"], 2, "gen", function(){
-  var N=ri(5,15), f=pick([2,3]), ing=pick(["farine","sucre","flocons d'avoine"]);
-  var ans=(1+f)*N/4;
-  return numq("Une recette utilise "+u5M(N,4)+" tasses de "+ing+" pour un lot. Une cuisinière prépare un lot, puis un deuxième lot "+f+" fois plus grand. Combien de tasses de "+ing+" sont utilisées en tout ? Donne ta réponse sous forme de nombre décimal de tasses. Montre ton travail.", ans, 0.01,
-    "Trouve d'abord la quantité pour le grand lot, puis additionne les deux lots. \\[ \\begin{aligned} \\text{deuxième lot} &= "+f+" \\times "+u5disp(N,4)+" = "+u5disp(f*N,4)+" \\\\ \\text{total} &= "+u5disp(N,4)+" + "+u5disp(f*N,4)+" = "+u5disp((1+f)*N,4)+" = "+fmtD(ans,2)+" \\end{aligned} \\] La réponse est <b>"+fmtD(ans,2)+"</b>.",
-    {N:N,f:f});
-}, ["Multiplie d'abord la quantité de la recette pour le deuxième lot; le total combine les deux lots.", "Commence par multiplier la quantité d'un lot par le facteur d'échelle."]);
-
 E("u5-gap-sub-mixed-dec-cr", 5, ["6.21","6.19"], 2, "gen", function(){
   var mode=pick(["q","e"]); var d, w1, n1, w2, n2;
   if(mode==="q"){ d=4; w1=ri(4,7); n1=pick([1,2]); w2=ri(1,3); n2=3; }
@@ -5217,22 +5201,6 @@ E("u5-gap-sub-mixed-dec-cr", 5, ["6.21","6.19"], 2, "gen", function(){
     "La partie fractionnaire à soustraire est plus grande, donc emprunte d'abord 1 entier à la partie entière. \\[ \\begin{aligned} "+u5disp(startN,d)+" - "+u5disp(subN,d)+" &= "+u5disp(startN-subN,d)+" \\\\ &= "+fmtD(ans,3)+" \\end{aligned} \\] La réponse est <b>"+fmtD(ans,3)+"</b>.",
     {mode:mode,startN:startN,subN:subN,d:d});
 }, ["Compare d'abord les parties fractionnaires; ici la soustraction demande un emprunt à la partie entière.", "Commence par réécrire le premier nombre mixte avec un entier emprunté dans sa partie fractionnaire."]);
-
-E("u5-gap-grams-cr", 5, ["6.23"], 2, "gen", function(){
-  var pr=pick([[3,4],[5,8],[3,8],[7,8],[2,5],[4,5],[3,5],[1,2]]);
-  var n=pr[0], d=pr[1], M=ri(2,6), grams=M*1000, ans=grams*n/d; var item=pick(["farine","sucre","farine de riz","cacao en poudre"]);
-  return numq("Un sac de "+item+" a une masse de "+M+" kilogrammes. Un boulanger utilise \\("+FR(n,d)+"\\) du sac. Combien de grammes de "+item+" le boulanger utilise-t-il ? Montre ton travail.", ans, 0,
-    "Convertis d'abord la masse en grammes, puis prends la fraction de cette quantité. \\[ \\begin{aligned} "+M+" \\text{ kg} &= "+grams+" \\text{ g} \\\\ "+FR(n,d)+" \\text{ de } "+grams+" &= "+grams+" \\div "+d+" \\times "+n+" = "+ans+" \\end{aligned} \\] La réponse est <b>"+ans+"</b>.",
-    {n:n,d:d,M:M});
-}, ["Change d'abord l'unité pour que la réponse finale soit en grammes, puis trouve la fraction de la quantité convertie.", "Commence par multiplier les kilogrammes par 1000."]);
-
-E("u5-gap-frac-of-frac-cr", 5, ["6.23","6.22"], 2, "gen", function(){
-  var p1=pick([[1,2],[1,3],[2,3],[1,4],[3,4]]), p2=pick([[1,2],[1,4],[2,3],[3,4],[1,5],[2,5]]);
-  var base=p1[1]*p2[1], Q=base*ri(4,9), step1=Q*p1[0]/p1[1], ans=step1*p2[0]/p2[1];
-  return numq("Une école imprime "+Q+" pages pour un projet de livrets. De ces pages, \\("+FR(p1[0],p1[1])+"\\) sont mises de côté pour les livrets. Des pages mises de côté, \\("+FR(p2[0],p2[1])+"\\) sont imprimées en couleur. Combien de pages sont imprimées en couleur ? Montre ton travail.", ans, 0,
-    "Prends la première fraction du total, puis prends la deuxième fraction de ce résultat. \\[ \\begin{aligned} \\text{mises de côté} &= "+FR(p1[0],p1[1])+" \\text{ de } "+Q+" = "+step1+" \\\\ \\text{couleur} &= "+FR(p2[0],p2[1])+" \\text{ de } "+step1+" = "+ans+" \\end{aligned} \\] La réponse est <b>"+ans+"</b>.",
-    {Q:Q,step1:step1});
-}, ["Travaille par étapes : la deuxième fraction agit sur le résultat de la première fraction, pas sur le total de départ.", "Commence par trouver la première fraction du total de pages."]);
 
 /* --- Unit 6 pool-gap fill --- */
 E("u6-gap-two-step-cr", 6, ["8.14"], 2, "gen", function(){
@@ -5301,22 +5269,6 @@ E("u7-gap-expected-pct-cr", 7, ["12.6","12.7"], 2, "gen", function(){
 }, ["Un nombre attendu applique le pourcentage à long terme au nombre réel d'essais.", "Commence par trouver ce que vaut un pour cent des essais, ou par écrire le pourcentage sous forme décimale."]);
 
 /* --- Unit 8 pool-gap fill --- */
-E("u8-gap-angle-chain-cr", 8, ["10.1"], 2, "gen", function(){
-  var B=0,C=0,D=0,third=0,g=0;
-  while(g++<200){ B=ri(35,120); C=180-B; D=ri(15,60); third=180-C-D; if(third>=10) break; }
-  var q=numq("L'angle P se trouve sur une droite avec un angle de "+B+" degrés, donc l'angle P et l'angle de "+B+" degrés sont supplémentaires. L'angle P est un angle d'un triangle dont le deuxième angle mesure "+D+" degrés. Trouve le troisième angle du triangle, en degrés. Montre ton travail.", third, 0,
-    "Trouve d'abord l'angle P à l'aide de la droite, puis utilise la somme des angles d'un triangle. \\[ \\begin{aligned} P &= 180 - "+B+" = "+C+" \\\\ \\text{troisième angle} &= 180 - "+C+" - "+D+" = "+third+" \\end{aligned} \\] La réponse est <b>"+third+"</b>.",
-    {B:B,D:D}); q.figure=triAngSVG(C,D,third,{L:["","",""],ang:["P",D+"°","?"]}); return q;
-}, ["Deux faits sur les angles sont enchaînés ici : utilise d'abord le fait de la droite, puis mets son résultat dans le triangle.", "Commence par trouver l'angle supplémentaire sur la droite."]);
-
-E("u8-gap-pythagoras-cr", 8, ["10.19"], 2, "gen", function(){
-  var s=ri(1,3), ox=ri(-4,2), oy=ri(-3,3);
-  var A=[ox,oy], B=[ox+3*s,oy], Cc=[ox+3*s,oy+4*s], hyp=5*s;
-  var q=numq("Les points A "+u8pair(A[0],A[1])+", B "+u8pair(B[0],B[1])+" et C "+u8pair(Cc[0],Cc[1])+" forment un triangle rectangle dont l'angle droit est en B. Trouve la longueur de l'hypoténuse AC. Montre ton travail.", hyp, 0,
-    "Compte d'abord les cathètes à partir des différences de coordonnées, puis utilise la relation de Pythagore. \\[ \\begin{aligned} AB &= "+(3*s)+", \\quad BC = "+(4*s)+" \\\\ AC^2 &= "+(3*s)+"^2 + "+(4*s)+"^2 = "+(25*s*s)+" \\\\ AC &= "+hyp+" \\end{aligned} \\] La réponse est <b>"+hyp+"</b>.",
-    {s:s}); q.figure=figWideGrid([{x:A[0],y:A[1],label:"A"},{x:B[0],y:B[1],label:"B"},{x:Cc[0],y:Cc[1],label:"C"}],[[A,B,Cc]],null); return q;
-}, ["Obtiens d'abord les deux cathètes à partir des coordonnées; l'hypoténuse vient en les combinant.", "Commence par trouver l'écart horizontal et l'écart vertical entre les points."]);
-
 E("u8-gap-rotate-cr", 8, ["10.20","10.12"], 2, "gen", function(){
   var x=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]), y=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
   var cw=Math.random()<0.5;
@@ -5336,21 +5288,39 @@ E("u8-gap-grid-area-cr", 8, ["10.9"], 2, "gen", function(){
     {F:F,H:H,s:s}); q.figure=figGridArea(F,H); return q;
 }, ["Transforme d'abord les demi-carrés en équivalents de carrés entiers, puis applique l'échelle d'un carré.", "Commence par regrouper les demi-carrés en carrés entiers."]);
 
-E("u8-gap-parallel-angle-cr", 8, ["10.1"], 2, "gen", function(){
-  var A=0,B=0,third=0,g=0;
-  while(g++<200){ A=ri(40,110); B=ri(20,60); third=180-A-B; if(third>=10) break; }
-  var q=numq("Deux droites parallèles sont coupées par une transversale. Un des angles formés mesure "+A+" degrés, et un angle intérieur alterné qui lui est égal forme un angle d'un triangle. Un deuxième angle du triangle mesure "+B+" degrés. Trouve le troisième angle du triangle, en degrés. Montre ton travail.", third, 0,
-    "Les angles intérieurs alternés formés par des droites parallèles sont égaux, donc l'angle du triangle mesure "+A+" degrés; utilise ensuite la somme des angles d'un triangle. \\[ \\begin{aligned} \\text{troisième angle} &= 180 - "+A+" - "+B+" = "+third+" \\end{aligned} \\] La réponse est <b>"+third+"</b>.",
-    {A:A,B:B}); q.figure=triAngSVG(A,B,third,{L:["","",""],ang:[A+"°",B+"°","?"]}); return q;
-}, ["Utilise d'abord la relation d'angles avec les droites parallèles pour obtenir l'angle du triangle, puis la somme des angles d'un triangle.", "Commence par énoncer la mesure de l'angle intérieur alterné."]);
+
+
+
+/* Drapeaux d'enrichissement (26 novembre 2026, décisions de Jason à la
+   suite de l'audit du guide de Math 7) : les entrées nommées ci-dessous
+   sont conservées dans la banque comme enrichissement, le mécanisme
+   maison issu de la décision du 13 novembre 2026. Le drapeau est une
+   propriété de l'entrée, posée ici à la fin du dernier module de la
+   banque comme dans le bank-pk.js anglais; les entrées marquées restent
+   hors des tirages d'entraînement et des épreuves composées, sauf si
+   l'enrichissement est inclus délibérément. Décision 3 (B3) :
+   u6-gap-both-sides-cr (la variable des deux côtés) et
+   u6-gap-divide-form-cr (la forme x/a - b = c); aucune des deux formes
+   ne figure dans l'énumération exhaustive des formes du guide aux
+   indicateurs MA7.8.12/8.14. Porté de la banque anglaise le même jour
+   pour garder les deux banques alignées. */
+var ENRICH7 = ["u6-gap-both-sides-cr", "u6-gap-divide-form-cr"];
+BANK.forEach(function(e){if(ENRICH7.indexOf(e.id)>=0)e.enrich=true;});
 
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-carroll-cell":2,"u1-describe-graph":3,"u1-divisibility-why":2,"u1-divisible-by":2,"u1-environment-pattern":3,"u1-evaluate-cr":2,"u1-evaluate-expression":2,"u1-factor-list":2,"u1-factors-count-cr":3,"u1-far-term-cr":3,"u1-gap-budget-compare-cr":3,"u1-gap-divisible-count-cr":2,"u1-gap-solve-count-cr":2,"u1-gap-two-terms-cr":3,"u1-graph-conclusion":3,"u1-graph-relation":3,"u1-identify-parts":2,"u1-parts-in-equation":2,"u1-pattern-equation":3,"u1-pattern-expression":3,"u1-relation-context":3,"u1-solve-812-cr":3,"u1-table-missing":2,"u1-table-value-cr":3,"u1-venn-overlap":2,"u2-add-basic":2,"u2-add-context":2,"u2-add-cr":3,"u2-add-numberline":2,"u2-error-spot":3,"u2-gap-chain-target-cr":2,"u2-gap-mean-target-cr":3,"u2-gap-missing-start-cr":2,"u2-gap-order-ops-cr":3,"u2-gap-order-ops-sr":2,"u2-gap-round-trip-cr":3,"u2-missing-addend-cr":3,"u2-mixed-chain":2,"u2-numberline-cr":3,"u2-opposites-zero":2,"u2-problem-cr":3,"u2-problem-two-step":2,"u2-sub-basic":2,"u2-sub-cr":2,"u2-sub-numberline":2,"u2-subtract-negative":2,"u3-add-sub-decimals":2,"u3-approx-example":2,"u3-between":2,"u3-cr-add-sub":3,"u3-cr-div":2,"u3-cr-mult":3,"u3-cr-order-ops":3,"u3-cr-percent":3,"u3-cr-repeating-frac":2,"u3-decimal-to-fraction":2,"u3-div-decimals":2,"u3-frac-to-decimal":2,"u3-frontend-prod-quot":2,"u3-frontend-sum":2,"u3-gap-compare-difference-cr":3,"u3-gap-decimal-fraction-cr":3,"u3-gap-discount-total-cr":2,"u3-gap-tickets-left-cr":2,"u3-misplaced":2,"u3-mult-decimals":2,"u3-numberline-mixed":2,"u3-numberline-place":2,"u3-order-mixed":3,"u3-order-ops-dec":3,"u3-percent-convert":2,"u3-percent-of":2,"u3-reasonableness":2,"u3-repeating-predict":2,"u3-repeating-to-fraction":3,"u3-sort-repeat-term":2,"u3-tax-total":3,"u3-tech-multdiv":3,"u4-area-circle":2,"u4-area-parallelogram":2,"u4-area-triangle":2,"u4-central-angles":2,"u4-circ-approx":2,"u4-circle-context":3,"u4-circumference":2,"u4-cr-area-circle":3,"u4-cr-area-mix":3,"u4-cr-circumference":3,"u4-cr-composite":3,"u4-cr-graph-quantity":2,"u4-draw-circle":2,"u4-estimate-circle-area":2,"u4-gap-area-diameter-cr":2,"u4-gap-rect-minus-circle-cr":2,"u4-gap-revolutions-cr":3,"u4-graph-attributes":2,"u4-graph-create":3,"u4-graph-quantities":2,"u4-graph-read":2,"u4-para-from-rect":2,"u4-pi-ratio":2,"u4-radius-diameter":2,"u4-triangle-from":2,"u5-add-like":2,"u5-add-mixed":2,"u5-add-unlike":2,"u5-common-denominator":2,"u5-gap-frac-of-frac-cr":3,"u5-gap-grams-cr":3,"u5-gap-recipe-total-cr":2,"u5-gap-sub-mixed-dec-cr":2,"u5-mixed-multistep":3,"u5-model-add-figure":2,"u5-model-sub-equation":2,"u5-model-sub-figure":2,"u5-problem-add":3,"u5-problem-sub-mixed":2,"u5-reasonable":3,"u5-simplify-fraction":2,"u5-simplify-solution":3,"u5-sub-like":2,"u5-sub-mixed":2,"u5-sub-mixed-borrow":3,"u5-sub-unlike":2,"u5-three-fractions":3,"u6-balance-figure":2,"u6-equivalent-form":2,"u6-gap-both-sides-cr":2,"u6-gap-check-diff-cr":3,"u6-gap-divide-form-cr":3,"u6-gap-two-step-cr":2,"u6-inspection-trial":2,"u6-model-problem":3,"u6-model-solve-cr":3,"u6-one-step-balance":2,"u6-one-step-problem":2,"u6-one-step-problem-cr":3,"u6-preservation-next":2,"u6-preservation-problem-cr":2,"u6-problem-two-step-cr":3,"u6-solve-challenge-cr":3,"u6-solve-other-forms":2,"u6-solve-two-step-plus":2,"u6-substitute-check":2,"u6-two-step-context":3,"u6-verify-error":3,"u6-verify-one-step":3,"u6-verify-two-step":3,"u6-visual-steps":2,"u7-bar-graph":2,"u7-central-problem-cr":3,"u7-choose-measure":2,"u7-circle-graph":2,"u7-exp-vs-theor":2,"u7-expected-count-cr":3,"u7-gap-expected-pct-cr":3,"u7-gap-joint-pct-cr":3,"u7-gap-median-range-cr2":2,"u7-gap-missing-mean-cr":2,"u7-line-graph":2,"u7-mean-basic":2,"u7-median-mode":2,"u7-median-range-cr":3,"u7-missing-value-cr":3,"u7-outlier-find":2,"u7-outlier-judge":3,"u7-outlier-measure-choice":3,"u7-prob-basic":2,"u7-range-basic":2,"u7-sample-space":2,"u7-two-event-pct-cr":2,"u7-two-events-prob":2,"u7-zero-one":3,"u8-axes-origin":2,"u8-bisector-cr":3,"u8-bisector-env":2,"u8-bisector-reason":2,"u8-complete-shape":2,"u8-construct-verify":3,"u8-design-shape":3,"u8-distance-cr":3,"u8-draw-reason":2,"u8-env-examples":2,"u8-gap-angle-chain-cr":2,"u8-gap-grid-area-cr":3,"u8-gap-parallel-angle-cr":3,"u8-gap-pythagoras-cr":2,"u8-gap-rotate-cr":3,"u8-grid-scale":2,"u8-move-describe":2,"u8-parallel-perp-id":2,"u8-plot-point":2,"u8-quadrant-locate":2,"u8-read-point":2,"u8-reflect-point":2,"u8-shape-vertices":2,"u8-successive-cr":2,"u8-transform-cr":3,"u8-transform-describe":2,"u8-transform-image":3,"u8-translate-cr":3};
+window.__BANK_CRMARKS={"u1-carroll-cell":2,"u1-describe-graph":3,"u1-divisibility-why":2,"u1-divisible-by":2,"u1-environment-pattern":3,"u1-evaluate-cr":2,"u1-evaluate-expression":2,"u1-factor-list":2,"u1-factors-count-cr":3,"u1-far-term-cr":3,"u1-gap-budget-compare-cr":3,"u1-gap-divisible-count-cr":2,"u1-gap-solve-count-cr":2,"u1-gap-two-terms-cr":3,"u1-graph-conclusion":3,"u1-graph-relation":3,"u1-identify-parts":2,"u1-parts-in-equation":2,"u1-pattern-equation":3,"u1-pattern-expression":3,"u1-relation-context":3,"u1-solve-812-cr":3,"u1-table-missing":2,"u1-table-value-cr":3,"u1-venn-overlap":2,"u2-add-basic":2,"u2-add-context":2,"u2-add-cr":3,"u2-add-numberline":2,"u2-error-spot":3,"u2-gap-chain-target-cr":2,"u2-gap-mean-target-cr":3,"u2-gap-missing-start-cr":2,"u2-gap-round-trip-cr":3,"u2-missing-addend-cr":3,"u2-mixed-chain":2,"u2-numberline-cr":3,"u2-opposites-zero":2,"u2-problem-cr":3,"u2-problem-two-step":2,"u2-sub-basic":2,"u2-sub-cr":2,"u2-sub-numberline":2,"u2-subtract-negative":2,"u3-add-sub-decimals":2,"u3-approx-example":2,"u3-between":2,"u3-cr-add-sub":3,"u3-cr-div":2,"u3-cr-mult":3,"u3-cr-order-ops":3,"u3-cr-percent":3,"u3-cr-repeating-frac":2,"u3-decimal-to-fraction":2,"u3-div-decimals":2,"u3-frac-to-decimal":2,"u3-frontend-prod-quot":2,"u3-frontend-sum":2,"u3-gap-compare-difference-cr":3,"u3-gap-discount-total-cr":2,"u3-misplaced":2,"u3-mult-decimals":2,"u3-numberline-mixed":2,"u3-numberline-place":2,"u3-order-mixed":3,"u3-order-ops-dec":3,"u3-percent-convert":2,"u3-percent-of":2,"u3-reasonableness":2,"u3-repeating-predict":2,"u3-repeating-to-fraction":3,"u3-sort-repeat-term":2,"u3-tax-total":3,"u3-tech-multdiv":3,"u4-area-circle":2,"u4-area-parallelogram":2,"u4-area-triangle":2,"u4-central-angles":2,"u4-circ-approx":2,"u4-circle-context":3,"u4-circumference":2,"u4-cr-area-circle":3,"u4-cr-area-mix":3,"u4-cr-circumference":3,"u4-cr-composite":3,"u4-cr-graph-quantity":2,"u4-draw-circle":2,"u4-estimate-circle-area":2,"u4-gap-area-diameter-cr":2,"u4-gap-rect-minus-circle-cr":2,"u4-gap-revolutions-cr":3,"u4-graph-attributes":2,"u4-graph-create":3,"u4-graph-quantities":2,"u4-graph-read":2,"u4-para-from-rect":2,"u4-pi-ratio":2,"u4-radius-diameter":2,"u4-triangle-from":2,"u5-add-like":2,"u5-add-mixed":2,"u5-add-unlike":2,"u5-common-denominator":2,"u5-gap-sub-mixed-dec-cr":2,"u5-mixed-multistep":3,"u5-model-add-figure":2,"u5-model-sub-equation":2,"u5-model-sub-figure":2,"u5-problem-add":3,"u5-problem-sub-mixed":2,"u5-reasonable":3,"u5-simplify-fraction":2,"u5-simplify-solution":3,"u5-sub-like":2,"u5-sub-mixed":2,"u5-sub-mixed-borrow":3,"u5-sub-unlike":2,"u5-three-fractions":3,"u6-balance-figure":2,"u6-equivalent-form":2,"u6-gap-both-sides-cr":2,"u6-gap-check-diff-cr":3,"u6-gap-divide-form-cr":3,"u6-gap-two-step-cr":2,"u6-inspection-trial":2,"u6-model-problem":3,"u6-model-solve-cr":3,"u6-one-step-balance":2,"u6-one-step-problem":2,"u6-one-step-problem-cr":3,"u6-preservation-next":2,"u6-preservation-problem-cr":2,"u6-problem-two-step-cr":3,"u6-solve-challenge-cr":3,"u6-solve-other-forms":2,"u6-solve-two-step-plus":2,"u6-substitute-check":2,"u6-two-step-context":3,"u6-verify-error":3,"u6-verify-one-step":3,"u6-verify-two-step":3,"u6-visual-steps":2,"u7-bar-graph":2,"u7-central-problem-cr":3,"u7-choose-measure":2,"u7-circle-graph":2,"u7-exp-vs-theor":2,"u7-expected-count-cr":3,"u7-gap-expected-pct-cr":3,"u7-gap-joint-pct-cr":3,"u7-gap-median-range-cr2":2,"u7-gap-missing-mean-cr":2,"u7-line-graph":2,"u7-mean-basic":2,"u7-median-mode":2,"u7-median-range-cr":3,"u7-missing-value-cr":3,"u7-outlier-find":2,"u7-outlier-judge":3,"u7-outlier-measure-choice":3,"u7-prob-basic":2,"u7-range-basic":2,"u7-sample-space":2,"u7-two-event-pct-cr":2,"u7-two-events-prob":2,"u7-zero-one":3,"u8-axes-origin":2,"u8-bisector-cr":3,"u8-bisector-env":2,"u8-bisector-reason":2,"u8-complete-shape":2,"u8-construct-verify":3,"u8-design-shape":3,"u8-distance-cr":3,"u8-draw-reason":2,"u8-env-examples":2,"u8-gap-grid-area-cr":3,"u8-gap-rotate-cr":3,"u8-grid-scale":2,"u8-move-describe":2,"u8-parallel-perp-id":2,"u8-plot-point":2,"u8-quadrant-locate":2,"u8-read-point":2,"u8-reflect-point":2,"u8-shape-vertices":2,"u8-successive-cr":2,"u8-transform-cr":3,"u8-transform-describe":2,"u8-transform-image":3,"u8-translate-cr":3};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-carroll-cell":"a","u1-describe-graph":"b","u1-divisibility-why":"b","u1-divisible-by":"a","u1-environment-pattern":"a","u1-evaluate-expression":"a","u1-factor-list":"a","u1-graph-conclusion":"a","u1-graph-relation":"b","u1-identify-parts":"a","u1-parts-in-equation":"a","u1-pattern-equation":"b","u1-pattern-expression":"b","u1-relation-context":"b","u1-table-missing":"a","u1-venn-overlap":"a","u2-add-basic":"a","u2-add-context":"a","u2-add-numberline":"a","u2-error-spot":"a","u2-gap-order-ops-sr":"a","u2-mixed-chain":"a","u2-opposites-zero":"b","u2-problem-two-step":"a","u2-sub-basic":"a","u2-sub-numberline":"a","u2-subtract-negative":"a","u3-add-sub-decimals":"a","u3-approx-example":"b","u3-between":"a","u3-decimal-to-fraction":"a","u3-div-decimals":"a","u3-frac-to-decimal":"a","u3-frontend-prod-quot":"a","u3-frontend-sum":"a","u3-misplaced":"a","u3-mult-decimals":"a","u3-numberline-mixed":"a","u3-numberline-place":"a","u3-order-mixed":"a","u3-order-ops-dec":"a","u3-percent-convert":"a","u3-percent-of":"a","u3-reasonableness":"b","u3-repeating-predict":"a","u3-repeating-to-fraction":"a","u3-sort-repeat-term":"a","u3-tax-total":"a","u3-tech-multdiv":"a","u4-area-circle":"a","u4-area-parallelogram":"a","u4-area-triangle":"a","u4-central-angles":"a","u4-circ-approx":"a","u4-circle-context":"a","u4-circumference":"a","u4-draw-circle":"b","u4-estimate-circle-area":"a","u4-graph-attributes":"a","u4-graph-create":"a","u4-graph-quantities":"a","u4-graph-read":"a","u4-para-from-rect":"b","u4-pi-ratio":"a","u4-radius-diameter":"a","u4-triangle-from":"b","u5-add-like":"a","u5-add-mixed":"a","u5-add-unlike":"a","u5-common-denominator":"a","u5-model-add-figure":"a","u5-model-sub-equation":"b","u5-model-sub-figure":"a","u5-reasonable":"b","u5-simplify-fraction":"a","u5-sub-like":"a","u5-sub-mixed":"a","u5-sub-mixed-borrow":"a","u5-sub-unlike":"a","u6-balance-figure":"b","u6-equivalent-form":"b","u6-inspection-trial":"a","u6-model-problem":"b","u6-one-step-balance":"a","u6-one-step-problem":"a","u6-preservation-next":"a","u6-solve-other-forms":"a","u6-solve-two-step-plus":"a","u6-substitute-check":"a","u6-two-step-context":"a","u6-verify-error":"a","u6-verify-one-step":"b","u6-verify-two-step":"b","u6-visual-steps":"b","u7-bar-graph":"a","u7-choose-measure":"a","u7-circle-graph":"a","u7-exp-vs-theor":"a","u7-line-graph":"a","u7-mean-basic":"a","u7-median-mode":"a","u7-outlier-find":"a","u7-outlier-judge":"b","u7-outlier-measure-choice":"b","u7-prob-basic":"a","u7-range-basic":"a","u7-sample-space":"a","u7-two-events-prob":"a","u7-zero-one":"b","u8-axes-origin":"a","u8-bisector-env":"b","u8-bisector-reason":"a","u8-complete-shape":"a","u8-construct-verify":"b","u8-design-shape":"a","u8-draw-reason":"b","u8-env-examples":"b","u8-grid-scale":"a","u8-move-describe":"a","u8-parallel-perp-id":"a","u8-plot-point":"a","u8-quadrant-locate":"a","u8-read-point":"a","u8-reflect-point":"a","u8-shape-vertices":"a","u8-transform-describe":"a","u8-transform-image":"a"};
+window.__BANK_BIMODAL={"u1-carroll-cell":"a","u1-describe-graph":"b","u1-divisibility-why":"b","u1-divisible-by":"a","u1-environment-pattern":"a","u1-evaluate-expression":"a","u1-factor-list":"a","u1-graph-conclusion":"a","u1-graph-relation":"b","u1-identify-parts":"a","u1-parts-in-equation":"a","u1-pattern-equation":"b","u1-pattern-expression":"b","u1-relation-context":"b","u1-table-missing":"a","u1-venn-overlap":"a","u2-add-basic":"a","u2-add-context":"a","u2-add-numberline":"a","u2-error-spot":"a","u2-mixed-chain":"a","u2-opposites-zero":"b","u2-problem-two-step":"a","u2-sub-basic":"a","u2-sub-numberline":"a","u2-subtract-negative":"a","u3-add-sub-decimals":"a","u3-approx-example":"b","u3-between":"a","u3-decimal-to-fraction":"a","u3-div-decimals":"a","u3-frac-to-decimal":"a","u3-frontend-prod-quot":"a","u3-frontend-sum":"a","u3-misplaced":"a","u3-mult-decimals":"a","u3-numberline-mixed":"a","u3-numberline-place":"a","u3-order-mixed":"a","u3-order-ops-dec":"a","u3-percent-convert":"a","u3-percent-of":"a","u3-reasonableness":"b","u3-repeating-predict":"a","u3-repeating-to-fraction":"a","u3-sort-repeat-term":"a","u3-tax-total":"a","u3-tech-multdiv":"a","u4-area-circle":"a","u4-area-parallelogram":"a","u4-area-triangle":"a","u4-central-angles":"a","u4-circ-approx":"a","u4-circle-context":"a","u4-circumference":"a","u4-draw-circle":"b","u4-estimate-circle-area":"a","u4-graph-attributes":"a","u4-graph-create":"a","u4-graph-quantities":"a","u4-graph-read":"a","u4-para-from-rect":"b","u4-pi-ratio":"a","u4-radius-diameter":"a","u4-triangle-from":"b","u5-add-like":"a","u5-add-mixed":"a","u5-add-unlike":"a","u5-common-denominator":"a","u5-model-add-figure":"a","u5-model-sub-equation":"b","u5-model-sub-figure":"a","u5-reasonable":"b","u5-simplify-fraction":"a","u5-sub-like":"a","u5-sub-mixed":"a","u5-sub-mixed-borrow":"a","u5-sub-unlike":"a","u6-balance-figure":"b","u6-equivalent-form":"b","u6-inspection-trial":"a","u6-model-problem":"b","u6-one-step-balance":"a","u6-one-step-problem":"a","u6-preservation-next":"a","u6-solve-other-forms":"a","u6-solve-two-step-plus":"a","u6-substitute-check":"a","u6-two-step-context":"a","u6-verify-error":"a","u6-verify-one-step":"b","u6-verify-two-step":"b","u6-visual-steps":"b","u7-bar-graph":"a","u7-choose-measure":"a","u7-circle-graph":"a","u7-exp-vs-theor":"a","u7-line-graph":"a","u7-mean-basic":"a","u7-median-mode":"a","u7-outlier-find":"a","u7-outlier-judge":"b","u7-outlier-measure-choice":"b","u7-prob-basic":"a","u7-range-basic":"a","u7-sample-space":"a","u7-two-events-prob":"a","u7-zero-one":"b","u8-axes-origin":"a","u8-bisector-env":"b","u8-bisector-reason":"a","u8-complete-shape":"a","u8-construct-verify":"b","u8-design-shape":"a","u8-draw-reason":"b","u8-env-examples":"b","u8-grid-scale":"a","u8-move-describe":"a","u8-parallel-perp-id":"a","u8-plot-point":"a","u8-quadrant-locate":"a","u8-read-point":"a","u8-reflect-point":"a","u8-shape-vertices":"a","u8-transform-describe":"a","u8-transform-image":"a"};
+/* ============ Level basis labels (generated) ============ */
+/* Built by assemble-bank.py from the LEVELBASIS comments at each
+   audited entry (November 25, 2026): the criterion that decided
+   the entry's level under the adopted criteria card, shown in
+   teacher mode beside the level on the question card. Entries
+   no audit has covered have no label. */
+window.__BANK_LEVELBASIS={};

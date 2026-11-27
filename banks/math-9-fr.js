@@ -1633,7 +1633,11 @@ E("u3-law-then-sum-difference", 3, ["3.13", "3.14"], 3, "gen", function () {
     { mode: "law-then-" + word, a: a, m: m, n: n, p: p });
 }, ["Simplifie toute puissance qui demande une loi avant de combiner les valeurs.", "Commence par la puissance d'une puissance, puis calcule chaque partie."]);
 
-E("u3-explanations-var", 3, ["3.5", "3.8"], 3, "var", varset([
+/* Level retagged 3 to 2, Nov 26, 2026 (Jason's ruling on a dealt
+   instance: "this is level 2, at best"): each variant asks the
+   student to recognize the taught meaning of a power or of the
+   base, a set method applied, not a path the student must find. */
+E("u3-explanations-var", 3, ["3.5", "3.8"], 2, "var", varset([
   function () {
     return mcq("Quelle explication montre pourquoi \\(2^{3}\\) et \\(3^{2}\\) ont des valeurs différentes ?",
       { t: "\\(2^{3}=2\\times 2\\times 2=8\\) alors que \\(3^{2}=3\\times 3=9\\)", fb: "Exact. La multiplication répétée est différente dans chaque puissance." },
@@ -2039,6 +2043,10 @@ E("u4-missing", 4, ["8.11"], 3, "gen", function(){
 }, ["La partie manquante est le total moins les parties que tu connais déjà.", "Soustrais d'abord le polynôme connu du total, terme à terme."]);
 
 E("u4-area-monomial", 4, ["8.12"], 3, "gen", function(){
+  /* Constraint, November 26, 2026 (Jason's ruling 8 on the Math 9 guide audit):
+     the numeric lengths below (k and d) are drawn positive only; the entry
+     dealt rectangles with a negative length or a negative known side. The
+     width expressions stay symbolic, as the unit's polynomial work requires. */
   for(var att=0;att<200;att++){
     if(ri(0,1)===0){
       var usex=ri(0,1)===1;
@@ -2050,7 +2058,7 @@ E("u4-area-monomial", 4, ["8.12"], 3, "gen", function(){
         var sol="L'aire est la longueur fois la largeur : \\[ \\begin{aligned} A &= x("+u4p(0,b,c)+") \\\\ &= "+u4p(b,c,0)+" \\end{aligned} \\] L'aire est donc <b>"+corr+"</b>.";
         return mcq("Un rectangle a une longueur de \\(x\\) et une largeur de "+u4m(0,b,c)+". Quelle expression donne son aire ?",{t:corr,fb:"Exact : la longueur multiplie chaque terme de la largeur."},ds,sol,{mode:"area-mult-x",cr:2});
       }
-      var k=pick([-4,-3,-2,2,3,4]);
+      var k=pick([2,3,4]);
       var b2=u4nz(-6,6),c2=u4nz(-7,7);
       var corr2=u4m(0,k*b2,k*c2);
       var ds2=[{t:u4m(0,k*b2,c2),fb:"Le deuxième terme de la largeur n'a pas été multiplié ; la longueur multiplie chaque terme."},{t:u4m(0,b2+k,c2+k),fb:"Cela additionne la longueur à chaque terme ; l'aire multiplie."},{t:u4m(0,k*b2,-k*c2),fb:"Le deuxième produit a le mauvais signe."}];
@@ -2058,7 +2066,7 @@ E("u4-area-monomial", 4, ["8.12"], 3, "gen", function(){
       var sol2="L'aire est la longueur fois la largeur : \\[ \\begin{aligned} A &= "+fmtD(k)+"("+u4p(0,b2,c2)+") \\\\ &= "+u4p(0,k*b2,k*c2)+" \\end{aligned} \\] L'aire est donc <b>"+corr2+"</b>.";
       return mcq("Un rectangle a une longueur de \\("+fmtD(k)+"\\) et une largeur de "+u4m(0,b2,c2)+". Quelle expression donne son aire ?",{t:corr2,fb:"Exact : la longueur multiplie chaque terme de la largeur."},ds2,sol2,{mode:"area-mult-const",k:k,cr:2});
     }else{
-      var d=pick([-4,-3,-2,2,3,4,5]);
+      var d=pick([2,3,4,5]);
       var q2=u4nz(-6,6),q3=u4nz(-6,6);
       var corr3=u4m(0,q2,q3);
       var ds3=[{t:u4m(0,q2,d*q3),fb:"Le deuxième terme n'a pas été divisé ; chaque terme de l'aire est divisé."},{t:u4m(0,d*q2-d,q3),fb:"Une partie soustrait la longueur du côté ; pour trouver un côté, on divise."},{t:u4m(0,-q2,q3),fb:"Le premier terme du côté a le mauvais signe."}];
@@ -2568,7 +2576,7 @@ var u3tFracs = [[1, 2], [1, 3], [2, 3], [1, 4], [3, 4], [1, 5], [2, 5], [3, 5], 
 var u3tFracsSmall = [[1, 2], [1, 3], [2, 3], [1, 4], [3, 4], [2, 5], [1, 5], [3, 5]];
 
 E("u3-repeated-product-form", 3, ["3.6"], 1, "gen", function () {
-  var mode = pick(["neg", "neg", "frac", "frac", "negfrac"]);
+  var mode = "neg"; /* Nov 26, 2026 (Jason's ruling, Math 9 guide audit 1b): fraction base modes removed. The guide's Unit 3 work uses integral bases; rational bases are a Mathematics 1201 extension. */
   var factor, powerInner, altFactor, altFb;
   var e = ri(2, 4);
   if (mode === "neg") {
@@ -2612,7 +2620,7 @@ E("u3-repeated-product-form", 3, ["3.6"], 1, "gen", function () {
 }, ["L'exposant te dit combien de fois toute la base apparaît comme facteur.", "Écris la base exactement comme elle apparaît, parenthèses et signe compris, puis répète-la."]);
 
 E("u3-power-from-product", 3, ["3.7"], 1, "gen", function () {
-  var mode = pick(["neg", "neg", "frac", "frac", "negfrac"]);
+  var mode = "neg"; /* Nov 26, 2026 (Jason's ruling, Math 9 guide audit 1b): fraction base modes removed. The guide's Unit 3 work uses integral bases; rational bases are a Mathematics 1201 extension. */
   var factor, correctInner, ds;
   if (mode === "neg") {
     var b = ri(2, 9), c = ri(2, 5);
@@ -2659,7 +2667,7 @@ E("u3-power-from-product", 3, ["3.7"], 1, "gen", function () {
 }, ["Compte d'abord les facteurs. Ce nombre devient l'exposant.", "Écris le facteur répété exactement comme base, signe compris, puis utilise ton nombre comme exposant."]);
 
 E("u3-evaluate-power-neg", 3, ["3.10"], 1, "gen", function () {
-  var mode = pick(["neg", "neg", "one", "negone", "frac"]);
+  var mode = pick(["neg", "neg", "one", "negone"]); /* Nov 26, 2026 (Jason's ruling, Math 9 guide audit 1b): fraction base modes removed. The guide's Unit 3 work uses integral bases; rational bases are a Mathematics 1201 extension. */
   var stemVerb = pick(["Calcule", "Que vaut", "Trouve la valeur de"]);
   if (mode === "frac") {
     var f = pick([[1, 2], [1, 3], [2, 3], [3, 4], [1, 4], [2, 5], [3, 5], [1, 5], [5, 6], [3, 8]]);
@@ -2836,7 +2844,7 @@ E("u3-power-model-var", 3, ["3.4"], 1, "var", varset([
 ]), ["Lis d'abord la base à partir des points le long d'un côté ou d'une couche.", "Compte ensuite les dimensions : une grille plate en a deux, une construction en couches en a trois."]);
 
 E("u3-zero-pattern", 3, ["3.9"], 1, "gen", function () {
-  var mode = pick(["int", "int", "frac", "neg"]);
+  var mode = pick(["int", "int", "neg"]); /* Nov 26, 2026 (Jason's ruling, Math 9 guide audit 1b): fraction base modes removed. The guide's Unit 3 work uses integral bases; rational bases are a Mathematics 1201 extension. */
   var lines = [], baseTxt, lastStep, baseOpt, recipOpt;
   if (mode === "int") {
     var a = ri(2, 9), s = pick([3, 4, 5]);
@@ -2982,7 +2990,12 @@ E("u3-laws-mixed-eval", 3, ["3.12"], 3, "gen", function () {
     { mode: "topup-mixed-powpow", a: t.a, b: t.b, p: t.p });
 }, ["Divise l'expression en étapes : une loi à la fois, en commençant à l'intérieur des parenthèses.", "Applique d'abord la loi de la puissance d'un produit ou de la puissance d'un quotient, puis combine ce qui reste."]);
 
-E("u3-error-two-laws", 3, ["3.15"], 3, "gen", function () {
+/* Level retagged 3 to 2, Nov 26, 2026 (Jason's ruling on a dealt
+   instance): the question never asks the student to identify or
+   explain the error, so the error framing can be ignored and the
+   student simply applies the two exponent laws in sequence, a
+   taught procedure; with a calculator allowed, just barely 2. */
+E("u3-error-two-laws", 3, ["3.15"], 2, "gen", function () {
   var fam = pick(["prod", "quot"]);
   var a = ri(2, 6), m = ri(2, 4), n = ri(2, 3), p = ri(2, 4);
   if (m === 2 && n === 2) n = 3;
@@ -4336,6 +4349,7 @@ E("u6-graph-describe", 6, ["7.5"], 2, "gen", function () {
 }, ["La valeur de départ est là où la droite coupe l'axe des ordonnées.", "Choisis deux points voisins tracés et trouve de combien y monte de l'un à l'autre."]);
 
 // 8. L2, 7.6: one graph drawn, choose its equation.
+/* Solution reworked Nov 26, 2026 (Jason's ruling 3 on the Math 9 guide audit): the guide prescribes matching a graph to an equation by testing ordered pairs from the graph, and defers the slope y-intercept matching method to Grade 10. Prompt, options and key unchanged. */
 E("u6-graph-equation", 6, ["7.6"], 2, "gen", function () {
   var ctxs = [
     { x: "heures", y: "km", xl: "heures", yl: "km" },
@@ -4350,7 +4364,7 @@ E("u6-graph-equation", 6, ["7.6"], 2, "gen", function () {
   var xmax = pick([4, 5, 6]), ymax = b + m * xmax;
   var pts = []; for (var k = 0; k <= xmax; k++) pts.push({ x: k, y: b + m * k });
   var corr = "\\(y = " + u6lin(m, b, "x") + "\\)";
-  var sol = "Lis le départ à l'ordonnée à l'origine et le pas à partir de deux points de la droite : \\[ \\begin{aligned} \\text{départ} &= " + fmtD(b) + " \\\\ \\text{pas} &= " + fmtD(b + 2 * m) + " - " + fmtD(b + m) + " = " + fmtD(m) + " \\end{aligned} \\] Donc l'équation de la droite est <b>" + corr + "</b>.";
+  var sol = "Teste les points du graphique dans l'équation. La droite passe par (0, " + fmtD(b) + ") et (1, " + fmtD(b + m) + "). Pour \\(y = " + u6lin(m, b, "x") + "\\) : à \\(x = 0\\), \\(y = " + fmtD(m) + " \\times 0 + " + fmtD(b) + " = " + fmtD(b) + "\\), ce qui correspond au graphique ; à \\(x = 1\\), \\(y = " + fmtD(m) + " + " + fmtD(b) + " = " + fmtD(b + m) + "\\), ce qui correspond aussi. Les autres équations échouent à l'un de ces deux points. Donc l'équation de la droite est <b>" + corr + "</b>.";
   var q = mcq("Le graphique montre une relation linéaire. L'axe des abscisses est mesuré en " + ctx.x + " et l'axe des ordonnées en " + ctx.y + ". Quelle équation correspond à la droite tracée ?",
     { t: corr, fb: "Exact. La droite commence à " + fmtD(b) + " et monte de " + fmtD(m) + " à chaque pas de x." },
     [
@@ -4360,7 +4374,7 @@ E("u6-graph-equation", 6, ["7.6"], 2, "gen", function () {
     ], sol, { mode: "graph-equation", b: b, m: m, ctx: ctx.x, xmax: xmax });
   q.figure = u6graph({ xmax: xmax, ymax: ymax, xlab: ctx.xl, ylab: ctx.yl, lines: [{ pts: pts.map(function (p) { return [p.x, p.y]; }) }], points: pts });
   return q;
-}, ["Commence avec l'ordonnée à l'origine : c'est la constante dans l'équation.", "Trouve ensuite le pas : de combien y change quand x augmente de 1."]);
+}, ["Choisis deux points par lesquels la droite passe et teste-les dans chaque équation.", "Commence par le point où la droite coupe l'axe des ordonnées, puis teste un deuxième point de la même façon."]);
 
 // 9. L2, 7.7, CR 2: sloped, horizontal or vertical graph; choose a point on it.
 E("u6-point-on-graph", 6, ["7.7"], 1, "gen", function () {
@@ -6282,21 +6296,17 @@ TRANSLATOR NOTES
 // CRMARKS: u9-collection-problem=3
 // CRMARKS: u9-collection-biggest-threat=3
 // CRMARKS: u9-match-influence=3
-// CRMARKS: u9-rubric-missing-part=2
-// CRMARKS: u9-plan-element=2
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
 // CRMARKS: u9-prob-in-media=2
 // CRMARKS: u9-same-number-two-sides=3
 // CRMARKS: u9-use-whole-population=2
 // CRMARKS: u9-population-limitation=2
-// CRMARKS: u9-self-assessment=2
 // BIMODAL: u9-collection-biggest-threat=b
 // Reverse bimodal registration, November 20, 2026 (Bimodal-Classification-SR-Pools-2026-11-20.md).
 // BIMODAL: u9-prob-in-media=b
 // BIMODAL: u9-same-number-two-sides=b
 // BIMODAL: u9-use-whole-population=b
 // BIMODAL: u9-population-limitation=b
-// BIMODAL: u9-self-assessment=b
 // Unit 9: Probability and Statistics (Math 9, NL). Entries only; helpers prefixed u9.
 
 E("u9-prob-in-media", 9, ["12.1"], 1, "var", varset([
@@ -6934,161 +6944,13 @@ E("u9-generalization-critique", 9, ["11.6"], 3, "var", varset([
   }
 ]), ["Teste l'affirmation contre son échantillon : vérifie la taille, puis vérifie si l'échantillon correspond à tout le groupe affirmé.", "Imagine qui manque dans l'échantillon; les groupes manquants sont où une généralisation brise habituellement."]);
 
-E("u9-rubric-missing-part", 9, ["11.7"], 1, "var", varset([
-  function(){
-    return mcq("Une grille d'évaluation pour un projet de données évalue le choix d'une méthode de collecte de données avec des considérations sociales, le choix d'une population ou d'un échantillon avec une justification, et la communication des résultats. Quelle partie requise manque dans cette grille ?",
-      {t:"Une question de recherche que le projet cherche à répondre avec des données recueillies", fb:"Exact : la grille n'évalue jamais si le projet a une question claire qui guide l'étude."},
-      [{t:"Un choix de méthode de collecte de données qui inclut des considérations sociales pour les participants", fb:"Cette partie est déjà listée dans la grille, dans son critère de méthode, donc elle est présente."},
-       {t:"Un choix d'une population ou d'un échantillon avec une justification pour ce choix", fb:"Cette partie est déjà listée dans la grille, dans son critère de choix, donc elle est présente."},
-       {t:"Une communication des résultats qui partage les conclusions du projet avec un public", fb:"Cette partie est déjà listée dans la grille, dans son critère final, donc elle est présente."}],
-      "Une grille de projet complète évalue la question de recherche, la méthode de collecte avec des considérations sociales, le choix de la population ou de l'échantillon avec une justification, et la communication des résultats. La partie manquante est <b>une question de recherche</b>.",
-      {mode:"rubric-question"});
-  },
-  function(){
-    return mcq("Une grille d'évaluation pour un projet de données évalue la question de recherche, le choix d'une population ou d'un échantillon avec une justification, et la communication des résultats. Quelle partie requise manque dans cette grille ?",
-      {t:"Un choix de méthode de collecte de données qui inclut des considérations sociales pour les participants", fb:"Exact : la grille n'évalue jamais comment les données seront recueillies ni comment les gens seront traités."},
-      [{t:"Une question de recherche que le projet cherche à répondre avec des données recueillies", fb:"Cette partie est déjà listée dans la grille, dans son premier critère, donc elle est présente."},
-       {t:"Un choix d'une population ou d'un échantillon avec une justification pour ce choix", fb:"Cette partie est déjà listée dans la grille, dans son critère de choix, donc elle est présente."},
-       {t:"Une communication des résultats qui partage les conclusions du projet avec un public", fb:"Cette partie est déjà listée dans la grille, dans son critère final, donc elle est présente."}],
-      "Une grille de projet complète évalue la question de recherche, la méthode de collecte avec des considérations sociales, le choix de la population ou de l'échantillon avec une justification, et la communication des résultats. La partie manquante est <b>le choix d'une méthode de collecte de données avec des considérations sociales</b>.",
-      {mode:"rubric-method"});
-  },
-  function(){
-    return mcq("Une grille d'évaluation pour un projet de données évalue la question de recherche, le choix d'une méthode de collecte de données avec des considérations sociales, et la communication des résultats. Quelle partie requise manque dans cette grille ?",
-      {t:"Un choix d'une population ou d'un échantillon avec une justification pour ce choix", fb:"Exact : la grille n'évalue jamais qui sera étudié ni pourquoi ce groupe a été choisi."},
-      [{t:"Une question de recherche que le projet cherche à répondre avec des données recueillies", fb:"Cette partie est déjà listée dans la grille, dans son premier critère, donc elle est présente."},
-       {t:"Un choix de méthode de collecte de données qui inclut des considérations sociales pour les participants", fb:"Cette partie est déjà listée dans la grille, dans son critère de méthode, donc elle est présente."},
-       {t:"Une communication des résultats qui partage les conclusions du projet avec un public", fb:"Cette partie est déjà listée dans la grille, dans son critère final, donc elle est présente."}],
-      "Une grille de projet complète évalue la question de recherche, la méthode de collecte avec des considérations sociales, le choix de la population ou de l'échantillon avec une justification, et la communication des résultats. La partie manquante est <b>le choix d'une population ou d'un échantillon avec une justification</b>.",
-      {mode:"rubric-selection"});
-  },
-  function(){
-    return mcq("Une grille d'évaluation pour un projet de données évalue la question de recherche, le choix d'une méthode de collecte de données avec des considérations sociales, et le choix d'une population ou d'un échantillon avec une justification. Quelle partie requise manque dans cette grille ?",
-      {t:"Une communication des résultats qui partage les conclusions du projet avec un public", fb:"Exact : la grille n'évalue jamais comment les résultats du projet seront partagés à la fin."},
-      [{t:"Une question de recherche que le projet cherche à répondre avec des données recueillies", fb:"Cette partie est déjà listée dans la grille, dans son premier critère, donc elle est présente."},
-       {t:"Un choix de méthode de collecte de données qui inclut des considérations sociales pour les participants", fb:"Cette partie est déjà listée dans la grille, dans son critère de méthode, donc elle est présente."},
-       {t:"Un choix d'une population ou d'un échantillon avec une justification pour ce choix", fb:"Cette partie est déjà listée dans la grille, dans son critère de choix, donc elle est présente."}],
-      "Une grille de projet complète évalue la question de recherche, la méthode de collecte avec des considérations sociales, le choix de la population ou de l'échantillon avec une justification, et la communication des résultats. La partie manquante est <b>la communication des résultats</b>.",
-      {mode:"rubric-communication"});
-  }
-]), ["Garde la liste complète de la grille en tête, puis coche chaque partie que la grille décrite couvre déjà.", "Liste d'abord les quatre parties requises; la manquante est celle qui n'est jamais nommée dans l'énoncé."]);
-
-E("u9-plan-element", 9, ["11.8"], 1, "var", varset([
-  function(){
-    return mcq("Un plan de projet dit que les intervieweurs demanderont la permission de chaque personne avant de commencer et garderont les noms hors de tous les formulaires de réponses. À quel élément du plan de projet ce détail appartient-il ?",
-      {t:"La méthode de collecte de données, dans les considérations sociales qui protègent les participants", fb:"Exact : la permission et des formulaires sans noms sont des considérations sociales bâties dans la façon de recueillir les données."},
-      [{t:"La question de recherche, dans la formulation que le projet cherche à répondre", fb:"Aucune question de recherche n'est énoncée dans ce détail; il décrit comment les gens sont traités pendant la collecte."},
-       {t:"La méthode pour choisir une population ou un échantillon dans le groupe étudié", fb:"Aucun choix de personnes n'est décrit dans ce détail; il décrit le traitement pendant les entrevues."},
-       {t:"La méthode à utiliser pour la collecte des données pendant le travail de terrain du projet", fb:"Les étapes de collecte sont proches, mais la permission et la vie privée appartiennent à la partie des considérations sociales."}],
-      "Un plan de projet décrit une question de recherche, une méthode de collecte avec des considérations sociales, une méthode de choix, et une procédure de collecte. Ce détail appartient à <b>la méthode de collecte de données, dans ses considérations sociales</b>.",
-      {mode:"plan-social"});
-  },
-  function(){
-    return mcq("Un plan de projet dit que 30 élèves seront choisis en tirant des noms des listes de classes de chaque année de l'école. À quel élément du plan de projet ce détail appartient-il ?",
-      {t:"La méthode pour choisir une population ou un échantillon dans le groupe étudié", fb:"Exact : tirer des noms des listes de classes est exactement comment l'échantillon est choisi pour l'étude."},
-      [{t:"La question de recherche, dans la formulation que le projet cherche à répondre", fb:"Aucune question de recherche n'est énoncée dans ce détail; il décrit comment les élèves sont choisis."},
-       {t:"La méthode de collecte de données, dans les considérations sociales qui protègent les participants", fb:"Aucun traitement des participants n'est décrit dans ce détail; il décrit comment les noms sont tirés."},
-       {t:"La méthode à utiliser pour la collecte des données pendant le travail de terrain du projet", fb:"Les étapes de travail de terrain viennent plus tard; ce détail règle qui participe avant que des données soient recueillies."}],
-      "Un plan de projet décrit une question de recherche, une méthode de collecte avec des considérations sociales, une méthode de choix, et une procédure de collecte. Ce détail appartient à <b>la méthode pour choisir une population ou un échantillon</b>.",
-      {mode:"plan-selection"});
-  },
-  function(){
-    return mcq("Un plan de projet énonce sa question de recherche, décrit une méthode de sondage avec des protections de permission et de vie privée, et explique comment son échantillon sera tiré des listes de classes. Le plan ne dit rien sur comment, quand ou où les réponses au sondage seront vraiment recueillies et notées. Qu'est-ce qui manque encore au plan ?",
-      {t:"La méthode à utiliser pour la collecte des données pendant le travail de terrain du projet", fb:"Exact : le plan ne dit jamais comment les réponses seront recueillies et notées, ce qui est son élément manquant."},
-      [{t:"La question de recherche, dans la formulation que le projet cherche à répondre", fb:"La question est énoncée au début du plan, donc cet élément est déjà couvert au complet."},
-       {t:"La méthode de collecte de données, dans les considérations sociales qui protègent les participants", fb:"Les protections de permission et de vie privée sont décrites dans le plan, donc cet élément est déjà couvert."},
-       {t:"La méthode pour choisir une population ou un échantillon dans le groupe étudié", fb:"Le tirage de l'échantillon des listes de classes est expliqué dans le plan, donc cet élément est déjà couvert."}],
-      "Un plan de projet décrit une question de recherche, une méthode de collecte avec des considérations sociales, une méthode de choix, et une procédure de collecte. Il manque encore au plan <b>la méthode à utiliser pour la collecte des données</b>.",
-      {mode:"plan-collection"});
-  },
-  function(){
-    return mcq("Un plan de projet commence par cette phrase : le projet étudiera si les élèves qui marchent à l'école arrivent plus alertes en première période que les élèves qui prennent l'autobus. À quel élément du plan de projet cette phrase appartient-elle ?",
-      {t:"La question de recherche, dans la formulation que le projet cherche à répondre", fb:"Exact : la phrase énonce ce que le projet étudiera, ce qui est sa question guide."},
-      [{t:"La méthode pour choisir une population ou un échantillon dans le groupe étudié", fb:"Aucune personne n'est choisie dans cette phrase; elle énonce ce que le projet étudiera en général."},
-       {t:"La méthode de collecte de données, dans les considérations sociales qui protègent les participants", fb:"Aucune méthode de collecte ni traitement des gens n'apparaît dans cette phrase; elle encadre la question de l'étude."},
-       {t:"La méthode à utiliser pour la collecte des données pendant le travail de terrain du projet", fb:"Aucune étape de collecte ou de notation n'apparaît dans cette phrase; elle énonce la question à laquelle les données doivent répondre."}],
-      "Un plan de projet décrit une question de recherche, une méthode de collecte avec des considérations sociales, une méthode de choix, et une procédure de collecte. Cette phrase appartient à <b>la question de recherche</b>.",
-      {mode:"plan-question"});
-  }
-]), ["Un plan a quatre éléments : sa question, sa méthode de collecte avec des considérations sociales, sa méthode de choix, et sa procédure de collecte.", "Décide ce que le détail fait dans le plan : énoncer la question, protéger les gens, choisir les gens, ou recueillir les données."]);
-
-E("u9-supported-conclusion", 9, ["11.9"], 3, "var", varset([
-  function(){
-    return mcq("Pour un projet, un élève sonde 40 élèves à l'école au sujet de se rendre à l'école. Des 40 élèves, 30 disent qu'ils marchent, 6 prennent un autobus et 4 se font conduire. Quelle conclusion ces données soutiennent-elles vraiment ?",
-      {t:"La plupart des 40 élèves sondés ont dit qu'ils marchent à l'école un jour d'école régulier", fb:"Exact : 30 sur 40, c'est la plupart du groupe sondé, donc la conclusion reste dans les données."},
-      [{t:"La plupart des élèves de toute la province marchent à l'école un jour d'école régulier chaque année", fb:"Quarante élèves d'une école ne peuvent pas soutenir une affirmation sur toute une province d'élèves."},
-       {t:"Marcher à l'école fait que les élèves arrivent à l'école plus alertes chaque jour", fb:"Le sondage a compté les moyens de transport seulement; il n'a rien mesuré sur l'alerte ni ses causes."},
-       {t:"La plupart des 40 élèves sondés ont dit qu'ils prennent un autobus à l'école un jour régulier", fb:"Seulement 6 sur 40 ont nommé l'autobus, donc cette conclusion contredit les nombres du sondage."}],
-      "Une conclusion doit rester dans les données recueillies : 30 des 40 élèves sondés marchent, et rien de plus large n'a été mesuré. La conclusion soutenue est que <b>la plupart des 40 élèves sondés ont dit qu'ils marchent à l'école</b>.",
-      {mode:"conclusion-walk"});
-  },
-  function(){
-    return mcq("Pour un projet, un élève fait pousser 10 plants de haricots avec plus de lumière et 10 sans. Après trois semaines, 7 des plants avec plus de lumière sont plus grands que le plus grand plant poussé sans lumière supplémentaire. Quelle conclusion ces données soutiennent-elles vraiment ?",
-      {t:"Dans cet essai, la plupart des plants avec plus de lumière ont poussé plus grands que les plants sans", fb:"Exact : 7 sur 10 qui battent chaque plant non traité soutient une conclusion sur cet essai seulement."},
-      [{t:"Plus de lumière fera pousser chaque plant de haricots plus grand dans tout jardin ou essai de classe", fb:"Un petit essai ne peut pas promettre des résultats pour chaque plant, partout où il pourrait pousser."},
-       {t:"Plus de lumière est la seule raison pour laquelle les plants de l'essai ont poussé plus grands", fb:"D'autres facteurs touchent aussi la croissance, et cet essai n'a jamais testé la lumière comme seule cause."},
-       {t:"Dans cet essai, la plupart des plants sans lumière supplémentaire ont poussé plus grands que les plants avec", fb:"Les plants les plus grands étaient dans le groupe avec plus de lumière, donc cette conclusion contredit les résultats."}],
-      "Une conclusion doit rester dans les données recueillies : dans cet essai, les plants avec plus de lumière ont poussé plus grands, et rien de plus large n'a été testé. La conclusion soutenue est que <b>dans cet essai, la plupart des plants avec plus de lumière ont poussé plus grands</b>.",
-      {mode:"conclusion-plants"});
-  },
-  function(){
-    return mcq("Pour un projet, un élève compte les prêts de la bibliothèque pendant deux semaines d'école. Les livres de fiction ont été empruntés 120 fois et les livres documentaires 45 fois pendant ces deux semaines. Quelle conclusion ces données soutiennent-elles vraiment ?",
-      {t:"Pendant ces deux semaines, les livres de fiction ont été empruntés plus souvent que les livres documentaires", fb:"Exact : 120 prêts contre 45 prêts soutient une comparaison limitée aux deux semaines comptées."},
-      [{t:"Les livres de fiction sont mieux écrits que les livres documentaires pour les élèves lecteurs à l'école", fb:"Les comptes de prêts ne disent rien sur la qualité d'écriture; le projet a compté les emprunts, pas la qualité."},
-       {t:"Chaque élève de l'école préfère les livres de fiction aux livres documentaires cette année", fb:"Des comptes de prêts sur deux semaines ne peuvent pas montrer ce que chaque élève préfère sur toute une année."},
-       {t:"Pendant ces deux semaines, les livres documentaires ont été empruntés plus souvent que les livres de fiction", fb:"Les documentaires avaient 45 prêts contre 120 pour la fiction, donc cette conclusion contredit les comptes."}],
-      "Une conclusion doit rester dans les données recueillies : les prêts de fiction dépassaient les prêts de documentaires dans les deux semaines comptées. La conclusion soutenue est que <b>pendant ces deux semaines, les livres de fiction ont été empruntés plus souvent</b>.",
-      {mode:"conclusion-library"});
-  },
-  function(){
-    return mcq("Pour un projet, un élève note la température à la récréation pendant 10 jours d'école en mai. Pendant 6 des 10 jours, la température était au-dessus de 10 degrés, et pendant 4 jours elle était à 10 degrés ou moins. Quelle conclusion ces données soutiennent-elles vraiment ?",
-      {t:"Pendant la plupart des 10 jours notés, la température à la récréation était au-dessus de 10 degrés en mai", fb:"Exact : 6 jours sur 10, c'est la plupart des jours notés, donc la conclusion correspond aux notes."},
-      [{t:"Mai est toujours le mois le plus chaud de l'année scolaire dans cette partie de la province au complet", fb:"Dix jours dans un mois ne peuvent pas classer tous les mois, et aucun autre mois n'a été noté du tout."},
-       {t:"Un temps chaud à la récréation fait que les élèves jouent dehors plus longtemps à la récréation chaque jour", fb:"Le projet a noté les températures seulement; il n'a rien mesuré sur le temps de jeu ni ses causes."},
-       {t:"Pendant la plupart des 10 jours notés, la température à la récréation était à 10 degrés ou moins", fb:"Seulement 4 jours sur 10 étaient à 10 degrés ou moins, donc cette conclusion contredit les notes."}],
-      "Une conclusion doit rester dans les données recueillies : 6 des 10 jours notés étaient au-dessus de 10 degrés, et rien de plus large n'a été mesuré. La conclusion soutenue est que <b>pendant la plupart des 10 jours notés, la température était au-dessus de 10 degrés</b>.",
-      {mode:"conclusion-temp"});
-  }
-]), ["Une conclusion soutenue dit seulement ce que les nombres montrent, pour le groupe et le temps vraiment étudiés.", "Vérifie chaque option contre les nombres de l'énoncé, et laisse tomber toute option qui va au-delà."]);
-
-E("u9-self-assessment", 9, ["11.10"], 1, "var", varset([
-  function(){
-    return mcq("Un critère de grille dit qu'un projet doit choisir une population ou un échantillon et justifier le choix. Pour le projet, un élève a interrogé seulement des amis proches et n'a donné aucune raison pour les choisir. Quel énoncé d'autoévaluation est exact pour ce critère ?",
-      {t:"Mon projet est faible sur ce critère, parce que j'ai interrogé seulement des amis et donné aucune raison pour le choix", fb:"Exact : l'énoncé associe honnêtement le critère à ce que le projet a vraiment fait."},
-      [{t:"Mon projet était excellent en tout, et toute l'étude s'est très bien passée du début à la fin du travail", fb:"Des louanges générales ne nomment aucun critère ni aucune preuve, donc elles ne peuvent pas juger cette partie du projet."},
-       {t:"Mon projet répond pleinement à ce critère, parce que mes amis ont aimé répondre à toutes mes questions d'entrevue", fb:"Le plaisir ne justifie pas le choix d'un échantillon; le critère demande un choix raisonné."},
-       {t:"Mon projet avait une belle page de titre et des graphiques soignés, donc cette partie du projet est forte en tout point", fb:"Les titres et les graphiques appartiennent à d'autres critères; ce critère porte sur justifier qui a été interrogé."}],
-      "L'autoévaluation applique honnêtement la grille au travail fait : le projet a interrogé seulement des amis sans justification, donc il est faible sur ce critère. L'énoncé exact est que <b>mon projet est faible, parce que j'ai interrogé seulement des amis et donné aucune raison</b>.",
-      {mode:"selfassess-sample"});
-  },
-  function(){
-    return mcq("Un critère de grille dit qu'une méthode de collecte de données doit inclure des considérations sociales, comme la permission et la vie privée. Pour le projet, un élève a demandé la permission avant chaque entrevue et gardé les noms hors de chaque formulaire. Quel énoncé d'autoévaluation est exact pour ce critère ?",
-      {t:"Mon projet répond à ce critère, parce que j'ai demandé la permission d'abord et gardé les noms hors de chaque formulaire utilisé", fb:"Exact : l'énoncé lie le critère à deux considérations sociales que le projet a vraiment utilisées."},
-      [{t:"Mon projet était vraiment bon en général, et je suis fier de comment toute l'étude s'est passée à la fin du projet", fb:"Une fierté générale ne nomme aucun critère ni aucune preuve, donc elle ne peut pas juger cette partie du projet."},
-       {t:"Mon projet est faible sur ce critère, parce que mon échantillon venait d'une seule année de toute l'école", fb:"La gamme d'années de l'échantillon appartient à un autre critère; sur les considérations sociales, ce projet a livré."},
-       {t:"Mon projet répond pleinement à ce critère, parce que mes questions d'entrevue étaient courtes et faciles à lire pour tous les élèves", fb:"Des questions courtes aident la clarté, mais le critère porte sur les protections de permission et de vie privée."}],
-      "L'autoévaluation applique honnêtement la grille au travail fait : la permission a été demandée et les noms ont été gardés hors des formulaires, donc le projet répond à ce critère. L'énoncé exact est que <b>mon projet répond à ce critère, parce que j'ai demandé la permission et gardé les noms hors des formulaires</b>.",
-      {mode:"selfassess-social"});
-  },
-  function(){
-    return mcq("Un critère de grille dit que les résultats doivent être communiqués clairement, avec des graphiques étiquetés qu'un public peut lire. Pour le projet, un élève a présenté un graphique sans titre et sans étiquettes sur ses axes. Quel énoncé d'autoévaluation est exact pour ce critère ?",
-      {t:"Mon projet répond en partie à ce critère, parce que mon graphique montre les données mais n'a pas de titre ni d'étiquettes d'axes", fb:"Exact : l'énoncé reconnaît honnêtement le graphique tout en nommant exactement ce que le critère demande encore."},
-      [{t:"Mon projet était fantastique du début à la fin, et la présentation était la meilleure partie de mon travail de recherche", fb:"Des louanges générales ne nomment aucun critère ni aucune preuve, donc elles ne peuvent pas juger cette partie du projet."},
-       {t:"Mon projet répond pleinement à ce critère, parce que mon public a applaudi à la fin de ma présentation devant toute la classe réunie", fb:"Les applaudissements ne montrent pas une communication claire; le critère demande des graphiques étiquetés et lisibles."},
-       {t:"Mon projet est faible sur ce critère, parce que mon échantillon a été tiré d'une seule classe de l'école seulement", fb:"La source de l'échantillon appartient à un autre critère; ce critère porte sur communiquer les résultats."}],
-      "L'autoévaluation applique honnêtement la grille au travail fait : le graphique montre les données mais manque un titre et des étiquettes, donc le projet répond en partie à ce critère. L'énoncé exact est que <b>mon projet répond en partie à ce critère, parce que le graphique n'a pas de titre ni d'étiquettes d'axes</b>.",
-      {mode:"selfassess-charts"});
-  },
-  function(){
-    return mcq("Un critère de grille dit qu'un projet doit énoncer une question de recherche claire à laquelle des données peuvent répondre. Pour le projet, un élève a étudié une question ciblée : combien d'élèves marchent à l'école chaque jour. Quel énoncé d'autoévaluation est exact pour ce critère ?",
-      {t:"Mon projet répond à ce critère, parce que ma question était ciblée et mes données y ont répondu directement", fb:"Exact : l'énoncé lie le critère à la question ciblée et aux données qui y ont répondu."},
-      [{t:"Mon projet était fort dans tous les domaines, et je donnerais à toute l'étude la note complète sans changements", fb:"Une note complète sans preuve ne nomme aucun détail du critère, donc elle ne peut pas juger cette partie justement."},
-       {t:"Mon projet est faible sur ce critère, parce que mes graphiques utilisaient des couleurs difficiles à lire", fb:"Les couleurs des graphiques appartiennent au critère de communication; la question de recherche ici était claire."},
-       {t:"Mon projet répond pleinement à ce critère, parce que j'ai fini toute l'étude avant la date limite", fb:"Finir à temps n'est pas le critère; il demande si la question était claire et pouvait recevoir une réponse."}],
-      "L'autoévaluation applique honnêtement la grille au travail fait : la question était ciblée et les données y ont répondu, donc le projet répond à ce critère. L'énoncé exact est que <b>mon projet répond à ce critère, parce que ma question était ciblée et mes données y ont répondu</b>.",
-      {mode:"selfassess-question"});
-  }
-]), ["L'autoévaluation veut dire appliquer le critère de la grille à ce que le projet a vraiment fait, avec des preuves.", "Associe d'abord le critère au détail du projet; des louanges vagues et des forces sans rapport ne comptent pas."]);
+/* Removal, November 26, 2026 (Jason's ruling 5 on the Math 9 guide audit):
+   indicators 11.7 to 11.10 are project outcomes, assessed through the
+   data project itself and not on any test, so they are out of the
+   Review Apps scope, the same call as Math 2201 Unit 9. The four
+   entries that served them in recognition form (u9-rubric-missing-part,
+   u9-plan-element, u9-supported-conclusion, u9-self-assessment) are
+   removed, with their CRMARKS and BIMODAL registrations. */
 
 /* ----- bank-fix.js ----- */
 // Math 9 (French) pool-gap fill additions question bank
@@ -7368,17 +7230,22 @@ E("u3-gap-power-diff-cr", 3, ["3.12", "3.14"], 2, "gen", function () {
 }, ["La puissance d'une puissance doit être simplifiée avant d'évaluer l'une ou l'autre puissance.", "Multiplie les deux exposants de la première puissance comme première étape."]);
 
 // PG. L2, 3.12, SR: multi-law simplification with one-law-at-a-time error distractors.
+// FIX Nov 26, 2026 (Report a Problem, student, Nov 25): the key combined the numerator only and
+// never applied the quotient law, and the denominator duplicated the numerator's second factor,
+// so the keyed answer was wrong on every deal. Denominator now has its own exponents (d1, d2)
+// and the key applies both laws: e1 = m + n - d1, e2 = p + q - d2.
 E("u3-gap-laws-mc", 3, ["3.12"], 2, "gen", function () {
   var m = ri(2, 4), n = ri(1, 3), p = ri(2, 4), q = ri(1, 2);
-  var e1 = m + n, e2 = p + q;
+  var d1 = ri(1, n), d2 = ri(1, q);
+  var e1 = m + n - d1, e2 = p + q - d2;
   function expr(u, v) { return "\\(x^{" + u + "} \\times y^{" + v + "}\\)"; }
-  var prompt = "Simplifie \\(\\frac{(x^{" + m + "} \\times y^{" + p + "})(x^{" + n + "} \\times y^{" + q + "})}{x^{" + n + "} \\times y^{" + q + "}}\\) en appliquant les lois des exposants. Quelle expression est la forme simplifiée ?";
-  var sol = "Applique la loi du produit à chaque base, puis la loi du quotient à chaque base : \\[ \\begin{aligned} x^{" + m + "} \\times x^{" + n + "} \\div x^{" + n + "} &= x^{" + e1 + "} \\\\ y^{" + p + "} \\times y^{" + q + "} \\div y^{" + q + "} &= y^{" + e2 + "} \\end{aligned} \\] La réponse est <b>" + expr(e1, e2) + "</b>.";
+  var prompt = "Simplifie \\(\\frac{(x^{" + m + "} \\times y^{" + p + "})(x^{" + n + "} \\times y^{" + q + "})}{x^{" + d1 + "} \\times y^{" + d2 + "}}\\) en appliquant les lois des exposants. Quelle expression est la forme simplifiée ?";
+  var sol = "Applique la loi du produit à chaque base, puis la loi du quotient à chaque base : \\[ \\begin{aligned} x^{" + m + "} \\times x^{" + n + "} \\div x^{" + d1 + "} &= x^{" + e1 + "} \\\\ y^{" + p + "} \\times y^{" + q + "} \\div y^{" + d2 + "} &= y^{" + e2 + "} \\end{aligned} \\] La réponse est <b>" + expr(e1, e2) + "</b>.";
   return mcq(prompt,
     { t: expr(e1, e2), fb: "Exact : chaque base est combinée avec la loi du produit, puis réduite avec la loi du quotient." },
-    [{ t: expr(e1, p), fb: "Cela garde seulement le premier exposant de y ; les puissances de y doivent aussi être combinées avec la loi du produit avant la division." },
-     { t: expr(m, e2), fb: "Cela garde seulement le premier exposant de x ; les puissances de x doivent aussi être combinées avec la loi du produit avant la division." },
-     { t: expr(m, p), fb: "C'est le premier facteur du numérateur tout seul ; aucune base n'a encore été combinée ni divisée." }],
+    [{ t: expr(m + n, p + q), fb: "Cela combine le numérateur sans jamais diviser ; la loi du quotient doit encore s'appliquer à chaque base." },
+     { t: expr(e1, p + q), fb: "Cela divise les puissances de x mais pas celles de y ; la loi du quotient s'applique à chaque base." },
+     { t: expr(m + n, e2), fb: "Cela divise les puissances de y mais pas celles de x ; la loi du quotient s'applique à chaque base." }],
     sol, { mode: "gap-laws-mc", e1: e1, e2: e2 });
 }, ["Travaille une base à la fois, et chaque base a besoin de la loi du produit et de la loi du quotient.", "Combine les deux puissances de x au numérateur comme première étape."]);
 
@@ -7431,9 +7298,17 @@ E("u4-gap-sub-eval-neg-cr", 4, ["8.7", "8.11"], 2, "gen", function () {
 
 // PG. L2, 8.5/8.6, CR 3: simplify a polynomial perimeter, then evaluate.
 E("u4-gap-perimeter-eval-cr", 4, ["8.5", "8.6"], 2, "gen", function () {
-  var a1 = u4nz(-4, 4), b1 = ri(-5, 5), a2 = u4nz(-4, 4), b2 = ri(-5, 5), a3 = u4nz(-4, 4), b3 = ri(-5, 5);
+  /* Constraint, November 26, 2026 (Jason's ruling 8 on the Math 9 guide audit):
+     the draw is rejection-sampled until every side length at the given x is
+     positive. Unconstrained, about half the draws dealt a negative or zero
+     side or perimeter (dealt keys of -32, -25, -9, -1 and 0 cm). */
+  var a1, b1, a2, b2, a3, b3, v;
+  for (var att = 0; att < 500; att++) {
+    a1 = u4nz(-4, 4); b1 = ri(-5, 5); a2 = u4nz(-4, 4); b2 = ri(-5, 5); a3 = u4nz(-4, 4); b3 = ri(-5, 5);
+    v = ri(2, 5);
+    if (a1 * v + b1 > 0 && a2 * v + b2 > 0 && a3 * v + b3 > 0) break;
+  }
   var sx = a1 + a2 + a3, sk = b1 + b2 + b3;
-  var v = ri(2, 5);
   var ans = sx * v + sk;
   function side(a, b) { return u4expr([[a, "x"], [b, ""]]); }
   var prompt = "Un triangle a des côtés de longueurs \\((" + side(a1, b1) + ")\\), \\((" + side(a2, b2) + ")\\) et \\((" + side(a3, b3) + ")\\), en centimètres. Trouve le périmètre du triangle, en centimètres, quand \\(x = " + v + "\\).";
@@ -7512,14 +7387,15 @@ E("u6-gap-slope-table-cr", 6, ["7.4", "7.2"], 2, "gen", function () {
 }, ["La taille du pas se cache dans les différences entre les valeurs voisines de y.", "Soustrais deux valeurs voisines de y pour trouver le pas comme première étape."]);
 
 // PG. L2, 7.7/7.8, CR 2: missing coordinate of a point on the line through two given points.
+/* Solution reworked Nov 26, 2026 (Jason's ruling 3 on the Math 9 guide audit): the guide does not introduce the term "slope" or the slope formula until Grade 10, so the solution now works in the unit's own pattern language (the change in y split evenly across the steps in x). Prompt and key unchanged. */
 E("u6-gap-missing-coord-cr", 6, ["7.7", "7.8"], 2, "gen", function () {
   var m = ri(2, 5), b = ri(1, 12);
   var x1 = ri(0, 3), x2 = x1 + ri(2, 4), x3 = x2 + ri(2, 5);
   var y1 = b + m * x1, y2 = b + m * x2, ans = b + m * x3;
   var prompt = "Les points (" + x1 + ", " + y1 + ") et (" + x2 + ", " + y2 + ") sont sur une droite. Le point (" + x3 + ", y) est aussi sur la même droite. Quelle est la valeur de y ?";
-  var sol = "Trouve d'abord la pente à partir des deux points donnés, puis prolonge la régularité jusqu'au nouveau x : \\[ \\begin{aligned} \\text{pente} &= \\frac{" + y2 + " - " + y1 + "}{" + x2 + " - " + x1 + "} = " + m + " \\\\ y &= " + y2 + " + " + m + "(" + x3 + " - " + x2 + ") = " + ans + " \\end{aligned} \\] La réponse est <b>" + ans + "</b>.";
+  var sol = "Entre les deux points donnés, x augmente de " + (x2 - x1) + " pendant que y augmente de " + (y2 - y1) + ", donc le changement se partage également : chaque pas de 1 en x ajoute " + m + " à y. De x = " + x2 + " à x = " + x3 + ", il y a " + (x3 - x2) + " pas de plus, ce qui ajoute " + m + " \\times " + (x3 - x2) + " = " + (m * (x3 - x2)) + " : \\[ \\begin{aligned} y &= " + y2 + " + " + (m * (x3 - x2)) + " \\\\ &= " + ans + " \\end{aligned} \\] La réponse est <b>" + ans + "</b>.";
   return numq(prompt, ans, 0.01, sol, { mode: "gap-missing-coord", m: m, x3: x3 });
-}, ["Le taux de la droite doit être calculé à partir des deux points complets avant de pouvoir utiliser le point incomplet.", "Divise le changement de y par le changement de x pour les deux points donnés comme première étape."]);
+}, ["Calcule de combien y augmente entre les deux points donnés, et sur combien de pas en x cette augmentation se partage.", "Partage l'augmentation de y également sur les pas en x pour trouver ce que chaque pas ajoute, puis continue pas à pas jusqu'au nouveau x."]);
 
 // PG. L2, 7.2/7.10, CR 3: break-even point of two cost plans (set equal, then solve).
 E("u6-gap-break-even-cr", 6, ["7.2", "7.10"], 2, "gen", function () {
@@ -7739,7 +7615,7 @@ E("u8-gap-two-theorems-mc", 8, ["9.7"], 2, "gen", function () {
 /* Unit 9: Probability and Statistics */
 
 // PG. L2, 11.9, CR 2: mean from a frequency table (sum of fx, then divide).
-E("u9-gap-freq-mean-cr", 9, ["11.9"], 2, "gen", function () {
+E("u9-gap-freq-mean-cr", 9, [], 2, "gen", function () {
   var f1 = ri(2, 9), f2 = ri(2, 9), f3 = ri(2, 9), f4 = ri(2, 9);
   var S = 1 * f1 + 2 * f2 + 3 * f3 + 4 * f4, N = f1 + f2 + f3 + f4;
   var ans = Math.round(S / N * 100) / 100;
@@ -7779,7 +7655,7 @@ E("u9-gap-complement-pct-cr", 9, ["12.2"], 2, "gen", function () {
 }, ["Au moins une fois, c'est tout sauf le seul cas où cela n'arrive jamais.", "Trouve la probabilité d'un échec comme première étape."]);
 
 // PG. L2, 11.9, CR 3: difference of the means of two small data sets.
-E("u9-gap-mean-diff-cr", 9, ["11.9"], 2, "gen", function () {
+E("u9-gap-mean-diff-cr", 9, [], 2, "gen", function () {
   function makeSet() {
     var v = [ri(2, 20), ri(2, 20), ri(2, 20), ri(2, 20)];
     return { v: v, s: v[0] + v[1] + v[2] + v[3] };
@@ -7820,7 +7696,7 @@ E("u9-gap-win-points-cr", 9, ["12.4"], 2, "gen", function () {
 }, ["Les points viennent des victoires, alors le nombre prévu de victoires doit être trouvé avant de totaliser les points.", "Multiplie la probabilité par le nombre de parties comme première étape."]);
 
 // PG. L2, 11.9, SR: frequency-table mean with forgot-to-divide and wrong-divisor distractors.
-E("u9-gap-freq-mean-mc", 9, ["11.9"], 2, "gen", function () {
+E("u9-gap-freq-mean-mc", 9, [], 2, "gen", function () {
   var k = ri(1, 12);
   var v1 = k, v2 = k + 2, v3 = k + 4;
   var f1 = ri(2, 5), f2 = ri(2, 6), f3 = ri(2, 5);
@@ -7851,14 +7727,50 @@ E("u9-gap-freq-mean-mc", 9, ["11.9"], 2, "gen", function () {
    when a teacher turns prior knowledge off in Advanced
    tools. */
 BANK.forEach(function(e){if(["u9-gap-freq-mean-cr","u9-gap-mean-diff-cr","u9-gap-freq-mean-mc"].indexOf(e.id)>=0)e.pkFlag=true;});
+/* Ruling 2 follow-on (November 26, 2026, Math 9 guide audit): two more entries flagged on
+   the same assessed-target standard. u1-gap-mean-target-cr assesses the mean of a data set
+   (Math 7 indicators 11.6 and 11.9) under a Unit 1 rational operations tag; no Unit 1
+   indicator names the mean, and its Unit 9 siblings above are flagged on this reasoning.
+   u9-gap-complement-pct-cr computes probabilities for independent events (prior learning
+   per the guide's 12.4 Focus) under the 12.2 assumptions tag, whose content it never
+   addresses. Neither duplicates an existing PK entry (checked by dealing both against
+   the PK mean and probability entries), so both are flagged rather than removed. */
+BANK.forEach(function(e){if(["u1-gap-mean-target-cr","u9-gap-complement-pct-cr"].indexOf(e.id)>=0)e.pkFlag=true;});
+
+/* Enrichment flags (November 26, 2026, Jason's rulings on the Math 9 guide
+   audit, ported the same day so the French bank stays aligned with the
+   English): the entries named below are kept in the bank as enrichment, the
+   house mechanism from the November 13, 2026 ruling. The flag is a property
+   on the entry, set here in the bank module the way the enrich flags are set
+   in Math 2201's bank-u7.js; flagged entries stay out of practice draws and
+   composed papers unless enrichment is deliberately included. Ruling 1a:
+   u3-gap-laws-mc and u3-gap-simplify-sub-cr (fully symbolic exponent work;
+   the guide's Unit 3 uses integral bases). Ruling 1c: u3-gap-sci-product-cr
+   (scientific notation products) and u3-gap-solve-exponent-cr (solving for
+   an exponent; the guide's work is forward-only). Ruling 6:
+   u8-gap-cyclic-diag-cr (the cyclic quadrilateral theorem, never stated in
+   the guide) and the reflex family u8-inscribed-reflex,
+   u8-gap-reflex-arc-cr and u8-gap-two-theorems-mc (reflex central angles
+   and inscribed angles on a major arc, past the guide's ordinary cases).
+   The English bank's ninth flag, u6-pk-two-points-evaluate (Ruling 3c), has
+   no French counterpart: this bank carries no such entry. */
+var ENRICH9FR = ["u3-gap-laws-mc", "u3-gap-simplify-sub-cr", "u3-gap-sci-product-cr", "u3-gap-solve-exponent-cr", "u8-gap-cyclic-diag-cr", "u8-inscribed-reflex", "u8-gap-reflex-arc-cr", "u8-gap-two-theorems-mc"];
+BANK.forEach(function(e){if(ENRICH9FR.indexOf(e.id)>=0)e.enrich=true;});
 
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-add-calculatrice-arrondi":2,"u1-add-solde-argent":2,"u1-between-two":2,"u1-frac-context":3,"u1-gap-brackets-cr":3,"u1-gap-div-add-cr":3,"u1-gap-mean-target-cr":3,"u1-gap-order-ops-cr":2,"u1-gap-total-change-cr":3,"u1-gap-two-expr-diff-cr":2,"u1-money-decimals":3,"u1-multistep-rational":3,"u1-ooo-brackets-mc":2,"u1-ooo-calc-display":2,"u1-ooo-calculator":2,"u1-ooo-error-value":3,"u1-ooo-evaluate-mc":3,"u1-ordering-reasoning-var":2,"u2-approx-explain-gen":2,"u2-best-estimate-side":2,"u2-calc-root-round":2,"u2-estimate-between":2,"u2-gap-composite-sa-mc":2,"u2-gap-estimate-gap-cr":2,"u2-gap-pyramid-slant-cr":3,"u2-identify-square":2,"u2-number-from-root":2,"u2-overlap":2,"u2-overlap-hidden":2,"u2-root-between":2,"u2-sa-composite-rect":3,"u2-sa-cyl-on-prism":3,"u2-sa-problem":2,"u2-sa-single":3,"u2-sa-tri-context":3,"u2-spot-error":3,"u2-sqrt-fraction":2,"u2-sqrt-perfect":2,"u2-square-from-root":2,"u2-why-approx":2,"u3-difference-of-powers":2,"u3-error-two-laws":3,"u3-evaluate-power-neg":2,"u3-explanations-var":3,"u3-gap-growth-excess-cr":3,"u3-gap-laws-eval-cr":2,"u3-gap-laws-mc":3,"u3-gap-power-diff-cr":3,"u3-gap-sci-product-cr":3,"u3-gap-simplify-sub-cr":2,"u3-gap-solve-exponent-cr":3,"u3-interchanged-base-exponent":2,"u3-law-then-sum-difference":2,"u3-paren-powers-set":2,"u3-parentheses-sign":2,"u3-power-from-product":2,"u3-power-from-repeated":2,"u3-power-model-var":2,"u3-power-of-power-law":2,"u3-power-of-product-quotient":3,"u3-product-law":2,"u3-quotient-law":2,"u3-repeated-multiplication":2,"u3-repeated-product-form":2,"u3-sum-of-powers":3,"u3-three-laws-evaluate":3,"u3-two-laws-evaluate":3,"u3-zero-exponent":2,"u3-zero-pattern":2,"u4-add":3,"u4-addsub-xy":3,"u4-area-monomial":2,"u4-degree":2,"u4-divide-missing-term":3,"u4-divide-monomial":2,"u4-equiv-var":3,"u4-equivalent":2,"u4-error-var":3,"u4-expr-to-tiles":2,"u4-gap-add-eval-cr":2,"u4-gap-area-eval-cr":3,"u4-gap-div-eval-cr":3,"u4-gap-mono-coeff-cr":2,"u4-gap-perimeter-eval-cr":3,"u4-gap-sub-eval-neg-cr":3,"u4-match-equivalent":3,"u4-missing":3,"u4-mult-div-mixed":2,"u4-mult-monomial-area":3,"u4-multiply-monomial":3,"u4-parts":2,"u4-subtract":3,"u4-tiles-addsub":2,"u4-tiles-figure-build":2,"u4-tiles-figure-expr":2,"u4-tiles-to-expr":2,"u5-balance-model":2,"u5-compare-eq-ineq-process":3,"u5-compare-eq-ineq-solutions":2,"u5-context-graph":2,"u5-gap-both-sides-cr":2,"u5-gap-ineq-boundary-cr":2,"u5-gap-min-items-cr":3,"u5-gap-solve-eval-cr":3,"u5-graph-to-ineq":2,"u5-ineq-substitution-check":3,"u5-ineq-to-words":2,"u5-inspection-basic":2,"u5-list-satisfies":2,"u5-meaning-of-solution":2,"u5-possible-solution":2,"u5-solve-brackets-both":3,"u5-solve-ineq-addsub":3,"u5-solve-ineq-addsub-choose":2,"u5-solve-ineq-neg-flip":3,"u5-solve-ineq-pos-div":2,"u5-solve-ineq-two-step-choose":2,"u5-solve-two-step":3,"u5-translate-inequality":2,"u5-trial-table":2,"u5-verify-error":2,"u5-which-is-solution":2,"u5-word-brackets":2,"u5-word-two-step":3,"u6-add-interpolation-choix":2,"u6-add-seuil-rentabilite":3,"u6-context-equation":2,"u6-equation-context":2,"u6-extrapolate-graph":3,"u6-gap-break-even-cr":3,"u6-gap-inverse-cr":3,"u6-gap-missing-coord-cr":2,"u6-gap-pattern-far-cr":3,"u6-gap-slope-table-cr":2,"u6-graph-describe":3,"u6-graph-equation":3,"u6-interpolate-graph":3,"u6-pattern-figure-expr":3,"u6-pattern-large":2,"u6-pattern-solve-n":3,"u6-pattern-word-total":2,"u6-point-on-graph":2,"u6-table-equation":3,"u6-table-extend":3,"u6-two-plans-graph":3,"u7-artwork-symmetry-var":2,"u7-both-symmetry-var":2,"u7-complete-half":2,"u7-complete-transformation":3,"u7-draw-similar-num":3,"u7-gap-area-scale-cr":3,"u7-gap-map-time-cr":2,"u7-gap-perimeter-scale-cr":3,"u7-gap-scale-apply-cr":2,"u7-gap-shadow-diff-cr":3,"u7-indirect-measure-num":2,"u7-lines-symmetry":2,"u7-related-shapes":2,"u7-rotate-vertex":2,"u7-rotation-symmetry-var":2,"u7-scale-draw-num":3,"u7-scale-media-var":2,"u7-similar-context-num":3,"u7-similar-pair":3,"u7-similar-two-step-num":3,"u7-tessellation-var":2,"u7-transformation-symmetry":2,"u7-translation-rule":2,"u8-add-angle-inscrit-centre-choix":2,"u8-add-angles-meme-arc":2,"u8-add-corde-longueur-choix":2,"u8-add-demi-cercle-angle":2,"u8-add-tangente-angle-centre":2,"u8-chord-length":3,"u8-chord-perp-bisects":2,"u8-chord-two-step":3,"u8-gap-chord-bisect-cr":3,"u8-gap-cyclic-diag-cr":2,"u8-gap-reflex-arc-cr":2,"u8-gap-semicircle-pyth-cr":3,"u8-gap-tangent-central-cr":3,"u8-gap-two-theorems-mc":2,"u8-inscribed-reflex":3,"u8-same-arc-angles":2,"u8-semicircle-angle":2,"u8-tangent-central-inscribed":2,"u8-tangent-length":3,"u8-tangent-right-angle":2,"u9-collection-biggest-threat":3,"u9-collection-problem":3,"u9-combined-decision":3,"u9-gap-complement-pct-cr":3,"u9-gap-expected-freq-cr":2,"u9-gap-freq-mean-cr":2,"u9-gap-freq-mean-mc":2,"u9-gap-mean-diff-cr":3,"u9-gap-sample-scale-cr":3,"u9-gap-win-points-cr":3,"u9-match-influence":3,"u9-plan-element":2,"u9-population-limitation":2,"u9-prob-in-media":2,"u9-rubric-missing-part":2,"u9-same-number-two-sides":3,"u9-self-assessment":2,"u9-use-whole-population":2};
+window.__BANK_CRMARKS={"u1-add-calculatrice-arrondi":2,"u1-add-solde-argent":2,"u1-between-two":2,"u1-frac-context":3,"u1-gap-brackets-cr":3,"u1-gap-div-add-cr":3,"u1-gap-mean-target-cr":3,"u1-gap-order-ops-cr":2,"u1-gap-total-change-cr":3,"u1-gap-two-expr-diff-cr":2,"u1-money-decimals":3,"u1-multistep-rational":3,"u1-ooo-brackets-mc":2,"u1-ooo-calc-display":2,"u1-ooo-calculator":2,"u1-ooo-error-value":3,"u1-ooo-evaluate-mc":3,"u1-ordering-reasoning-var":2,"u2-approx-explain-gen":2,"u2-best-estimate-side":2,"u2-calc-root-round":2,"u2-estimate-between":2,"u2-gap-composite-sa-mc":2,"u2-gap-estimate-gap-cr":2,"u2-gap-pyramid-slant-cr":3,"u2-identify-square":2,"u2-number-from-root":2,"u2-overlap":2,"u2-overlap-hidden":2,"u2-root-between":2,"u2-sa-composite-rect":3,"u2-sa-cyl-on-prism":3,"u2-sa-problem":2,"u2-sa-single":3,"u2-sa-tri-context":3,"u2-spot-error":3,"u2-sqrt-fraction":2,"u2-sqrt-perfect":2,"u2-square-from-root":2,"u2-why-approx":2,"u3-difference-of-powers":2,"u3-error-two-laws":3,"u3-evaluate-power-neg":2,"u3-explanations-var":3,"u3-gap-growth-excess-cr":3,"u3-gap-laws-eval-cr":2,"u3-gap-laws-mc":3,"u3-gap-power-diff-cr":3,"u3-gap-sci-product-cr":3,"u3-gap-simplify-sub-cr":2,"u3-gap-solve-exponent-cr":3,"u3-interchanged-base-exponent":2,"u3-law-then-sum-difference":2,"u3-paren-powers-set":2,"u3-parentheses-sign":2,"u3-power-from-product":2,"u3-power-from-repeated":2,"u3-power-model-var":2,"u3-power-of-power-law":2,"u3-power-of-product-quotient":3,"u3-product-law":2,"u3-quotient-law":2,"u3-repeated-multiplication":2,"u3-repeated-product-form":2,"u3-sum-of-powers":3,"u3-three-laws-evaluate":3,"u3-two-laws-evaluate":3,"u3-zero-exponent":2,"u3-zero-pattern":2,"u4-add":3,"u4-addsub-xy":3,"u4-area-monomial":2,"u4-degree":2,"u4-divide-missing-term":3,"u4-divide-monomial":2,"u4-equiv-var":3,"u4-equivalent":2,"u4-error-var":3,"u4-expr-to-tiles":2,"u4-gap-add-eval-cr":2,"u4-gap-area-eval-cr":3,"u4-gap-div-eval-cr":3,"u4-gap-mono-coeff-cr":2,"u4-gap-perimeter-eval-cr":3,"u4-gap-sub-eval-neg-cr":3,"u4-match-equivalent":3,"u4-missing":3,"u4-mult-div-mixed":2,"u4-mult-monomial-area":3,"u4-multiply-monomial":3,"u4-parts":2,"u4-subtract":3,"u4-tiles-addsub":2,"u4-tiles-figure-build":2,"u4-tiles-figure-expr":2,"u4-tiles-to-expr":2,"u5-balance-model":2,"u5-compare-eq-ineq-process":3,"u5-compare-eq-ineq-solutions":2,"u5-context-graph":2,"u5-gap-both-sides-cr":2,"u5-gap-ineq-boundary-cr":2,"u5-gap-min-items-cr":3,"u5-gap-solve-eval-cr":3,"u5-graph-to-ineq":2,"u5-ineq-substitution-check":3,"u5-ineq-to-words":2,"u5-inspection-basic":2,"u5-list-satisfies":2,"u5-meaning-of-solution":2,"u5-possible-solution":2,"u5-solve-brackets-both":3,"u5-solve-ineq-addsub":3,"u5-solve-ineq-addsub-choose":2,"u5-solve-ineq-neg-flip":3,"u5-solve-ineq-pos-div":2,"u5-solve-ineq-two-step-choose":2,"u5-solve-two-step":3,"u5-translate-inequality":2,"u5-trial-table":2,"u5-verify-error":2,"u5-which-is-solution":2,"u5-word-brackets":2,"u5-word-two-step":3,"u6-add-interpolation-choix":2,"u6-add-seuil-rentabilite":3,"u6-context-equation":2,"u6-equation-context":2,"u6-extrapolate-graph":3,"u6-gap-break-even-cr":3,"u6-gap-inverse-cr":3,"u6-gap-missing-coord-cr":2,"u6-gap-pattern-far-cr":3,"u6-gap-slope-table-cr":2,"u6-graph-describe":3,"u6-graph-equation":3,"u6-interpolate-graph":3,"u6-pattern-figure-expr":3,"u6-pattern-large":2,"u6-pattern-solve-n":3,"u6-pattern-word-total":2,"u6-point-on-graph":2,"u6-table-equation":3,"u6-table-extend":3,"u6-two-plans-graph":3,"u7-artwork-symmetry-var":2,"u7-both-symmetry-var":2,"u7-complete-half":2,"u7-complete-transformation":3,"u7-draw-similar-num":3,"u7-gap-area-scale-cr":3,"u7-gap-map-time-cr":2,"u7-gap-perimeter-scale-cr":3,"u7-gap-scale-apply-cr":2,"u7-gap-shadow-diff-cr":3,"u7-indirect-measure-num":2,"u7-lines-symmetry":2,"u7-related-shapes":2,"u7-rotate-vertex":2,"u7-rotation-symmetry-var":2,"u7-scale-draw-num":3,"u7-scale-media-var":2,"u7-similar-context-num":3,"u7-similar-pair":3,"u7-similar-two-step-num":3,"u7-tessellation-var":2,"u7-transformation-symmetry":2,"u7-translation-rule":2,"u8-add-angle-inscrit-centre-choix":2,"u8-add-angles-meme-arc":2,"u8-add-corde-longueur-choix":2,"u8-add-demi-cercle-angle":2,"u8-add-tangente-angle-centre":2,"u8-chord-length":3,"u8-chord-perp-bisects":2,"u8-chord-two-step":3,"u8-gap-chord-bisect-cr":3,"u8-gap-cyclic-diag-cr":2,"u8-gap-reflex-arc-cr":2,"u8-gap-semicircle-pyth-cr":3,"u8-gap-tangent-central-cr":3,"u8-gap-two-theorems-mc":2,"u8-inscribed-reflex":3,"u8-same-arc-angles":2,"u8-semicircle-angle":2,"u8-tangent-central-inscribed":2,"u8-tangent-length":3,"u8-tangent-right-angle":2,"u9-collection-biggest-threat":3,"u9-collection-problem":3,"u9-combined-decision":3,"u9-gap-complement-pct-cr":3,"u9-gap-expected-freq-cr":2,"u9-gap-freq-mean-cr":2,"u9-gap-freq-mean-mc":2,"u9-gap-mean-diff-cr":3,"u9-gap-sample-scale-cr":3,"u9-gap-win-points-cr":3,"u9-match-influence":3,"u9-population-limitation":2,"u9-prob-in-media":2,"u9-same-number-two-sides":3,"u9-use-whole-population":2};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-add-calculatrice-arrondi":"a","u1-add-solde-argent":"a","u1-between-two":"a","u1-ooo-brackets-mc":"a","u1-ooo-calc-display":"a","u1-ooo-error-value":"a","u1-ooo-evaluate-mc":"a","u1-ordering-reasoning-var":"a","u2-approx-explain-gen":"b","u2-best-estimate-side":"a","u2-calc-root-round":"a","u2-estimate-between":"a","u2-gap-composite-sa-mc":"a","u2-identify-square":"a","u2-number-from-root":"a","u2-root-between":"a","u2-spot-error":"b","u2-sqrt-fraction":"a","u2-sqrt-perfect":"a","u2-square-from-root":"a","u2-why-approx":"b","u3-error-two-laws":"a","u3-evaluate-power-neg":"a","u3-explanations-var":"b","u3-gap-laws-mc":"b","u3-interchanged-base-exponent":"a","u3-paren-powers-set":"a","u3-parentheses-sign":"a","u3-power-from-product":"a","u3-power-from-repeated":"a","u3-power-model-var":"b","u3-power-of-power-law":"a","u3-product-law":"a","u3-quotient-law":"a","u3-repeated-multiplication":"b","u3-repeated-product-form":"b","u3-zero-exponent":"a","u3-zero-pattern":"a","u4-addsub-xy":"b","u4-area-monomial":"b","u4-degree":"a","u4-divide-missing-term":"b","u4-equiv-var":"b","u4-equivalent":"b","u4-error-var":"b","u4-expr-to-tiles":"b","u4-match-equivalent":"b","u4-missing":"b","u4-mult-monomial-area":"b","u4-parts":"a","u4-subtract":"b","u4-tiles-addsub":"b","u4-tiles-figure-build":"a","u4-tiles-figure-expr":"b","u4-tiles-to-expr":"b","u5-balance-model":"b","u5-compare-eq-ineq-process":"b","u5-compare-eq-ineq-solutions":"a","u5-context-graph":"a","u5-graph-to-ineq":"a","u5-ineq-substitution-check":"b","u5-ineq-to-words":"a","u5-inspection-basic":"a","u5-meaning-of-solution":"a","u5-possible-solution":"a","u5-solve-ineq-addsub-choose":"a","u5-solve-ineq-neg-flip":"a","u5-solve-ineq-pos-div":"a","u5-solve-ineq-two-step-choose":"a","u5-translate-inequality":"a","u5-trial-table":"a","u5-verify-error":"b","u5-which-is-solution":"a","u6-add-interpolation-choix":"a","u6-add-seuil-rentabilite":"a","u6-context-equation":"b","u6-equation-context":"b","u6-extrapolate-graph":"a","u6-graph-describe":"b","u6-graph-equation":"b","u6-pattern-figure-expr":"b","u6-table-equation":"b","u7-artwork-symmetry-var":"a","u7-both-symmetry-var":"b","u7-complete-transformation":"b","u7-lines-symmetry":"a","u7-related-shapes":"a","u7-rotate-vertex":"a","u7-rotation-symmetry-var":"a","u7-scale-media-var":"a","u7-similar-pair":"a","u7-tessellation-var":"a","u7-transformation-symmetry":"a","u8-add-angle-inscrit-centre-choix":"a","u8-add-angles-meme-arc":"a","u8-add-corde-longueur-choix":"a","u8-add-demi-cercle-angle":"a","u8-add-tangente-angle-centre":"a","u8-chord-perp-bisects":"a","u8-gap-two-theorems-mc":"a","u8-tangent-central-inscribed":"a","u8-tangent-right-angle":"a","u9-collection-biggest-threat":"b","u9-gap-freq-mean-mc":"a","u9-population-limitation":"b","u9-prob-in-media":"b","u9-same-number-two-sides":"b","u9-self-assessment":"b","u9-use-whole-population":"b"};
+window.__BANK_BIMODAL={"u1-add-calculatrice-arrondi":"a","u1-add-solde-argent":"a","u1-between-two":"a","u1-ooo-brackets-mc":"a","u1-ooo-calc-display":"a","u1-ooo-error-value":"a","u1-ooo-evaluate-mc":"a","u1-ordering-reasoning-var":"a","u2-approx-explain-gen":"b","u2-best-estimate-side":"a","u2-calc-root-round":"a","u2-estimate-between":"a","u2-gap-composite-sa-mc":"a","u2-identify-square":"a","u2-number-from-root":"a","u2-root-between":"a","u2-spot-error":"b","u2-sqrt-fraction":"a","u2-sqrt-perfect":"a","u2-square-from-root":"a","u2-why-approx":"b","u3-error-two-laws":"a","u3-evaluate-power-neg":"a","u3-explanations-var":"b","u3-gap-laws-mc":"b","u3-interchanged-base-exponent":"a","u3-paren-powers-set":"a","u3-parentheses-sign":"a","u3-power-from-product":"a","u3-power-from-repeated":"a","u3-power-model-var":"b","u3-power-of-power-law":"a","u3-product-law":"a","u3-quotient-law":"a","u3-repeated-multiplication":"b","u3-repeated-product-form":"b","u3-zero-exponent":"a","u3-zero-pattern":"a","u4-addsub-xy":"b","u4-area-monomial":"b","u4-degree":"a","u4-divide-missing-term":"b","u4-equiv-var":"b","u4-equivalent":"b","u4-error-var":"b","u4-expr-to-tiles":"b","u4-match-equivalent":"b","u4-missing":"b","u4-mult-monomial-area":"b","u4-parts":"a","u4-subtract":"b","u4-tiles-addsub":"b","u4-tiles-figure-build":"a","u4-tiles-figure-expr":"b","u4-tiles-to-expr":"b","u5-balance-model":"b","u5-compare-eq-ineq-process":"b","u5-compare-eq-ineq-solutions":"a","u5-context-graph":"a","u5-graph-to-ineq":"a","u5-ineq-substitution-check":"b","u5-ineq-to-words":"a","u5-inspection-basic":"a","u5-meaning-of-solution":"a","u5-possible-solution":"a","u5-solve-ineq-addsub-choose":"a","u5-solve-ineq-neg-flip":"a","u5-solve-ineq-pos-div":"a","u5-solve-ineq-two-step-choose":"a","u5-translate-inequality":"a","u5-trial-table":"a","u5-verify-error":"b","u5-which-is-solution":"a","u6-add-interpolation-choix":"a","u6-add-seuil-rentabilite":"a","u6-context-equation":"b","u6-equation-context":"b","u6-extrapolate-graph":"a","u6-graph-describe":"b","u6-graph-equation":"b","u6-pattern-figure-expr":"b","u6-table-equation":"b","u7-artwork-symmetry-var":"a","u7-both-symmetry-var":"b","u7-complete-transformation":"b","u7-lines-symmetry":"a","u7-related-shapes":"a","u7-rotate-vertex":"a","u7-rotation-symmetry-var":"a","u7-scale-media-var":"a","u7-similar-pair":"a","u7-tessellation-var":"a","u7-transformation-symmetry":"a","u8-add-angle-inscrit-centre-choix":"a","u8-add-angles-meme-arc":"a","u8-add-corde-longueur-choix":"a","u8-add-demi-cercle-angle":"a","u8-add-tangente-angle-centre":"a","u8-chord-perp-bisects":"a","u8-gap-two-theorems-mc":"a","u8-tangent-central-inscribed":"a","u8-tangent-right-angle":"a","u9-collection-biggest-threat":"b","u9-gap-freq-mean-mc":"a","u9-population-limitation":"b","u9-prob-in-media":"b","u9-same-number-two-sides":"b","u9-use-whole-population":"b"};
+/* ============ Level basis labels (generated) ============ */
+/* Built by assemble-bank.py from the LEVELBASIS comments at each
+   audited entry (November 25, 2026): the criterion that decided
+   the entry's level under the adopted criteria card, shown in
+   teacher mode beside the level on the question card. Entries
+   no audit has covered have no label. */
+window.__BANK_LEVELBASIS={};
