@@ -1187,12 +1187,19 @@ function u3red(n, d) { var g = u3gcd(n, d); return [n / g, d / g]; }
 function u3disp(n, d) { var r = u3red(n, d); n = r[0]; d = r[1]; if (d === 1) return "\\(" + n + "\\)"; if (n < d) return "\\(" + FR(n, d) + "\\)"; var w = Math.floor(n / d), rem = n % d; if (rem === 0) return "\\(" + w + "\\)"; return "\\(" + w + FR(rem, d) + "\\)"; }
 function u3plain(n, d) { var r = u3red(n, d); n = r[0]; d = r[1]; if (d === 1) return "" + n; if (n < d) return n + "/" + d; var w = Math.floor(n / d), rem = n % d; if (rem === 0) return "" + w; return w + " " + rem + "/" + d; }
 function u3accepted(n, d) { var r = u3red(n, d); var rn = r[0], rd = r[1]; var out = []; if (rd === 1) { out.push("" + rn); return out; } out.push(rn + "/" + rd); out.push(rn + " / " + rd); var mix = u3plain(n, d); if (mix.indexOf(" ") >= 0) out.push(mix); var dd = rd; while (dd % 2 === 0) dd /= 2; while (dd % 5 === 0) dd /= 5; if (dd === 1) { var v = rn / rd; out.push(("" + v).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "")); } return out; }
+/* Area model shading fixed November 27, 2026 (teacher Report a Problem, indicator 6.5):
+   both bands now run the FULL length of the rectangle, as in the eNLightenED Focus for
+   Learning model: the n1 rows are shaded across every column and the n2 columns down
+   every row, and the overlap (the product) is where the two shadings cross. Before this
+   fix the row shading stopped at the shaded columns, so a shaded row read as partial. */
 function u3areaSVG(n1, d1, n2, d2) {
   var W = 252, H = 144, cw = W / d2, ch = H / d1, cells = "";
   for (var r = 0; r < d1; r++) for (var c = 0; c < d2; c++) {
-    var fill = "none";
-    if (c < n2 && r < n1) fill = FIG_ACC; else if (c < n2) fill = FIG_SHADE;
-    cells += "<rect x='" + (c * cw) + "' y='" + (r * ch) + "' width='" + cw + "' height='" + ch + "' fill='" + fill + "' fill-opacity='" + (fill === FIG_ACC ? "0.55" : "1") + "' stroke='" + FIG_INK + "' stroke-width='1'/>";
+    var inRow = r < n1, inCol = c < n2, fill = "none", op = "1";
+    if (inRow && inCol) { fill = FIG_ACC; op = "0.55"; }
+    else if (inCol) fill = FIG_SHADE;
+    else if (inRow) { fill = FIG_ALT; op = "0.4"; }
+    cells += "<rect x='" + (c * cw) + "' y='" + (r * ch) + "' width='" + cw + "' height='" + ch + "' fill='" + fill + "' fill-opacity='" + op + "' stroke='" + FIG_INK + "' stroke-width='1'/>";
   }
   return "<svg viewBox='0 0 252 144' width='252' height='144' xmlns='http://www.w3.org/2000/svg'>" + cells + "<rect x='0' y='0' width='252' height='144' fill='none' stroke='" + FIG_INK + "' stroke-width='2.5'/></svg>";
 }

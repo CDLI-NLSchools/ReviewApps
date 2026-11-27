@@ -9725,9 +9725,11 @@ function u3plain(n, d) { var r = u3red(n, d); n = r[0]; d = r[1]; if (d === 1) r
 function u3areaSVG(n1, d1, n2, d2) {
   var W = 252, H = 144, cw = W / d2, ch = H / d1, cells = "";
   for (var r = 0; r < d1; r++) for (var c = 0; c < d2; c++) {
-    var fill = "none";
-    if (c < n2 && r < n1) fill = FIG_ACC; else if (c < n2) fill = FIG_SHADE;
-    cells += "<rect x='" + (c * cw) + "' y='" + (r * ch) + "' width='" + cw + "' height='" + ch + "' fill='" + fill + "' fill-opacity='" + (fill === FIG_ACC ? "0.55" : "1") + "' stroke='" + FIG_INK + "' stroke-width='1'/>";
+    var inRow = r < n1, inCol = c < n2, fill = "none", op = "1";
+    if (inRow && inCol) { fill = FIG_ACC; op = "0.55"; }
+    else if (inCol) fill = FIG_SHADE;
+    else if (inRow) { fill = FIG_ALT; op = "0.4"; }
+    cells += "<rect x='" + (c * cw) + "' y='" + (r * ch) + "' width='" + cw + "' height='" + ch + "' fill='" + fill + "' fill-opacity='" + op + "' stroke='" + FIG_INK + "' stroke-width='1'/>";
   }
   return "<svg viewBox='0 0 252 144' width='252' height='144' xmlns='http://www.w3.org/2000/svg'>" + cells + "<rect x='0' y='0' width='252' height='144' fill='none' stroke='" + FIG_INK + "' stroke-width='2.5'/></svg>";
 }
