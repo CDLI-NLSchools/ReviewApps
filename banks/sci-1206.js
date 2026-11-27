@@ -5676,11 +5676,15 @@ function s6WebSVG() {
   s += '<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 Z" fill="' + S6_ALT + '"/></marker></defs>';
   s += box(30, 210, "Shrubs & grasses", "#e6f0e6"); s += box(165, 210, "Berries & seeds", "#e6f0e6"); s += box(300, 210, "Aquatic plants", "#e6f0e6");
   s += box(30, 140, "Snowshoe hare"); s += box(165, 140, "Field mouse"); s += box(300, 140, "Tadpole");
-  s += box(95, 70, "Red fox"); s += box(240, 70, "Great horned owl"); s += box(310, 70, "Frog");
+  /* Middle row spaced November 27, 2026 (student Report a Problem): the frog box at
+     x=310 overlapped the great horned owl box (240 to 338) by 28 px at the same y, so
+     the frog sat on top of the owl. Fox, owl and frog now sit at x=30, 175 and 318
+     with clear gaps, and the arrows were re-aimed at the moved boxes. */
+  s += box(30, 70, "Red fox"); s += box(175, 70, "Great horned owl"); s += box(318, 70, "Frog");
   s += box(165, 8, "Lynx");
   s += arrow(79, 210, 79, 166); s += arrow(214, 210, 214, 166); s += arrow(349, 210, 349, 166);
-  s += arrow(100, 140, 130, 96); s += arrow(230, 140, 262, 96); s += arrow(349, 140, 349, 96);
-  s += arrow(90, 70, 190, 34); s += arrow(215, 140, 150, 96); s += arrow(290, 70, 240, 34);
+  s += arrow(79, 140, 79, 96); s += arrow(230, 140, 255, 96); s += arrow(349, 140, 362, 96);
+  s += arrow(60, 70, 190, 34); s += arrow(190, 140, 120, 96); s += arrow(224, 70, 240, 34);
   s += s6txt(8, 18, "Arrows point from food to eater", 10, false, "start", "#666");
   s += "</svg>";
   return s;
