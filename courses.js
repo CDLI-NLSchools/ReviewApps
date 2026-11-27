@@ -514,7 +514,16 @@ window.COURSES = {
   /* Shown with the pool information whenever the final scope is selected. */
   finalNote: "Note: the final exam covers Unit 2 from indicator 6.5 (molecular genetics) plus Unit 3, and this preset's pool matches that scope: the classical genetics questions are held out. No official Table of Specifications has been published for the Biology 3201 final, so this preset uses an adopted best guess (60 marks in the mid-course shape, Unit 2 worth 24 and Unit 3 worth 36, at the course's 30/50/20 level split). If an official table is published, it replaces this guess.",
 
-  unitTest: { total: 25, sr: 11, cr: 14 }
+  unitTest: { total: 25, sr: 11, cr: 14 },
+  // Test-shaped practice blueprint (Appendix A of Spec-Test-Shaped-Practice-2026-11-19.md), adopted November 27, 2026 on Kim's review: mitosis and meiosis are kept in one test because students are asked to compare the two processes.
+  testMap: {
+    1: [ { test: 1, inds: ["5.1", "5.2", "5.3", "5.4", "5.5", "5.6", "5.7", "5.8", "8.1", "8.2", "8.7"] },
+      { test: 2, inds: ["5.9", "5.10", "8.3", "8.4", "8.5", "8.6", "8.8"] } ],
+    2: [ { test: 1, inds: ["6.1", "6.2", "6.3", "6.4", "9.1", "9.2"] },
+      { test: 2, inds: ["6.5", "6.6", "6.7", "6.8", "6.9", "6.10"] } ],
+    3: [ { test: 1, inds: ["7.1", "7.2", "7.3", "7.4"] },
+      { test: 2, inds: ["7.5", "7.6", "7.7", "7.8", "7.9", "7.10"] } ]
+  },
 },
 
 "bio-2201": {
@@ -630,7 +639,18 @@ window.COURSES = {
   /* Shown with the pool information whenever the final scope is selected. */
   finalNote: "Note: the final exam covers Unit 3, and this preset's pool matches that scope. Biology 2201 has no published Table of Specifications, so this preset draws proportionally from Unit 3 with no imposed level blueprint.",
 
-  unitTest: { total: 25, sr: 25, cr: 0 }
+  unitTest: { total: 25, sr: 25, cr: 0 },
+  // Test-shaped practice blueprint (Appendix A of Spec-Test-Shaped-Practice-2026-11-19.md), adopted November 27, 2026 on Kim's review: Unit 3 groups the nervous and endocrine control systems together, with plant systems as their own test listed last (taught in spring).
+  testMap: {
+    1: [ { test: 1, inds: ["5.1", "5.2", "5.3", "8.1", "8.2"] },
+      { test: 2, inds: ["5.4", "5.5", "8.3"] } ],
+    2: [ { test: 1, inds: ["6.1", "6.2", "6.3", "9.1", "9.2", "9.3", "9.4", "9.5"] },
+      { test: 2, inds: ["6.4", "6.5", "6.6", "6.7", "6.8"] } ],
+    3: [ { test: 1, inds: ["7.1", "7.4", "7.5", "7.6", "7.7"] },
+      { test: 2, inds: ["7.8", "7.9", "7.10", "7.11"] },
+      { test: 3, inds: ["7.12", "7.13", "7.14"] },
+      { test: 4, inds: ["7.2", "7.3"] } ]
+  },
 },
 
 "sci-1206": {
@@ -2619,7 +2639,21 @@ window.COURSES = {
   /* Shown with the pool information whenever the final scope is selected. */
   finalNote: "Note: no official Table of Specifications has been published for the Earth Systems 3209 final. This preset uses an adopted best guess (60 marks in the mid-course shape: Unit 3 from EA12.3.20 worth 18 marks, Unit 4 worth 28, Unit 5 worth 14, with proportions and levels taken from the January 2019 public exam Table of Specifications). If an official table is published, it replaces this guess.",
 
-  unitTest: { total: 25, sr: 11, cr: 14 }
+  unitTest: { total: 25, sr: 11, cr: 14 },
+  // Test-shaped practice blueprint (Appendix A of Spec-Test-Shaped-Practice-2026-11-19.md), adopted November 27, 2026 on Kim's review (breakdown endorsed as proposed).
+  testMap: {
+    1: [ { test: 1, inds: ["EA12.6.1", "EA12.6.2", "EA12.1.1", "EA12.1.2", "EA12.1.3", "EA12.1.4", "EA12.1.5"] } ],
+    2: [ { test: 1, inds: ["EA12.2.1", "EA12.2.2", "EA12.2.3", "EA12.2.4", "EA12.2.5", "EA12.2.6", "EA12.2.7", "EA12.2.8", "EA12.2.9", "EA12.2.10", "EA12.2.11", "EA12.2.12", "EA12.11.5", "EA12.7.3"] },
+      { test: 2, inds: ["EA12.2.13", "EA12.2.14", "EA12.2.15", "EA12.2.16", "EA12.2.17", "EA12.2.18", "EA12.2.19"] } ],
+    3: [ { test: 1, inds: ["EA12.3.1", "EA12.3.2", "EA12.3.3", "EA12.3.4", "EA12.3.5", "EA12.3.6", "EA12.3.7", "EA12.3.8", "EA12.3.9", "EA12.3.10", "EA12.3.11", "EA12.8.1"] },
+      { test: 2, inds: ["EA12.3.12", "EA12.3.13", "EA12.3.14", "EA12.3.15", "EA12.3.16", "EA12.3.17", "EA12.3.18", "EA12.3.19", "EA12.8.2"] },
+      { test: 3, inds: ["EA12.3.20", "EA12.3.21", "EA12.3.22", "EA12.3.23", "EA12.3.24", "EA12.3.25", "EA12.3.26", "EA12.3.27", "EA12.3.28", "EA12.3.29", "EA12.3.30", "EA12.3.31"] },
+      { test: 4, inds: ["EA12.3.32", "EA12.3.33", "EA12.3.34", "EA12.3.35", "EA12.3.36", "EA12.3.37", "EA12.3.38", "EA12.3.39", "EA12.8.8"] } ],
+    4: [ { test: 1, inds: ["EA12.4.1", "EA12.4.2", "EA12.4.3", "EA12.4.4", "EA12.4.5", "EA12.9.1", "EA12.9.2", "EA12.9.3", "EA12.9.4", "EA12.9.5"] },
+      { test: 2, inds: ["EA12.4.6", "EA12.4.7", "EA12.4.8", "EA12.4.9", "EA12.4.10", "EA12.4.11", "EA12.4.12"] },
+      { test: 3, inds: ["EA12.4.13", "EA12.4.14", "EA12.4.15", "EA12.4.16", "EA12.4.17", "EA12.4.18", "EA12.4.19", "EA12.4.20", "EA12.4.21", "EA12.4.22", "EA12.4.23", "EA12.4.24", "EA12.4.25", "EA12.9.6", "EA12.9.7"] } ],
+    5: [ { test: 1, inds: ["EA12.5.1", "EA12.5.2", "EA12.5.3", "EA12.5.4", "EA12.5.5", "EA12.5.6", "EA12.5.7", "EA12.5.8", "EA12.5.9", "EA12.5.10", "EA12.5.11", "EA12.5.12", "EA12.5.13", "EA12.5.14", "EA12.10.1"] } ]
+  },
 },
 
 "math-3200": {
