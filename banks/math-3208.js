@@ -1158,6 +1158,117 @@ E("u2-repeating-decimal",2,["2.10"],2,"gen",function(){
    tools. */
 BANK.forEach(function(e){if(["u2-repeating-decimal"].indexOf(e.id)>=0)e.pkFlag=true;});
 
+/* ================= Calculus Placement Test entries (Nov 27, 2026) =================
+   Mined from two CPT samples shared with NL mathematics teachers by
+   Jonathan Mauger (Holy Heart) through the Teachers: Mathematics 7-12
+   list: the June 2026 Version C paper (ids cpt-c-) and the Classroom
+   practice set "Sample 2" (ids cpt-s-). Every key was re-solved at
+   authoring and agrees with the sample's own key. Entries carry the
+   cpt flag (set at the end of this file) and are excluded from
+   ordinary unit and test draws; they deal in the Calculus Placement
+   Test practice scope and in teacher-built sets that include them.
+   Sample 2's continuity pair shared a piecewise function carried in
+   the Classroom set as an image, which the exported JSON does not
+   contain; the function used here is a reconstruction that produces
+   exactly the sample's keyed behaviour (jump at x = 3, vertical
+   asymptote at x = -3, k = -7/6 for continuity at x = 5). */
+// CRMARKS: cpt-c-continuity-x2=3
+// CRMARKS: cpt-c-continuity-k=6
+// CRMARKS: cpt-c-create-discontinuity=2
+E("cpt-c-limit-abs",2,["2.3","2.7"],2,"var",varset([
+  function(){return mcq("Evaluate the limit, or indicate that the limit does not exist: \\(\\lim_{x \\to 4} \\frac{|x - 4|}{x^2 - 2x - 8}\\)",
+    "\\(\\text{does not exist}\\)",
+    ["\\(-\\frac{1}{6}\\)","\\(\\frac{1}{6}\\)","\\(0\\)"],
+    "Factor the denominator: \\(x^2 - 2x - 8 = (x - 4)(x + 2)\\). From the left, \\(|x - 4| = -(x - 4)\\), so \\(\\lim_{x \\to 4^-} \\frac{|x - 4|}{x^2 - 2x - 8} = \\lim_{x \\to 4^-} \\frac{-1}{x + 2} = -\\frac{1}{6}\\). From the right, \\(|x - 4| = x - 4\\), so \\(\\lim_{x \\to 4^+} \\frac{|x - 4|}{x^2 - 2x - 8} = \\lim_{x \\to 4^+} \\frac{1}{x + 2} = \\frac{1}{6}\\). The one-sided limits are finite but unequal, so the limit <b>does not exist</b>.",
+    {src:"CPT-C Q1A"});}
+]));
+E("cpt-c-limit-conjugate",2,["2.7"],2,"var",varset([
+  function(){return mcq("Evaluate the limit, or indicate that the limit does not exist: \\(\\lim_{x \\to 2} \\frac{\\sqrt{x + 7} - 3}{6 - 3x}\\)",
+    "\\(-\\frac{1}{18}\\)",
+    ["\\(\\frac{1}{18}\\)","\\(-\\frac{1}{6}\\)","\\(\\frac{1}{6}\\)"],
+    "Rationalize the numerator by multiplying by the conjugate \\(\\sqrt{x + 7} + 3\\): \\[ \\lim_{x \\to 2} \\frac{(x + 7) - 9}{(6 - 3x)(\\sqrt{x + 7} + 3)} = \\lim_{x \\to 2} \\frac{x - 2}{-3(x - 2)(\\sqrt{x + 7} + 3)} = \\lim_{x \\to 2} \\frac{-1}{3(\\sqrt{x + 7} + 3)} \\] At \\(x = 2\\) this is \\(\\frac{-1}{3(3 + 3)} = -\\frac{1}{18}\\). The limit is <b>\\(-\\frac{1}{18}\\)</b>.",
+    {src:"CPT-C Q1B"});}
+]));
+E("cpt-c-limit-infinity",2,["2.10"],2,"var",varset([
+  function(){return mcq("Evaluate the limit, or indicate that the limit does not exist: \\(\\lim_{x \\to -\\infty} \\frac{5x + 3}{2x - \\sqrt{9x^2 + 4}}\\)",
+    "\\(1\\)",
+    ["\\(0\\)","\\(-5\\)","\\(\\frac{5}{2}\\)"],
+    "For \\(x \\to -\\infty\\), \\(\\sqrt{9x^2 + 4} = |x|\\sqrt{9 + \\frac{4}{x^2}} = -x\\sqrt{9 + \\frac{4}{x^2}}\\), since \\(|x| = -x\\) when \\(x < 0\\). Dividing the numerator and the denominator by \\(x\\): \\[ \\lim_{x \\to -\\infty} \\frac{5 + \\frac{3}{x}}{2 + \\sqrt{9 + \\frac{4}{x^2}}} = \\frac{5}{2 + 3} = 1 \\] The limit is <b>\\(1\\)</b>.",
+    {src:"CPT-C Q1D"});}
+]));
+E("cpt-s-limit-abs",2,["2.3","2.7"],2,"var",varset([
+  function(){return mcq("Evaluate the limit, or indicate that the limit does not exist: \\(\\lim_{x \\to 6} \\frac{|x - 6|}{x^2 - 4x - 12}\\)",
+    "\\(\\text{does not exist}\\)",
+    ["\\(-\\frac{1}{8}\\)","\\(\\frac{1}{8}\\)","\\(0\\)"],
+    "Factor the denominator: \\(x^2 - 4x - 12 = (x - 6)(x + 2)\\). From the left, \\(|x - 6| = -(x - 6)\\), so the limit is \\(\\lim_{x \\to 6^-} \\frac{-1}{x + 2} = -\\frac{1}{8}\\). From the right, \\(|x - 6| = x - 6\\), so the limit is \\(\\lim_{x \\to 6^+} \\frac{1}{x + 2} = \\frac{1}{8}\\). The one-sided limits are finite but unequal, so the limit <b>does not exist</b>.",
+    {src:"CPT-S P1"});}
+]));
+E("cpt-s-limit-conjugate",2,["2.7"],2,"var",varset([
+  function(){return mcq("Evaluate the limit, or indicate that the limit does not exist: \\(\\lim_{x \\to 7} \\frac{\\sqrt{x + 9} - 4}{14 - 2x}\\)",
+    "\\(-\\frac{1}{16}\\)",
+    ["\\(\\frac{1}{16}\\)","\\(-\\frac{1}{8}\\)","\\(\\text{does not exist}\\)"],
+    "Rationalize the numerator by multiplying by the conjugate \\(\\sqrt{x + 9} + 4\\): \\[ \\lim_{x \\to 7} \\frac{(x + 9) - 16}{(14 - 2x)(\\sqrt{x + 9} + 4)} = \\lim_{x \\to 7} \\frac{x - 7}{-2(x - 7)(\\sqrt{x + 9} + 4)} = \\lim_{x \\to 7} \\frac{-1}{2(\\sqrt{x + 9} + 4)} \\] At \\(x = 7\\) this is \\(\\frac{-1}{2(4 + 4)} = -\\frac{1}{16}\\). The limit is <b>\\(-\\frac{1}{16}\\)</b>.",
+    {src:"CPT-S P2"});}
+]));
+E("cpt-s-limit-infinity",2,["2.10"],2,"var",varset([
+  function(){return mcq("Evaluate the limit, or indicate that the limit does not exist: \\(\\lim_{x \\to -\\infty} \\frac{8x - 5}{3x - \\sqrt{25x^2 + 7}}\\)",
+    "\\(1\\)",
+    ["\\(-8\\)","\\(0\\)","\\(\\frac{8}{3}\\)"],
+    "For \\(x \\to -\\infty\\), \\(\\sqrt{25x^2 + 7} = |x|\\sqrt{25 + \\frac{7}{x^2}} = -x\\sqrt{25 + \\frac{7}{x^2}}\\), since \\(|x| = -x\\) when \\(x < 0\\). Dividing the numerator and the denominator by \\(x\\): \\[ \\lim_{x \\to -\\infty} \\frac{8 - \\frac{5}{x}}{3 + \\sqrt{25 + \\frac{7}{x^2}}} = \\frac{8}{3 + 5} = 1 \\] The limit is <b>\\(1\\)</b>.",
+    {src:"CPT-S P3"});}
+]));
+E("cpt-c-continuity-x2",2,["2.16","2.14"],2,"var",varset([
+  function(){
+    var piece="\\(f(x) = \\begin{cases} \\frac{x - 2}{x^2 - 4}, & x < 2 \\\\ \\frac{3x - 6}{2}, & 2 \\le x < 4 \\\\ k - 1, & x = 4 \\\\ \\frac{x^2 - 16}{x - 4} - 5, & x > 4 \\end{cases}\\)";
+    return textq("Consider the function "+piece+". (a) Use the definition of continuity to determine whether \\(f\\) is continuous at \\(x = 2\\). If it is not, state whether the discontinuity is removable or non-removable. (3 marks)",
+      ["not continuous at x = 2, non-removable jump discontinuity","discontinuous at x = 2, jump, non-removable"],
+      "Continuity at \\(x = 2\\) requires \\(\\lim_{x \\to 2^-} f(x) = \\lim_{x \\to 2^+} f(x) = f(2)\\). From the left, \\(\\lim_{x \\to 2^-} \\frac{x - 2}{x^2 - 4} = \\lim_{x \\to 2^-} \\frac{1}{x + 2} = \\frac{1}{4}\\) (1 mark). The function value comes from the second piece: \\(f(2) = \\frac{3(2) - 6}{2} = 0\\), and the right-hand limit agrees with it, \\(\\lim_{x \\to 2^+} f(x) = 0\\) (1 mark). Since the one-sided limits are finite and unequal, \\(\\frac{1}{4} \\ne 0\\), the two-sided limit does not exist and \\(f\\) is not continuous at \\(x = 2\\); no single redefined value can repair a jump, so the discontinuity is non-removable (1 mark). The answer is <b>\\(f\\) is not continuous at \\(x = 2\\); the discontinuity is a non-removable (jump) discontinuity</b>.",
+      {src:"CPT-C Q3a"});
+  }
+]));
+E("cpt-c-continuity-k",2,["2.16","2.14"],2,"var",varset([
+  function(){
+    var piece="\\(f(x) = \\begin{cases} \\frac{x - 2}{x^2 - 4}, & x < 2 \\\\ \\frac{3x - 6}{2}, & 2 \\le x < 4 \\\\ k - 1, & x = 4 \\\\ \\frac{x^2 - 16}{x - 4} - 5, & x > 4 \\end{cases}\\)";
+    return textq("Consider the function "+piece+". (b) Use the definition of continuity to determine the value of \\(k\\) that makes \\(f\\) continuous at \\(x = 4\\). Then determine all other points at which \\(f\\) is not continuous, and classify each discontinuity as removable or non-removable. (6 marks)",
+      ["k = 4"],
+      "At \\(x = 4\\), the left-hand limit comes from the second piece: \\(\\lim_{x \\to 4^-} \\frac{3x - 6}{2} = \\frac{12 - 6}{2} = 3\\) (1 mark). The right-hand limit comes from the fourth piece: \\(\\lim_{x \\to 4^+} \\left(\\frac{x^2 - 16}{x - 4} - 5\\right) = \\lim_{x \\to 4^+} \\left((x + 4) - 5\\right) = 8 - 5 = 3\\) (1 mark). Continuity requires \\(f(4)\\) to equal this common limit: \\(k - 1 = 3\\), so \\(k = 4\\) (1 mark). For the remaining points, the only other place a piece is undefined is \\(x = -2\\), where the first piece's denominator \\(x^2 - 4\\) is zero (1 mark). There \\(\\lim_{x \\to -2} \\frac{x - 2}{x^2 - 4} = \\lim_{x \\to -2} \\frac{1}{x + 2}\\), which is infinite (1 mark), so \\(x = -2\\) is a non-removable (infinite) discontinuity (1 mark). The answers are <b>\\(k = 4\\); the only other discontinuity is at \\(x = -2\\), and it is non-removable (infinite)</b>.",
+      {src:"CPT-C Q3b"});
+  }
+]));
+E("cpt-c-create-discontinuity",2,["2.14","2.18"],2,"var",varset([
+  function(){return textq("Create a function that has a removable discontinuity at \\(x = 3\\) and an infinite discontinuity at \\(x = -2\\). (2 marks)",
+    ["(x - 3)/((x - 3)(x + 2))","f(x) = (x-3)/((x-3)(x+2))"],
+    "One example is \\(f(x) = \\frac{x - 3}{(x - 3)(x + 2)}\\). At \\(x = 3\\) the factor \\((x - 3)\\) appears in both the numerator and the denominator and cancels, leaving \\(\\frac{1}{x + 2}\\), so the limit there is the finite value \\(\\frac{1}{5}\\) while \\(f(3)\\) is undefined: a removable discontinuity (a hole) (1 mark). At \\(x = -2\\) the factor \\((x + 2)\\) appears only in the denominator and does not cancel, so the function values grow without bound: an infinite discontinuity (1 mark). Any rational function with a cancelled \\((x - 3)\\) factor and an uncancelled \\((x + 2)\\) denominator factor works. One answer is <b>\\(f(x) = \\frac{x - 3}{(x - 3)(x + 2)}\\)</b>.",
+    {src:"CPT-C Q5"});}
+]));
+E("cpt-s-continuity-x3",2,["2.16","2.14"],2,"var",varset([
+  function(){
+    var piece="\\(f(x) = \\begin{cases} \\frac{x + 1}{x + 3}, & x < 3 \\\\ \\frac{7 - x}{2}, & 3 \\le x < 5 \\\\ kx + \\frac{41}{6}, & x \\ge 5 \\end{cases}\\)";
+    return mcq("Consider the function "+piece+". Use the definition of continuity to determine whether \\(f\\) is continuous at \\(x = 3\\). If it is not, is the discontinuity removable or non-removable?",
+      "\\(f\\) is not continuous at \\(x = 3\\); the discontinuity is non-removable (a jump)",
+      ["\\(f\\) is not continuous at \\(x = 3\\); the discontinuity is removable",
+       "\\(f\\) is continuous at \\(x = 3\\)",
+       "\\(f\\) is not continuous at \\(x = 3\\); \\(x = 3\\) is a vertical asymptote"],
+      "From the left, \\(\\lim_{x \\to 3^-} \\frac{x + 1}{x + 3} = \\frac{4}{6} = \\frac{2}{3}\\). The function value and the right-hand limit come from the second piece: \\(f(3) = \\frac{7 - 3}{2} = 2\\). Since \\(\\frac{2}{3} \\ne 2\\), the two-sided limit does not exist, so \\(f\\) is not continuous at \\(x = 3\\). Both one-sided limits are finite, so this is a jump, and a jump cannot be repaired by redefining a single value. The answer is <b>\\(f\\) is not continuous at \\(x = 3\\); the discontinuity is non-removable (a jump)</b>.",
+      {src:"CPT-S P10 (function reconstructed; see header note)"});
+  }
+]));
+E("cpt-s-continuity-k",2,["2.16","2.14"],2,"var",varset([
+  function(){
+    var piece="\\(f(x) = \\begin{cases} \\frac{x + 1}{x + 3}, & x < 3 \\\\ \\frac{7 - x}{2}, & 3 \\le x < 5 \\\\ kx + \\frac{41}{6}, & x \\ge 5 \\end{cases}\\)";
+    return mcq("Consider the function "+piece+". Use the definition of continuity to determine the value of \\(k\\) that makes \\(f\\) continuous at \\(x = 5\\), and classify any other discontinuity of \\(f\\).",
+      "\\(k = -\\frac{7}{6}\\); the only other discontinuity is \\(x = -3\\), which is non-removable (infinite)",
+      ["\\(k = \\frac{7}{6}\\); the only other discontinuity is \\(x = -3\\), which is non-removable (infinite)",
+       "No value of \\(k\\) makes \\(f\\) continuous at \\(x = 5\\); the only other discontinuity is \\(x = -3\\), which is non-removable (infinite)",
+       "\\(k = -\\frac{7}{6}\\); the only other discontinuity is \\(x = -3\\), which is removable"],
+      "At \\(x = 5\\), the left-hand limit comes from the second piece: \\(\\lim_{x \\to 5^-} \\frac{7 - x}{2} = 1\\). Continuity requires \\(f(5)\\) to equal it: \\(5k + \\frac{41}{6} = 1\\), so \\(5k = -\\frac{35}{6}\\) and \\(k = -\\frac{7}{6}\\). The only other point where a piece is undefined is \\(x = -3\\), the zero of the first piece's denominator; the limit there is infinite, so that discontinuity is non-removable (infinite). The answer is <b>\\(k = -\\frac{7}{6}\\); the only other discontinuity is \\(x = -3\\), which is non-removable (infinite)</b>.",
+      {src:"CPT-S P11 (function reconstructed; see header note)"});
+  }
+]));
+/* CPT flag for this file's placement test entries (Nov 27, 2026),
+   set the way the pkFlag is set above. */
+BANK.forEach(function(e){if(["cpt-c-limit-abs","cpt-c-limit-conjugate","cpt-c-limit-infinity","cpt-s-limit-abs","cpt-s-limit-conjugate","cpt-s-limit-infinity","cpt-c-continuity-x2","cpt-c-continuity-k","cpt-c-create-discontinuity","cpt-s-continuity-x3","cpt-s-continuity-k"].indexOf(e.id)>=0)e.cpt=true;});
+
 /* ----- bank-u3.js ----- */
 // Math 3208 Unit 3 Rational Functions question bank
 // CRMARKS: u3-end-behaviour=2
@@ -2893,6 +3004,92 @@ E("u4-motion-direction", 4, ["3.17"], 2, "gen", function () {
   );
 });
 
+/* ================= Calculus Placement Test entries (Nov 27, 2026) =================
+   Mined from two CPT samples shared with NL mathematics teachers by
+   Jonathan Mauger (Holy Heart) through the Teachers: Mathematics 7-12
+   list: the June 2026 Version C paper (ids cpt-c-) and the Classroom
+   practice set "Sample 2" (ids cpt-s-). Every key was re-solved at
+   authoring and agrees with the sample's own key. Entries carry the
+   cpt flag (set at the end of this file) and are excluded from
+   ordinary unit and test draws; they deal in the Calculus Placement
+   Test practice scope and in teacher-built sets that include them. */
+// CRMARKS: cpt-c-deriv-definition=7
+// CRMARKS: cpt-c-tangent-line=4
+// BIMODAL: cpt-c-deriv-definition=a
+// BIMODAL: cpt-c-tangent-line=a
+E("cpt-c-deriv-product-trig",4,["3.14","3.16"],2,"var",varset([
+  function(){return mcq("Compute the derivative of \\(y\\) with respect to \\(x\\): \\(y = x^4 \\cos(x^3)\\)",
+    "\\(x^3\\left[4\\cos(x^3) - 3x^3\\sin(x^3)\\right]\\)",
+    ["\\(-12x^5\\sin(x^3)\\)","\\(x^3\\left[4\\cos(x^3) + 3x^3\\sin(x^3)\\right]\\)","\\(4x^3\\left[\\cos(x^3) - x^3\\sin(x^3)\\right]\\)"],
+    "Use the product rule, with the chain rule on \\(\\cos(x^3)\\): \\[ y' = 4x^3\\cos(x^3) + x^4\\left(-\\sin(x^3)\\right)(3x^2) = 4x^3\\cos(x^3) - 3x^6\\sin(x^3) \\] Factoring out \\(x^3\\) gives <b>\\(x^3\\left[4\\cos(x^3) - 3x^3\\sin(x^3)\\right]\\)</b>.",
+    {src:"CPT-C Q2A"});}
+]));
+E("cpt-c-deriv-quotient-radical",4,["3.14","3.16"],2,"var",varset([
+  function(){return mcq("Compute the derivative of \\(y\\) with respect to \\(x\\): \\(y = \\frac{4x}{\\sqrt{x^2 + 3}}\\)",
+    "\\(\\frac{12}{(x^2 + 3)^{3/2}}\\)",
+    ["\\(\\frac{4(2x^2 + 3)}{(x^2 + 3)^{3/2}}\\)","\\(\\frac{4(x^2 - 3)}{(x^2 + 3)^{3/2}}\\)","\\(\\frac{6}{(x^2 + 3)^{3/2}}\\)"],
+    "Write \\(y = 4x(x^2 + 3)^{-1/2}\\) and use the product rule with the chain rule: \\[ y' = 4(x^2 + 3)^{-1/2} + 4x\\left(-\\tfrac{1}{2}\\right)(x^2 + 3)^{-3/2}(2x) = \\frac{4(x^2 + 3) - 4x^2}{(x^2 + 3)^{3/2}} = \\frac{12}{(x^2 + 3)^{3/2}} \\] The derivative is <b>\\(\\frac{12}{(x^2 + 3)^{3/2}}\\)</b>.",
+    {src:"CPT-C Q2B"});}
+]));
+E("cpt-c-deriv-implicit",4,["3.18"],2,"var",varset([
+  function(){return mcq("Compute the derivative of \\(y\\) with respect to \\(x\\): \\(x^2 y^5 = \\cos(4y)\\)",
+    "\\(\\frac{-2xy^5}{5x^2 y^4 + 4\\sin(4y)}\\)",
+    ["\\(\\frac{2xy^5}{5x^2 y^4 - 4\\sin(4y)}\\)","\\(\\frac{-2xy^5}{5x^2 y^4 - 4\\sin(4y)}\\)","\\(\\frac{2xy^5}{5x^2 y^4 + 4\\sin(4y)}\\)"],
+    "Differentiate both sides with respect to \\(x\\), treating \\(y\\) as a function of \\(x\\): \\[ 2xy^5 + 5x^2 y^4 y' = -4\\sin(4y)\\, y' \\] Collect the \\(y'\\) terms: \\(y'\\left(5x^2 y^4 + 4\\sin(4y)\\right) = -2xy^5\\), so <b>\\(y' = \\frac{-2xy^5}{5x^2 y^4 + 4\\sin(4y)}\\)</b>.",
+    {src:"CPT-C Q2D"});}
+]));
+E("cpt-c-deriv-definition",4,["3.6"],2,"var",varset([
+  function(){return mcq("Use the definition of the derivative to differentiate \\(f(x) = \\frac{3x - 4}{3 - x}\\)",
+    "\\(\\frac{5}{(3 - x)^2}\\)",
+    ["\\(\\frac{-5}{(3 - x)^2}\\)","\\(\\frac{5}{3 - x}\\)","\\(\\frac{1}{(3 - x)^2}\\)"],
+    "By the definition, \\[ f'(x) = \\lim_{h \\to 0} \\frac{1}{h}\\left[\\frac{3(x + h) - 4}{3 - (x + h)} - \\frac{3x - 4}{3 - x}\\right] \\] Putting the difference over the common denominator \\((3 - x - h)(3 - x)\\), the numerator simplifies to \\(5h\\): \\[ f'(x) = \\lim_{h \\to 0} \\frac{5h}{h(3 - x - h)(3 - x)} = \\lim_{h \\to 0} \\frac{5}{(3 - x - h)(3 - x)} = \\frac{5}{(3 - x)^2} \\] The derivative is <b>\\(\\frac{5}{(3 - x)^2}\\)</b>.",
+    {src:"CPT-C Q4a"});}
+]));
+E("cpt-c-tangent-line",4,["3.5"],2,"var",varset([
+  function(){return mcq("Find the equation of the tangent line to the curve \\(f(x) = \\frac{3x - 4}{3 - x}\\) at the point \\(x = 2\\)",
+    "\\(y = 5x - 8\\)",
+    ["\\(y = 5x + 8\\)","\\(y = -5x - 8\\)","\\(y = 5x - 2\\)"],
+    "The point: \\(f(2) = \\frac{3(2) - 4}{3 - 2} = 2\\). The slope: \\(f'(x) = \\frac{5}{(3 - x)^2}\\), so \\(f'(2) = \\frac{5}{1} = 5\\). The tangent line is \\(y - 2 = 5(x - 2)\\), which simplifies to <b>\\(y = 5x - 8\\)</b>.",
+    {src:"CPT-C Q4b"});}
+]));
+E("cpt-s-deriv-product-trig",4,["3.14","3.16"],2,"var",varset([
+  function(){return mcq("Compute the derivative of \\(y\\) with respect to \\(x\\): \\(y = x^5 \\sin(x^4)\\)",
+    "\\(x^4\\left[5\\sin(x^4) + 4x^4\\cos(x^4)\\right]\\)",
+    ["\\(20x^7\\cos(x^4)\\)","\\(x^4\\left[5\\sin(x^4) - 4x^4\\cos(x^4)\\right]\\)","\\(5x^4\\left[\\sin(x^4) + x^4\\cos(x^4)\\right]\\)"],
+    "Use the product rule, with the chain rule on \\(\\sin(x^4)\\): \\[ y' = 5x^4\\sin(x^4) + x^5\\cos(x^4)(4x^3) = 5x^4\\sin(x^4) + 4x^8\\cos(x^4) \\] Factoring out \\(x^4\\) gives <b>\\(x^4\\left[5\\sin(x^4) + 4x^4\\cos(x^4)\\right]\\)</b>.",
+    {src:"CPT-S P5"});}
+]));
+E("cpt-s-deriv-quotient-radical",4,["3.14","3.16"],2,"var",varset([
+  function(){return mcq("Compute the derivative of \\(y\\) with respect to \\(x\\): \\(y = \\frac{5x}{\\sqrt{x^4 + 2}}\\)",
+    "\\(\\frac{5(2 - x^4)}{(x^4 + 2)^{3/2}}\\)",
+    ["\\(\\frac{5(3x^4 + 2)}{(x^4 + 2)^{3/2}}\\)","\\(\\frac{5(x^4 - 2)}{(x^4 + 2)^{3/2}}\\)","\\(\\frac{10}{(x^4 + 2)^{3/2}}\\)"],
+    "Write \\(y = 5x(x^4 + 2)^{-1/2}\\) and use the product rule with the chain rule: \\[ y' = 5(x^4 + 2)^{-1/2} + 5x\\left(-\\tfrac{1}{2}\\right)(x^4 + 2)^{-3/2}(4x^3) = \\frac{5(x^4 + 2) - 10x^4}{(x^4 + 2)^{3/2}} = \\frac{5(2 - x^4)}{(x^4 + 2)^{3/2}} \\] The derivative is <b>\\(\\frac{5(2 - x^4)}{(x^4 + 2)^{3/2}}\\)</b>.",
+    {src:"CPT-S P6"});}
+]));
+E("cpt-s-deriv-implicit",4,["3.18"],2,"var",varset([
+  function(){return mcq("Compute the derivative of \\(y\\) with respect to \\(x\\): \\(x^4 y^3 = \\sin(5y)\\)",
+    "\\(\\frac{-4x^3 y^3}{3x^4 y^2 - 5\\cos(5y)}\\)",
+    ["\\(\\frac{4x^3 y^3}{3x^4 y^2 - 5\\cos(5y)}\\)","\\(\\frac{-4x^3 y^3}{3x^4 y^2 + 5\\cos(5y)}\\)","\\(\\frac{4x^3 y^3}{3x^4 y^2 + 5\\cos(5y)}\\)"],
+    "Differentiate both sides with respect to \\(x\\), treating \\(y\\) as a function of \\(x\\): \\[ 4x^3 y^3 + 3x^4 y^2 y' = 5\\cos(5y)\\, y' \\] Collect the \\(y'\\) terms: \\(y'\\left(3x^4 y^2 - 5\\cos(5y)\\right) = -4x^3 y^3\\), so <b>\\(y' = \\frac{-4x^3 y^3}{3x^4 y^2 - 5\\cos(5y)}\\)</b>.",
+    {src:"CPT-S P8"});}
+]));
+E("cpt-s-deriv-definition",4,["3.6"],2,"var",varset([
+  function(){return mcq("Use the definition of the derivative to find \\(f'(x)\\) if \\(f(x) = \\frac{4x - 7}{4 - x}\\)",
+    "\\(\\frac{9}{(4 - x)^2}\\)",
+    ["\\(\\frac{-9}{(4 - x)^2}\\)","\\(\\frac{23}{(4 - x)^2}\\)","\\(\\frac{9}{4 - x}\\)"],
+    "By the definition, \\[ f'(x) = \\lim_{h \\to 0} \\frac{1}{h}\\left[\\frac{4(x + h) - 7}{4 - (x + h)} - \\frac{4x - 7}{4 - x}\\right] \\] Putting the difference over the common denominator \\((4 - x - h)(4 - x)\\), the numerator simplifies to \\(9h\\): \\[ f'(x) = \\lim_{h \\to 0} \\frac{9h}{h(4 - x - h)(4 - x)} = \\lim_{h \\to 0} \\frac{9}{(4 - x - h)(4 - x)} = \\frac{9}{(4 - x)^2} \\] The derivative is <b>\\(\\frac{9}{(4 - x)^2}\\)</b>.",
+    {src:"CPT-S P12"});}
+]));
+E("cpt-s-tangent-line",4,["3.5"],2,"var",varset([
+  function(){return mcq("Find the equation of the tangent line to the curve \\(f(x) = \\frac{4x - 7}{4 - x}\\) at \\(x = 3\\)",
+    "\\(y - 5 = 9(x - 3)\\)",
+    ["\\(y - 5 = 11(x - 3)\\)","\\(y - 5 = -3(x - 3)\\)","\\(y - 5 = -9(x - 3)\\)"],
+    "The point: \\(f(3) = \\frac{4(3) - 7}{4 - 3} = 5\\). The slope: \\(f'(x) = \\frac{9}{(4 - x)^2}\\), so \\(f'(3) = \\frac{9}{1} = 9\\). The tangent line is <b>\\(y - 5 = 9(x - 3)\\)</b>.",
+    {src:"CPT-S P13"});}
+]));
+/* CPT flag for this file's placement test entries (Nov 27, 2026). */
+BANK.forEach(function(e){if(["cpt-c-deriv-product-trig","cpt-c-deriv-quotient-radical","cpt-c-deriv-implicit","cpt-c-deriv-definition","cpt-c-tangent-line","cpt-s-deriv-product-trig","cpt-s-deriv-quotient-radical","cpt-s-deriv-implicit","cpt-s-deriv-definition","cpt-s-tangent-line"].indexOf(e.id)>=0)e.cpt=true;});
+
 /* ----- bank-u5.js ----- */
 // Math 3208 Unit 5 Applications of Derivatives question bank
 // CRMARKS: u5-poly-intervals=2
@@ -3612,6 +3809,145 @@ E("u5-opt-charter",5,["3.33"],3,"gen",function(){
     {mode:"fare",skin:sk.biz,P0:P0,d:d,T:T,Cap:Cap,nStar:nStar,ans:fareStar});
 });
 
+/* ================= Calculus Placement Test entries (Nov 27, 2026) =================
+   Mined from two CPT samples shared with NL mathematics teachers by
+   Jonathan Mauger (Holy Heart) through the Teachers: Mathematics 7-12
+   list: the June 2026 Version C paper (ids cpt-c-) and the Classroom
+   practice set "Sample 2" (ids cpt-s-). Every key was re-solved at
+   authoring and agrees with the sample's own key, with one exception:
+   Sample 2's concavity item prints the inflection point's y-coordinate
+   as 77/25 in all five of its options, including its key; the correct
+   value is 77/45, and cpt-s-curve-concavity uses 77/45. Entries carry
+   the cpt flag (set at the end of this file) and are excluded from
+   ordinary unit and test draws; they deal in the Calculus Placement
+   Test practice scope and in teacher-built sets that include them. */
+// CRMARKS: cpt-c-curve-intercepts=2
+// CRMARKS: cpt-c-curve-monotonic=4
+// CRMARKS: cpt-c-curve-concavity=4
+// CRMARKS: cpt-c-asymptotes-vertical=4
+// CRMARKS: cpt-c-asymptotes-horizontal=4
+// CRMARKS: cpt-c-related-rates=7
+// CRMARKS: cpt-c-optimization=7
+// BIMODAL: cpt-c-curve-intercepts=a
+// BIMODAL: cpt-c-curve-monotonic=a
+// BIMODAL: cpt-c-curve-concavity=a
+// BIMODAL: cpt-c-asymptotes-vertical=a
+// BIMODAL: cpt-c-asymptotes-horizontal=a
+// BIMODAL: cpt-c-related-rates=a
+// BIMODAL: cpt-c-optimization=a
+E("cpt-c-curve-intercepts",5,["3.28","3.24"],1,"var",varset([
+  function(){return mcq("Consider the function \\(f(x) = \\frac{x^2 - 4}{(x - 1)^2}\\), with derivatives \\(f'(x) = \\frac{-2x + 8}{(x - 1)^3}\\) and \\(f''(x) = \\frac{4x - 22}{(x - 1)^4}\\). (a) Determine the \\(x\\)- and \\(y\\)-intercepts of the graph of \\(f(x)\\), if any.",
+    "\\(x\\)-intercepts \\((-2, 0)\\) and \\((2, 0)\\); \\(y\\)-intercept \\((0, -4)\\)",
+    ["\\(x\\)-intercepts \\((-2, 0)\\) and \\((2, 0)\\); \\(y\\)-intercept \\((0, 4)\\)",
+     "\\(x\\)-intercept \\((2, 0)\\) only; \\(y\\)-intercept \\((0, -4)\\)",
+     "\\(x\\)-intercepts \\((-2, 0)\\), \\((2, 0)\\) and \\((1, 0)\\); \\(y\\)-intercept \\((0, -4)\\)"],
+    "The \\(x\\)-intercepts occur where the numerator is zero: \\(x^2 - 4 = 0\\) gives \\(x = \\pm 2\\), and both values are in the domain. (The value \\(x = 1\\) makes the denominator zero, so it is a vertical asymptote, not an intercept.) The \\(y\\)-intercept is \\(f(0) = \\frac{-4}{1} = -4\\). The intercepts are <b>\\((-2, 0)\\) and \\((2, 0)\\); \\((0, -4)\\)</b>.",
+    {src:"CPT-C Q8a"});}
+]));
+E("cpt-c-curve-monotonic",5,["3.25"],2,"var",varset([
+  function(){return mcq("Consider the function \\(f(x) = \\frac{x^2 - 4}{(x - 1)^2}\\), with derivatives \\(f'(x) = \\frac{-2x + 8}{(x - 1)^3}\\) and \\(f''(x) = \\frac{4x - 22}{(x - 1)^4}\\). (b) Determine the intervals on which \\(f(x)\\) is increasing or decreasing, and classify any relative (local) extrema.",
+    "Increasing on \\((1, 4)\\); decreasing on \\((-\\infty, 1)\\) and \\((4, \\infty)\\); relative maximum at \\(\\left(4, \\frac{4}{3}\\right)\\)",
+    ["Increasing on \\((-\\infty, 1)\\) and \\((4, \\infty)\\); decreasing on \\((1, 4)\\); relative minimum at \\(\\left(4, \\frac{4}{3}\\right)\\)",
+     "Increasing on \\((1, 4)\\); decreasing on \\((-\\infty, 1)\\) and \\((4, \\infty)\\); relative minimum at \\(\\left(4, \\frac{4}{3}\\right)\\)",
+     "Increasing on \\((-\\infty, 4)\\); decreasing on \\((4, \\infty)\\); relative maximum at \\(\\left(4, \\frac{4}{3}\\right)\\)"],
+    "The derivative \\(f'(x) = \\frac{-2x + 8}{(x - 1)^3}\\) is zero at \\(x = 4\\) and undefined at the asymptote \\(x = 1\\). Checking the sign of \\(f'\\) on each interval: negative on \\((-\\infty, 1)\\), positive on \\((1, 4)\\), and negative on \\((4, \\infty)\\). So \\(f\\) decreases, then increases, then decreases, and \\(f(4) = \\frac{16 - 4}{9} = \\frac{4}{3}\\) is a relative maximum. The answer is <b>increasing on \\((1, 4)\\); decreasing on \\((-\\infty, 1)\\) and \\((4, \\infty)\\); relative maximum at \\(\\left(4, \\frac{4}{3}\\right)\\)</b>.",
+    {src:"CPT-C Q8b"});}
+]));
+E("cpt-c-curve-concavity",5,["3.26"],2,"var",varset([
+  function(){return mcq("Consider the function \\(f(x) = \\frac{x^2 - 4}{(x - 1)^2}\\), with derivatives \\(f'(x) = \\frac{-2x + 8}{(x - 1)^3}\\) and \\(f''(x) = \\frac{4x - 22}{(x - 1)^4}\\). (c) Determine the intervals on which \\(f(x)\\) is concave upward or concave downward, and identify any points of inflection.",
+    "Concave downward on \\((-\\infty, 1)\\) and \\(\\left(1, \\frac{11}{2}\\right)\\); concave upward on \\(\\left(\\frac{11}{2}, \\infty\\right)\\); point of inflection at \\(\\left(\\frac{11}{2}, \\frac{35}{27}\\right)\\)",
+    ["Concave upward on \\((-\\infty, 1)\\) and \\(\\left(1, \\frac{11}{2}\\right)\\); concave downward on \\(\\left(\\frac{11}{2}, \\infty\\right)\\); point of inflection at \\(\\left(\\frac{11}{2}, \\frac{35}{27}\\right)\\)",
+     "Concave downward on \\((-\\infty, 1)\\) and \\(\\left(1, \\frac{11}{2}\\right)\\); concave upward on \\(\\left(\\frac{11}{2}, \\infty\\right)\\); no points of inflection",
+     "Concave downward on \\(\\left(-\\infty, \\frac{11}{2}\\right)\\); concave upward on \\(\\left(\\frac{11}{2}, \\infty\\right)\\); point of inflection at \\(\\left(\\frac{11}{2}, \\frac{35}{27}\\right)\\)"],
+    "The second derivative \\(f''(x) = \\frac{4x - 22}{(x - 1)^4}\\) has a positive denominator wherever it is defined, so its sign follows \\(4x - 22\\): negative for \\(x < \\frac{11}{2}\\) and positive for \\(x > \\frac{11}{2}\\). The graph is therefore concave downward on both sides of the asymptote \\(x = 1\\) up to \\(\\frac{11}{2}\\), and concave upward after it. Concavity changes at \\(x = \\frac{11}{2}\\), where the point \\(f\\left(\\frac{11}{2}\\right) = \\frac{\\frac{121}{4} - 4}{\\frac{81}{4}} = \\frac{105}{81} = \\frac{35}{27}\\) is on the graph, so it is a point of inflection. The answer is <b>concave downward on \\((-\\infty, 1)\\) and \\(\\left(1, \\frac{11}{2}\\right)\\); concave upward on \\(\\left(\\frac{11}{2}, \\infty\\right)\\); point of inflection at \\(\\left(\\frac{11}{2}, \\frac{35}{27}\\right)\\)</b>.",
+    {src:"CPT-C Q8c"});}
+]));
+E("cpt-c-asymptotes-vertical",5,["3.28"],2,"var",varset([
+  function(){return mcq("Consider the function \\(f(x) = \\frac{3x^3 - 3x^2 - 18x}{x^3 - 9x}\\). (a) Find the vertical asymptotes of the graph of \\(f(x)\\), if any.",
+    "\\(x = -3\\)",
+    ["\\(x = 0\\) and \\(x = 3\\)","\\(x = 0\\), \\(x = 3\\) and \\(x = -3\\)","There are no vertical asymptotes"],
+    "Factor the numerator and the denominator: \\(f(x) = \\frac{3x(x - 3)(x + 2)}{x(x - 3)(x + 3)} = \\frac{3(x + 2)}{x + 3}\\) for \\(x \\ne 0, 3\\). The factors \\(x\\) and \\((x - 3)\\) cancel, so \\(x = 0\\) and \\(x = 3\\) are holes, not asymptotes. The reduced denominator is zero at \\(x = -3\\), where the function grows without bound. The vertical asymptote is <b>\\(x = -3\\)</b>.",
+    {src:"CPT-C Q9a"});}
+]));
+E("cpt-c-asymptotes-horizontal",5,["3.28"],2,"var",varset([
+  function(){return mcq("Consider the function \\(f(x) = \\frac{3x^3 - 3x^2 - 18x}{x^3 - 9x}\\). (b) Find the horizontal asymptotes of the graph of \\(f(x)\\), if any.",
+    "\\(y = 3\\)",
+    ["\\(y = 0\\)","\\(y = 1\\)","There is no horizontal asymptote"],
+    "Using the reduced form \\(f(x) = \\frac{3(x + 2)}{x + 3}\\) (for \\(x \\ne 0, 3\\)), the end behaviour is \\(\\lim_{x \\to \\pm\\infty} \\frac{3(x + 2)}{x + 3} = 3\\), the ratio of the leading coefficients. The horizontal asymptote is <b>\\(y = 3\\)</b>.",
+    {src:"CPT-C Q9b"});}
+]));
+E("cpt-c-related-rates",5,["3.29","3.30"],2,"var",varset([
+  function(){return mcq("A spotlight on the ground is shining on a vertical wall \\(12\\) m away. A person who is \\(1.8\\) m tall walks from the spotlight directly toward the wall at a speed of \\(1.5\\) m/s. How fast is the height of the person's shadow on the wall decreasing when the person is \\(4\\) m from the wall?",
+    "The shadow height is decreasing at \\(\\frac{81}{160}\\) m/s",
+    ["The shadow height is decreasing at \\(\\frac{27}{160}\\) m/s","The shadow height is decreasing at \\(\\frac{81}{80}\\) m/s","The shadow height is increasing at \\(\\frac{81}{160}\\) m/s"],
+    "Let \\(x\\) be the person's distance from the spotlight and \\(H\\) the height of the shadow on the wall. By similar triangles, \\(\\frac{H}{1.8} = \\frac{12}{x}\\), so \\(H = \\frac{21.6}{x}\\). Differentiating with respect to time: \\(\\frac{dH}{dt} = -\\frac{21.6}{x^2} \\cdot \\frac{dx}{dt}\\). When the person is \\(4\\) m from the wall, \\(x = 12 - 4 = 8\\) m and \\(\\frac{dx}{dt} = 1.5\\) m/s, so \\(\\frac{dH}{dt} = -\\frac{21.6}{64}(1.5) = -\\frac{81}{160}\\) m/s. The negative sign means the height is shrinking: <b>the shadow height is decreasing at \\(\\frac{81}{160}\\) m/s</b>.",
+    {src:"CPT-C Q6"});}
+]));
+E("cpt-c-optimization",5,["3.31","3.33"],2,"var",varset([
+  function(){return mcq("An open-top rectangular box with a square base has a volume of \\(32\\) cm\\(^3\\). Find the dimensions of the box that minimize the amount of material used.",
+    "\\(4 \\text{ cm} \\times 4 \\text{ cm} \\times 2 \\text{ cm}\\)",
+    ["\\(2 \\text{ cm} \\times 2 \\text{ cm} \\times 8 \\text{ cm}\\)","\\(4 \\text{ cm} \\times 2 \\text{ cm} \\times 4 \\text{ cm}\\)","\\(8 \\text{ cm} \\times 8 \\text{ cm} \\times 0.5 \\text{ cm}\\)"],
+    "Let the square base have side \\(x\\) and the height be \\(h\\). The volume gives \\(x^2 h = 32\\), so \\(h = \\frac{32}{x^2}\\). The material used is the base plus the four sides: \\(S(x) = x^2 + 4xh = x^2 + \\frac{128}{x}\\). Setting \\(S'(x) = 2x - \\frac{128}{x^2} = 0\\) gives \\(x^3 = 64\\), so \\(x = 4\\) cm, and \\(h = \\frac{32}{16} = 2\\) cm. (The second derivative is positive there, confirming a minimum.) The dimensions are <b>\\(4 \\text{ cm} \\times 4 \\text{ cm} \\times 2 \\text{ cm}\\)</b>.",
+    {src:"CPT-C Q7"});}
+]));
+E("cpt-s-curve-intercepts",5,["3.28"],1,"var",varset([
+  function(){return mcq("Determine the \\(x\\)- and \\(y\\)-intercepts of the graph of \\(f(x) = \\frac{x^2 - 9}{(x - 2)^2}\\).",
+    "\\(x\\)-intercepts \\((-3, 0)\\) and \\((3, 0)\\); \\(y\\)-intercept \\(\\left(0, -\\frac{9}{4}\\right)\\)",
+    ["\\(x\\)-intercepts \\((-3, 0)\\), \\((3, 0)\\) and \\((2, 0)\\); \\(y\\)-intercept \\(\\left(0, -\\frac{9}{4}\\right)\\)",
+     "\\(x\\)-intercepts \\((-3, 0)\\) and \\((3, 0)\\); \\(y\\)-intercept \\((0, -9)\\)",
+     "\\(x\\)-intercepts \\((-3, 0)\\) and \\((3, 0)\\); \\(y\\)-intercept \\(\\left(0, \\frac{9}{4}\\right)\\)"],
+    "The \\(x\\)-intercepts occur where the numerator is zero: \\(x^2 - 9 = 0\\) gives \\(x = \\pm 3\\), and both are in the domain. (The value \\(x = 2\\) makes the denominator zero, so it is a vertical asymptote, not an intercept.) The \\(y\\)-intercept is \\(f(0) = \\frac{-9}{4}\\). The intercepts are <b>\\((-3, 0)\\) and \\((3, 0)\\); \\(\\left(0, -\\frac{9}{4}\\right)\\)</b>.",
+    {src:"CPT-S P14"});}
+]));
+E("cpt-s-curve-monotonic",5,["3.25"],2,"var",varset([
+  function(){return mcq("Identify the intervals on which the function \\(f(x) = \\frac{x^2 - 9}{(x - 2)^2}\\) is increasing or decreasing, and classify any relative extrema.",
+    "Increasing on \\(\\left(2, \\frac{9}{2}\\right)\\); decreasing on \\((-\\infty, 2)\\) and \\(\\left(\\frac{9}{2}, \\infty\\right)\\); relative maximum at \\(\\left(\\frac{9}{2}, \\frac{9}{5}\\right)\\)",
+    ["Increasing on \\((-\\infty, 2)\\) and \\(\\left(\\frac{9}{2}, \\infty\\right)\\); decreasing on \\(\\left(2, \\frac{9}{2}\\right)\\); relative minimum at \\(\\left(\\frac{9}{2}, \\frac{9}{5}\\right)\\)",
+     "Increasing on \\(\\left(2, \\frac{9}{2}\\right)\\); decreasing on \\((-\\infty, 2)\\) and \\(\\left(\\frac{9}{2}, \\infty\\right)\\); relative minimum at \\(\\left(\\frac{9}{2}, \\frac{9}{5}\\right)\\)",
+     "Increasing on \\((2, \\infty)\\); decreasing on \\((-\\infty, 2)\\); no relative extrema"],
+    "The quotient rule gives \\(f'(x) = \\frac{2x(x - 2) - 2(x^2 - 9)}{(x - 2)^3} = \\frac{18 - 4x}{(x - 2)^3}\\), which is zero at \\(x = \\frac{9}{2}\\) and undefined at the asymptote \\(x = 2\\). Checking the sign of \\(f'\\): negative on \\((-\\infty, 2)\\), positive on \\(\\left(2, \\frac{9}{2}\\right)\\), and negative on \\(\\left(\\frac{9}{2}, \\infty\\right)\\). So \\(f\\) increases only between the asymptote and \\(\\frac{9}{2}\\), and \\(f\\left(\\frac{9}{2}\\right) = \\frac{\\frac{81}{4} - 9}{\\frac{25}{4}} = \\frac{45}{25} = \\frac{9}{5}\\) is a relative maximum. The answer is <b>increasing on \\(\\left(2, \\frac{9}{2}\\right)\\); decreasing on \\((-\\infty, 2)\\) and \\(\\left(\\frac{9}{2}, \\infty\\right)\\); relative maximum at \\(\\left(\\frac{9}{2}, \\frac{9}{5}\\right)\\)</b>.",
+    {src:"CPT-S P15"});}
+]));
+E("cpt-s-curve-concavity",5,["3.26"],2,"var",varset([
+  function(){return mcq("Identify the intervals on which \\(f(x) = \\frac{x^2 - 9}{(x - 2)^2}\\) is concave up or concave down, and identify any points of inflection.",
+    "Concave up on \\(\\left(\\frac{23}{4}, \\infty\\right)\\); concave down on \\((-\\infty, 2)\\) and \\(\\left(2, \\frac{23}{4}\\right)\\); point of inflection at \\(\\left(\\frac{23}{4}, \\frac{77}{45}\\right)\\)",
+    ["Concave up on \\(\\left(\\frac{23}{4}, \\infty\\right)\\); concave down on \\((-\\infty, 2)\\) and \\(\\left(2, \\frac{23}{4}\\right)\\); point of inflection at \\(\\left(\\frac{23}{4}, \\frac{77}{25}\\right)\\)",
+     "Concave down on \\(\\left(\\frac{23}{4}, \\infty\\right)\\); concave up on \\((-\\infty, 2)\\) and \\(\\left(2, \\frac{23}{4}\\right)\\); point of inflection at \\(\\left(\\frac{23}{4}, \\frac{77}{45}\\right)\\)",
+     "Concave up on \\(\\left(\\frac{23}{4}, \\infty\\right)\\); concave down on \\((-\\infty, 2)\\) and \\(\\left(2, \\frac{23}{4}\\right)\\); no points of inflection"],
+    "Differentiating \\(f'(x) = \\frac{18 - 4x}{(x - 2)^3}\\) gives \\(f''(x) = \\frac{8x - 46}{(x - 2)^4}\\). The denominator is positive wherever it is defined, so the sign of \\(f''\\) follows \\(8x - 46\\): negative for \\(x < \\frac{23}{4}\\) and positive for \\(x > \\frac{23}{4}\\). Concavity changes at \\(x = \\frac{23}{4}\\), where \\(f\\left(\\frac{23}{4}\\right) = \\frac{\\frac{529}{16} - 9}{\\frac{225}{16}} = \\frac{385}{225} = \\frac{77}{45}\\), so that point is a point of inflection. The answer is <b>concave up on \\(\\left(\\frac{23}{4}, \\infty\\right)\\); concave down on \\((-\\infty, 2)\\) and \\(\\left(2, \\frac{23}{4}\\right)\\); point of inflection at \\(\\left(\\frac{23}{4}, \\frac{77}{45}\\right)\\)</b>.",
+    {src:"CPT-S P16 (key corrected; see header note)"});}
+]));
+E("cpt-s-asymptotes-vertical",5,["3.28"],2,"var",varset([
+  function(){return mcq("Consider the function \\(f(x) = \\frac{4x^3 - 4x^2 - 24x}{x^3 - 3x^2}\\). Determine the vertical asymptote(s) of the graph of \\(f(x)\\).",
+    "\\(x = 0\\)",
+    ["\\(x = 0\\) and \\(x = 3\\)","\\(x = 3\\)","\\(x = -3\\)"],
+    "Factor the numerator and the denominator: \\(f(x) = \\frac{4x(x - 3)(x + 2)}{x^2(x - 3)} = \\frac{4(x + 2)}{x}\\) for \\(x \\ne 3\\). The factor \\((x - 3)\\) cancels, so \\(x = 3\\) is a hole, not an asymptote. The reduced denominator is zero at \\(x = 0\\), where the function grows without bound. The vertical asymptote is <b>\\(x = 0\\)</b>.",
+    {src:"CPT-S P17"});}
+]));
+E("cpt-s-asymptotes-horizontal",5,["3.28"],2,"var",varset([
+  function(){return mcq("Consider the function \\(f(x) = \\frac{4x^3 - 4x^2 - 24x}{x^3 - 3x^2}\\). Determine the horizontal asymptote(s) of the graph of \\(f(x)\\).",
+    "\\(y = 4\\)",
+    ["\\(y = 0\\)","\\(y = -4\\)","\\(y = 0\\) and \\(y = 3\\)"],
+    "Using the reduced form \\(f(x) = \\frac{4(x + 2)}{x}\\) (for \\(x \\ne 3\\)), the end behaviour is \\(\\lim_{x \\to \\pm\\infty} \\frac{4(x + 2)}{x} = 4\\), the ratio of the leading coefficients. The horizontal asymptote is <b>\\(y = 4\\)</b>.",
+    {src:"CPT-S P18"});}
+]));
+E("cpt-s-related-rates",5,["3.29","3.30"],2,"var",varset([
+  function(){return mcq("A spotlight on the ground is shining on a vertical wall \\(15\\) m away. A person who is \\(2\\) m tall walks from the spotlight directly toward the wall at a speed of \\(1.2\\) m/s. How fast is the height of the person's shadow on the wall changing when the person is \\(5\\) m from the wall?",
+    "The shadow height is decreasing at \\(\\frac{9}{25}\\) m/s",
+    ["The shadow height is increasing at \\(\\frac{9}{25}\\) m/s","The shadow height is decreasing at \\(\\frac{36}{25}\\) m/s","The shadow height is decreasing at \\(\\frac{1}{4}\\) m/s"],
+    "Let \\(x\\) be the person's distance from the spotlight and \\(H\\) the height of the shadow on the wall. By similar triangles, \\(\\frac{H}{2} = \\frac{15}{x}\\), so \\(H = \\frac{30}{x}\\). Differentiating with respect to time: \\(\\frac{dH}{dt} = -\\frac{30}{x^2} \\cdot \\frac{dx}{dt}\\). When the person is \\(5\\) m from the wall, \\(x = 15 - 5 = 10\\) m and \\(\\frac{dx}{dt} = 1.2\\) m/s, so \\(\\frac{dH}{dt} = -\\frac{30}{100}(1.2) = -\\frac{9}{25}\\) m/s. The negative sign means the height is shrinking: <b>the shadow height is decreasing at \\(\\frac{9}{25}\\) m/s</b>.",
+    {src:"CPT-S P19"});}
+]));
+E("cpt-s-optimization",5,["3.31","3.33"],2,"var",varset([
+  function(){return mcq("An open-top rectangular box with the length \\(2\\) times the width has a volume of \\(36\\) cm\\(^3\\). What are the dimensions of the box that minimize the amount of material used?",
+    "\\(3 \\text{ cm} \\times 6 \\text{ cm} \\times 2 \\text{ cm}\\)",
+    ["\\(4 \\text{ cm} \\times 2 \\text{ cm} \\times 4.5 \\text{ cm}\\)","\\(12 \\text{ cm} \\times 3 \\text{ cm} \\times 1 \\text{ cm}\\)","\\(3 \\text{ cm} \\times 1.5 \\text{ cm} \\times 8 \\text{ cm}\\)"],
+    "Let the width be \\(w\\), so the length is \\(2w\\), and let the height be \\(h\\). The volume gives \\(2w^2 h = 36\\), so \\(h = \\frac{18}{w^2}\\). The material used is the base plus the four sides: \\(S(w) = 2w^2 + 2(2w)h + 2wh = 2w^2 + 6wh = 2w^2 + \\frac{108}{w}\\). Setting \\(S'(w) = 4w - \\frac{108}{w^2} = 0\\) gives \\(w^3 = 27\\), so \\(w = 3\\) cm, the length is \\(6\\) cm, and \\(h = \\frac{18}{9} = 2\\) cm. The dimensions are <b>\\(3 \\text{ cm} \\times 6 \\text{ cm} \\times 2 \\text{ cm}\\)</b> (width \\(\\times\\) length \\(\\times\\) height).",
+    {src:"CPT-S P20"});}
+]));
+/* CPT flag for this file's placement test entries (Nov 27, 2026). */
+BANK.forEach(function(e){if(["cpt-c-curve-intercepts","cpt-c-curve-monotonic","cpt-c-curve-concavity","cpt-c-asymptotes-vertical","cpt-c-asymptotes-horizontal","cpt-c-related-rates","cpt-c-optimization","cpt-s-curve-intercepts","cpt-s-curve-monotonic","cpt-s-curve-concavity","cpt-s-asymptotes-vertical","cpt-s-asymptotes-horizontal","cpt-s-related-rates","cpt-s-optimization"].indexOf(e.id)>=0)e.cpt=true;});
+
 /* ----- bank-u6.js ----- */
 // Math 3208 Unit 6 Calculus of Trigonometry question bank
 // CRMARKS: u6-inv-exact=1
@@ -4280,6 +4616,53 @@ E("u6-wcr-tangent-slope-tan",6,["3.36","3.37"],2,"gen",function(){
   return numq("Let \\(f(x) = "+fS+"\\). Find \\(f'\\left("+x0+"\\right)\\).",ans,0.011,sol,{c:c,a:a,d:d,sec:th.sec});
 });
 
+/* ================= Calculus Placement Test entries (Nov 27, 2026) =================
+   Mined from two CPT samples shared with NL mathematics teachers by
+   Jonathan Mauger (Holy Heart) through the Teachers: Mathematics 7-12
+   list: the June 2026 Version C paper (ids cpt-c-) and the Classroom
+   practice set "Sample 2" (ids cpt-s-). Every key was re-solved at
+   authoring and agrees with the sample's own key. Entries carry the
+   cpt flag (set at the end of this file) and are excluded from
+   ordinary unit and test draws; they deal in the Calculus Placement
+   Test practice scope and in teacher-built sets that include them. */
+// CRMARKS: cpt-s-proof-sine-derivative=3
+E("cpt-c-limit-trig",6,["2.20"],2,"var",varset([
+  function(){return mcq("Evaluate the limit, or indicate that the limit does not exist: \\(\\lim_{x \\to 0} \\frac{x \\sin(6x)}{\\tan^2(3x)}\\)",
+    "\\(\\frac{2}{3}\\)",
+    ["\\(1\\)","\\(2\\)","\\(\\text{does not exist}\\)"],
+    "Rewrite the expression using the standard limits \\(\\lim_{t \\to 0} \\frac{\\sin t}{t} = 1\\) and \\(\\lim_{t \\to 0} \\frac{\\tan t}{t} = 1\\): \\[ \\frac{x \\sin(6x)}{\\tan^2(3x)} = \\frac{\\sin(6x)}{6x} \\cdot \\frac{2}{3} \\cdot \\left(\\frac{3x}{\\tan(3x)}\\right)^2 \\] Each factor approaches \\(1\\), \\(\\frac{2}{3}\\) and \\(1\\) respectively, so the limit is <b>\\(\\frac{2}{3}\\)</b>.",
+    {src:"CPT-C Q1C"});}
+]));
+E("cpt-s-limit-trig",6,["2.20"],2,"var",varset([
+  function(){return mcq("Evaluate the limit, or indicate that the limit does not exist: \\(\\lim_{\\theta \\to 0} \\frac{\\theta \\sin(8\\theta)}{\\tan^2(4\\theta)}\\)",
+    "\\(\\frac{1}{2}\\)",
+    ["\\(1\\)","\\(2\\)","\\(4\\)"],
+    "Rewrite the expression using the standard limits \\(\\lim_{t \\to 0} \\frac{\\sin t}{t} = 1\\) and \\(\\lim_{t \\to 0} \\frac{\\tan t}{t} = 1\\): \\[ \\frac{\\theta \\sin(8\\theta)}{\\tan^2(4\\theta)} = \\frac{\\sin(8\\theta)}{8\\theta} \\cdot \\frac{1}{2} \\cdot \\left(\\frac{4\\theta}{\\tan(4\\theta)}\\right)^2 \\] Each factor approaches \\(1\\), \\(\\frac{1}{2}\\) and \\(1\\) respectively, so the limit is <b>\\(\\frac{1}{2}\\)</b>.",
+    {src:"CPT-S P4"});}
+]));
+E("cpt-c-deriv-chain-trig-exp",6,["3.36"],2,"var",varset([
+  function(){return mcq("Compute the derivative of \\(y\\) with respect to \\(x\\): \\(y = \\sin^5(e^{2x})\\)",
+    "\\(10e^{2x} \\sin^4(e^{2x}) \\cos(e^{2x})\\)",
+    ["\\(5e^{2x} \\sin^4(e^{2x}) \\cos(e^{2x})\\)","\\(-10e^{2x} \\sin^4(e^{2x}) \\cos(e^{2x})\\)","\\(10 \\sin^4(e^{2x}) \\cos(e^{2x})\\)"],
+    "Apply the chain rule three times: the power, then the sine, then the exponential. \\[ y' = 5\\sin^4(e^{2x}) \\cdot \\cos(e^{2x}) \\cdot e^{2x} \\cdot 2 = 10e^{2x} \\sin^4(e^{2x}) \\cos(e^{2x}) \\] The derivative is <b>\\(10e^{2x} \\sin^4(e^{2x}) \\cos(e^{2x})\\)</b>.",
+    {src:"CPT-C Q2C"});}
+]));
+E("cpt-s-deriv-chain-trig-exp",6,["3.36"],2,"var",varset([
+  function(){return mcq("Compute the derivative of \\(y\\) with respect to \\(x\\): \\(y = \\cos^6(e^{4x})\\)",
+    "\\(-24e^{4x} \\cos^5(e^{4x}) \\sin(e^{4x})\\)",
+    ["\\(24e^{4x} \\cos^5(e^{4x}) \\sin(e^{4x})\\)","\\(-6e^{4x} \\cos^5(e^{4x}) \\sin(e^{4x})\\)","\\(-24 \\cos^5(e^{4x}) \\sin(e^{4x})\\)"],
+    "Apply the chain rule three times: the power, then the cosine, then the exponential. \\[ y' = 6\\cos^5(e^{4x}) \\cdot \\left(-\\sin(e^{4x})\\right) \\cdot e^{4x} \\cdot 4 = -24e^{4x} \\cos^5(e^{4x}) \\sin(e^{4x}) \\] The derivative is <b>\\(-24e^{4x} \\cos^5(e^{4x}) \\sin(e^{4x})\\)</b>.",
+    {src:"CPT-S P7"});}
+]));
+E("cpt-s-proof-sine-derivative",6,["3.35"],2,"var",varset([
+  function(){return textq("Use the definition of the derivative and the trigonometric identity \\(\\sin(u + v) = \\sin u \\cos v + \\cos u \\sin v\\) to prove that \\(\\frac{d}{dx}[\\sin x] = \\cos x\\). (3 marks)",
+    ["cos x"],
+    "By the definition of the derivative, \\[ f'(x) = \\lim_{h \\to 0} \\frac{\\sin(x + h) - \\sin x}{h} \\] Expand \\(\\sin(x + h)\\) with the addition identity (1 mark): \\[ f'(x) = \\lim_{h \\to 0} \\frac{\\sin x \\cos h + \\cos x \\sin h - \\sin x}{h} = \\lim_{h \\to 0} \\left[\\sin x \\cdot \\frac{\\cos h - 1}{h} + \\cos x \\cdot \\frac{\\sin h}{h}\\right] \\] (1 mark). Now apply the two standard trigonometric limits, \\(\\lim_{h \\to 0} \\frac{\\cos h - 1}{h} = 0\\) and \\(\\lim_{h \\to 0} \\frac{\\sin h}{h} = 1\\) (1 mark): \\[ f'(x) = \\sin x \\cdot 0 + \\cos x \\cdot 1 = \\cos x \\] The derivative is <b>\\(\\cos x\\)</b>.",
+    {src:"CPT-S P21"});}
+]));
+/* CPT flag for this file's placement test entries (Nov 27, 2026). */
+BANK.forEach(function(e){if(["cpt-c-limit-trig","cpt-s-limit-trig","cpt-c-deriv-chain-trig-exp","cpt-s-deriv-chain-trig-exp","cpt-s-proof-sine-derivative"].indexOf(e.id)>=0)e.cpt=true;});
+
 /* ----- bank-u7.js ----- */
 // Math 3208 Unit 7 Calculus of Exponential, Logarithmic, and Hyperbolic Trigonometric Functions question bank
 // CRMARKS: u7-exponential-limit=1
@@ -4693,6 +5076,36 @@ E("u7-add-hyperbolic-definition",7,["3.47"],2,"gen",function(){
   var sol="The remaining hyperbolic functions are defined from \\(\\sinh\\) and \\(\\cosh\\) by ratios and reciprocals: \\[ \\begin{aligned} "+names[fn]+"("+arg+") &= "+exprs[fn]+" \\end{aligned} \\] The expression is <b>"+key+"</b>.";
   return mcq("By definition, in terms of \\(\\sinh\\) and \\(\\cosh\\), the value of \\("+names[fn]+"("+arg+")\\) is",key,ds,sol,{fn:fn,a:a,v:v});
 });
+
+/* ================= Calculus Placement Test entries (Nov 27, 2026) =================
+   Mined from two CPT samples shared with NL mathematics teachers by
+   Jonathan Mauger (Holy Heart) through the Teachers: Mathematics 7-12
+   list: the June 2026 Version C paper (ids cpt-c-) and the Classroom
+   practice set "Sample 2" (ids cpt-s-). Every key was re-solved at
+   authoring and agrees with the sample's own key. Entries carry the
+   cpt flag (set at the end of this file) and are excluded from
+   ordinary unit and test draws; they deal in the Calculus Placement
+   Test practice scope and in teacher-built sets that include them. */
+E("cpt-c-deriv-log-diff",7,["3.45"],2,"var",varset([
+  function(){return mcq("Compute the derivative of \\(y\\) with respect to \\(x\\): \\(y = \\left(\\cos(3x^2)\\right)^{\\ln x}\\)",
+    "\\(\\left(\\cos(3x^2)\\right)^{\\ln x} \\cdot \\frac{\\ln\\left(\\cos(3x^2)\\right) - 6x^2 \\ln x \\tan(3x^2)}{x}\\)",
+    ["\\(\\frac{\\ln\\left(\\cos(3x^2)\\right) - 6x^2 \\ln x \\tan(3x^2)}{x}\\)",
+     "\\(\\left(\\cos(3x^2)\\right)^{\\ln x} \\cdot \\frac{\\ln\\left(\\cos(3x^2)\\right) + 6x^2 \\ln x \\tan(3x^2)}{x}\\)",
+     "\\(\\left(\\cos(3x^2)\\right)^{\\ln x} \\cdot \\frac{\\ln\\left(\\cos(3x^2)\\right) - 6x^2 \\ln x \\cot(3x^2)}{x}\\)"],
+    "Use logarithmic differentiation. Taking the natural logarithm of both sides: \\(\\ln y = \\ln x \\cdot \\ln\\left(\\cos(3x^2)\\right)\\). Differentiating, with the product rule on the right: \\[ \\frac{y'}{y} = \\frac{1}{x} \\ln\\left(\\cos(3x^2)\\right) + \\ln x \\cdot \\frac{-\\sin(3x^2)}{\\cos(3x^2)} \\cdot 6x = \\frac{\\ln\\left(\\cos(3x^2)\\right) - 6x^2 \\ln x \\tan(3x^2)}{x} \\] Multiplying by \\(y\\) gives <b>\\(\\left(\\cos(3x^2)\\right)^{\\ln x} \\cdot \\frac{\\ln\\left(\\cos(3x^2)\\right) - 6x^2 \\ln x \\tan(3x^2)}{x}\\)</b>.",
+    {src:"CPT-C Q2E"});}
+]));
+E("cpt-s-deriv-log-diff",7,["3.45"],2,"var",varset([
+  function(){return mcq("Compute the derivative of \\(y\\) with respect to \\(x\\): \\(y = \\left(\\sin(5x^2)\\right)^{\\ln x}\\)",
+    "\\(\\left(\\sin(5x^2)\\right)^{\\ln x} \\cdot \\frac{\\ln\\left(\\sin(5x^2)\\right) + 10x^2 \\ln x \\cot(5x^2)}{x}\\)",
+    ["\\(\\frac{\\ln\\left(\\sin(5x^2)\\right) + 10x^2 \\ln x \\cot(5x^2)}{x}\\)",
+     "\\(\\left(\\sin(5x^2)\\right)^{\\ln x} \\cdot \\frac{\\ln\\left(\\sin(5x^2)\\right) - 10x^2 \\ln x \\cot(5x^2)}{x}\\)",
+     "\\(\\left(\\sin(5x^2)\\right)^{\\ln x} \\cdot \\frac{\\ln\\left(\\sin(5x^2)\\right) + 10x^2 \\ln x \\tan(5x^2)}{x}\\)"],
+    "Use logarithmic differentiation. Taking the natural logarithm of both sides: \\(\\ln y = \\ln x \\cdot \\ln\\left(\\sin(5x^2)\\right)\\). Differentiating, with the product rule on the right: \\[ \\frac{y'}{y} = \\frac{1}{x} \\ln\\left(\\sin(5x^2)\\right) + \\ln x \\cdot \\frac{\\cos(5x^2)}{\\sin(5x^2)} \\cdot 10x = \\frac{\\ln\\left(\\sin(5x^2)\\right) + 10x^2 \\ln x \\cot(5x^2)}{x} \\] Multiplying by \\(y\\) gives <b>\\(\\left(\\sin(5x^2)\\right)^{\\ln x} \\cdot \\frac{\\ln\\left(\\sin(5x^2)\\right) + 10x^2 \\ln x \\cot(5x^2)}{x}\\)</b>.",
+    {src:"CPT-S P9"});}
+]));
+/* CPT flag for this file's placement test entries (Nov 27, 2026). */
+BANK.forEach(function(e){if(["cpt-c-deriv-log-diff","cpt-s-deriv-log-diff"].indexOf(e.id)>=0)e.cpt=true;});
 
 /* ----- bank-u8.js ----- */
 // Math 3208 Unit 8 Antidifferentiation and Integration question bank
@@ -7181,10 +7594,17 @@ BANK.forEach(function(e){var t=PKT3208[e.id];if(t){e.pkFlag=true;e.pkSrc=t.src;e
 /* ============ Constructed-response marks (generated) ============ */
 /* Built by assemble-bank.py from the CRMARKS manifests at the top of
    each unit file. Exam Section B draws only from these entries. */
-window.__BANK_CRMARKS={"u1-add-graph-sum-point":2,"u1-compose-domain-range":2,"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-justify":3,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-combined":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-pk-defined-values":2,"u1-pk-npv-basic":2,"u1-pk-simplify-basic":2,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-asymptote-behaviour":2,"u2-continuity-definition":3,"u2-continuity-interval":3,"u2-discontinuity-type":2,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-pk-converge-check":2,"u2-pk-geo-ratio":2,"u2-pk-infinite-sum":2,"u2-pk-simplify-trinomial":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-add-double-factor-classify":2,"u3-add-intercept-asymptote-pair":2,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-written-cr":5,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-pk-lcd":2,"u3-pk-npv-quadratic":2,"u3-pk-recip-features":2,"u3-rational-application-cr":5,"u3-rational-equation-cr":2,"u3-rational-justify":3,"u3-sketch-features":3,"u4-average-rate":1,"u4-average-rate-context":1,"u4-average-rate-secant-slope":2,"u4-basic-derivatives":2,"u4-basic-derivatives-value":1,"u4-chain-rule":2,"u4-chain-rule-power-fraction":2,"u4-chain-values":2,"u4-definition-h-form":2,"u4-definition-identify":2,"u4-definition-point":2,"u4-derivative-extremum-x":2,"u4-derivative-graph-features":2,"u4-derivative-roots-form":2,"u4-derivative-zero-points":1,"u4-differentiability-point":2,"u4-differentiability-why":2,"u4-differentiable-values":2,"u4-first-principles":2,"u4-first-principles-pick":2,"u4-first-principles-setup":2,"u4-higher-derivative-expression":2,"u4-higher-derivatives":2,"u4-implicit-expression":3,"u4-implicit-second":3,"u4-implicit-second-hyperbola":3,"u4-instantaneous-concept":1,"u4-instantaneous-estimate":2,"u4-instantaneous-meaning":2,"u4-motion":2,"u4-motion-direction":2,"u4-notation":2,"u4-notation-convert":2,"u4-pk-eq-slope-point":2,"u4-pk-eq-two-points":2,"u4-pk-factor-common":2,"u4-pk-slope-rise-run":2,"u4-product-quotient":3,"u4-product-rule-derive":2,"u4-quotient-rule-setup":2,"u4-secant-tangent":2,"u4-sketch-from-derivative":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u4-tangent-point-slope":2,"u5-concavity-meaning":2,"u5-opt-charter":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-pk-characteristics":2,"u5-poly-intervals":2,"u5-rr-cone":3,"u5-rr-interpret":2,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-deriv-proof":2,"u6-inv-compose":2,"u6-inv-exact":1,"u6-inv-graph":2,"u6-inv-relate":2,"u6-inv-restrict":2,"u6-invderiv":2,"u6-invderiv-derive":2,"u6-limit-param":2,"u6-pk-exact-values":2,"u6-pk-point-ratios":2,"u6-pk-reflection-points":3,"u6-pk-solve-equation":2,"u6-std-limits":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u6-wcr-tangent-slope-tan":4,"u7-add-hyperbolic-definition":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-derivation-next-step":2,"u7-exp-log-features":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-pk-convert-form":2,"u7-pk-inverse-graph":3,"u7-pk-laws-equivalent":2,"u7-pk-product-law":2,"u7-pk-sketch-log":2,"u7-wcr-hyperbolic-derivative-point":5,"u8-add-antiderivative-linear-combination":2,"u8-add-estimate-expression":2,"u8-add-general-antiderivative-power":2,"u8-add-notation-correct-equation":2,"u8-add-particular-constant":2,"u8-antiderivative-meaning":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-notation":2,"u8-particular-solution":2,"u8-pk-area-parallelogram":2,"u8-pk-area-triangle":2,"u8-pk-multiply-monomial":2,"u8-properties":2,"u8-riemann-convert":2,"u8-wcr-integral-properties-value":4};
+window.__BANK_CRMARKS={"cpt-c-asymptotes-horizontal":4,"cpt-c-asymptotes-vertical":4,"cpt-c-continuity-k":6,"cpt-c-continuity-x2":3,"cpt-c-create-discontinuity":2,"cpt-c-curve-concavity":4,"cpt-c-curve-intercepts":2,"cpt-c-curve-monotonic":4,"cpt-c-deriv-definition":7,"cpt-c-optimization":7,"cpt-c-related-rates":7,"cpt-c-tangent-line":4,"cpt-s-proof-sine-derivative":3,"u1-add-graph-sum-point":2,"u1-compose-domain-range":2,"u1-compose-equation":2,"u1-compose-equation-cr":2,"u1-compose-justify":3,"u1-compose-solve-cr":3,"u1-compose-value":2,"u1-compose-value-cr":3,"u1-compound-inequality":2,"u1-decompose":2,"u1-decompose-cr":2,"u1-domain-combined":2,"u1-domain-count-cr":2,"u1-evaluate-operation":1,"u1-graph-operation":2,"u1-operation-value-cr":3,"u1-pk-defined-values":2,"u1-pk-npv-basic":2,"u1-pk-simplify-basic":2,"u1-quotient-restrictions":2,"u1-range-product":2,"u1-write-operation":2,"u2-asymptote-behaviour":2,"u2-continuity-definition":3,"u2-continuity-interval":3,"u2-discontinuity-type":2,"u2-horizontal-asymptote":1,"u2-limit-absvalue":2,"u2-limit-at-infinity":2,"u2-limit-complex-fraction":2,"u2-limit-conjugate":2,"u2-limit-existence":1,"u2-limit-factor-cancel":2,"u2-limit-graph":3,"u2-limit-infinite":2,"u2-limit-properties":1,"u2-limit-substitution":1,"u2-limit-table":1,"u2-oblique-asymptote":2,"u2-pk-converge-check":2,"u2-pk-geo-ratio":2,"u2-pk-infinite-sum":2,"u2-pk-simplify-trinomial":2,"u2-reciprocal-limit":1,"u2-removable-redefine":3,"u2-repeating-decimal":2,"u2-sequence-convergence":1,"u3-add-double-factor-classify":2,"u3-add-intercept-asymptote-pair":2,"u3-asymptote-set":3,"u3-asymptote-value-cr":2,"u3-behaviour-written-cr":5,"u3-build-from-features":2,"u3-end-behaviour":2,"u3-features-basic":2,"u3-hole-coordinates":3,"u3-hole-or-asymptote":1,"u3-hole-value-cr":3,"u3-inequality-integers":2,"u3-near-npv":2,"u3-pk-lcd":2,"u3-pk-npv-quadratic":2,"u3-pk-recip-features":2,"u3-rational-application-cr":5,"u3-rational-equation-cr":2,"u3-rational-justify":3,"u3-sketch-features":3,"u4-average-rate":1,"u4-average-rate-context":1,"u4-average-rate-secant-slope":2,"u4-basic-derivatives":2,"u4-basic-derivatives-value":1,"u4-chain-rule":2,"u4-chain-rule-power-fraction":2,"u4-chain-values":2,"u4-definition-h-form":2,"u4-definition-identify":2,"u4-definition-point":2,"u4-derivative-extremum-x":2,"u4-derivative-graph-features":2,"u4-derivative-roots-form":2,"u4-derivative-zero-points":1,"u4-differentiability-point":2,"u4-differentiability-why":2,"u4-differentiable-values":2,"u4-first-principles":2,"u4-first-principles-pick":2,"u4-first-principles-setup":2,"u4-higher-derivative-expression":2,"u4-higher-derivatives":2,"u4-implicit-expression":3,"u4-implicit-second":3,"u4-implicit-second-hyperbola":3,"u4-instantaneous-concept":1,"u4-instantaneous-estimate":2,"u4-instantaneous-meaning":2,"u4-motion":2,"u4-motion-direction":2,"u4-notation":2,"u4-notation-convert":2,"u4-pk-eq-slope-point":2,"u4-pk-eq-two-points":2,"u4-pk-factor-common":2,"u4-pk-slope-rise-run":2,"u4-product-quotient":3,"u4-product-rule-derive":2,"u4-quotient-rule-setup":2,"u4-secant-tangent":2,"u4-sketch-from-derivative":3,"u4-tangent-normal":2,"u4-tangent-parameter":3,"u4-tangent-point-slope":2,"u5-concavity-meaning":2,"u5-opt-charter":3,"u5-opt-endpoint":4,"u5-opt-setup":2,"u5-opt-solve-a":3,"u5-opt-solve-b":2,"u5-pk-characteristics":2,"u5-poly-intervals":2,"u5-rr-cone":3,"u5-rr-interpret":2,"u5-rr-ladder":3,"u5-rr-separation":2,"u5-rr-tracking":3,"u6-angle-rate":2,"u6-deriv-proof":2,"u6-inv-compose":2,"u6-inv-exact":1,"u6-inv-graph":2,"u6-inv-relate":2,"u6-inv-restrict":2,"u6-invderiv":2,"u6-invderiv-derive":2,"u6-limit-param":2,"u6-pk-exact-values":2,"u6-pk-point-ratios":2,"u6-pk-reflection-points":3,"u6-pk-solve-equation":2,"u6-std-limits":2,"u6-trig-deriv":3,"u6-trig-limit":2,"u6-wcr-tangent-slope-tan":4,"u7-add-hyperbolic-definition":2,"u7-deriv-exponential":2,"u7-deriv-log":2,"u7-derivation-next-step":2,"u7-exp-log-features":2,"u7-exponential-limit":1,"u7-growth-decay":2,"u7-hyperbolic-solve":3,"u7-hyperbolic-values":2,"u7-interpret-derivative":2,"u7-pk-convert-form":2,"u7-pk-inverse-graph":3,"u7-pk-laws-equivalent":2,"u7-pk-product-law":2,"u7-pk-sketch-log":2,"u7-wcr-hyperbolic-derivative-point":5,"u8-add-antiderivative-linear-combination":2,"u8-add-estimate-expression":2,"u8-add-general-antiderivative-power":2,"u8-add-notation-correct-equation":2,"u8-add-particular-constant":2,"u8-antiderivative-meaning":2,"u8-area-between":3,"u8-area-estimate":1,"u8-area-under":2,"u8-definite-eval":2,"u8-general-antiderivative":3,"u8-motion-acceleration":3,"u8-motion-velocity":2,"u8-notation":2,"u8-particular-solution":2,"u8-pk-area-parallelogram":2,"u8-pk-area-triangle":2,"u8-pk-multiply-monomial":2,"u8-properties":2,"u8-riemann-convert":2,"u8-wcr-integral-properties-value":4};
 /* ============ Bimodal entries (generated) ============ */
 /* Built by assemble-bank.py from the BIMODAL manifests in the unit
    files (Spec-Bimodal-Questions-2026-11-19.md): entries whose
    multiple-choice questions may be stripped to constructed
    response, class a (online-checkable) or b (print/self-check). */
-window.__BANK_BIMODAL={"u1-add-graph-sum-point":"a","u1-compose-domain-range":"b","u1-compose-equation":"b","u1-compose-justify":"b","u1-compound-inequality":"a","u1-domain-combined":"b","u1-pk-defined-values":"b","u1-pk-npv-basic":"b","u1-pk-simplify-basic":"b","u1-quotient-restrictions":"a","u1-range-product":"a","u2-asymptote-behaviour":"a","u2-continuity-interval":"a","u2-discontinuity-type":"a","u2-limit-absvalue":"a","u2-limit-complex-fraction":"a","u2-limit-conjugate":"a","u2-limit-factor-cancel":"a","u2-limit-graph":"a","u2-oblique-asymptote":"b","u2-pk-converge-check":"b","u2-pk-geo-ratio":"a","u2-pk-infinite-sum":"a","u2-pk-simplify-trinomial":"b","u2-repeating-decimal":"a","u3-add-double-factor-classify":"b","u3-add-intercept-asymptote-pair":"b","u3-asymptote-set":"a","u3-hole-coordinates":"a","u3-pk-lcd":"b","u3-pk-npv-quadratic":"a","u3-pk-recip-features":"b","u3-rational-justify":"a","u4-average-rate-secant-slope":"a","u4-basic-derivatives":"b","u4-chain-rule":"b","u4-chain-rule-power-fraction":"b","u4-definition-identify":"b","u4-derivative-graph-features":"b","u4-derivative-roots-form":"b","u4-differentiability-point":"b","u4-differentiability-why":"b","u4-differentiable-values":"b","u4-first-principles":"b","u4-first-principles-pick":"b","u4-first-principles-setup":"b","u4-higher-derivative-expression":"b","u4-implicit-expression":"b","u4-instantaneous-estimate":"a","u4-instantaneous-meaning":"b","u4-motion-direction":"a","u4-notation":"b","u4-notation-convert":"a","u4-pk-eq-slope-point":"a","u4-pk-eq-two-points":"a","u4-pk-factor-common":"b","u4-pk-slope-rise-run":"a","u4-product-quotient":"b","u4-product-rule-derive":"b","u4-quotient-rule-setup":"b","u4-secant-tangent":"b","u4-sketch-from-derivative":"b","u4-tangent-normal":"b","u5-concavity-meaning":"b","u5-opt-setup":"b","u5-pk-characteristics":"a","u5-poly-intervals":"a","u5-rr-interpret":"b","u6-deriv-proof":"b","u6-inv-compose":"b","u6-inv-graph":"a","u6-inv-relate":"a","u6-inv-restrict":"b","u6-invderiv":"b","u6-invderiv-derive":"b","u6-limit-param":"a","u6-pk-exact-values":"a","u6-pk-point-ratios":"a","u6-pk-reflection-points":"a","u6-pk-solve-equation":"b","u6-std-limits":"b","u6-trig-deriv":"b","u7-add-hyperbolic-definition":"b","u7-deriv-exponential":"b","u7-deriv-log":"b","u7-derivation-next-step":"b","u7-exp-log-features":"b","u7-growth-decay":"a","u7-hyperbolic-solve":"a","u7-hyperbolic-values":"a","u7-interpret-derivative":"b","u7-pk-convert-form":"b","u7-pk-inverse-graph":"a","u7-pk-laws-equivalent":"b","u7-pk-product-law":"a","u7-pk-sketch-log":"a","u8-add-antiderivative-linear-combination":"b","u8-add-estimate-expression":"b","u8-add-general-antiderivative-power":"b","u8-add-notation-correct-equation":"b","u8-add-particular-constant":"b","u8-antiderivative-meaning":"b","u8-general-antiderivative":"b","u8-notation":"b","u8-pk-area-parallelogram":"a","u8-pk-area-triangle":"a","u8-pk-multiply-monomial":"b","u8-properties":"b","u8-riemann-convert":"b"};
+window.__BANK_BIMODAL={"cpt-c-asymptotes-horizontal":"a","cpt-c-asymptotes-vertical":"a","cpt-c-curve-concavity":"a","cpt-c-curve-intercepts":"a","cpt-c-curve-monotonic":"a","cpt-c-deriv-definition":"a","cpt-c-optimization":"a","cpt-c-related-rates":"a","cpt-c-tangent-line":"a","u1-add-graph-sum-point":"a","u1-compose-domain-range":"b","u1-compose-equation":"b","u1-compose-justify":"b","u1-compound-inequality":"a","u1-domain-combined":"b","u1-pk-defined-values":"b","u1-pk-npv-basic":"b","u1-pk-simplify-basic":"b","u1-quotient-restrictions":"a","u1-range-product":"a","u2-asymptote-behaviour":"a","u2-continuity-interval":"a","u2-discontinuity-type":"a","u2-limit-absvalue":"a","u2-limit-complex-fraction":"a","u2-limit-conjugate":"a","u2-limit-factor-cancel":"a","u2-limit-graph":"a","u2-oblique-asymptote":"b","u2-pk-converge-check":"b","u2-pk-geo-ratio":"a","u2-pk-infinite-sum":"a","u2-pk-simplify-trinomial":"b","u2-repeating-decimal":"a","u3-add-double-factor-classify":"b","u3-add-intercept-asymptote-pair":"b","u3-asymptote-set":"a","u3-hole-coordinates":"a","u3-pk-lcd":"b","u3-pk-npv-quadratic":"a","u3-pk-recip-features":"b","u3-rational-justify":"a","u4-average-rate-secant-slope":"a","u4-basic-derivatives":"b","u4-chain-rule":"b","u4-chain-rule-power-fraction":"b","u4-definition-identify":"b","u4-derivative-graph-features":"b","u4-derivative-roots-form":"b","u4-differentiability-point":"b","u4-differentiability-why":"b","u4-differentiable-values":"b","u4-first-principles":"b","u4-first-principles-pick":"b","u4-first-principles-setup":"b","u4-higher-derivative-expression":"b","u4-implicit-expression":"b","u4-instantaneous-estimate":"a","u4-instantaneous-meaning":"b","u4-motion-direction":"a","u4-notation":"b","u4-notation-convert":"a","u4-pk-eq-slope-point":"a","u4-pk-eq-two-points":"a","u4-pk-factor-common":"b","u4-pk-slope-rise-run":"a","u4-product-quotient":"b","u4-product-rule-derive":"b","u4-quotient-rule-setup":"b","u4-secant-tangent":"b","u4-sketch-from-derivative":"b","u4-tangent-normal":"b","u5-concavity-meaning":"b","u5-opt-setup":"b","u5-pk-characteristics":"a","u5-poly-intervals":"a","u5-rr-interpret":"b","u6-deriv-proof":"b","u6-inv-compose":"b","u6-inv-graph":"a","u6-inv-relate":"a","u6-inv-restrict":"b","u6-invderiv":"b","u6-invderiv-derive":"b","u6-limit-param":"a","u6-pk-exact-values":"a","u6-pk-point-ratios":"a","u6-pk-reflection-points":"a","u6-pk-solve-equation":"b","u6-std-limits":"b","u6-trig-deriv":"b","u7-add-hyperbolic-definition":"b","u7-deriv-exponential":"b","u7-deriv-log":"b","u7-derivation-next-step":"b","u7-exp-log-features":"b","u7-growth-decay":"a","u7-hyperbolic-solve":"a","u7-hyperbolic-values":"a","u7-interpret-derivative":"b","u7-pk-convert-form":"b","u7-pk-inverse-graph":"a","u7-pk-laws-equivalent":"b","u7-pk-product-law":"a","u7-pk-sketch-log":"a","u8-add-antiderivative-linear-combination":"b","u8-add-estimate-expression":"b","u8-add-general-antiderivative-power":"b","u8-add-notation-correct-equation":"b","u8-add-particular-constant":"b","u8-antiderivative-meaning":"b","u8-general-antiderivative":"b","u8-notation":"b","u8-pk-area-parallelogram":"a","u8-pk-area-triangle":"a","u8-pk-multiply-monomial":"b","u8-properties":"b","u8-riemann-convert":"b"};
+/* ============ Level basis labels (generated) ============ */
+/* Built by assemble-bank.py from the LEVELBASIS comments at each
+   audited entry (November 25, 2026): the criterion that decided
+   the entry's level under the adopted criteria card, shown in
+   teacher mode beside the level on the question card. Entries
+   no audit has covered have no label. */
+window.__BANK_LEVELBASIS={};

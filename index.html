@@ -42,6 +42,7 @@
   summary{cursor:pointer;font-weight:bold;font-size:.9rem;color:var(--accent);}
   .adv{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-top:10px;}
   #pkInRow[hidden]{display:none;}
+  #cptRow[hidden]{display:none;}
   .adv label{font-size:.85rem;display:flex;flex-direction:column;gap:4px;}
   .adv label.chk{flex-direction:row;align-items:center;gap:6px;}
   #oTestNumWrap[hidden]{display:none;}
@@ -2731,6 +2732,9 @@ var qrcode = function() {
     <div class="adv" id="pkInRow" hidden>
       <label class="chk"><input type="checkbox" id="pkInChk"> Include prior knowledge questions</label>
     </div>
+    <div class="adv" id="cptRow" hidden>
+      <label class="chk"><input type="checkbox" id="cptChk"> Calculus Placement Test questions only</label>
+    </div>
     <div class="adv">
       <label>Order
         <select id="orderIn">
@@ -3281,6 +3285,15 @@ function pkIncluded(){
     return !!el.checked;}
   return (typeof hidCtl!=="undefined"&&hidCtl)?!!hidCtl.pkIn:false;
 }
+function cptOnlyActive(){
+  if((typeof hidCtl!=="undefined"&&hidCtl)&&hidCtl.cptOnly)return true;
+  var el=null;
+  try{el=document.getElementById("cptChk");}catch(err){}
+  if(el){var row=null;try{row=document.getElementById("cptRow");}catch(err){}
+    if(row&&row.hidden)return false;
+    return !!el.checked;}
+  return false;
+}
 /* Prerequisite checks (Nov 15, 2026, the Math 2201 PK tranche):
    pkOnlyActive() reports the pkonly state stashed in hidCtl (set
    from the pkonly=1 link parameter by applyURL, or by the Advanced
@@ -3472,6 +3485,7 @@ function poolFor(units,inds,cap,pred){
   return BANK.filter(function(e){
     if(pred&&!pred(e))return false;
     if(e.enrich&&!(typeof enrichIncluded==="function"&&enrichIncluded()))return false;
+    if(e.cpt&&!(typeof PICKER_SCOPE!=="undefined"&&PICKER_SCOPE)&&!(typeof cptOnlyActive==="function"&&cptOnlyActive()))return false;
     if(cap==="final"){if(e.preFinal)return false;}
     else if(cap&&e.postMid)return false;
     if(units.indexOf(e.unit)<0)return false;
@@ -3614,6 +3628,7 @@ function drawSet(units,inds,n,mix,orderMode,cap,pred,floorCodes){
   }
   var pool=poolFor(units,inds,cap,pred);
   if(typeof pkIncluded==="function"&&!pkIncluded())pool=pool.filter(function(e){return !(typeof isPK==="function"&&isPK(e));});
+  if(typeof cptOnlyActive==="function"&&cptOnlyActive())pool=pool.filter(function(e){return !!e.cpt;});
   if(!pool.length||n<1)return{items:[],short:0,pool:0,thin:false};
   var targets=levelTargets(n,mix);var chosen=[],used={};
   /* At-least-once indicator floor (Ruling 12, November 21, 2026).
@@ -3896,7 +3911,13 @@ function refreshPkToggle(){
   var show=poolFor(state.units,[],false).some(function(e){return typeof isPK==="function"&&isPK(e);});
   row.hidden=!show;
 }
-function updatePoolInfo(){refreshFace();refreshPkCheckBtn();refreshPkToggle();
+function refreshCptToggle(){
+  var row=document.getElementById("cptRow");
+  if(!row)return;
+  var show=BANK.some(function(e){return !!e.cpt&&state.units.indexOf(e.unit)>=0;});
+  row.hidden=!show;
+}
+function updatePoolInfo(){refreshFace();refreshPkCheckBtn();refreshPkToggle();refreshCptToggle();
   if(pkOnlyActive()){
     var pkp=poolFor(state.units,[],false).filter(function(e){return typeof isPK==="function"&&isPK(e);});
     $("poolInfo").textContent=state.units.length===1?
@@ -3921,7 +3942,7 @@ function updatePoolInfo(){refreshFace();refreshPkCheckBtn();refreshPkToggle();
    identical set for a student. The prior knowledge switch left
    this group on Nov 18, 2026: it renders in the main builder for
    everyone (see refreshPkToggle), and its stash default is off. */
-var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,pkGroups:null,bm:"on",txmc:0,txcr:0,omc:7,ofi:3};
+var hidCtl={mc:10,nc:5,mix:(window.__COURSE&&window.__COURSE.defaultMix?window.__COURSE.defaultMix.slice():[20,60,20]),pk:false,enr:false,pkIn:false,pkOnly:false,cptOnly:false,pkGroups:null,bm:"on",txmc:0,txcr:0,omc:7,ofi:3};
 /* Builder restructure state (Nov 20, 2026): ONLINE_SPLIT says
    the Practice online section's two counts govern the next
    online draw. It starts engaged on a fresh visit, is engaged
@@ -3939,7 +3960,7 @@ var oTestSel=null;
 function tCtlVal(id,fb){var el=$(id);return el?el.value:fb;}
 function tPkOn(){var el=$("pkChk");return el?!!el.checked:!!hidCtl.pk;}
 function tGateStudentUI(){
-  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk"),bm=$("bmIn"),xm=$("testXMcIn"),xc=$("testXCrIn"),om=$("oMcIn"),of=$("oFiIn");
+  var mc=$("mcCountIn"),nc=$("ncCountIn"),l1=$("lv1"),l2=$("lv2"),l3=$("lv3"),pk=$("pkChk"),en=$("enrChk"),pi=$("pkInChk"),bm=$("bmIn"),xm=$("testXMcIn"),xc=$("testXCrIn"),om=$("oMcIn"),of=$("oFiIn"),ct=$("cptChk");
   if(mc)hidCtl.mc=mc.value;
   if(nc)hidCtl.nc=nc.value;
   if(om)hidCtl.omc=om.value;
@@ -3948,6 +3969,7 @@ function tGateStudentUI(){
   if(pk)hidCtl.pk=!!pk.checked;
   if(en)hidCtl.enr=!!en.checked;
   if(pi)hidCtl.pkIn=!!pi.checked;
+  if(ct)hidCtl.cptOnly=!!ct.checked;
   if(bm)hidCtl.bm=bm.value;
   if(xm)hidCtl.txmc=xm.value;
   if(xc)hidCtl.txcr=xc.value;
@@ -3981,13 +4003,14 @@ function settings(){
     enr:enrichIncluded(),
     pkIn:pkIncluded(),
     pkOnly:pkOnlyActive(),
+    cptOnly:cptOnlyActive(),
     pkGroups:pkOnlyActive()?pkGroupsActive():null,
     seed:($("seedIn")?$("seedIn").value.trim():""),
     mix:[+tCtlVal("lv1",hidCtl.mix[0])||0,+tCtlVal("lv2",hidCtl.mix[1])||0,+tCtlVal("lv3",hidCtl.mix[2])||0]};
 }
 function tags(q){
   var e=q._entry;
-  return '<span class="tag">'+L9("Unit ","Unité ")+e.unit+'</span> '+(TEACHER?'<span class="tag ind">'+e.indicators.join(", ")+'</span> ':"")+'<span class="tag lvl">'+L9("Level ","Niveau ")+e.level+((TEACHER&&typeof LEVELBASIS!=="undefined"&&LEVELBASIS&&LEVELBASIS[e.id])?(" · "+LEVELBASIS[e.id]):"")+'</span>'+(e.enrich?' <span class="tag enr">Enrichment</span>':"")+((typeof isPK==="function"&&isPK(e))?' <span class="tag pk">'+L9("Prior knowledge","Connaissances préalables")+'</span>':"");
+  return '<span class="tag">'+L9("Unit ","Unité ")+e.unit+'</span> '+(TEACHER?'<span class="tag ind">'+e.indicators.join(", ")+'</span> ':"")+'<span class="tag lvl">'+L9("Level ","Niveau ")+e.level+((TEACHER&&typeof LEVELBASIS!=="undefined"&&LEVELBASIS&&LEVELBASIS[e.id])?(" · "+LEVELBASIS[e.id]):"")+'</span>'+(e.enrich?' <span class="tag enr">Enrichment</span>':"")+(e.cpt?' <span class="tag cpt">Placement test</span>':"")+((typeof isPK==="function"&&isPK(e))?' <span class="tag pk">'+L9("Prior knowledge","Connaissances préalables")+'</span>':"");
 }
 var current=null,checkedCount=0,correctCount=0,checkMode="each",endGraded=false;
 var setResults={};
@@ -4583,7 +4606,7 @@ function tOpenPicker(title,pool,onPick,wantType){
       var samp="",sq=null;
       try{for(var k=0;k<40;k++){var cand=e.gen();if(cand&&tTypeOk(cand,wantType)){sq=cand;break;}}}catch(err){}
       if(sq&&sq.prompt){sq._entry=e;samples[e.id]=sq;samp=sq.prompt;}
-      h+='<button type="button" data-tpent="'+e.id+'">Unit '+e.unit+" \u00B7 "+e.indicators.join(", ")+" \u00B7 Level "+e.level+(e.enrich?" \u00B7 Enrichment":"")+": "+esc(desc)+' <span class="tid">'+e.id+"</span>"+(samp?'<span class="tsamp">Sample: '+samp+"</span>":"")+"</button>";
+      h+='<button type="button" data-tpent="'+e.id+'">Unit '+e.unit+" \u00B7 "+e.indicators.join(", ")+" \u00B7 Level "+e.level+(e.enrich?" \u00B7 Enrichment":"")+(e.cpt?" \u00B7 Placement test":"")+": "+esc(desc)+' <span class="tid">'+e.id+"</span>"+(samp?'<span class="tsamp">Sample: '+samp+"</span>":"")+"</button>";
     });
   });
   h+="</div>";
@@ -6911,6 +6934,7 @@ function composeExam(units,inds,includePK,plan){
   var pool=poolFor(units,inds,capX);
   if(C.pkPracticeOnly&&!includePK)pool=pool.filter(function(e){return !isPK(e);});
   pool=pool.filter(function(e){return !e.enrich;});
+  pool=pool.filter(function(e){return !e.cpt;});
   pool=pool.filter(function(e){return !e.noCompose;});
   if(plan&&plan.topics){
     pool=pool.filter(function(e){
@@ -7673,7 +7697,7 @@ function extendTestPaper(ex,s,plan){
   var C=window.__COURSE||{};
   var pool=poolFor(s.units,s.inds,scopeCap(s.units));
   if(C.pkPracticeOnly&&!tPkOn())pool=pool.filter(function(e){return !isPK(e);});
-  pool=pool.filter(function(e){return !e.enrich&&!e.noCompose;});
+  pool=pool.filter(function(e){return !e.enrich&&!e.cpt&&!e.noCompose;});
   if(plan&&plan.topics)pool=pool.filter(function(e){return e.indicators.every(function(c){var t=plan.topics[c];return !t||e.topic===t;});});
   var seen={},used={};
   ex.srItems.concat(ex.crItems).forEach(function(it){seen[canonQ(it.q)]=1;used[it.q._entry.id]=1;});
@@ -9041,6 +9065,7 @@ function settingsToURL(){
   if(s.enr)p.set("enr","1");
   if(s.pkIn)p.set("pkin","1");
   if(s.pkOnly)p.set("pkonly","1");
+  if(s.cptOnly)p.set("cpt","1");
   if(s.pkOnly&&s.pkGroups&&s.pkGroups.length)p.set("grp",s.pkGroups.join(","));
   if(s.seed)p.set("seed",s.seed);
   if(s.mix.join()!==((window.__COURSE&&window.__COURSE.defaultMix)?window.__COURSE.defaultMix.join(","):"20,60,20"))p.set("levels",s.mix.join(","));
@@ -9074,6 +9099,7 @@ function applyURL(){
   if(p.get("pkin")==="1"){hidCtl.pkIn=true;if($("pkInChk"))$("pkInChk").checked=true;}
   if(p.get("pkin")==="0"){hidCtl.pkIn=false;if($("pkInChk"))$("pkInChk").checked=false;}
   if(p.get("pkonly")==="1"){hidCtl.pkOnly=true;}
+  if(p.get("cpt")==="1"){hidCtl.cptOnly=true;if($("cptChk"))$("cptChk").checked=true;}
   if(p.get("grp")){hidCtl.pkGroups=p.get("grp").split(",").map(function(x){return x.trim();}).filter(function(x){return x;});}
   if(p.get("seed")&&$("seedIn"))$("seedIn").value=p.get("seed");
   if(p.get("levels")){var lv=p.get("levels").split(",").map(Number);if(lv.length===3){hidCtl.mix=[lv[0],lv[1],lv[2]];if($("lv1")){$("lv1").value=lv[0];$("lv2").value=lv[1];$("lv3").value=lv[2];}}}
